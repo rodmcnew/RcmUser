@@ -10,7 +10,7 @@
 
 namespace RcmUser\Service;
 
-use RcmUser\Provider\Identity\Provider;
+use RcmUser\Acl\Provider\Identity\Provider;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

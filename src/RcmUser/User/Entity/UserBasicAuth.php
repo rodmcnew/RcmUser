@@ -11,9 +11,8 @@
 namespace RcmUser\User\Entity;
 
 
-class UserIdentity {
+class UserBasicAuth  extends AbstractProperty {
 
-    protected $uuid;
     protected $username;
     protected $password;
 
@@ -48,22 +47,4 @@ class UserIdentity {
     {
         return $this->username;
     }
-
-    /**
-     * @param mixed $uuid
-     */
-    public function setUuid($uuid)
-    {
-        $this->uuid = (string)$uuid;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUuid()
-    {
-        return $this->uuid;
-    }
-
-
 } 

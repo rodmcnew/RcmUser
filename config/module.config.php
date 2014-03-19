@@ -56,6 +56,8 @@ return array(
     ),
 
     'bjyauthorize' => array(
+        'default_role'          => 'guest',
+        'authenticated_role'    => 'user',
         'identity_provider' => 'RcmUserServiceIdentiyProviderServiceFactory',
         'role_providers' => array(
             'RcmUser\Acl\Provider\Role\Provider' => array(),
@@ -79,7 +81,7 @@ return array(
                 'allow' => array(
                     // allow guests and users (and admins, through inheritance)
                     // the "wear" privilege on the resource "pants"
-                    array(array('guest', 'user'), 'rmcusertest', 'wear')
+                    array(array('guest', 'user'), 'pants')
                 ),
 
                 // Don't mix allow/deny rules if you are using role inheritance.

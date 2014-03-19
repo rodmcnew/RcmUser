@@ -18,7 +18,7 @@ class Provider implements ProviderInterface
     public function getResources()
     {
         return array(
-            'rmcusertest' => array(),
+            'pants' => array('wear'),
         );
     }
 }

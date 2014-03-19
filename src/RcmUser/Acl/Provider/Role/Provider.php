@@ -20,10 +20,10 @@ class Provider implements ProviderInterface
     {
         // @todo from data source
         $roles = array();
-        $roles[0] = new Role('guest');
-        $roles[1] = new Role('user');
-        $roles[2] = new Role('admin');
-        $roles[2]->setParent('user');
+        $roles['guest'] = new Role('guest');
+        $roles['user'] = new Role('user');
+        $roles['admin'] = new Role('admin');
+        $roles['admin']->setParent('user');
 
         return $roles;
     }
