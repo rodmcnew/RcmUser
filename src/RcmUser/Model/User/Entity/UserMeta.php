@@ -8,13 +8,13 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Entity;
+namespace RcmUser\Model\User\Entity;
 
 
 /**
  * Class UserMeta
  *
- * @package RcmUser\User\Entity
+ * @package RcmUser\Model\User\Entity
  */
 class UserMeta extends AbstractProperty {
 

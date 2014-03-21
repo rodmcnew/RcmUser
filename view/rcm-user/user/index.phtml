@@ -4,6 +4,7 @@ use Zend\Permissions\Acl\Role\GenericRole as Role;
 ?>
 <pre>
 <?php
+/* ACL STUFF
 $x = $this->isAllowed('pants', 'wear');
 
 $u = $this->zfcUserIdentity();
@@ -11,62 +12,13 @@ $u = $this->zfcUserIdentity();
 var_dump($u);
 
 $acl = new Acl();
-/*
-$roleGuest = new Role('guest');
-$acl->addRole($roleGuest);
-$acl->addRole(new Role('staff'), $roleGuest);
-$acl->addRole(new Role('editor'), 'staff');
-$acl->addRole(new Role('administrator'));
-
-$acl->allow($roleGuest, null, 'view');
-$acl->allow('staff', null, array('edit', 'submit', 'revise'));
-$acl->allow('editor', null, array('publish', 'archive', 'delete'));
-$acl->allow('administrator');
-
-echo "\nguest:view:";
-echo $acl->isAllowed('guest', null, 'view') ?
-    "allowed" : "denied";
-// allowed
-
-echo "\nstaff:publish:";
-echo $acl->isAllowed('staff', null, 'publish') ?
-    "allowed" : "denied";
-// denied
-
-echo "\nstaff:revise:";
-echo $acl->isAllowed('staff', null, 'revise') ?
-    "allowed" : "denied";
-// allowed
-
-echo "\neditor:view:";
-echo $acl->isAllowed('editor', null, 'view') ?
-    "allowed" : "denied";
-// allowed because of inheritance from guest
-
-echo "\neditor:update:";
-echo $acl->isAllowed('editor', null, 'update') ?
-    "allowed" : "denied";
-// denied because no allow rule for 'update'
-
-echo "\neditor:view:";
-echo $acl->isAllowed('administrator', null, 'view') ?
-    "allowed" : "denied";
-// allowed because administrator is allowed all privileges
-
-echo "\nadmin:";
-echo $acl->isAllowed('administrator') ?
-    "allowed" : "denied";
-// allowed because administrator is allowed all privileges
-
-echo "\nadmin:update:";
-echo $acl->isAllowed('administrator', null, 'update') ?
-    "allowed" : "denied";
-// allowed because administrator is allowed all privileges
 */
+
+
+var_export($userService);
 ?>
 
 <strong>Module:</strong>        RcmUser &raquo;
 <strong>Controller:</strong>    User &raquo;
 <strong>Action:</strong>        index
-<strong>Is Allowed::</strong>        <?php var_export($x); ?>
 </pre>

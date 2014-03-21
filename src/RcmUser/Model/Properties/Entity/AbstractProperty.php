@@ -8,7 +8,7 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Properties\Entity;
+namespace RcmUser\Model\Properties\Entity;
 
 
 class AbstractProperty implements PropertyInterface

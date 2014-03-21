@@ -3,7 +3,7 @@
  *
  */
 
-namespace RcmUser\Acl\Provider\Resource;
+namespace RcmUser\Model\Acl\Provider\Resource;
 
 use BjyAuthorize\Provider\Resource\ProviderInterface;
 

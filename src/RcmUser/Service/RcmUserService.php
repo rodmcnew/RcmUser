@@ -10,45 +10,190 @@
 
 namespace RcmUser\Service;
 
-use Aws\CloudFront\Exception\Exception;
-use RcmUser\User\Entity\AbstractUser;
-use RcmUser\User\Entity\UserInterface;
-use ZfcUser\Service\User;
+use RcmUser\Model\User\DataMapperInterface;
+use RcmUser\Model\User\Entity\UserInterface;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+use ZfcBase\EventManager\EventProvider;
 
-class RcmUserService extends User
+//use ZfcUser\Service\User;
+
+/**
+ * Class RcmUserService
+ *
+ * @package RcmUser\Service
+ */
+class RcmUserService extends EventProvider
 {
-    protected $dbUserStorage;
+    /**
+     * @var DataMapperInterface
+     */
+    protected $userDataMapper;
+
+    /**
+     * @var
+     */
     protected $sessionUserStorage;
 
-    public function getUser($uuid = null)
+    /**
+     * @var array
+     */
+    protected $config = array();
+
+    public function __construct($config = array())
     {
-        $user = null;
 
-        if ($uuid !== null) {
+        $this->config = $config;
+    }
 
-            // @todo Need storage to have uuid
-            $user = $this->sessionUserStorage->read();
+    /**
+     * @param array $config
+     */
+    public function setConfig($config)
+    {
+        $this->config = $config;
+    }
 
-            if (!empty($user)) {
+    /**
+     * @return array
+     */
+    public function getConfig()
+    {
 
-                return $user;
-            }
+        return $this->config;
+    }
 
-            $user = $this->readUser($uuid);
+    /**
+     * @param mixed $userDataMapper
+     */
+    public function setUserDataMapper(DataMapperInterface $userDataMapper)
+    {
+        $this->userDataMapper = $userDataMapper;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserDataMapper()
+    {
+        return $this->userDataMapper;
+    }
+
+    /**
+     * @param mixed $sessionUserStorage
+     */
+    public function setSessionUserStorage($sessionUserStorage)
+    {
+        $this->sessionUserStorage = $sessionUserStorage;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getSessionUserStorage()
+    {
+        return $this->sessionUserStorage;
+    }
+
+    /**  ******************/
+
+    /**
+     * @param $id
+     *
+     * @return null|UserInterface
+     */
+    public function getRegisteredUser($id)
+    {
+
+        if ($id !== null) {
+
+            $user = $this->readUser($id);
+
+            return $user;
         }
 
-        if (empty($user)) {
+        return null;
+    }
 
-            $user = $this->buildNewUser();
-        }
+    /**
+     * @return mixed
+     */
+    public function getSessUser()
+    {
+
+        // @todo Need storage to have id
+        $user = $this->sessionUserStorage->read();
+
+        // Must get session id too!
 
         return $user;
     }
 
-    public function saveUser($user)
+    /**
+     * @return UserInterface
+     */
+    public function getNewUser()
     {
 
-        if ($user->isSaved()) {
+        return $this->buildNewUser();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRegistered(UserInterface $user)
+    {
+        return $this->exists($user);
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return bool
+     */
+    public function exists(UserInterface $user)
+    {
+
+        $realUser = $this->readUser($user);
+
+        if (!empty($realUser)) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isCurrent(UserInterface $user)
+    {
+        $sessUser = $this->getSessUser();
+
+        if (empty($sessUser)) {
+
+            return false;
+        }
+
+        if ($user->getId() === $sessUser->getId() || $user->getUsername() === $sessUser->getUsername()) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /* CRUD **************************/
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return mixed
+     */
+    public function saveUser(UserInterface $user)
+    {
+
+        if ($user->isRegistered()) {
 
             return $this->updateUser($user);
         }
@@ -56,117 +201,177 @@ class RcmUserService extends User
         return $this->createUser($user);
     }
 
-    /////////////////////////////////////////
-    public function getCurrentUser()
-    {
-        // check session
-    }
-
-    public function getUserAccess($user, $permisions)
-    {
-    }
-
-    public function getCurrentUserAccess($permisionS)
-    {
-        // check session
-    }
-
-    public function getUserProperty($user, $propertyNameSpace = array())
-    {
-    }
-
-    public function getCurrentUserProperty($propertyNameSpace = array())
-    {
-        // check session
-    }
-
-    public function readUser($uuid)
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function readUser(UserInterface $user)
     {
         // @event pre
-        $user = $this->dbUserStorage->read();
+        //$this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
 
-        if (!empty($user)) {
+        $user = $this->userDataMapper->fetch($user);
 
-            $user->setSaved(true);
-        }
         // @event post
+        //$this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user));
 
         return $user;
     }
 
-
-    public function createUser(AbstractUser $user)
+    /**
+     * @param UserInterface $user
+     *
+     * @return mixed
+     */
+    public function createUser(UserInterface $user)
     {
-        $uuid = $user->getUuid();
+        $id = $user->getId();
 
-        if (empty($uuid)) {
+        if (empty($id)) {
 
-            $user->setUuid($this->buildUuid());
+            $user->setId($this->buildId());
         }
-
+        // @todo VALIDATIONS and PASSWORD HASH
         // @event pre
-        $this->dbUserStorage->write($user);
-        $newuser = $this->readUser($user->getUuid());
+        $this->userDataMapper->store($user);
+        $newuser = $this->readUser($user);
+
         // @event post
 
         return $newuser;
 
     }
 
-    public function updateUser(AbstractUser $user)
+    /**
+     * @param UserInterface $user
+     *
+     * @return mixed
+     * @throws \Exception
+     */
+    public function updateUser(UserInterface $user)
     {
-        $uuid = $user->getUuid();
-        $saved = $user->getSaved();
 
-        if (empty($uuid) || $saved == false) {
-
-            throw new Exception('Uuid not set or user was never saved.');
-        }
+        // @todo VALIDATIONS and PASSWORD HASH if changed
 
         // @event pre
-        $this->dbUserStorage->write($user);
-        $updateduser = $this->readUser($user->getUuid());
+        $this->userDataMapper->write($user);
+        $updateduser = $this->readUser($user);
+
         // @event post
 
         return $updateduser;
     }
 
-    public function deleteUser(AbstractUser $user)
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface
+     * @throws \Exception
+     */
+    public function deleteUser(UserInterface $user)
     {
-        $uuid = $user->getUuid();
-        $saved = $user->getSaved();
+        $id = $user->getId();
+        $saved = $user->isRegistered();
 
-        if (empty($uuid) || $saved == false) {
+        if (empty($id) || $saved == false) {
 
-            throw new Exception('Uuid not set or user was never saved.');
+            throw new \Exception('id not set or user was never saved.');
         }
 
         // @event pre
-        $this->dbUserStorage->clear();
-        $unsavedUser = new AbstractUser();
-        $unsavedUser->setUuid($uuid);
-        $unsavedUser->setSaved(false);
+        $this->userDataMapper->clear();
+        $unsavedUser = new User();
+        $unsavedUser->setId($id);
+
         // @event post
 
         return $unsavedUser;
     }
 
-    public function buildNewUser(){
+    /**
+     * @return UserInterface
+     */
+    public function buildNewUser()
+    {
 
-        $user = new AbstractUser();
-        $user->setUuid($this->buildUuid());
-        $user->setSaved(false);
+        $user = new User();
 
         return $user;
     }
 
-    public function buildUuid()
+    /* AUTHENTICATION ***********************/
+
+    public function authenticate(UserInterface $user)
+    {
+
+        // Get credentials
+        // hash password
+        // check match
+        // @event pre
+
+        // @event post
+        return true;
+    }
+
+    public function authenticateToSess(UserInterface $user)
+    {
+
+        if ($this->authenticate($user)) {
+
+            // Add to session
+        }
+
+        return user;
+    }
+
+
+    /**
+     * @param $user
+     * @param $permisions
+     */
+    public function getUserAccess($user, $permisions)
+    {
+    }
+
+    /**
+     * @param $permisionS
+     */
+    public function getCurrentUserAccess($permisionS)
+    {
+        // check session
+    }
+
+    /**
+     * @param       $user
+     * @param array $propertyNameSpace
+     */
+    public function getUserProperty($user, $propertyNameSpace = array())
+    {
+    }
+
+    /**
+     * @param array $propertyNameSpace
+     */
+    public function getCurrentUserProperty($propertyNameSpace = array())
+    {
+        // check session
+    }
+
+    /* UTILITIES ************************/
+
+    /**
+     * @return string
+     */
+    public function buildId()
     {
 
         return $this->guidv4();
     }
 
-    /////////// UTILITY
+    /**
+     * @return string
+     */
     protected function guidv4()
     {
         $data = openssl_random_pseudo_bytes(16);
@@ -175,6 +380,15 @@ class RcmUserService extends User
         $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
 
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
+    }
+
+    protected function encryptPassword($password)
+    {
+
+        $bcrypt = new Bcrypt;
+        $bcrypt->setCost($this->getConfig->get('passwordCost', 14));
+
+        return $bcrypt->create($password);
     }
 
 } 

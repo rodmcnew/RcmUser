@@ -8,15 +8,15 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Entity;
+namespace RcmUser\Model\User\Entity;
 
 
-use RcmUser\Properties\Entity\AbstractProperty;
+use RcmUser\Model\Properties\Entity\AbstractProperty;
 
 /**
  * Class UserAccess
  *
- * @package RcmUser\User\Entity
+ * @package RcmUser\Model\User\Entity
  */
 class UserAccess extends AbstractProperty
 {

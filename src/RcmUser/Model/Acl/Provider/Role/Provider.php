@@ -3,7 +3,7 @@
  *
  */
 
-namespace RcmUser\Acl\Provider\Role;
+namespace RcmUser\Model\Acl\Provider\Role;
 
 use BjyAuthorize\Acl\Role;
 use BjyAuthorize\Provider\Role\ProviderInterface;

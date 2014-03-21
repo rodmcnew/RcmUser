@@ -8,13 +8,13 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Acl\Entity;
+namespace RcmUser\Model\Acl\Entity;
 
 
 /**
  * Class Role
  *
- * @package RcmUser\Acl\Entity
+ * @package RcmUser\Model\Acl\Entity
  */
 class Role
 {

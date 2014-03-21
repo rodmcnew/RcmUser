@@ -3,7 +3,7 @@
  *
  */
 
-namespace RcmUser\Acl\Provider\Identity;
+namespace RcmUser\Model\Acl\Provider\Identity;
 
 use BjyAuthorize\Provider\Identity\ProviderInterface;
 
