@@ -14,6 +14,7 @@ use RcmUser\Exception\RcmUserException;
 use RcmUser\Model\User\Db\DataMapperInterface;
 use RcmUser\Model\User\Entity\AbstractUser;
 use RcmUser\Model\User\Entity\User;
+use RcmUser\Model\User\Result;
 use RcmUser\Service\Exception\InvalidInputException;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\InputFilter\InputFilter;
@@ -126,17 +127,16 @@ class RcmUserService extends EventProvider
      *
      * @return null|AbstractUser
      */
-    public function getRegisteredUser($id)
+    public function getRegisteredUser(AbstractUser $user)
     {
+        // @todo Clean this up
+        if (!empty($user->getId())) {
 
-        if ($id !== null) {
 
-            $user = $this->readUser($id);
-
-            return $user;
+            return $this->readUser($user);
         }
 
-        return null;
+        return new Result(null, 0, 'Id required');
     }
 
     /**
@@ -178,14 +178,10 @@ class RcmUserService extends EventProvider
     public function userExists(AbstractUser $user)
     {
 
-        $realUser = $this->readUser($user);
+        $result = $this->readUser($user);
 
-        if ($realUser instanceof RcmUserException) {
+        return $result->isSuccess();
 
-            return false;
-        }
-
-        return true;
     }
 
     /**
@@ -200,6 +196,7 @@ class RcmUserService extends EventProvider
             return false;
         }
 
+        // @todo make sure this is a valid check for all cases
         if ($user->getId() === $sessUser->getId() || $user->getUsername() === $sessUser->getUsername()) {
 
             return true;
@@ -213,26 +210,26 @@ class RcmUserService extends EventProvider
     /**
      * @param $id
      *
-     * @return mixed
+     * @return Result
      */
     public function readUser(AbstractUser $user)
     {
-        // @todo might cache users into memory here
-        // @event pre
-        //$this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
+        // @todo might cache users
+        // @event onBeforeReadUser
+        //$this->getEventManager()->trigger('onBefore'.ucfirst(__METHOD__), $this, array('user' => $user));
 
-        $user = $this->userDataMapper->read($user);
+        $result = $this->userDataMapper->read($user);
 
-        // @event post
-        //$this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user));
+        // @event onReadUserSuccess / onReadUserFail
+        //$this->getEventManager()->trigger('on'.ucfirst(__METHOD__).'Success', $this, array('user' => $user));
 
-        return $user;
+        return $result;
     }
 
     /**
      * @param AbstractUser $user
      *
-     * @return mixed
+     * @return Result
      */
     public function createUser(AbstractUser $user)
     {
@@ -240,77 +237,76 @@ class RcmUserService extends EventProvider
         if ($this->userExists($user)) {
 
             // ERROR - user exists
-            return new RcmUserException('User already exists.');
+            return new Result(null, 0, 'User already exists.');
         }
 
-        // VALIDATIONS
-        $user = $this->validateUser($user);
+        // @event onBeforeCreate
 
-        if($user instanceof InvalidInputException){
+        /* +EVENT */
+        //@todo inject as event
+        $onBeforeCreateResult = $this->onBeforeCreate($user);
 
-            return $user;
+        if(!$onBeforeCreateResult->isSuccess()){
+
+            return $onBeforeCreateResult;
         }
 
-        // @event pre
-        $user->setId($this->buildId());
-        $user->setPassword($this->encryptPassword($user->getPassword()));
+        $preparedUser = $onBeforeCreateResult->getUser();
+        /* -EVENT */
 
-        $this->userDataMapper->create($user);
-        $newuser = $this->readUser($user);
+        $this->userDataMapper->create($preparedUser);
+        $result = $this->readUser($preparedUser);
 
-        // @event post
+        // @event onCreateSuccess / onCreateFail
 
-        return $newuser;
-
+        return $result;
     }
 
     /**
-     * @param AbstractUser $user
+     * @param AbstractUser $user (updated user,
      *
-     * @return mixed
+     * @return Result
      * @throws \RcmUserException
      */
     public function updateUser(AbstractUser $user)
     {
+        // require id
+        if (empty($user->getId())) {
 
-        if (!$this->userExists($user)) {
-
-            // ERROR - user exists
-            return new RcmUserException('User does not exist or could not be found.');
+            return new Result(null, 0, 'User Id required for update.');
         }
 
-        // VALIDATIONS
-        $validUser = $this->validateUser($user);
+        // check if exists
+        $existingUserResult = $this->userDataMapper->fetchById($user->getId());
 
-        if($validUser instanceof InvalidInputException){
+        if (!$existingUserResult->isSuccess()) {
 
-            return $validUser;
+            // ERROR
+            return $existingUserResult;
         }
 
-        // @event pre
+        $existingUser = $existingUserResult->getUser();
+
+        // @event onBeforeUpdate
+
+        /* +EVENT */
+        //@todo inject as event
+        $onBeforeUpdateResult = $this->onBeforeUpdate($existingUser, $user);
+
+        if(!$onBeforeUpdateResult->isSuccess()){
+
+            return $onBeforeUpdateResult;
+        }
+
+        $preparedUser = $onBeforeUpdateResult->getUser();
+        /* -EVENT */
+
         // set properties
-        $existingUser = $this->readUser($validUser);
-        $existingId = $existingUser->getId();
-        $existingHash = $existingUser->getPassword();
-        $newHash = $this->encryptPassword($validUser->getPassword());
-        $existingUser->populate($validUser);
-        $existingUser->setId($existingId);
+        $updatedUserResult = $this->userDataMapper->update($preparedUser);
 
-        // update password if changed
-        if (!$this->isValidPassword($existingHash, $newHash)) {
+        // @event onUpdateSuccess / onUpdateFail
 
-            //password has change, encrypt it
-            $existingUser->setPassword($newHash);
-        } else {
-
-            // no change
-            $existingUser->setPassword($existingHash);
-        }
-
-        $updateduser = $this->userDataMapper->update($existingUser);
-
-        // @event post
-        return $updateduser;
+        return $updatedUserResult;
     }
 
     /**
@@ -321,19 +317,26 @@ class RcmUserService extends EventProvider
      */
     public function deleteUser(AbstractUser $user)
     {
-        if (!$this->userExists($user)) {
+        // @todo might restrict this to just Id
+        $existingUserResult = $this->readUser($user);
+
+        if (!$existingUserResult->isSuccess()) {
 
             // ERROR - user exists
-            return new RcmUserException('User does not exist or could not be found.');
+            $existingUserResult->setMessage(__METHOD__, 'User does not exist or could not be found.');
+
+            return $existingUserResult;
         }
 
-        // @event pre
-        $this->userDataMapper->delete($user);
+        $existingUser = $existingUserResult->getUser();
+
+        // @event onBeforeDelete
+        $this->userDataMapper->delete($existingUser);
         $unsavedUser = new User();
 
-        // @event post
+        // @event onDeleteSuccess / onDeleteFail
 
-        return $unsavedUser;
+        return new Result($unsavedUser);
     }
 
     public function disableUser(AbstractUser $user)
@@ -342,6 +345,97 @@ class RcmUserService extends EventProvider
         // @todo write me
     }
 
+    /* +EVENTS ******************************/
+
+    /**
+     * @param AbstractUser $existingUser
+     * @param AbstractUser $user
+     *
+     * @return Result
+     */
+    public function onBeforeUpdate(AbstractUser $existingUser, AbstractUser $user)
+    {
+        // @todo create temp user for roll-back in case of error
+
+        // USERNAME CHECKS
+        $newUsername = $user->getUsername();
+        $existingUserName = $existingUser->getUsername();
+
+        // sync null
+        if ($newUsername !== null) {
+
+            // if username changed:
+            if ($existingUserName !== $newUsername) {
+
+                // make sure no duplicates
+                $dupUser = $this->userDataMapper->fetchByUsername($newUsername);
+
+                if ($dupUser->isSuccess()) {
+
+                    // ERROR - user exists
+                    return new Result(null, 0, 'User could not be prepared, duplicate username.');
+                }
+
+                $existingUser->setUsername($newUsername);
+            }
+        }
+
+        // PASSWORD CHECKS
+        $newPassword = $user->getPassword();
+        $existingPassword = $existingUser->getPassword();
+        $hashedPassword = $existingPassword;
+        // sync null
+        if ($newPassword !== null) {
+            // if password changed
+            if ($existingPassword !== $newPassword) {
+                // plain text
+                $existingUser->setPassword($newPassword);
+                $hashedPassword = $this->encryptPassword($newPassword);
+            }
+        }
+
+        // run validation rules
+        $validateResult = $this->validateUser($existingUser);
+
+        if (!$validateResult->isSuccess()) {
+
+            return $validateResult;
+        }
+
+        // if valid:
+        $existingUser->setPassword($hashedPassword);
+
+        return new Result($existingUser);
+    }
+
+    /**
+     * @param AbstractUser $user
+     *
+     * @return Result
+     */
+    public function onBeforeCreate(AbstractUser $user){
+
+        // @todo create temp user for roll-back in case of error
+
+        // run validation rules
+        $validateResult = $this->validateUser($user);
+
+        if (!$validateResult->isSuccess()) {
+
+            return $validateResult;
+        }
+
+        $user->setId($this->buildId());
+        $user->setPassword($this->encryptPassword($user->getPassword()));
+
+        return new Result($user);
+    }
+
+    /**
+     * @param $user
+     *
+     * @return Result
+     */
     public function validateUser(AbstractUser $user)
     {
 
@@ -353,22 +447,21 @@ class RcmUserService extends EventProvider
 
             $user->populate($inputFilter->getValues());
 
-            return $user;
+            return new Result($user);
         } else {
 
-            $errors = array();
+            $result = new Result($user, 0, 'User input not valid');
 
             foreach ($inputFilter->getInvalidInput() as $key => $error) {
 
-                $errors[$key] = $error->getMessages();
+                $result->setMessage($key, $error->getMessages());
             }
 
-            $exception = new InvalidInputException("User is imput not valid");
-            $exception->setInputMessages($errors);
-
-            return $exception;
+            return $result;
         }
     }
+
+    /* -EVENTS */
 
     /**
      * @return AbstractUser

@@ -11,7 +11,7 @@
 namespace RcmUser\Model\User\Entity;
 
 
-interface UserInterface
+interface UserInterface extends \IteratorAggregate
 {
 
     /**

@@ -20,30 +20,30 @@ use Zend\InputFilter\InputFilterInterface;
  *
  * @package RcmUser\Model\User\Entity
  */
-abstract class AbstractUser implements UserInterface, \JsonSerializable, \IteratorAggregate
+abstract class AbstractUser implements UserInterface, \JsonSerializable
 {
 
     /**
      * @var string
      */
-    protected $id = '';
+    protected $id = null;
 
     /**
      * @var string
      */
-    protected $username = '';
+    protected $username = null;
 
     /**
      * @var string
      */
-    protected $password = '';
+    protected $password = null;
 
     /**
      * @param string $id
      */
     public function setId($id)
     {
-        $this->id = (string)$id;
+        $this->id = $id;
     }
 
     /**
@@ -59,7 +59,7 @@ abstract class AbstractUser implements UserInterface, \JsonSerializable, \Iterat
      */
     public function setPassword($password)
     {
-        $this->password = (string)$password;
+        $this->password = $password;
     }
 
     /**
@@ -75,7 +75,7 @@ abstract class AbstractUser implements UserInterface, \JsonSerializable, \Iterat
      */
     public function setUsername($username)
     {
-        $this->username = (string)$username;
+        $this->username = $username;
     }
 
     /**

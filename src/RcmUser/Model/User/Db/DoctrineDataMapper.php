@@ -14,6 +14,7 @@ namespace RcmUser\Model\User\Db;
 use Doctrine\ORM\EntityManager;
 use RcmUser\Model\User\Entity\DoctrineUser;
 use RcmUser\Model\User\Entity\UserInterface;
+use RcmUser\Model\User\Result;
 
 class DoctrineDataMapper implements DataMapperInterface
 {
@@ -65,122 +66,141 @@ class DoctrineDataMapper implements DataMapperInterface
     /**
      * @param $id
      *
-     * @return UserInterface | Exception
+     * @return Result
      */
     public function fetchById($id)
     {
         $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
         if (empty($user)) {
 
-            return new RcmUserException('User could not be found by id.');
+            return new Result(null, 0, 'User could not be found by id.');
         }
 
-        return $user;
+        return new Result($user);
     }
 
     /**
      * @param $username
      *
-     * @return UserInterface | Exception
+     * @return Result
      */
     public function fetchByUsername($username)
     {
         $user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
         if (empty($user)) {
 
-            return  new RcmUserException('User could not be found by username.');
+            return new Result(null, 0, 'User could not be found by username.');
         }
 
-        return $user;
+        return new Result($user);
     }
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return Result
      */
     public function create(UserInterface $user)
     {
-        $user = $this->getValidInstance($user);
+        $result = $this->getValidInstance($user);
 
-        // @todo if error, fail with null, log error?
+        $user = $result->getUser();
+
+        // @todo if error, fail with null
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
 
-        return $user;
+        return new Result($user);
     }
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return Result
      */
     public function read(UserInterface $user)
     {
-        $user = $this->getValidInstance($user);
+        $result = $this->getValidInstance($user);
 
+        $user = $result->getUser();
         $id = $user->getId();
         if (!empty($id)) {
 
-            return $this->fetchById($id);
+            $result = $this->fetchById($id);
+
+            if($result->isSuccess()){
+
+                return $result;
+            }
         }
 
         $username = $user->getUsername();
+
         if (!empty($username)) {
 
-            return $this->fetchByUsername($username);
+            $result = $this->fetchByUsername($username);
+
+            if($result->isSuccess()){
+
+                return new Result($user);
+            }
         }
 
-        return new RcmUserException('User could not be read.');
+        return new Result(null, 0, 'User could not be read.');
     }
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return Result
      */
     public function update(UserInterface $user)
     {
-        $user = $this->getValidInstance($user);
+        $result = $this->getValidInstance($user);
+
+        $user = $result->getUser();
 
         if (!$this->canUpdate($user)) {
 
             // error, cannot update
-            return new RcmUserException('User cannot be updated, id required for update.');
+            return new Result(null, 0, 'User cannot be updated, id required for update.');
         }
 
-        // @todo if error, fail with null, log error?
+        // @todo if error, fail with null
         $this->getEntityManager()->persist($user);
         $this->getEntityManager()->flush();
 
-        return $user;
+        return new Result($user);
     }
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return Result
      */
     public function delete(UserInterface $user)
     {
-        $user = $this->getValidInstance($user);
+        $result = $this->getValidInstance($user);
+
+        $user = $result->getUser();
 
         if (!$this->canUpdate($user)) {
 
             // error, cannot update
-            return new RcmUserException('User cannot be updated, id required for update.');
+            return new Result(null, 0, 'User cannot be deleted, id required for delete.');
         }
-        // @todo if error, fail with null, log error?
+
+        // @todo if error, fail with null
         $this->getEntityManager()->remove($user);
         $this->getEntityManager()->flush();
 
-        return $user;
+        return new Result($user);
     }
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return Result
      */
     public function getValidInstance(UserInterface $user)
     {
@@ -193,7 +213,7 @@ class DoctrineDataMapper implements DataMapperInterface
             $user = $doctrineUser;
         }
 
-        return $user;
+        return new Result($user);
     }
 
     /**

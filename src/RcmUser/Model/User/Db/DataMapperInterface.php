@@ -12,6 +12,7 @@ namespace RcmUser\Model\User\Db;
 
 
 use RcmUser\Model\User\Entity\UserInterface;
+use RcmUser\Model\User\Result;
 
 /**
  * Interface DataMapperInterface
@@ -26,49 +27,49 @@ interface DataMapperInterface
     /**
      * @param $id
      *
-     * @return UserInterface | Exception
+     * @return RcmUser\Model\User\Result
      */
     public function fetchById($id);
 
     /**
-     * @param $id
+     * @param $username
      *
-     * @return UserInterface | Exception
+     * @return RcmUser\Model\User\Result
      */
-    public function fetchByUsername($id);
+    public function fetchByUsername($username);
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return RcmUser\Model\User\Result
      */
     public function create(UserInterface $user);
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return RcmUser\Model\User\Result
      */
     public function read(UserInterface $user);
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return RcmUser\Model\User\Result
      */
     public function update(UserInterface $user);
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return RcmUser\Model\User\Result
      */
     public function delete(UserInterface $user);
 
     /**
      * @param UserInterface $user
      *
-     * @return UserInterface | Exception
+     * @return RcmUser\Model\User\Result
      */
     //public function disable(UserInterface $user);
 
