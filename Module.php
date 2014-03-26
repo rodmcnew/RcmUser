@@ -7,7 +7,9 @@ namespace RcmUser;
 
 use RcmUser\Model\Config\Config;
 use RcmUser\Model\User\Db\DoctrineDataMapper;
+use RcmUser\Model\User\InputFilter\UserInputFilter;
 use RcmUser\Service\RcmUserService;
+use Zend\InputFilter\Factory as InputFactory;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\MvcEvent;
 
@@ -39,6 +41,7 @@ class Module implements AutoloaderProviderInterface
             'factories' => array(
 
                 'RcmUser\Model\Config' => function ($sm) {
+
                         $config = $sm->get('Config');
 
                         return new Config(isset($config['rcm_user']) ? $config['rcm_user'] : array());
@@ -52,14 +55,31 @@ class Module implements AutoloaderProviderInterface
                         $em = $sm->get('Doctrine\ORM\EntityManager');
                         $dm = new DoctrineDataMapper();
                         $dm->setEntityManager($em);
-                        $dm->setEntityClass('RcmUser\Model\User\Entity');
+                        $dm->setEntityClass('RcmUser\Model\User\Entity\DoctrineUser');
+
                         return $dm;
+                    },
+                'RcmUser\Model\User\InputFilter\UserInputFilter' => function ($sm) {
+
+                        $inputFilter = new UserInputFilter();
+                        //$inputFilter = new InputFilter();
+                        $factory = new InputFactory();
+                        $inputs = $sm->get('RcmUser\Model\Config')->get('userInputFilter', array());
+                         foreach($inputs as $k => $v){
+                             $inputFilter->add($factory->createInput($v), $k);
+                         }
+
+                        return $inputFilter;
                     },
                 'RcmUser\Service\RcmUserService' => function ($sm) {
 
                         $dm = $sm->get('RcmUser\Model\User\DataMapper');
                         $cfg = $sm->get('RcmUser\Model\Config');
+                        $infi = $sm->get('RcmUser\Model\User\InputFilter\UserInputFilter');
                         $service = new RcmUserService($cfg);
+                        $service->setUserDataMapper($dm);
+                        $service->setUserInputFilter($infi);
+
                         return $service;
                     },
             ),

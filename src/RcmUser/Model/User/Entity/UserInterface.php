@@ -43,4 +43,17 @@ interface UserInterface
      * @return string
      */
     public function getUsername();
+
+    /**
+     * @param array $data
+     *
+     * @return void
+     */
+    public function populate($data = array());
+
+    /**
+     * @return ArrayIterator
+     */
+    public function getIterator();
+
 } 

@@ -10,9 +10,13 @@
 
 namespace RcmUser\Service;
 
-use RcmUser\Model\User\DataMapperInterface;
-use RcmUser\Model\User\Entity\UserInterface;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
+use RcmUser\Exception\RcmUserException;
+use RcmUser\Model\User\Db\DataMapperInterface;
+use RcmUser\Model\User\Entity\AbstractUser;
+use RcmUser\Model\User\Entity\User;
+use RcmUser\Service\Exception\InvalidInputException;
+use Zend\Crypt\Password\Bcrypt;
+use Zend\InputFilter\InputFilter;
 use ZfcBase\EventManager\EventProvider;
 
 //use ZfcUser\Service\User;
@@ -38,6 +42,11 @@ class RcmUserService extends EventProvider
      * @var array
      */
     protected $config = array();
+
+    /**
+     * @var InputFilter
+     */
+    protected $userInputFilter;
 
     public function __construct($config = array())
     {
@@ -94,12 +103,28 @@ class RcmUserService extends EventProvider
         return $this->sessionUserStorage;
     }
 
+    /**
+     * @param \Zend\InputFilter\InputFilter $userInputFilter
+     */
+    public function setUserInputFilter(InputFilter $userInputFilter)
+    {
+        $this->userInputFilter = $userInputFilter;
+    }
+
+    /**
+     * @return \Zend\InputFilter\InputFilter
+     */
+    public function getUserInputFilter()
+    {
+        return $this->userInputFilter;
+    }
+
     /**  ******************/
 
     /**
      * @param $id
      *
-     * @return null|UserInterface
+     * @return null|AbstractUser
      */
     public function getRegisteredUser($id)
     {
@@ -129,7 +154,7 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @return UserInterface
+     * @return AbstractUser
      */
     public function getNewUser()
     {
@@ -140,33 +165,33 @@ class RcmUserService extends EventProvider
     /**
      * @return bool
      */
-    public function isRegistered(UserInterface $user)
+    public function isRegistered(AbstractUser $user)
     {
-        return $this->exists($user);
+        return $this->userExists($user);
     }
 
     /**
-     * @param UserInterface $user
+     * @param AbstractUser $user
      *
      * @return bool
      */
-    public function exists(UserInterface $user)
+    public function userExists(AbstractUser $user)
     {
 
         $realUser = $this->readUser($user);
 
-        if (!empty($realUser)) {
+        if ($realUser instanceof RcmUserException) {
 
-            return true;
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     /**
      * @return bool
      */
-    public function isCurrent(UserInterface $user)
+    public function isCurrent(AbstractUser $user)
     {
         $sessUser = $this->getSessUser();
 
@@ -186,32 +211,17 @@ class RcmUserService extends EventProvider
     /* CRUD **************************/
 
     /**
-     * @param UserInterface $user
-     *
-     * @return mixed
-     */
-    public function saveUser(UserInterface $user)
-    {
-
-        if ($user->isRegistered()) {
-
-            return $this->updateUser($user);
-        }
-
-        return $this->createUser($user);
-    }
-
-    /**
      * @param $id
      *
      * @return mixed
      */
-    public function readUser(UserInterface $user)
+    public function readUser(AbstractUser $user)
     {
+        // @todo might cache users into memory here
         // @event pre
         //$this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
 
-        $user = $this->userDataMapper->fetch($user);
+        $user = $this->userDataMapper->read($user);
 
         // @event post
         //$this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user));
@@ -220,21 +230,32 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param UserInterface $user
+     * @param AbstractUser $user
      *
      * @return mixed
      */
-    public function createUser(UserInterface $user)
+    public function createUser(AbstractUser $user)
     {
-        $id = $user->getId();
 
-        if (empty($id)) {
+        if ($this->userExists($user)) {
 
-            $user->setId($this->buildId());
+            // ERROR - user exists
+            return new RcmUserException('User already exists.');
         }
-        // @todo VALIDATIONS and PASSWORD HASH
+
+        // VALIDATIONS
+        $user = $this->validateUser($user);
+
+        if($user instanceof InvalidInputException){
+
+            return $user;
+        }
+
         // @event pre
-        $this->userDataMapper->store($user);
+        $user->setId($this->buildId());
+        $user->setPassword($this->encryptPassword($user->getPassword()));
+
+        $this->userDataMapper->create($user);
         $newuser = $this->readUser($user);
 
         // @event post
@@ -244,53 +265,113 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param UserInterface $user
+     * @param AbstractUser $user
      *
      * @return mixed
-     * @throws \Exception
+     * @throws \RcmUserException
      */
-    public function updateUser(UserInterface $user)
+    public function updateUser(AbstractUser $user)
     {
 
-        // @todo VALIDATIONS and PASSWORD HASH if changed
+        if (!$this->userExists($user)) {
+
+            // ERROR - user exists
+            return new RcmUserException('User does not exist or could not be found.');
+        }
+
+        // VALIDATIONS
+        $validUser = $this->validateUser($user);
+
+        if($validUser instanceof InvalidInputException){
+
+            return $validUser;
+        }
 
         // @event pre
-        $this->userDataMapper->write($user);
-        $updateduser = $this->readUser($user);
+        // set properties
+        $existingUser = $this->readUser($validUser);
+        $existingId = $existingUser->getId();
+        $existingHash = $existingUser->getPassword();
+        $newHash = $this->encryptPassword($validUser->getPassword());
+        $existingUser->populate($validUser);
+        $existingUser->setId($existingId);
+
+        // update password if changed
+        if (!$this->isValidPassword($existingHash, $newHash)) {
+
+            //password has change, encrypt it
+            $existingUser->setPassword($newHash);
+        } else {
+
+            // no change
+            $existingUser->setPassword($existingHash);
+        }
+
+        $updateduser = $this->userDataMapper->update($existingUser);
 
         // @event post
-
         return $updateduser;
     }
 
     /**
-     * @param UserInterface $user
+     * @param AbstractUser $user
      *
-     * @return UserInterface
-     * @throws \Exception
+     * @return AbstractUser
+     * @throws \RcmUserException
      */
-    public function deleteUser(UserInterface $user)
+    public function deleteUser(AbstractUser $user)
     {
-        $id = $user->getId();
-        $saved = $user->isRegistered();
+        if (!$this->userExists($user)) {
 
-        if (empty($id) || $saved == false) {
-
-            throw new \Exception('id not set or user was never saved.');
+            // ERROR - user exists
+            return new RcmUserException('User does not exist or could not be found.');
         }
 
         // @event pre
-        $this->userDataMapper->clear();
+        $this->userDataMapper->delete($user);
         $unsavedUser = new User();
-        $unsavedUser->setId($id);
 
         // @event post
 
         return $unsavedUser;
     }
 
+    public function disableUser(AbstractUser $user)
+    {
+
+        // @todo write me
+    }
+
+    public function validateUser(AbstractUser $user)
+    {
+
+        $inputFilter = $this->getUserInputFilter();
+
+        $inputFilter->setData($user);
+
+        if ($inputFilter->isValid()) {
+
+            $user->populate($inputFilter->getValues());
+
+            return $user;
+        } else {
+
+            $errors = array();
+
+            foreach ($inputFilter->getInvalidInput() as $key => $error) {
+
+                $errors[$key] = $error->getMessages();
+            }
+
+            $exception = new InvalidInputException("User is imput not valid");
+            $exception->setInputMessages($errors);
+
+            return $exception;
+        }
+    }
+
     /**
-     * @return UserInterface
+     * @return AbstractUser
      */
     public function buildNewUser()
     {
@@ -302,19 +383,25 @@ class RcmUserService extends EventProvider
 
     /* AUTHENTICATION ***********************/
 
-    public function authenticate(UserInterface $user)
+    public function authenticate(AbstractUser $user)
     {
+        if (!$this->userExists($user)) {
 
-        // Get credentials
-        // hash password
-        // check match
+            // ERROR - user exists
+            return new RcmUserException('User does not exist or could not be found.');
+        }
+
+        $existingUser = $this->readUser($user);
+        $existingHash = $existingUser->getPassword();
+        $newHash = $this->encryptPassword($user->getPassword());
+
         // @event pre
 
         // @event post
-        return true;
+        return $this->isValidPassword($existingHash, $newHash);
     }
 
-    public function authenticateToSess(UserInterface $user)
+    public function authenticateToSess(AbstractUser $user)
     {
 
         if ($this->authenticate($user)) {
@@ -324,7 +411,6 @@ class RcmUserService extends EventProvider
 
         return user;
     }
-
 
     /**
      * @param $user
@@ -385,10 +471,20 @@ class RcmUserService extends EventProvider
     protected function encryptPassword($password)
     {
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getConfig->get('passwordCost', 14));
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->getConfig()->get('passwordCost', 14));
 
         return $bcrypt->create($password);
     }
 
-} 
+    protected function isValidPassword($credential, $password)
+    {
+
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->getConfig()->get('passwordCost', 14));
+
+        return $bcrypt->verify($credential, $password);
+    }
+
+
+}

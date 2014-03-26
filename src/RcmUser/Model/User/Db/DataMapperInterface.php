@@ -20,33 +20,56 @@ use RcmUser\Model\User\Entity\UserInterface;
  */
 interface DataMapperInterface
 {
+    const ID_FIELD = 'id';
+    const USERNAME_FIELD = 'username';
 
     /**
      * @param $id
      *
-     * @return mixed
+     * @return UserInterface | Exception
      */
     public function fetchById($id);
 
     /**
      * @param $id
      *
-     * @return mixed
+     * @return UserInterface | Exception
      */
     public function fetchByUsername($id);
 
     /**
      * @param UserInterface $user
      *
-     * @return mixed
+     * @return UserInterface | Exception
      */
-    public function fetch(UserInterface $user);
+    public function create(UserInterface $user);
 
     /**
      * @param UserInterface $user
      *
-     * @return mixed
+     * @return UserInterface | Exception
      */
-    public function store(UserInterface $user);
+    public function read(UserInterface $user);
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface | Exception
+     */
+    public function update(UserInterface $user);
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface | Exception
+     */
+    public function delete(UserInterface $user);
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface | Exception
+     */
+    //public function disable(UserInterface $user);
 
 } 

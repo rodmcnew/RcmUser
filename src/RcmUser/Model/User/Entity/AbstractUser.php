@@ -10,29 +10,33 @@
 
 namespace RcmUser\Model\User\Entity;
 
+use RcmUser\Exception\RcmUserException;
+use Zend\InputFilter\InputFilterAwareInterface;
+use Zend\InputFilter\InputFilterInterface;
+
 
 /**
  * Class AbstractUser
  *
  * @package RcmUser\Model\User\Entity
  */
-abstract class AbstractUser implements UserInterface
+abstract class AbstractUser implements UserInterface, \JsonSerializable, \IteratorAggregate
 {
 
     /**
      * @var string
      */
-    protected $id = null;
+    protected $id = '';
 
     /**
      * @var string
      */
-    protected $username;
+    protected $username = '';
 
     /**
      * @var string
      */
-    protected $password;
+    protected $password = '';
 
     /**
      * @param string $id
@@ -47,7 +51,7 @@ abstract class AbstractUser implements UserInterface
      */
     public function getId()
     {
-        return $this->registeredId;
+        return $this->id;
     }
 
     /**
@@ -89,21 +93,31 @@ abstract class AbstractUser implements UserInterface
      */
     public function populate($data = array())
     {
-        if(($data instanceof UserInterface)){
+        if (($data instanceof UserInterface)) {
 
             $this->setId($data->getId());
             $this->setUsername($data->getUsername());
             $this->setPassword($data->getPassword());
+
+            return;
         }
 
-        if(is_array($data)){
+        if (is_array($data)) {
 
-            $this->setId($data['id']);
-            $this->setUsername($data['username']);
-            $this->setPassword($data['password']);
+            if (isset($data['id'])) {
+                $this->setId($data['id']);
+            }
+            if (isset($data['username'])) {
+                $this->setUsername($data['username']);
+            }
+            if (isset($data['password'])) {
+                $this->setPassword($data['password']);
+            }
+
+            return;
         }
 
-        throw new \Exception('User data could not be populated, date format not supported');
+        throw new RcmUserException('User data could not be populated, date format not supported');
     }
 
     /**
@@ -111,7 +125,17 @@ abstract class AbstractUser implements UserInterface
      */
     public function jsonSerialize()
     {
-        // @todo do not expose whole object here
-        return get_object_vars($this);
+        $obj = new \stdClass();
+        $obj->id = $this->getId();
+        $obj->username = $this->getUsername();
+        $obj->password = '******'; // Might be better way to obfuscate
+
+        return $obj;
+    }
+
+    public function getIterator()
+    {
+
+        return new \ArrayIterator(get_object_vars($this));
     }
 } 

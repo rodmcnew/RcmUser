@@ -1,15 +1,47 @@
 <?php
 return array(
     'rcm_user' => array(
+        // @todo implement these
+        'userInputFilter' => array(
 
-        'userValidations' => array(
-            'id' => array(),
-            'sessId' => array(),
-            'username' => array(),
-            'password' => array(),
+            'username' => array(
+                'name' => 'username',
+                'required' => true,
+                'filters' => array(
+                    array('name' => 'StringTrim'),
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 1,
+                            'max' => 100,
+                        ),
+                    ),
+                ),
+            ),
+
+            'password' => array(
+                'name' => 'password',
+                'required' => true,
+                'filters' => array(
+                ),
+                'validators' => array(
+                    array(
+                        'name' => 'StringLength',
+                        'options' => array(
+                            'encoding' => 'UTF-8',
+                            'min' => 6,
+                            'max' => 100,
+                        ),
+                    ),
+                ),
+            ),
         ),
 
         // NOT USED 'sessionContainerName' => 'rcm_user',
+
         /**
          * Password Security
          *
@@ -91,8 +123,8 @@ return array(
     ),
 
     'bjyauthorize' => array(
-        'default_role'          => 'guest',
-        'authenticated_role'    => 'user',
+        'default_role' => 'guest',
+        'authenticated_role' => 'user',
         'identity_provider' => 'RcmUserServiceIdentiyProviderServiceFactory',
         'role_providers' => array(
             'RcmUser\Model\Acl\Provider\Role\Provider' => array(),

@@ -10,6 +10,8 @@
 
 namespace RcmUser\Model\User\Entity;
 
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class DoctrineUser
@@ -23,19 +25,20 @@ class DoctrineUser extends AbstractUser {
 
     /**
      * @var string
-     * @Column(type="string", length=255, unique=true, nullable=false)
+     * @ORM\Id
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
     protected $id = null;
 
     /**
      * @var string
-     * @Column(type="string", length=255, unique=true, nullable=false)
+     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
      */
     protected $username;
 
     /**
      * @var string
-     * @Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $password;
 } 

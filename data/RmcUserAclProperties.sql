@@ -1,17 +1,10 @@
 use wespresslocal;
 
 CREATE TABLE rcm_user_user (
-	-- id INT AUTO_INCREMENT NOT NULL, 
     id VARCHAR(255) NOT NULL UNIQUE,
 	username VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL,
 	-- email    VARCHAR(255) DEFAULT NULL UNIQUE,
-
-	/* TRACEABILITY
-	createDate DATETIME DEFAULT NULL, 
-	updateDate DATETIME DEFAULT NULL, 
-	updatedById BIGINT DEFAULT NULL, 
-	*/
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
@@ -44,6 +37,15 @@ CREATE TABLE rcm_user_user_roles (
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
+CREATE TABLE rcm_user_user_metadata (
+	id INT AUTO_INCREMENT NOT NULL,
 
+	userCreateDate DATETIME DEFAULT NULL,
+	userCreatedById BIGINT DEFAULT NULL,
+	userModifiedDate DATETIME DEFAULT NULL,
+	userModifiedById BIGINT DEFAULT NULL,
+
+	PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
 

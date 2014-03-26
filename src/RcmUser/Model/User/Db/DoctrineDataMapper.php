@@ -65,58 +65,152 @@ class DoctrineDataMapper implements DataMapperInterface
     /**
      * @param $id
      *
-     * @return mixed
+     * @return UserInterface | Exception
      */
     public function fetchById($id)
     {
-        return $this->getEntityManager()->find($this->getEntityClass(), $id);
+        $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
+        if (empty($user)) {
+
+            return new RcmUserException('User could not be found by id.');
+        }
+
+        return $user;
     }
 
     /**
      * @param $username
      *
-     * @return mixed
+     * @return UserInterface | Exception
      */
     public function fetchByUsername($username)
     {
-        return $this->getEntityManager()->findOneBy($this->getEntityClass(), array('username' => $username));
+        $user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
+        if (empty($user)) {
+
+            return  new RcmUserException('User could not be found by username.');
+        }
+
+        return $user;
     }
 
     /**
      * @param UserInterface $user
      *
-     * @return mixed
+     * @return UserInterface | Exception
      */
-    public function fetch(UserInterface $user)
+    public function create(UserInterface $user)
     {
-        $id = $user->getId();
-        if(!empty($id)){
+        $user = $this->getValidInstance($user);
 
-            return $this->getById($id);
+        // @todo if error, fail with null, log error?
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+
+        return $user;
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface | Exception
+     */
+    public function read(UserInterface $user)
+    {
+        $user = $this->getValidInstance($user);
+
+        $id = $user->getId();
+        if (!empty($id)) {
+
+            return $this->fetchById($id);
         }
 
         $username = $user->getUsername();
-        if(!empty($username)){
+        if (!empty($username)) {
 
-            return $this->getById($username);
+            return $this->fetchByUsername($username);
         }
 
-        return null;
+        return new RcmUserException('User could not be read.');
     }
 
-    public function store(UserInterface $user)
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface | Exception
+     */
+    public function update(UserInterface $user)
     {
-        // @todo DoctrineUser should have abstract
+        $user = $this->getValidInstance($user);
+
+        if (!$this->canUpdate($user)) {
+
+            // error, cannot update
+            return new RcmUserException('User cannot be updated, id required for update.');
+        }
+
+        // @todo if error, fail with null, log error?
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+
+        return $user;
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface | Exception
+     */
+    public function delete(UserInterface $user)
+    {
+        $user = $this->getValidInstance($user);
+
+        if (!$this->canUpdate($user)) {
+
+            // error, cannot update
+            return new RcmUserException('User cannot be updated, id required for update.');
+        }
+        // @todo if error, fail with null, log error?
+        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()->flush();
+
+        return $user;
+    }
+
+    /**
+     * @param UserInterface $user
+     *
+     * @return UserInterface | Exception
+     */
+    public function getValidInstance(UserInterface $user)
+    {
+
         if (!($user instanceof DoctrineUser)) {
 
             $doctrineUser = new DoctrineUser();
             $doctrineUser->populate($user);
+
             $user = $doctrineUser;
         }
 
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
+        return $user;
+    }
 
-        return null;
+    /**
+     * @param UserInterface $user
+     *
+     * @return bool
+     */
+    public function canUpdate(UserInterface $user)
+    {
+
+        $id = $user->getId();
+
+        if (empty($id)) {
+
+            return false;
+        }
+
+        return true;
     }
 } 

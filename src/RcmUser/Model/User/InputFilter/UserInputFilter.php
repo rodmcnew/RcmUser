@@ -8,10 +8,13 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Model\User\Entity;
+namespace RcmUser\Model\User\InputFilter;
 
 
-class User extends AbstractUser
+use Zend\InputFilter\InputFilter;
+
+class UserInputFilter extends InputFilter
 {
+
 
 }

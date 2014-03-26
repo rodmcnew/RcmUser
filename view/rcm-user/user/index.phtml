@@ -13,12 +13,42 @@ var_dump($u);
 
 $acl = new Acl();
 */
+//$userService = new RcmUser\Service\RcmUserService();
+//var_dump($userService->getUserInputFilter()); die;
+
+$user = $userService->buildNewUser();
+
+$user->setUsername('qwe');
+$user->setPassword('eqw234234e');
 
 
-var_export($userService);
+echo "Before action:\n";
+var_dump($user);
+$user = $userService->createUser($user);
+
+if($user instanceof \Exception){
+
+    echo "ERROR: " . $user->getMessage();
+    var_dump($user->getMessages());
+    die;
+}
+
+var_dump($user);
+
+/*
+//$user = $userService->createUser($user);
+$user = $userService->deleteUser($user);
+
+echo "After action:\n";
+if($user instanceof \Exception){
+
+    echo "ERROR: " . $user->getMessage();
+    die;
+}
+
+var_dump($user);
+*/
+
 ?>
 
-<strong>Module:</strong>        RcmUser &raquo;
-<strong>Controller:</strong>    User &raquo;
-<strong>Action:</strong>        index
 </pre>
