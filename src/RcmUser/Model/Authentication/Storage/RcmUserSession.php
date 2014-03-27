@@ -15,4 +15,8 @@ use Zend\Authentication\Storage\Session;
 
 class RcmUserSession extends Session{
 
-} 
+    public function __construct($namespace = 'RcmUser', $member = 'user', SessionManager $manager = null)
+    {
+        parent::__construct($namespace, $member, $manager);
+    }
+}

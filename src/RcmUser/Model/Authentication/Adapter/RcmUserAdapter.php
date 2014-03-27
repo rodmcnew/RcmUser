@@ -11,21 +11,82 @@
 namespace RcmUser\Model\Authentication\Adapter;
 
 
+use RcmUser\Model\Config\Config;
 use RcmUser\Model\User\Entity\AbstractUser;
 use Zend\Authentication\Adapter\AbstractAdapter;
+use Zend\Authentication\Result;
 
+/**
+ * Class RcmUserAdapter
+ *
+ * @package RcmUser\Model\Authentication\Adapter
+ */
 class RcmUserAdapter extends AbstractAdapter
 {
 
-    public $user;
+    /**
+     * @var
+     */
+    protected $user;
 
+    /**
+     * @var
+     */
+    protected $userDataMapper;
 
-    public function __construct(AbstractUser $user)
+    /**
+     * @var
+     */
+    protected $encryptor;
+
+    /**
+     * @param PasswordInterface $encryptor
+     */
+    public function setEncryptor(PasswordInterface $encryptor)
     {
-
-        $this->setCredential($user->getPassword());
-        $this->setIdentity($user->getUsername());
+        $this->encryptor = $encryptor;
     }
+
+    /**
+     * @return PasswordInterface
+     */
+    public function getEncryptor()
+    {
+        return $this->encryptor;
+    }
+
+    /**
+     * @param mixed $user
+     */
+    public function setUser(AbstractUser $user)
+    {
+        $this->user = $user;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * @param DataMapperInterface $userDataMapper
+     */
+    public function setUserDataMapper(DataMapperInterface $userDataMapper)
+    {
+        $this->userDataMapper = $userDataMapper;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserDataMapper()
+    {
+        return $this->userDataMapper;
+    }
+
 
     /**
      * Performs an authentication attempt
@@ -36,10 +97,59 @@ class RcmUserAdapter extends AbstractAdapter
      */
     public function authenticate()
     {
+        $user = $this->getUser();
+        $username = $user->getUsername();
+        //@todo can the identity be the user object?
+        $this->setIdentity($username);
+        $password = $user->getPassword();
+        $this->setCredential($password);
 
-    }
+        if ($username === null || $password === null) {
 
-    public function isValidCredentials(){
+            return new Result(
+                Result::FAILURE_IDENTITY_AMBIGUOUS,
+                $username,
+                array('User credentials required.')
+            );
+        }
 
+        $existingUserResult = $this->getUserDataMapper()->fetchByUsername($username);
+
+        if (!$existingUserResult->isSuccess()) {
+
+            // ERROR
+            return new Result(
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                $username,
+                $existingUserResult->getMessages()
+            );
+        }
+
+        $existingUser = $existingUserResult->getUser();
+        $existingHash = $existingUser->getPassword();
+
+        $credential = $user->getPassword();
+
+        // @event pre
+        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
+        if ($isValid) {
+
+            $result = new Result(
+                Result::SUCCESS,
+                $username,
+                array()
+            );
+            //new Result($existingUser);
+        } else {
+            $result =  new Result(
+                Result::FAILURE_CREDENTIAL_INVALID,
+                $username,
+                array('User credential invalid.')
+            );
+        }
+
+        // @event post
+
+        return $result;
     }
 } 

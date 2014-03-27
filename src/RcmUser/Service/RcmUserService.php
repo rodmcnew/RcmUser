@@ -15,8 +15,8 @@ use RcmUser\Model\User\Db\DataMapperInterface;
 use RcmUser\Model\User\Entity\AbstractUser;
 use RcmUser\Model\User\Entity\User;
 use RcmUser\Model\User\Result;
-use RcmUser\Service\Exception\InvalidInputException;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Crypt\Password\PasswordInterface;
 use Zend\InputFilter\InputFilter;
 use ZfcBase\EventManager\EventProvider;
 
@@ -30,6 +30,11 @@ use ZfcBase\EventManager\EventProvider;
 class RcmUserService extends EventProvider
 {
     /**
+     * @var array
+     */
+    protected $config = array();
+
+    /**
      * @var DataMapperInterface
      */
     protected $userDataMapper;
@@ -40,15 +45,24 @@ class RcmUserService extends EventProvider
     protected $sessionUserStorage;
 
     /**
-     * @var array
+     * @var
      */
-    protected $config = array();
+    protected $userValidatorService;
 
     /**
-     * @var InputFilter
+     * @var
      */
-    protected $userInputFilter;
+    protected $authService;
 
+    /**
+     * @var PasswordInterface
+     */
+    protected $encryptor;
+
+
+    /**
+     * @param array $config
+     */
     public function __construct($config = array())
     {
 
@@ -105,22 +119,54 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param \Zend\InputFilter\InputFilter $userInputFilter
+     * @param mixed $userValidatorService
      */
-    public function setUserInputFilter(InputFilter $userInputFilter)
+    public function setUserValidatorService($userValidatorService)
     {
-        $this->userInputFilter = $userInputFilter;
+        $this->userValidatorService = $userValidatorService;
     }
 
     /**
-     * @return \Zend\InputFilter\InputFilter
+     * @return mixed
      */
-    public function getUserInputFilter()
+    public function getUserValidatorService()
     {
-        return $this->userInputFilter;
+        return $this->userValidatorService;
     }
 
-    /**  ******************/
+    /**
+     * @param mixed $authService
+     */
+    public function setAuthService($authService)
+    {
+        $this->authService = $authService;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAuthService()
+    {
+        return $this->authService;
+    }
+
+    /**
+     * @param PasswordInterface $encryptor
+     */
+    public function setEncryptor(PasswordInterface $encryptor)
+    {
+        $this->encryptor = $encryptor;
+    }
+
+    /**
+     * @return PasswordInterface
+     */
+    public function getEncryptor()
+    {
+        return $this->encryptor;
+    }
+
+    /** HELPERS ***************************************/
 
     /**
      * @param $id
@@ -129,14 +175,14 @@ class RcmUserService extends EventProvider
      */
     public function getRegisteredUser(AbstractUser $user)
     {
-        // @todo Clean this up
-        if (!empty($user->getId())) {
+        $result = $this->readUser($user);
 
+        if ($result->isSuccess()) {
 
-            return $this->readUser($user);
+            return $result->getUser();
         }
 
-        return new Result(null, 0, 'Id required');
+        return null;
     }
 
     /**
@@ -144,7 +190,6 @@ class RcmUserService extends EventProvider
      */
     public function getSessUser()
     {
-
         // @todo Need storage to have id
         $user = $this->sessionUserStorage->read();
 
@@ -158,7 +203,6 @@ class RcmUserService extends EventProvider
      */
     public function getNewUser()
     {
-
         return $this->buildNewUser();
     }
 
@@ -177,17 +221,15 @@ class RcmUserService extends EventProvider
      */
     public function userExists(AbstractUser $user)
     {
-
         $result = $this->readUser($user);
 
         return $result->isSuccess();
-
     }
 
     /**
      * @return bool
      */
-    public function isCurrent(AbstractUser $user)
+    public function isSessUser(AbstractUser $user)
     {
         $sessUser = $this->getSessUser();
 
@@ -205,305 +247,7 @@ class RcmUserService extends EventProvider
         return false;
     }
 
-    /* CRUD **************************/
-
-    /**
-     * @param $id
-     *
-     * @return Result
-     */
-    public function readUser(AbstractUser $user)
-    {
-        // @todo might cache users
-        // @event onBeforeReadUser
-        //$this->getEventManager()->trigger('onBefore'.ucfirst(__METHOD__), $this, array('user' => $user));
-
-        $result = $this->userDataMapper->read($user);
-
-        // @event onReadUserSuccess / onReadUserFail
-        //$this->getEventManager()->trigger('on'.ucfirst(__METHOD__).'Success', $this, array('user' => $user));
-
-        return $result;
-    }
-
-    /**
-     * @param AbstractUser $user
-     *
-     * @return Result
-     */
-    public function createUser(AbstractUser $user)
-    {
-
-        if ($this->userExists($user)) {
-
-            // ERROR - user exists
-            return new Result(null, 0, 'User already exists.');
-        }
-
-        // @event onBeforeCreate
-
-        /* +EVENT */
-        //@todo inject as event
-        $onBeforeCreateResult = $this->onBeforeCreate($user);
-
-        if(!$onBeforeCreateResult->isSuccess()){
-
-            return $onBeforeCreateResult;
-        }
-
-        $preparedUser = $onBeforeCreateResult->getUser();
-        /* -EVENT */
-
-        $this->userDataMapper->create($preparedUser);
-        $result = $this->readUser($preparedUser);
-
-        // @event onCreateSuccess / onCreateFail
-
-        return $result;
-    }
-
-    /**
-     * @param AbstractUser $user (updated user,
-     *
-     * @return Result
-     * @throws \RcmUserException
-     */
-    public function updateUser(AbstractUser $user)
-    {
-        // require id
-        if (empty($user->getId())) {
-
-            return new Result(null, 0, 'User Id required for update.');
-        }
-
-        // check if exists
-        $existingUserResult = $this->userDataMapper->fetchById($user->getId());
-
-        if (!$existingUserResult->isSuccess()) {
-
-            // ERROR
-            return $existingUserResult;
-        }
-
-        $existingUser = $existingUserResult->getUser();
-
-        // @event onBeforeUpdate
-
-        /* +EVENT */
-        //@todo inject as event
-        $onBeforeUpdateResult = $this->onBeforeUpdate($existingUser, $user);
-
-        if(!$onBeforeUpdateResult->isSuccess()){
-
-            return $onBeforeUpdateResult;
-        }
-
-        $preparedUser = $onBeforeUpdateResult->getUser();
-        /* -EVENT */
-
-        // set properties
-        $updatedUserResult = $this->userDataMapper->update($preparedUser);
-
-        // @event onUpdateSuccess / onUpdateFail
-
-        return $updatedUserResult;
-    }
-
-    /**
-     * @param AbstractUser $user
-     *
-     * @return AbstractUser
-     * @throws \RcmUserException
-     */
-    public function deleteUser(AbstractUser $user)
-    {
-        // @todo might restrict this to just Id
-        $existingUserResult = $this->readUser($user);
-
-        if (!$existingUserResult->isSuccess()) {
-
-            // ERROR - user exists
-            $existingUserResult->setMessage(__METHOD__, 'User does not exist or could not be found.');
-
-            return $existingUserResult;
-        }
-
-        $existingUser = $existingUserResult->getUser();
-
-        // @event onBeforeDelete
-        $this->userDataMapper->delete($existingUser);
-        $unsavedUser = new User();
-
-        // @event onDeleteSuccess / onDeleteFail
-
-        return new Result($unsavedUser);
-    }
-
-    public function disableUser(AbstractUser $user)
-    {
-
-        // @todo write me
-    }
-
-    /* +EVENTS ******************************/
-
-    /**
-     * @param AbstractUser $existingUser
-     * @param AbstractUser $user
-     *
-     * @return Result
-     */
-    public function onBeforeUpdate(AbstractUser $existingUser, AbstractUser $user)
-    {
-        // @todo create temp user for roll-back in case of error
-
-        // USERNAME CHECKS
-        $newUsername = $user->getUsername();
-        $existingUserName = $existingUser->getUsername();
-
-        // sync null
-        if ($newUsername !== null) {
-
-            // if username changed:
-            if ($existingUserName !== $newUsername) {
-
-                // make sure no duplicates
-                $dupUser = $this->userDataMapper->fetchByUsername($newUsername);
-
-                if ($dupUser->isSuccess()) {
-
-                    // ERROR - user exists
-                    return new Result(null, 0, 'User could not be prepared, duplicate username.');
-                }
-
-                $existingUser->setUsername($newUsername);
-            }
-        }
-
-        // PASSWORD CHECKS
-        $newPassword = $user->getPassword();
-        $existingPassword = $existingUser->getPassword();
-        $hashedPassword = $existingPassword;
-        // sync null
-        if ($newPassword !== null) {
-            // if password changed
-            if ($existingPassword !== $newPassword) {
-                // plain text
-                $existingUser->setPassword($newPassword);
-                $hashedPassword = $this->encryptPassword($newPassword);
-            }
-        }
-
-        // run validation rules
-        $validateResult = $this->validateUser($existingUser);
-
-        if (!$validateResult->isSuccess()) {
-
-            return $validateResult;
-        }
-
-        // if valid:
-        $existingUser->setPassword($hashedPassword);
-
-        return new Result($existingUser);
-    }
-
-    /**
-     * @param AbstractUser $user
-     *
-     * @return Result
-     */
-    public function onBeforeCreate(AbstractUser $user){
-
-        // @todo create temp user for roll-back in case of error
-
-        // run validation rules
-        $validateResult = $this->validateUser($user);
-
-        if (!$validateResult->isSuccess()) {
-
-            return $validateResult;
-        }
-
-        $user->setId($this->buildId());
-        $user->setPassword($this->encryptPassword($user->getPassword()));
-
-        return new Result($user);
-    }
-
-    /**
-     * @param $user
-     *
-     * @return Result
-     */
-    public function validateUser(AbstractUser $user)
-    {
-
-        $inputFilter = $this->getUserInputFilter();
-
-        $inputFilter->setData($user);
-
-        if ($inputFilter->isValid()) {
-
-            $user->populate($inputFilter->getValues());
-
-            return new Result($user);
-        } else {
-
-            $result = new Result($user, 0, 'User input not valid');
-
-            foreach ($inputFilter->getInvalidInput() as $key => $error) {
-
-                $result->setMessage($key, $error->getMessages());
-            }
-
-            return $result;
-        }
-    }
-
-    /* -EVENTS */
-
-    /**
-     * @return AbstractUser
-     */
-    public function buildNewUser()
-    {
-
-        $user = new User();
-
-        return $user;
-    }
-
-    /* AUTHENTICATION ***********************/
-
-    public function authenticate(AbstractUser $user)
-    {
-        if (!$this->userExists($user)) {
-
-            // ERROR - user exists
-            return new RcmUserException('User does not exist or could not be found.');
-        }
-
-        $existingUser = $this->readUser($user);
-        $existingHash = $existingUser->getPassword();
-        $newHash = $this->encryptPassword($user->getPassword());
-
-        // @event pre
-
-        // @event post
-        return $this->isValidPassword($existingHash, $newHash);
-    }
-
-    public function authenticateToSess(AbstractUser $user)
-    {
-
-        if ($this->authenticate($user)) {
-
-            // Add to session
-        }
-
-        return user;
-    }
+    /* RELATED HELPERS *******************************/
 
     /**
      * @param $user
@@ -537,7 +281,305 @@ class RcmUserService extends EventProvider
         // check session
     }
 
-    /* UTILITIES ************************/
+    /* CRUD ******************************************/
+
+    /**
+     * @param $id
+     *
+     * @return Result
+     */
+    public function readUser(AbstractUser $user)
+    {
+        // @event readUser.pre
+        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
+
+        // Expect Results, is any failed, then fail
+        // @todo This will be an issue is multiple things are changing the user.
+        foreach ($results as $eventResult) {
+
+            if (!$eventResult->isSuccess()) {
+
+                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
+
+                return $eventResult;
+            }
+        }
+
+        $result = $this->getUserDataMapper()->read($user);
+
+        // @event createUser.success/fail
+        if ($result->isSuccess()) {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
+        } else {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param AbstractUser $user
+     *
+     * @return Result
+     */
+    public function createUser(AbstractUser $user)
+    {
+
+        if ($this->userExists($user)) {
+
+            // ERROR - user exists
+            return new Result(null, Result::CODE_FAIL, 'User already exists.');
+        }
+
+        // @event createUser.pre
+        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('newUser' => $user));
+
+        // Expect Results, is any failed, then fail
+        // @todo This will be an issue is multiple things are changing the user.
+        foreach ($results as $eventResult) {
+
+            if (!$eventResult->isSuccess()) {
+
+                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
+
+                return $eventResult;
+            }
+        }
+
+        $preparedUser = $results->last()->getUser();
+        /* -event */
+
+        $this->getUserDataMapper()->create($preparedUser);
+        $result = $this->readUser($preparedUser);
+
+        // @event createUser.success/fail
+        if ($result->isSuccess()) {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
+        } else {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param AbstractUser $user (updated user,
+     *
+     * @return Result
+     * @throws \RcmUserException
+     */
+    public function updateUser(AbstractUser $user)
+    {
+        // require id
+        if (empty($user->getId())) {
+
+            return new Result(null, Result::CODE_FAIL, 'User Id required for update.');
+        }
+
+        // check if exists
+        $existingUserResult = $this->getUserDataMapper()->fetchById($user->getId());
+
+        if (!$existingUserResult->isSuccess()) {
+
+            // ERROR
+            return $existingUserResult;
+        }
+
+        $existingUser = $existingUserResult->getUser();
+
+        // @event updateUser.pre
+        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('existingUser' => $existingUser, 'updatedUser' => $user));
+
+        var_dump($results);
+        // Expect Results, is any failed, then fail
+        // @todo This will be an issue is multiple things are changing the user.
+        foreach ($results as $eventResult) {
+
+            if (!$eventResult->isSuccess()) {
+
+                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
+
+                return $eventResult;
+            }
+        }
+
+        $preparedUser = $results->last()->getUser();
+
+        // set properties
+        $result = $this->getUserDataMapper()->update($preparedUser);
+
+        // @event updateUser.success/fail
+        if ($result->isSuccess()) {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
+        } else {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param AbstractUser $user
+     *
+     * @return AbstractUser
+     * @throws \RcmUserException
+     */
+    public function deleteUser(AbstractUser $user)
+    {
+        // require id
+        if (empty($user->getId())) {
+
+            return new Result(null, Result::CODE_FAIL, 'User Id required for update.');
+        }
+
+        // check if exists
+        $existingUserResult = $this->getUserDataMapper()->fetchById($user->getId());
+
+        if (!$existingUserResult->isSuccess()) {
+
+            // ERROR
+            return $existingUserResult;
+        }
+
+        $existingUser = $existingUserResult->getUser();
+
+        // @event deleteUser.pre
+        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $existingUser));
+
+        // Expect Results, is any failed, then fail
+        // @todo This will be an issue is multiple things are changing the user.
+        foreach ($results as $eventResult) {
+
+            if (!$eventResult->isSuccess()) {
+
+                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
+
+                return $eventResult;
+            }
+        }
+
+        // @event onBeforeDelete
+        $this->getUserDataMapper()->delete($existingUser);
+        $unsavedUser = new User();
+        $result = new Result($unsavedUser);
+
+        // @event updateUser.success/fail
+        if ($result->isSuccess()) {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
+        } else {
+
+            $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param AbstractUser $user
+     */
+    public function disableUser(AbstractUser $user)
+    {
+
+        // @todo write me
+    }
+
+    /* AUTHENTICATION ********************************/
+
+    /**
+     * @param AbstractUser $user
+     *
+     * @return Result
+     */
+    public function authenticate(AbstractUser $user)
+    {
+        /* @todo MOVED to RcmUser\Model\Authentication\Adapter\RcmUserAdapter
+        $username = $user->getUsername();
+        $password = $user->getPassword();
+
+        if ($username === null || $password === null) {
+
+            return new Result(null, Result::CODE_FAIL, 'User credentials required.');
+        }
+
+        $existingUserResult = $this->getUserDataMapper()->fetchByUsername($username);
+
+        if (!$existingUserResult->isSuccess()) {
+
+            // ERROR
+            return $existingUserResult;
+        }
+
+        $existingUser = $existingUserResult->getUser();
+        $existingHash = $existingUser->getPassword();
+
+        $credential = $user->getPassword();
+
+        // @event pre
+        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
+        if ($isValid) {
+            $result = new Result($existingUser);
+        } else {
+            $result = new Result(null, Result::CODE_FAIL, 'User credentials invalid.');
+        }
+
+        // @event post
+
+        return $result;
+         * */
+    }
+
+    /**
+     * @param AbstractUser $user
+     *
+     * @return Result
+     */
+    public function authenticateToSess(AbstractUser $user)
+    {
+        // @todo make this work correctly
+        $authResult = $this->authenticate($user);
+        if ($authResult->isSuccess()) {
+
+            $existingUser = $authResult->getUser();
+            $username = $user->getUsername();
+            $password = $user->getPassword();
+
+            $this->getAuthService()->getAdapter()
+                ->setIdentity($username)
+                ->setCredential($password);
+
+            $result = $this->getAuthService()->authenticate();
+
+            if ($result->isValid()) {
+                $authResult = new Result($existingUser, Result::CODE_SUCCESS, $result->getMessages());
+                $existingUser->setPassword(User::PASSWORD_OBFUSCATE);
+                $this->getAuthService()->getStorage()->write($existingUser);
+            } else {
+
+                $authResult = new Result(null, Result::CODE_FAIL, $result->getMessages());
+            }
+        }
+
+        return $authResult;
+    }
+
+    /* UTILITIES **************************************/
+    /**
+     * @return AbstractUser
+     */
+    public function buildNewUser()
+    {
+
+        $user = new User();
+
+        return $user;
+    }
 
     /**
      * @return string
@@ -551,7 +593,7 @@ class RcmUserService extends EventProvider
     /**
      * @return string
      */
-    protected function guidv4()
+    public function guidv4()
     {
         $data = openssl_random_pseudo_bytes(16);
 
@@ -560,24 +602,4 @@ class RcmUserService extends EventProvider
 
         return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
     }
-
-    protected function encryptPassword($password)
-    {
-
-        $bcrypt = new Bcrypt();
-        $bcrypt->setCost($this->getConfig()->get('passwordCost', 14));
-
-        return $bcrypt->create($password);
-    }
-
-    protected function isValidPassword($credential, $password)
-    {
-
-        $bcrypt = new Bcrypt();
-        $bcrypt->setCost($this->getConfig()->get('passwordCost', 14));
-
-        return $bcrypt->verify($credential, $password);
-    }
-
-
 }

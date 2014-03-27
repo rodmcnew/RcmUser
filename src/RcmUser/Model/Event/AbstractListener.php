@@ -20,7 +20,7 @@ class AbstractListener implements ListenerAggregateInterface {
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
-    protected $id = 'Application\Service\ServiceInterface';
+    protected $id = 'RcmUser\Service\RcmUserService';
     protected $event = 'someEvent';
     protected $priority = 100;
 

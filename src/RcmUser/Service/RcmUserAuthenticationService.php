@@ -13,4 +13,4 @@ namespace RcmUser\Service;
 
 class RcmUserAuthenticationService extends \Zend\Authentication\AuthenticationService {
 
-} 
+}

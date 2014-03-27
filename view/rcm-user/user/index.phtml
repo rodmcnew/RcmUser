@@ -17,38 +17,48 @@ $acl = new Acl();
 //var_dump($userService->getUserInputFilter()); die;
 
 $user = $userService->buildNewUser();
+
+$user->setId('57a4de8e-225b-4e31-9f88-19ddb14fc13c');
+$user->setUsername('Jimmy');
+$user->setPassword('123123123');
+
+echo "**Before action:\n";
 var_dump($user);
 
-$user->setId(null);
-$user->setUsername('test999');
-$user->setPassword(null);
+/* AUTH */
+$credential = '123123123';
+//$credential = '$2y$14$gnILXpcRYPHJIvMm5BDJvuwtfvVTTf4hjPzZxhkJ5/jfeT7etqdzm';
+$hash = '$2y$14$j9Svxu9s54QiIXgslz6AlueT8FwjUdY4gvsjicKSZtlqI.qDARA2i'; //'$2y$14$gnILXpcRYPHJIvMm5BDJvuwtfvVTTf4hjPzZxhkJ5/jfeT7etqdzm';
+$isValid = $userService->getEncryptor()->verify($credential, $hash);
+echo "Password is valid: ";
+var_export($isValid);
+/* */
 
-echo "Before action:\n";
-var_dump($user);
+/* CREATE *
 $result = $userService->createUser($user);
 
+echo "**After create:\n";
 if(!$result->isSuccess()){
 
-    echo "ERROR: \n";
+    echo "ERROR: ";
     var_dump($result->getMessages());
-    die;
 }
 
 var_dump($result->getUser());
+/* */
 
-/*
-//$user = $userService->createUser($user);
-$user = $userService->deleteUser($user);
+/* UPDATE *
+$result = $userService->updateUser($user);
 
-echo "After action:\n";
-if($user instanceof \Exception){
+echo "**After update:\n";
+if(!$result->isSuccess()){
 
-    echo "ERROR: " . $user->getMessage();
-    die;
+    echo "ERROR: ";
+    var_dump($result->getMessages());
 }
 
-var_dump($user);
-*/
+var_dump($result->getUser());
+/* */
 
 ?>
 

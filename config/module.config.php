@@ -1,7 +1,7 @@
 <?php
 return array(
     'rcm_user' => array(
-        // @todo implement these
+
         'userInputFilter' => array(
 
             'username' => array(
@@ -15,7 +15,7 @@ return array(
                         'name' => 'StringLength',
                         'options' => array(
                             'encoding' => 'UTF-8',
-                            'min' => 1,
+                            'min' => 3,
                             'max' => 100,
                         ),
                     ),
@@ -36,11 +36,15 @@ return array(
                             'max' => 100,
                         ),
                     ),
+                    /*array(
+                        'name' => 'Regex',
+                        'options' => array(
+                            'pattern' => '^(?=.*\d)(?=.*[a-zA-Z])$'
+                        ),
+                    ),*/
                 ),
             ),
         ),
-
-        // NOT USED 'sessionContainerName' => 'rcm_user',
 
         /**
          * Password Security

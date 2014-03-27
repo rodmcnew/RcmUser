@@ -22,6 +22,7 @@ use Zend\InputFilter\InputFilterInterface;
  */
 abstract class AbstractUser implements UserInterface, \JsonSerializable
 {
+    const PASSWORD_OBFUSCATE = '******';
 
     /**
      * @var string
@@ -128,7 +129,7 @@ abstract class AbstractUser implements UserInterface, \JsonSerializable
         $obj = new \stdClass();
         $obj->id = $this->getId();
         $obj->username = $this->getUsername();
-        $obj->password = '******'; // Might be better way to obfuscate
+        $obj->password = self::PASSWORD_OBFUSCATE; // Might be better way to obfuscate
 
         return $obj;
     }
