@@ -68,6 +68,10 @@ return array(
          * Accepted values: integer between 4 and 31
          */
         'password_cost' => 14,
+
+        'properties' => array(
+            'rcmUserAclRoles' => '',
+        ),
     ),
 
     'controllers' => array(

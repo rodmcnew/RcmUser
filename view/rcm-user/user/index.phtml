@@ -1,6 +1,4 @@
 <?php
-use Zend\Permissions\Acl\Acl;
-use Zend\Permissions\Acl\Role\GenericRole as Role;
 ?>
 <pre>
 <?php
@@ -18,22 +16,43 @@ $acl = new Acl();
 
 $user = $userService->buildNewUser();
 
-$user->setId('57a4de8e-225b-4e31-9f88-19ddb14fc13c');
+//$user->setId('57a4de8e-225b-4e31-9f88-19ddb14fc13c');
 $user->setUsername('Jimmy');
 $user->setPassword('123123123');
 
 echo "**Before action:\n";
 var_dump($user);
 
-/* AUTH */
-$credential = '123123123';
-//$credential = '$2y$14$gnILXpcRYPHJIvMm5BDJvuwtfvVTTf4hjPzZxhkJ5/jfeT7etqdzm';
-$hash = '$2y$14$j9Svxu9s54QiIXgslz6AlueT8FwjUdY4gvsjicKSZtlqI.qDARA2i'; //'$2y$14$gnILXpcRYPHJIvMm5BDJvuwtfvVTTf4hjPzZxhkJ5/jfeT7etqdzm';
-$isValid = $userService->getEncryptor()->verify($credential, $hash);
-echo "Password is valid: ";
-var_export($isValid);
+/* AUTH ****/
+
+/* AUTH CHECK *
+$authResult = $userService->authenticate($user);
+
+echo "GenAuth Result: ".var_export($authResult->isValid(), true)."\n";
+var_dump($authResult);
 /* */
 
+/*  LOG IN */
+$authResult = $userService->authenticateToSess($user);
+
+echo "Sess Auth Result: ".var_export($authResult->isValid(), true)."\n";
+var_dump($authResult);
+/*  */
+
+/* GET SESSION USER */
+echo "Session user: \n";
+var_dump($userService->readSessUser());
+/* */
+
+/*  LOG OUT */
+$userService->clearSessUser();
+
+echo "Session user after log out: \n";
+var_dump($userService->readSessUser());
+
+/* */
+
+/* CRUD ****/
 /* CREATE *
 $result = $userService->createUser($user);
 
@@ -58,6 +77,7 @@ if(!$result->isSuccess()){
 }
 
 var_dump($result->getUser());
+/* */
 /* */
 
 ?>

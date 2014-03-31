@@ -22,7 +22,7 @@ use Zend\InputFilter\InputFilterInterface;
  */
 abstract class AbstractUser implements UserInterface, \JsonSerializable
 {
-    const PASSWORD_OBFUSCATE = '******';
+    const PASSWORD_OBFUSCATE = null;
 
     /**
      * @var string

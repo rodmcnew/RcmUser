@@ -11,10 +11,12 @@
 namespace RcmUser\Model\Authentication\Adapter;
 
 
-use RcmUser\Model\Config\Config;
+use RcmUser\Model\User\Db\DataMapperInterface;
 use RcmUser\Model\User\Entity\AbstractUser;
+use RcmUser\Model\User\Entity\User;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
+use Zend\Crypt\Password\PasswordInterface;
 
 /**
  * Class RcmUserAdapter
@@ -38,6 +40,12 @@ class RcmUserAdapter extends AbstractAdapter
      * @var
      */
     protected $encryptor;
+
+    /**
+     * @var bool
+     * Force returned user to hide password, can cause issues is return object is meant to be saved.
+     */
+    protected $obfuscatePassword = true;
 
     /**
      * @param PasswordInterface $encryptor
@@ -87,6 +95,21 @@ class RcmUserAdapter extends AbstractAdapter
         return $this->userDataMapper;
     }
 
+    /**
+     * @param boolean $obfuscatePassword
+     */
+    public function setObfuscatePassword($obfuscatePassword)
+    {
+        $this->obfuscatePassword = (boolean)$obfuscatePassword;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getObfuscatePassword()
+    {
+        return $this->obfuscatePassword;
+    }
 
     /**
      * Performs an authentication attempt
@@ -99,8 +122,8 @@ class RcmUserAdapter extends AbstractAdapter
     {
         $user = $this->getUser();
         $username = $user->getUsername();
-        //@todo can the identity be the user object?
-        $this->setIdentity($username);
+
+        $this->setIdentity($user);
         $password = $user->getPassword();
         $this->setCredential($password);
 
@@ -108,7 +131,7 @@ class RcmUserAdapter extends AbstractAdapter
 
             return new Result(
                 Result::FAILURE_IDENTITY_AMBIGUOUS,
-                $username,
+                null,
                 array('User credentials required.')
             );
         }
@@ -120,7 +143,7 @@ class RcmUserAdapter extends AbstractAdapter
             // ERROR
             return new Result(
                 Result::FAILURE_IDENTITY_NOT_FOUND,
-                $username,
+                null,
                 $existingUserResult->getMessages()
             );
         }
@@ -134,16 +157,21 @@ class RcmUserAdapter extends AbstractAdapter
         $isValid = $this->getEncryptor()->verify($credential, $existingHash);
         if ($isValid) {
 
+            if ($this->getObfuscatePassword()) {
+
+                $existingUser->setPassword(AbstractUser::PASSWORD_OBFUSCATE);
+            }
+
             $result = new Result(
                 Result::SUCCESS,
-                $username,
+                $existingUser,
                 array()
             );
-            //new Result($existingUser);
         } else {
-            $result =  new Result(
+
+            $result = new Result(
                 Result::FAILURE_CREDENTIAL_INVALID,
-                $username,
+                null,
                 array('User credential invalid.')
             );
         }

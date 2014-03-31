@@ -96,7 +96,6 @@ class Module implements AutoloaderProviderInterface
                         $adapter->setEncryptor($encrypt);
                         $adapter->setUserDataMapper($dm);
 
-                        //$storage = $sm->get('rcmSessionMgr')->getStorage();
                         $storage = new RcmUserSession();
 
                         $service = new RcmUserAuthenticationService($storage, $adapter);

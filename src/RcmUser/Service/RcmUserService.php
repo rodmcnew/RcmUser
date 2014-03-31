@@ -10,14 +10,10 @@
 
 namespace RcmUser\Service;
 
-use RcmUser\Exception\RcmUserException;
 use RcmUser\Model\User\Db\DataMapperInterface;
-use RcmUser\Model\User\Entity\AbstractUser;
 use RcmUser\Model\User\Entity\User;
 use RcmUser\Model\User\Result;
-use Zend\Crypt\Password\Bcrypt;
 use Zend\Crypt\Password\PasswordInterface;
-use Zend\InputFilter\InputFilter;
 use ZfcBase\EventManager\EventProvider;
 
 //use ZfcUser\Service\User;
@@ -58,7 +54,6 @@ class RcmUserService extends EventProvider
      * @var PasswordInterface
      */
     protected $encryptor;
-
 
     /**
      * @param array $config
@@ -171,9 +166,9 @@ class RcmUserService extends EventProvider
     /**
      * @param $id
      *
-     * @return null|AbstractUser
+     * @return null|User
      */
-    public function getRegisteredUser(AbstractUser $user)
+    public function getRegisteredUser(User $user)
     {
         $result = $this->readUser($user);
 
@@ -199,7 +194,7 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @return AbstractUser
+     * @return User
      */
     public function getNewUser()
     {
@@ -207,19 +202,21 @@ class RcmUserService extends EventProvider
     }
 
     /**
+     * @param User $user
+     *
      * @return bool
      */
-    public function isRegistered(AbstractUser $user)
+    public function isRegistered(User $user)
     {
         return $this->userExists($user);
     }
 
     /**
-     * @param AbstractUser $user
+     * @param User $user
      *
      * @return bool
      */
-    public function userExists(AbstractUser $user)
+    public function userExists(User $user)
     {
         $result = $this->readUser($user);
 
@@ -227,9 +224,11 @@ class RcmUserService extends EventProvider
     }
 
     /**
+     * @param User $user
+     *
      * @return bool
      */
-    public function isSessUser(AbstractUser $user)
+    public function isSessUser(User $user)
     {
         $sessUser = $this->getSessUser();
 
@@ -258,37 +257,62 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param $permisionS
+     * @param $permisions
      */
-    public function getCurrentUserAccess($permisionS)
+    public function getCurrentUserAccess($permisions)
     {
         // check session
     }
 
     /**
-     * @param       $user
-     * @param array $propertyNameSpace
+     * @param User $user
+     * @param string $propertyNameSpace
+     * @param bool $refresh
+     *
+     * @return array|mixed|null
      */
-    public function getUserProperty($user, $propertyNameSpace = array())
+    public function getUserProperty(User $user, $propertyNameSpace = null, $refresh = false)
     {
+        $property = $user->getProperty($propertyNameSpace, null);
+
+        if($property === null || $refresh){
+            // @event getUserProperty.pre - expects the listener to short-circuit if it is the matching namespace
+            $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user, $propertyNameSpace));
+            $property = $results->last();
+        }
+
+        return $property;
+
     }
 
     /**
-     * @param array $propertyNameSpace
+     * @param string $propertyNameSpace
+     * @param bool $refresh
+     *
+     * @return array|mixed|null
      */
-    public function getCurrentUserProperty($propertyNameSpace = array())
+    public function getCurrentUserProperty($propertyNameSpace = null, $refresh = false)
     {
-        // check session
+        $user = $this->readSessUser();
+
+        if(empty($user)){
+
+            // @todo return result so the requester can know why
+            return null;
+        }
+
+        return $this->getUserProperty($user, $propertyNameSpace, $refresh);
+
     }
 
     /* CRUD ******************************************/
 
     /**
-     * @param $id
+     * @param User $user
      *
-     * @return Result
+     * @return mixed
      */
-    public function readUser(AbstractUser $user)
+    public function readUser(User $user)
     {
         // @event readUser.pre
         $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
@@ -305,6 +329,7 @@ class RcmUserService extends EventProvider
             }
         }
 
+        // @todo Inject this as event
         $result = $this->getUserDataMapper()->read($user);
 
         // @event createUser.success/fail
@@ -320,11 +345,11 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param AbstractUser $user
+     * @param User $user
      *
      * @return Result
      */
-    public function createUser(AbstractUser $user)
+    public function createUser(User $user)
     {
 
         if ($this->userExists($user)) {
@@ -350,7 +375,7 @@ class RcmUserService extends EventProvider
 
         $preparedUser = $results->last()->getUser();
         /* -event */
-
+        // @todo Inject this as event
         $this->getUserDataMapper()->create($preparedUser);
         $result = $this->readUser($preparedUser);
 
@@ -367,13 +392,14 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param AbstractUser $user (updated user,
+     * @param User $user (updated user,
      *
      * @return Result
      * @throws \RcmUserException
      */
-    public function updateUser(AbstractUser $user)
+    public function updateUser(User $user)
     {
+        // @todo Inject this as event
         // require id
         if (empty($user->getId())) {
 
@@ -394,7 +420,6 @@ class RcmUserService extends EventProvider
         // @event updateUser.pre
         $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('existingUser' => $existingUser, 'updatedUser' => $user));
 
-        var_dump($results);
         // Expect Results, is any failed, then fail
         // @todo This will be an issue is multiple things are changing the user.
         foreach ($results as $eventResult) {
@@ -409,6 +434,7 @@ class RcmUserService extends EventProvider
 
         $preparedUser = $results->last()->getUser();
 
+        // @todo Inject this as event
         // set properties
         $result = $this->getUserDataMapper()->update($preparedUser);
 
@@ -425,13 +451,14 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param AbstractUser $user
+     * @param User $user
      *
-     * @return AbstractUser
+     * @return User
      * @throws \RcmUserException
      */
-    public function deleteUser(AbstractUser $user)
+    public function deleteUser(User $user)
     {
+        // @todo Inject this as event
         // require id
         if (empty($user->getId())) {
 
@@ -464,7 +491,7 @@ class RcmUserService extends EventProvider
             }
         }
 
-        // @event onBeforeDelete
+        // @todo Inject this as event
         $this->getUserDataMapper()->delete($existingUser);
         $unsavedUser = new User();
         $result = new Result($unsavedUser);
@@ -482,9 +509,9 @@ class RcmUserService extends EventProvider
     }
 
     /**
-     * @param AbstractUser $user
+     * @param User $user
      */
-    public function disableUser(AbstractUser $user)
+    public function disableUser(User $user)
     {
 
         // @todo write me
@@ -493,85 +520,115 @@ class RcmUserService extends EventProvider
     /* AUTHENTICATION ********************************/
 
     /**
-     * @param AbstractUser $user
+     * @param User $user
      *
      * @return Result
      */
-    public function authenticate(AbstractUser $user)
+    public function logIn(User $user)
     {
-        /* @todo MOVED to RcmUser\Model\Authentication\Adapter\RcmUserAdapter
-        $username = $user->getUsername();
-        $password = $user->getPassword();
 
-        if ($username === null || $password === null) {
+        return $this->authenticateToSess($user);
+    }
 
-            return new Result(null, Result::CODE_FAIL, 'User credentials required.');
-        }
+    public function logOut()
+    {
 
-        $existingUserResult = $this->getUserDataMapper()->fetchByUsername($username);
-
-        if (!$existingUserResult->isSuccess()) {
-
-            // ERROR
-            return $existingUserResult;
-        }
-
-        $existingUser = $existingUserResult->getUser();
-        $existingHash = $existingUser->getPassword();
-
-        $credential = $user->getPassword();
-
-        // @event pre
-        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
-        if ($isValid) {
-            $result = new Result($existingUser);
-        } else {
-            $result = new Result(null, Result::CODE_FAIL, 'User credentials invalid.');
-        }
-
-        // @event post
-
-        return $result;
-         * */
+        return $this->clearAuthSess();
     }
 
     /**
-     * @param AbstractUser $user
+     * @param User $user
      *
      * @return Result
      */
-    public function authenticateToSess(AbstractUser $user)
+    public function authenticate(User $user)
     {
-        // @todo make this work correctly
-        $authResult = $this->authenticate($user);
-        if ($authResult->isSuccess()) {
 
-            $existingUser = $authResult->getUser();
-            $username = $user->getUsername();
-            $password = $user->getPassword();
+        // @event authenticate.pre
+        $eventResults = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
 
-            $this->getAuthService()->getAdapter()
-                ->setIdentity($username)
-                ->setCredential($password);
+        foreach ($eventResults as $eventResult) {
 
-            $result = $this->getAuthService()->authenticate();
+            if ($eventResult->isValid()) {
 
-            if ($result->isValid()) {
-                $authResult = new Result($existingUser, Result::CODE_SUCCESS, $result->getMessages());
-                $existingUser->setPassword(User::PASSWORD_OBFUSCATE);
-                $this->getAuthService()->getStorage()->write($existingUser);
-            } else {
+                $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('successResult' => $eventResult, 'results' => $eventResults));
 
-                $authResult = new Result(null, Result::CODE_FAIL, $result->getMessages());
+                return $eventResult;
             }
         }
 
+        // @todo Inject this as event
+        // RcmUser Auth
+        $adapter = $this->getAuthService()->getAdapter();
+        $adapter->setUser($user);
+        return $adapter->authenticate();
+
+        // @event authenticate.fail
+        $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('successResult' => null, 'results' => $eventResults));
+
+        return $eventResults->last();
+
+
+    }
+
+    /**
+     * @param User $user
+     *
+     * @return Result
+     */
+    public function authenticateToSess(User $user)
+    {
+
+        // @event authenticateToSess.pre
+        $eventResults = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
+
+        foreach ($eventResults as $eventResult) {
+
+            if ($eventResult->isValid()) {
+
+                $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('successResult' => $eventResult, 'results' => $eventResults));
+
+                return $eventResult;
+            }
+        }
+
+        // @todo Inject this as event
+        $adapter = $this->getAuthService()->getAdapter();
+        $adapter->setUser($user);
+        $authResult = $this->getAuthService()->authenticate($adapter);
+
         return $authResult;
+
+        // @event authenticateToSess.fail
+        $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('successResult' => null, 'results' => $eventResults));
+
+        return $eventResults->last();
+    }
+
+    public function clearSessUser()
+    {
+        $currentUser = $this->readSessUser();
+
+        // @event clearSessUser
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
+
+        // @todo Inject this as event
+        $authService = $this->getAuthService();
+
+        if ($authService->hasIdentity()) {
+            $authService->clearIdentity();
+        }
+    }
+
+    public function readSessUser(){
+
+        $authService = $this->getAuthService();
+        return $authService->getIdentity();
     }
 
     /* UTILITIES **************************************/
     /**
-     * @return AbstractUser
+     * @return User
      */
     public function buildNewUser()
     {

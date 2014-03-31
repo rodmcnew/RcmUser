@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * @category  RCM
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2012 Reliv International
@@ -11,6 +11,8 @@
 namespace RcmUser\Service;
 
 
-class RcmUserAuthenticationService extends \Zend\Authentication\AuthenticationService {
+use Zend\Authentication\Adapter\AdapterInterface;
 
+class RcmUserAuthenticationService extends \Zend\Authentication\AuthenticationService
+{
 }

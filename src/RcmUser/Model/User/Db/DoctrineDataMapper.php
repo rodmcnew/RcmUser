@@ -76,6 +76,9 @@ class DoctrineDataMapper implements DataMapperInterface
             return new Result(null, 0, 'User could not be found by id.');
         }
 
+        // This is so we get a fresh user every time
+        $this->getEntityManager()->refresh($user);
+
         return new Result($user);
     }
 
@@ -91,6 +94,9 @@ class DoctrineDataMapper implements DataMapperInterface
 
             return new Result(null, 0, 'User could not be found by username.');
         }
+
+        // This is so we get a fresh user every time
+        $this->getEntityManager()->refresh($user);
 
         return new Result($user);
     }

@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * @category  RCM
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2012 Reliv International
@@ -21,7 +21,8 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity
  * @ORM\Table(name="rcm_user_user")
  */
-class DoctrineUser extends AbstractUser {
+class DoctrineUser extends User
+{
 
     /**
      * @var string
