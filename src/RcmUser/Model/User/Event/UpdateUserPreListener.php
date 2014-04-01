@@ -20,7 +20,7 @@ class UpdateUserPreListener extends AbstractListener {
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
-    protected $id = 'RcmUser\Service\RcmUserService';
+    protected $id = 'RcmUser\Service\RcmUserDataService';
     protected $event = 'updateUser.pre';
     protected $priority = 100;
 

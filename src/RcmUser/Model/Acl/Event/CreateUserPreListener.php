@@ -8,20 +8,15 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Model\User\Event;
+namespace RcmUser\Model\Acl\Event;
 
 
-use RcmUser\Model\Event\AbstractListener;
+use RcmUser\Model\Acl\Entity\Role;
 use RcmUser\Model\User\Result;
 
-class CreateUserFailListener extends AbstractListener {
+class CreateUserPreListener extends AbstractUserDataServiceListener {
 
-    /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = array();
-    protected $id = 'RcmUser\Service\RcmUserDataService';
-    protected $event = 'createUser.fail';
+    protected $event = 'createUser.pre';
     protected $priority = 100;
 
     /**
@@ -34,9 +29,15 @@ class CreateUserFailListener extends AbstractListener {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         //$target = $e->getTarget();
-        $failresult = $e->getParam('failResult');
-        //$results = $e->getParam('results');
+        $newUser = $e->getParam('newUser');
 
-        return new Result($failresult->getUser());
+        $property = $newUser->getProperty('RcmUser\Model\Acl\UserRoles', null);
+
+        if($property === null){
+
+            $newUser->setProperty('RcmUser\Model\Acl\UserRoles', $this->getDefaultRoleIdentities());
+        }
+
+        return new Result($newUser, Result::CODE_SUCCESS);
     }
 } 

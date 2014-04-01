@@ -88,9 +88,9 @@ abstract class AbstractUser implements UserInterface, \JsonSerializable
     }
 
     /**
-     * Populate from an array or object.
-     *
      * @param array $data
+     *
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function populate($data = array())
     {
@@ -122,7 +122,7 @@ abstract class AbstractUser implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @return array
+     * @return mixed|\stdClass
      */
     public function jsonSerialize()
     {

@@ -16,7 +16,7 @@ use RcmUser\Model\User\Entity\DoctrineUser;
 use RcmUser\Model\User\Entity\UserInterface;
 use RcmUser\Model\User\Result;
 
-class DoctrineDataMapper implements DataMapperInterface
+class DoctrineUserDataMapper implements UserDataMapperInterface
 {
 
     /**
@@ -146,10 +146,7 @@ class DoctrineDataMapper implements DataMapperInterface
 
             $result = $this->fetchByUsername($username);
 
-            if($result->isSuccess()){
-
-                return new Result($user);
-            }
+            return $result;
         }
 
         return new Result(null, 0, 'User could not be read.');

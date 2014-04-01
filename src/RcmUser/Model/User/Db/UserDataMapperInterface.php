@@ -15,11 +15,11 @@ use RcmUser\Model\User\Entity\UserInterface;
 use RcmUser\Model\User\Result;
 
 /**
- * Interface DataMapperInterface
+ * Interface UserDataMapperInterface
  *
  * @package RcmUser\Model\User
  */
-interface DataMapperInterface
+interface UserDataMapperInterface
 {
     const ID_FIELD = 'id';
     const USERNAME_FIELD = 'username';
@@ -46,6 +46,7 @@ interface DataMapperInterface
     public function create(UserInterface $user);
 
     /**
+     * This will read the user from Id or Username. Id will get priority if it is set.
      * @param UserInterface $user
      *
      * @return RcmUser\Model\User\Result

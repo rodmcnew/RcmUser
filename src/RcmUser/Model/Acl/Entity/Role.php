@@ -10,13 +10,15 @@
 
 namespace RcmUser\Model\Acl\Entity;
 
+use Zend\Permissions\Acl\Role\RoleInterface;
+
 
 /**
  * Class Role
  *
  * @package RcmUser\Model\Acl\Entity
  */
-class Role
+class Role implements RoleInterface
 {
 
     /**
@@ -26,11 +28,11 @@ class Role
     /**
      * @var int
      */
-    protected $parentRoleId;
+    protected $parentId;
     /**
      * @var string
      */
-    protected $roleName;
+    protected $roleIdentity;
 
     /**
      * @param int $id
@@ -49,34 +51,42 @@ class Role
     }
 
     /**
-     * @param int $parentRoleId
+     * @param int $parentId
      */
-    public function setParentRoleId($parentRoleId)
+    public function setParentId($parentId)
     {
-        $this->parentRoleId = (int)$parentRoleId;
+        $this->parentId = $parentId;
     }
 
     /**
      * @return int
      */
-    public function getParentRoleId()
+    public function getParentId()
     {
-        return $this->parentRoleId;
+        return $this->parentId;
     }
 
     /**
-     * @param string $roleName
+     * @param string $roleIdentity
      */
-    public function setRoleName($roleName)
+    public function setRoleIdentity($roleIdentity)
     {
-        $this->roleName = (string)$roleName;
+        $this->roleIdentity = $roleIdentity;
     }
 
     /**
      * @return string
      */
-    public function getRoleName()
+    public function getRoleIdentity()
     {
-        return $this->roleName;
+        return $this->roleIdentity;
+    }
+
+    /**
+     * @return string|void
+     */
+    public function getRoleId()
+    {
+        return $this->getRoleIdentity();
     }
 } 

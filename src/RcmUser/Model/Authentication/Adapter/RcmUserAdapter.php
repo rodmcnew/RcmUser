@@ -11,7 +11,7 @@
 namespace RcmUser\Model\Authentication\Adapter;
 
 
-use RcmUser\Model\User\Db\DataMapperInterface;
+use RcmUser\Model\User\Db\UserDataMapperInterface;
 use RcmUser\Model\User\Entity\AbstractUser;
 use RcmUser\Model\User\Entity\User;
 use Zend\Authentication\Adapter\AbstractAdapter;
@@ -25,6 +25,10 @@ use Zend\Crypt\Password\PasswordInterface;
  */
 class RcmUserAdapter extends AbstractAdapter
 {
+    /**
+     * @var
+     */
+    protected $userDataService;
 
     /**
      * @var
@@ -32,36 +36,10 @@ class RcmUserAdapter extends AbstractAdapter
     protected $user;
 
     /**
-     * @var
-     */
-    protected $userDataMapper;
-
-    /**
-     * @var
-     */
-    protected $encryptor;
-
-    /**
      * @var bool
      * Force returned user to hide password, can cause issues is return object is meant to be saved.
      */
     protected $obfuscatePassword = true;
-
-    /**
-     * @param PasswordInterface $encryptor
-     */
-    public function setEncryptor(PasswordInterface $encryptor)
-    {
-        $this->encryptor = $encryptor;
-    }
-
-    /**
-     * @return PasswordInterface
-     */
-    public function getEncryptor()
-    {
-        return $this->encryptor;
-    }
 
     /**
      * @param mixed $user
@@ -77,22 +55,6 @@ class RcmUserAdapter extends AbstractAdapter
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * @param DataMapperInterface $userDataMapper
-     */
-    public function setUserDataMapper(DataMapperInterface $userDataMapper)
-    {
-        $this->userDataMapper = $userDataMapper;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserDataMapper()
-    {
-        return $this->userDataMapper;
     }
 
     /**
@@ -112,6 +74,22 @@ class RcmUserAdapter extends AbstractAdapter
     }
 
     /**
+     * @param mixed $userDataService
+     */
+    public function setUserDataService($userDataService)
+    {
+        $this->userDataService = $userDataService;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserDataService()
+    {
+        return $this->userDataService;
+    }
+
+    /**
      * Performs an authentication attempt
      *
      * @return \Zend\Authentication\Result
@@ -122,9 +100,9 @@ class RcmUserAdapter extends AbstractAdapter
     {
         $user = $this->getUser();
         $username = $user->getUsername();
+        $password = $user->getPassword();
 
         $this->setIdentity($user);
-        $password = $user->getPassword();
         $this->setCredential($password);
 
         if ($username === null || $password === null) {
@@ -136,7 +114,10 @@ class RcmUserAdapter extends AbstractAdapter
             );
         }
 
-        $existingUserResult = $this->getUserDataMapper()->fetchByUsername($username);
+        // We will remove id is set so that we only read from username, this will eliminate an incorrect id/username match in the object
+        $user->setId(null);
+
+        $existingUserResult = $this->getUserDataService()->readUser($user);
 
         if (!$existingUserResult->isSuccess()) {
 
@@ -153,8 +134,7 @@ class RcmUserAdapter extends AbstractAdapter
 
         $credential = $user->getPassword();
 
-        // @event pre
-        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
+        $isValid = $this->getUserDataService()->getEncryptor()->verify($credential, $existingHash);
         if ($isValid) {
 
             if ($this->getObfuscatePassword()) {
@@ -175,8 +155,6 @@ class RcmUserAdapter extends AbstractAdapter
                 array('User credential invalid.')
             );
         }
-
-        // @event post
 
         return $result;
     }

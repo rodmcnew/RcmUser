@@ -8,9 +8,10 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Service;
+namespace RcmUser\Model\User\Entity;
 
 
-class RcmUserPropertyFactory {
+interface UserRolesInterface {
 
+    public function getRoles();
 } 

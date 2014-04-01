@@ -8,20 +8,14 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Model\User\Event;
+namespace RcmUser\Model\Acl\Event;
 
 
-use RcmUser\Model\Event\AbstractListener;
 use RcmUser\Model\User\Result;
 
-class CreateUserSuccessListener extends AbstractListener {
+class ReadUserSuccessListener extends AbstractUserDataServiceListener {
 
-    /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = array();
-    protected $id = 'RcmUser\Service\RcmUserDataService';
-    protected $event = 'createUser.success';
+    protected $event = 'readUser.success';
     protected $priority = 100;
 
     /**
@@ -33,8 +27,14 @@ class CreateUserSuccessListener extends AbstractListener {
     {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
+        //$target = $e->getTarget();
         $result = $e->getParam('result');
+        $user = $result->getUser();
 
-        return $result;
+        $roles = $this->getUserRolesDataMapper()->read($user);
+
+        $user->setProperty('RcmUser\Model\Acl\UserRoles', $roles);
+
+        return new Result($user, 1);
     }
 } 

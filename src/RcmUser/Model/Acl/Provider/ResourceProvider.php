@@ -3,14 +3,14 @@
  *
  */
 
-namespace RcmUser\Model\Acl\Provider\Resource;
+namespace RcmUser\Model\Acl\Provider;
 
 use BjyAuthorize\Provider\Resource\ProviderInterface;
 
 /**
  *
  */
-class Provider implements ProviderInterface
+class ResourceProvider implements ProviderInterface
 {
     /**
      * @return \Zend\Permissions\Acl\Resource\ResourceInterface[]

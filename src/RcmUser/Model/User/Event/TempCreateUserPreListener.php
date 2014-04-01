@@ -20,7 +20,7 @@ class TempCreateUserPreListener extends AbstractListener {
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
-    protected $id = 'RcmUser\Service\RcmUserService';
+    protected $id = 'RcmUser\Service\RcmUserDataService';
     protected $event = 'createUser.pre';
     protected $priority = 2;
 

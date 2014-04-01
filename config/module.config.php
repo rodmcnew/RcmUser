@@ -69,9 +69,8 @@ return array(
          */
         'password_cost' => 14,
 
-        'properties' => array(
-            'rcmUserAclRoles' => '',
-        ),
+        'aclDefaultRoleIdentities' => array('guest'),
+        'aclDefaultAuthenticatedRoleIdentities' => array('user'),
     ),
 
     'controllers' => array(
@@ -135,7 +134,7 @@ return array(
         'authenticated_role' => 'user',
         'identity_provider' => 'RcmUserServiceIdentiyProviderServiceFactory',
         'role_providers' => array(
-            'RcmUser\Model\Acl\Provider\Role\Provider' => array(),
+            'RcmUser\Model\Acl\Provider\RoleProvider' => array(),
             /*'BjyAuthorize\Provider\Role\Config' => array(
                 'guest' => array(),
                 'user'  => array('children' => array(
@@ -145,13 +144,13 @@ return array(
 
         ),
         'resource_providers' => array(
-            'RcmUser\Model\Acl\Provider\Resource\Provider' => array(),
+            'RcmUser\Model\Acl\Provider\ResourceProvider' => array(),
             /*'BjyAuthorize\Provider\Resource\Config' => array(
                 'pants' => array(),
             ),*/
         ),
         'rule_providers' => array(
-            'RcmUser\Model\Acl\Provider\Rule\Provider' => array(),
+            'RcmUser\Model\Acl\Provider\RuleProvider' => array(),
             /*'BjyAuthorize\Provider\Rule\Config' => array(
                 'allow' => array(
                     // allow guests and users (and admins, through inheritance)

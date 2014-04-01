@@ -8,15 +8,12 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Model\Properties\Entity;
+namespace RcmUser\Model\User\Entity;
 
 
-interface PropertyInterface {
+class UserRoles {
 
-    const GETTER_PRE = 'get';
-    const SETTER_PRE = 'set';
+    protected $user;
 
-    public function get($key, $def = null);
-
-    public function set($key, $val = null);
+    protected $roles = array();
 } 

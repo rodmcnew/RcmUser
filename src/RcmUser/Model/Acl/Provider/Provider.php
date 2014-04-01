@@ -3,7 +3,7 @@
  *
  */
 
-namespace RcmUser\Model\Acl\Provider\Role;
+namespace RcmUser\Model\Acl\Provider;
 
 use BjyAuthorize\Acl\Role;
 use BjyAuthorize\Provider\Role\ProviderInterface;
@@ -11,7 +11,7 @@ use BjyAuthorize\Provider\Role\ProviderInterface;
 /**
  *
  */
-class Provider implements ProviderInterface
+class RoleProvider implements ProviderInterface
 {
     /**
      * @return \Zend\Permissions\Acl\Role\RoleInterface[]

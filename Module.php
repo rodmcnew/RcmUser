@@ -5,12 +5,17 @@
 
 namespace RcmUser;
 
+use RcmUser\Model\Acl\Provider\IdentityProvider;
 use RcmUser\Model\Authentication\Adapter\RcmUserAdapter;
+use RcmUser\Model\Authentication\AuthenticationService;
 use RcmUser\Model\Authentication\Storage\RcmUserSession;
 use RcmUser\Model\Config\Config;
-use RcmUser\Model\User\Db\DoctrineDataMapper;
+use RcmUser\Model\User\Db\DoctrineUserDataMapper;
+use RcmUser\Model\User\Db\DoctrineUserRolesDataMapper;
 use RcmUser\Model\User\InputFilter\UserInputFilter;
 use RcmUser\Service\RcmUserAuthenticationService;
+use RcmUser\Service\RcmUserDataService;
+use RcmUser\Service\RcmUserPropertyService;
 use RcmUser\Service\RcmUserService;
 use RcmUser\Service\UserValidatorService;
 use Zend\Crypt\Password\Bcrypt;
@@ -45,17 +50,18 @@ class Module implements AutoloaderProviderInterface
         return array(
             'invokables' => array(),
             'factories' => array(
-
+                // GENERAL
                 'RcmUser\Model\Config' => function ($sm) {
 
                         $config = $sm->get('Config');
 
                         return new Config(isset($config['rcm_user']) ? $config['rcm_user'] : array());
                     },
-                'RcmUser\Model\User\DataMapper' => function ($sm) {
+                // USER
+                'RcmUser\Model\User\Db\UserDataMapper' => function ($sm) {
 
                         $em = $sm->get('Doctrine\ORM\EntityManager');
-                        $dm = new DoctrineDataMapper();
+                        $dm = new DoctrineUserDataMapper();
                         $dm->setEntityManager($em);
                         $dm->setEntityClass('RcmUser\Model\User\Entity\DoctrineUser');
 
@@ -87,36 +93,105 @@ class Module implements AutoloaderProviderInterface
 
                         return $service;
                     },
+                'RcmUser\Service\RcmUserDataService' => function ($sm) {
+
+                        $dm = $sm->get('RcmUser\Model\User\Db\UserDataMapper');
+                        $vs = $sm->get('RcmUser\Service\UserValidatorService');
+                        $encrypt = $sm->get('RcmUser\Service\Encryptor');
+
+                        $service = new RcmUserDataService();
+                        $service->setEncryptor($encrypt);
+                        $service->setUserDataMapper($dm);
+                        $service->setUserValidatorService($vs);
+
+                        return $service;
+                    },
                 'RcmUser\Service\RcmUserAuthenticationService' => function ($sm) {
 
-                        $encrypt = $sm->get('RcmUser\Service\Encryptor');
-                        $dm = $sm->get('RcmUser\Model\User\DataMapper');
-
+                        $userDataService = $sm->get('RcmUser\Service\RcmUserDataService');
                         $adapter = new RcmUserAdapter();
-                        $adapter->setEncryptor($encrypt);
-                        $adapter->setUserDataMapper($dm);
+                        $adapter->setUserDataService($userDataService);
 
                         $storage = new RcmUserSession();
 
-                        $service = new RcmUserAuthenticationService($storage, $adapter);
+                        $auth = new AuthenticationService($storage, $adapter);
+
+                        $service = new RcmUserAuthenticationService();
+                        $service->setAuthService($auth);
+
+                        return $service;
+                    },
+                'RcmUser\Service\RcmUserPropertyService' => function ($sm) {
+
+                        $service = new RcmUserPropertyService();
 
                         return $service;
                     },
                 'RcmUser\Service\RcmUserService' => function ($sm) {
 
-                        $dm = $sm->get('RcmUser\Model\User\DataMapper');
-                        $cfg = $sm->get('RcmUser\Model\Config');
-                        $vs = $sm->get('RcmUser\Service\UserValidatorService');
                         $authServ = $sm->get('RcmUser\Service\RcmUserAuthenticationService');
-                        $encrypt = $sm->get('RcmUser\Service\Encryptor');
+                        $userDataService = $sm->get('RcmUser\Service\RcmUserDataService');
+                        $userPropertyService = $sm->get('RcmUser\Service\RcmUserPropertyService');
 
-                        $service = new RcmUserService($cfg);
-                        $service->setUserDataMapper($dm);
-                        $service->setUserValidatorService($vs);
-                        $service->setAuthService($authServ);
-                        $service->setEncryptor($encrypt);
+                        $service = new RcmUserService();
+                        $service->setUserDataService($userDataService);
+                        $service->setUserPropertyService($userPropertyService);
+                        $service->setUserAuthService($authServ);
 
                         return $service;
+                    },
+
+                'RcmUser\Model\Acl\Provider\IdentityProvider' => function ($sm) {
+
+                        $rcmUserService = $sm->get('RcmUser\Service\RcmUserService');
+                        $cfg = $sm->get('RcmUser\Model\Config');
+
+                        $service = new IdentityProvider();
+                        $service->setUserService($rcmUserService);
+                        $service->setDefaultRoleIdentity($cfg->get('aclDefaultRoleIdentities', array()));
+
+                        return $service;
+                    },
+                'RcmUser\Model\User\Db\UserRolesDataMapper' => function ($sm) {
+
+                        $em = $sm->get('Doctrine\ORM\EntityManager');
+                        $dm = new DoctrineUserRolesDataMapper();
+                        $dm->setEntityManager($em);
+                        $dm->setEntityClass('RcmUser\Model\User\Entity\DoctrineUserRole');
+
+                        return $dm;
+                    },
+
+                // EVENT
+                'RcmUser\Model\Event\Listeners' => function ($sm) {
+
+                        $cfg = $sm->get('RcmUser\Model\Config');
+
+                        $listeners = array();
+                        // User
+                        $createUserPreListener = new Model\User\Event\CreateUserPreListener();
+                        $listeners[] = $createUserPreListener;
+
+                        $createUserSuccessListener = new Model\User\Event\CreateUserSuccessListener();
+                        $listeners[] = $createUserSuccessListener;
+
+                        $updateUserPreListener = new Model\User\Event\UpdateUserPreListener();
+                        $listeners[] = $updateUserPreListener;
+
+                        // ACL
+                        $aclCreateUserPreListener = new Model\Acl\Event\CreateUserPreListener();
+                        $aclCreateUserPreListener->setDefaultRoleIdentities($cfg->get('aclDefaultRoleIdentities', array()));
+                        $listeners[] = $aclCreateUserPreListener;
+
+                        $aclCreateUserSuccessListener = new Model\Acl\Event\CreateUserSuccessListener();
+                        $aclCreateUserSuccessListener->setDefaultAuthenticatedRoleIdentities($cfg->get('aclDefaultAuthenticatedRoleIdentities', array()));
+                        $listeners[] = $aclCreateUserSuccessListener;
+
+                        $aclReadUserSuccessListener = new Model\Acl\Event\ReadUserSuccessListener();
+                        $aclReadUserSuccessListener->setUserRolesDataMapper($sm->get('RcmUser\Model\User\Db\UserRolesDataMapper'));
+                        $listeners[] = $aclReadUserSuccessListener;
+
+                        return $listeners;
                     },
             ),
         );
@@ -124,13 +199,20 @@ class Module implements AutoloaderProviderInterface
 
     public function onBootstrap(MvcEvent $event)
     {
-        // @todo inject these
-        $eventManager = $event->getApplication()->getEventManager();
+        $application = $event->getApplication();
+        $sm = $application->getServiceManager();
+        $eventManager = $application->getEventManager();
 
-        $createUserPreListener = new Model\User\Event\CreateUserPreListener();
-        $createUserPreListener->attach($eventManager);
+        // @todo might create aggregate object
+        try {
+            $listeners = $sm->get('RcmUser\Model\Event\Listeners');
+            foreach ($listeners as $listener) {
+                $listener->attach($eventManager);
+            }
+        } catch (\Exception $e) {
+            // no listeners
+        }
 
-        $updateUserPreListener = new Model\User\Event\UpdateUserPreListener();
-        $updateUserPreListener->attach($eventManager);
+
     }
 }

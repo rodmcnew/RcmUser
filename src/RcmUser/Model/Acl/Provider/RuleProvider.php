@@ -10,7 +10,7 @@ use BjyAuthorize\Provider\Rule\ProviderInterface;
 /**
  *
  */
-class Provider implements ProviderInterface
+class RuleProvider implements ProviderInterface
 {
     /**
      * @return array

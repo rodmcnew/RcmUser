@@ -11,7 +11,7 @@
 namespace RcmUser\Model\User\Entity;
 
 
-class User extends AbstractUser
+class User extends AbstractUser implements \JsonSerializable
 {
     /**
      * Property data injected by external sources
@@ -21,11 +21,11 @@ class User extends AbstractUser
     protected $properties = array();
 
     /**
-     * @param array $properties
+     * @param $properties
      */
-    public function setProperties($properies)
+    public function setProperties($properties)
     {
-        $this->properies = $properies;
+        $this->properties = $properties;
     }
 
     /**
@@ -37,7 +37,8 @@ class User extends AbstractUser
     }
 
     /**
-     * @param array $property
+     * @param $key
+     * @param $val
      */
     public function setProperty($key, $val)
     {
@@ -45,7 +46,10 @@ class User extends AbstractUser
     }
 
     /**
-     * @return array
+     * @param      $key
+     * @param null $dflt
+     *
+     * @return null
      */
     public function getProperty($key, $dflt = null)
     {
@@ -57,4 +61,43 @@ class User extends AbstractUser
         return $dflt;
     }
 
+    /**
+     * @param array $data
+     *
+     * @throws RcmUserException
+     */
+    public function populate($data = array())
+    {
+        if (($data instanceof User)) {
+
+            $this->setProperties($data->getProperties());
+
+            return parent::populate($data);
+        }
+
+        if (is_array($data)) {
+
+            if (isset($data['properties'])) {
+                $this->setProperties($data['properties']);
+            }
+
+            return parent::populate($data);
+        }
+
+        throw new RcmUserException('User data could not be populated, date format not supported');
+    }
+
+    /**
+     * @return mixed|\stdClass
+     */
+    public function jsonSerialize()
+    {
+        $obj = new \stdClass();
+        $obj->id = $this->getId();
+        $obj->username = $this->getUsername();
+        $obj->password = self::PASSWORD_OBFUSCATE; // Might be better way to obfuscate
+        $obj->properties = $this->getProperties();
+
+        return $obj;
+    }
 }

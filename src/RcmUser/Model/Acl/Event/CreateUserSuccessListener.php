@@ -8,19 +8,13 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Model\User\Event;
+namespace RcmUser\Model\Acl\Event;
 
 
-use RcmUser\Model\Event\AbstractListener;
 use RcmUser\Model\User\Result;
 
-class CreateUserSuccessListener extends AbstractListener {
+class CreateUserSuccessListener extends AbstractUserDataServiceListener {
 
-    /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = array();
-    protected $id = 'RcmUser\Service\RcmUserDataService';
     protected $event = 'createUser.success';
     protected $priority = 100;
 
@@ -33,7 +27,15 @@ class CreateUserSuccessListener extends AbstractListener {
     {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
+        //$target = $e->getTarget();
         $result = $e->getParam('result');
+        $user = $result->getUser();
+
+        $user->setProperty('RcmUser\Model\Acl\UserRoles', $this->getDefaultAuthenticatedRoleIdentities());
+
+        $result = $this->getUserRolesDataMapper()->create($user, $user->getProperty('RcmUser\Model\Acl\UserRoles', array()));
+
+        // @todo throw error is fail or short circuit - currently, event trigger doe not care about this event
 
         return $result;
     }
