@@ -29,7 +29,7 @@ var_dump($user);
 
 /* AUTH ***********************************/
 
-/* AUTH CHECK *
+/* AUTH CHECK */
 $authResult = $userService->validateCredentials($user);
 
 echo "GenAuth Result: ".var_export($authResult->isValid(), true)."\n";

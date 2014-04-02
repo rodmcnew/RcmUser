@@ -35,7 +35,7 @@ class UpdateUserPreListener extends AbstractListener {
 
         $target = $e->getTarget();
         $existingUser = $e->getParam('existingUser');
-        $updatedUser =  $e->getParam('updatedUser');;
+        $updatedUser =  $e->getParam('updatedUser');
 
 
         // USERNAME CHECKS
