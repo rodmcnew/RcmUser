@@ -8,13 +8,13 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Model\Acl;
+namespace RcmUser\Model;
 
 
 /**
  * Class Result
  *
- * @package RcmUser\Model\Acl
+ * @package RcmUser\Model
  */
 class Result
 {

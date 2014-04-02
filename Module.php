@@ -5,6 +5,7 @@
 
 namespace RcmUser;
 
+use RcmUser\Model\Acl\Event\UpdateUserPostListener;
 use RcmUser\Model\Acl\Provider\IdentityProvider;
 use RcmUser\Model\Authentication\Adapter\RcmUserAdapter;
 use RcmUser\Model\Authentication\AuthenticationService;
@@ -12,6 +13,8 @@ use RcmUser\Model\Authentication\Storage\RcmUserSession;
 use RcmUser\Model\Config\Config;
 use RcmUser\Model\User\Db\DoctrineUserDataMapper;
 use RcmUser\Model\User\Db\DoctrineUserRolesDataMapper;
+use RcmUser\Model\User\Event\ReadUserPreListener;
+use RcmUser\Model\User\Event\ReadUserPreListenerTemp;
 use RcmUser\Model\User\InputFilter\UserInputFilter;
 use RcmUser\Service\RcmUserAuthenticationService;
 use RcmUser\Service\RcmUserDataService;
@@ -172,24 +175,24 @@ class Module implements AutoloaderProviderInterface
                         $createUserPreListener = new Model\User\Event\CreateUserPreListener();
                         $listeners[] = $createUserPreListener;
 
-                        $createUserSuccessListener = new Model\User\Event\CreateUserSuccessListener();
-                        $listeners[] = $createUserSuccessListener;
-
                         $updateUserPreListener = new Model\User\Event\UpdateUserPreListener();
                         $listeners[] = $updateUserPreListener;
 
                         // ACL
-                        $aclCreateUserPreListener = new Model\Acl\Event\CreateUserPreListener();
-                        $aclCreateUserPreListener->setDefaultRoleIdentities($cfg->get('aclDefaultRoleIdentities', array()));
-                        $listeners[] = $aclCreateUserPreListener;
+                        $aclCreateUserPostListener = new Model\Acl\Event\CreateUserPostListener();
+                        $aclCreateUserPostListener->setDefaultAuthenticatedRoleIdentities($cfg->get('aclDefaultAuthenticatedRoleIdentities', array()));
+                        $aclCreateUserPostListener->setUserRolesDataMapper($sm->get('RcmUser\Model\User\Db\UserRolesDataMapper'));
+                        $listeners[] = $aclCreateUserPostListener;
 
-                        $aclCreateUserSuccessListener = new Model\Acl\Event\CreateUserSuccessListener();
-                        $aclCreateUserSuccessListener->setDefaultAuthenticatedRoleIdentities($cfg->get('aclDefaultAuthenticatedRoleIdentities', array()));
-                        $listeners[] = $aclCreateUserSuccessListener;
+                        $aclReadUserPostListener = new Model\Acl\Event\ReadUserPostListener();
+                        $aclReadUserPostListener->setDefaultAuthenticatedRoleIdentities($cfg->get('aclDefaultAuthenticatedRoleIdentities', array()));
+                        $aclReadUserPostListener->setUserRolesDataMapper($sm->get('RcmUser\Model\User\Db\UserRolesDataMapper'));
+                        $listeners[] = $aclReadUserPostListener;
 
-                        $aclReadUserSuccessListener = new Model\Acl\Event\ReadUserSuccessListener();
-                        $aclReadUserSuccessListener->setUserRolesDataMapper($sm->get('RcmUser\Model\User\Db\UserRolesDataMapper'));
-                        $listeners[] = $aclReadUserSuccessListener;
+                        $updateUserPostListener = new Model\Acl\Event\UpdateUserPostListener();
+                        $updateUserPostListener->setDefaultAuthenticatedRoleIdentities($cfg->get('aclDefaultAuthenticatedRoleIdentities', array()));
+                        $updateUserPostListener->setUserRolesDataMapper($sm->get('RcmUser\Model\User\Db\UserRolesDataMapper'));
+                        $listeners[] = $updateUserPostListener;
 
                         return $listeners;
                     },

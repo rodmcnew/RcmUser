@@ -11,58 +11,13 @@
 namespace RcmUser\Model\User\Db;
 
 
-use Doctrine\ORM\EntityManager;
+use RcmUser\Model\Db\DoctrineMapper;
 use RcmUser\Model\User\Entity\DoctrineUser;
 use RcmUser\Model\User\Entity\UserInterface;
 use RcmUser\Model\User\Result;
 
-class DoctrineUserDataMapper implements UserDataMapperInterface
+class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInterface
 {
-
-    /**
-     * @var EntityManager $entityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var
-     */
-    protected $entityClass;
-
-
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntityManager()
-    {
-
-        return $this->entityManager;
-    }
-
-    /**
-     * @param mixed $entityClass
-     */
-    public function setEntityClass($entityClass)
-    {
-        $this->entityClass = (string)$entityClass;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntityClass()
-    {
-        return $this->entityClass;
-    }
-
     /**
      * @param $id
      *
@@ -73,7 +28,7 @@ class DoctrineUserDataMapper implements UserDataMapperInterface
         $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
         if (empty($user)) {
 
-            return new Result(null, 0, 'User could not be found by id.');
+            return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
         }
 
         // This is so we get a fresh user every time
@@ -92,7 +47,7 @@ class DoctrineUserDataMapper implements UserDataMapperInterface
         $user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
         if (empty($user)) {
 
-            return new Result(null, 0, 'User could not be found by username.');
+            return new Result(null, Result::CODE_FAIL, 'User could not be found by username.');
         }
 
         // This is so we get a fresh user every time
@@ -149,7 +104,7 @@ class DoctrineUserDataMapper implements UserDataMapperInterface
             return $result;
         }
 
-        return new Result(null, 0, 'User could not be read.');
+        return new Result(null, Result::CODE_FAIL, 'User could not be read.');
     }
 
     /**
@@ -166,7 +121,7 @@ class DoctrineUserDataMapper implements UserDataMapperInterface
         if (!$this->canUpdate($user)) {
 
             // error, cannot update
-            return new Result(null, 0, 'User cannot be updated, id required for update.');
+            return new Result(null, Result::CODE_FAIL, 'User cannot be updated, id required for update.');
         }
 
         // @todo if error, fail with null
@@ -190,7 +145,7 @@ class DoctrineUserDataMapper implements UserDataMapperInterface
         if (!$this->canUpdate($user)) {
 
             // error, cannot update
-            return new Result(null, 0, 'User cannot be deleted, id required for delete.');
+            return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, id required for delete.');
         }
 
         // @todo if error, fail with null

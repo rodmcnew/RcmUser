@@ -11,84 +11,42 @@
 namespace RcmUser\Model\User\Db;
 
 
-use Doctrine\ORM\EntityManager;
 use RcmUser\Model\Acl\Entity\Role;
+use RcmUser\Model\Db\DoctrineMapper;
 use RcmUser\Model\User\Entity\UserInterface;
-use RcmUser\Model\User\Result;
+use RcmUser\Model\Result;
 
-class DoctrineUserRolesDataMapper implements UserRolesDataMapperInterface
+class DoctrineUserRolesDataMapper extends DoctrineMapper implements UserRolesDataMapperInterface
 {
-
-    /**
-     * @var EntityManager $entityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var
-     */
-    protected $entityClass;
-
-
-    /**
-     * @param EntityManager $entityManager
-     */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntityManager()
-    {
-
-        return $this->entityManager;
-    }
-
-    /**
-     * @param mixed $entityClass
-     */
-    public function setEntityClass($entityClass)
-    {
-        $this->entityClass = (string)$entityClass;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getEntityClass()
-    {
-        return $this->entityClass;
-    }
-
     public function add(UserInterface $user, Role $role)
     {
-
+        return new Result(array('me','and','doctrine', 'more'), Result::CODE_SUCCESS);
     }
 
     public function remove(UserInterface $user, Role $role)
     {
-
+        return new Result(array('me','doctrine'), Result::CODE_SUCCESS);
     }
 
     public function create(UserInterface $user, $roles = array())
     {
-
+        return new Result(array('me','and','doctrine'), Result::CODE_SUCCESS);
     }
 
     public function read(UserInterface $user)
     {
-        return array('me','and','doctrine');
+
+        return new Result(array('me','and','doctrine'), Result::CODE_SUCCESS);
     }
 
     public function update(UserInterface $user, $roles = array())
     {
+        return new Result(array('new','with','doctrine2'), Result::CODE_SUCCESS);
     }
 
     public function delete(UserInterface $user)
     {
+        return new Result(array(), Result::CODE_SUCCESS);
     }
 
     /**

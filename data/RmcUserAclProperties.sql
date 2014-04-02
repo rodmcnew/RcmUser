@@ -8,11 +8,11 @@ CREATE TABLE rcm_user_user (
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE rcm_user_acl_roles (
+CREATE TABLE rcm_user_acl_role (
 	id INT AUTO_INCREMENT NOT NULL, 
 	parentId INT DEFAULT 0,
 	roleIdentity VARCHAR(255) NOT NULL,
-	description VARCHAR(255) NOT NULL, 
+	description VARCHAR(255) DEFAULT NULL, 
 	
 	/* TRACEABILITY
 	createDate DATETIME DEFAULT NULL, 

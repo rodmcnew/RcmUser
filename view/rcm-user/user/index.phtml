@@ -19,8 +19,10 @@ $user = $userService->buildNewUser();
 //$user->setId('fdbeae1a-3d7c-42cf-aa4d-b5aa04e4840c');
 
 //$user->setId('57a4de8e-225b-4e31-9f88-19ddb14fc13c');
-$user->setUsername('Jimmy');
-//$user->setPassword('1231231232');
+
+//$user->setId('ee827d29-4940-4181-93a7-846820a75855');
+$user->setUsername('Jimmyy');
+$user->setPassword('1231231232');
 
 echo "**Before action:\n";
 var_dump($user);
@@ -68,7 +70,7 @@ if(!$result->isSuccess()){
 var_dump($result->getUser());
 /* */
 
-/* READ */
+/* READ *
 $result = $userService->readUser($user);
 
 echo "**After read:\n";
@@ -106,6 +108,10 @@ if(!$result->isSuccess()){
 
 var_dump($result->getUser());
 /* */
+
+/* */
+
+/* ACL ************************************/
 
 /* */
 

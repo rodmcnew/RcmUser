@@ -89,52 +89,6 @@ class RcmUserDataService extends EventProvider
     }
 
     /**
-     * This will read the user from Id or Username. Id will get priority if it is set.
-     *
-     * @param User $user
-     *
-     * @return mixed
-     */
-    public function readUser(User $user)
-    {
-        // @event readUser.pre
-        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
-
-        // Expect Results, is any failed, then fail
-        // @todo This will be an issue is multiple things are changing the user.
-        foreach ($results as $eventResult) {
-
-            if (!$eventResult->isSuccess()) {
-
-                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
-
-                return $eventResult;
-            }
-        }
-
-        // @todo Inject this as event
-        $result = $this->getUserDataMapper()->read($user);
-
-        // @event createUser.success/fail
-        if ($result->isSuccess()) {
-
-            $finalResults = $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
-        } else {
-
-            $finalResults = $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
-        }
-
-        $finalResult = $finalResults->last();
-
-        if(!$finalResult->isSuccess()){
-
-            return $finalResult;
-        }
-
-        return $result;
-    }
-
-    /**
      * @param User $user
      *
      * @return Result
@@ -150,35 +104,48 @@ class RcmUserDataService extends EventProvider
             return new Result(null, Result::CODE_FAIL, 'User already exists.');
         }
 
-        // @event createUser.pre
-        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('newUser' => $user));
+        // @event pre  - expects listener to return RcmUser\Model\User\Result
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('userToCreate' => $user), function($result){ return !$result->isSuccess();});
 
-        // Expect Results, is any failed, then fail
-        // @todo This will be an issue is multiple things are changing the user.
-        foreach ($results as $eventResult) {
+        if ($resultsPre->stopped()) {
 
-            if (!$eventResult->isSuccess()) {
-
-                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
-
-                return $eventResult;
-            }
+            return $resultsPre->last();
         }
 
-        $preparedUser = $results->last()->getUser();
-        /* -event */
-        // @todo Inject this as event
+        $preparedUser = $resultsPre->last()->getUser();
+
+        // @todo Inject this as event?
         $this->getUserDataMapper()->create($preparedUser);
         $result = $this->readUser($preparedUser);
 
-        // @event createUser.success/fail
-        if ($result->isSuccess()) {
+        // @event post - expects Listener to check for $result->isSuccess() for post actions
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
 
-            $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
-        } else {
+        return $result;
+    }
 
-            $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
+    /**
+     * This will read the user from Id or Username. Id will get priority if it is set.
+     *
+     * @param User $user
+     *
+     * @return mixed
+     */
+    public function readUser(User $user)
+    {
+        // @event pre - expects listener to return RcmUser\Model\User\Result
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('userToRead' => $user), function($result){ return !$result->isSuccess();});
+
+        if ($resultsPre->stopped()) {
+
+            return $resultsPre->last();
         }
+
+        // @todo Inject this as event?
+        $result = $this->getUserDataMapper()->read($user);
+
+        // @event post - expects Listener to check for $result->isSuccess() for post actions
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
 
         return $result;
     }
@@ -191,7 +158,6 @@ class RcmUserDataService extends EventProvider
      */
     public function updateUser(User $user)
     {
-        // @todo Inject this as event
         // require id
         if (empty($user->getId())) {
 
@@ -209,35 +175,22 @@ class RcmUserDataService extends EventProvider
 
         $existingUser = $existingUserResult->getUser();
 
-        // @event updateUser.pre
-        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('existingUser' => $existingUser, 'updatedUser' => $user));
+        // @event pre  - expects listener to return RcmUser\Model\User\Result
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('existingUser' => $existingUser, 'updatedUser' => $user), function($result){ return !$result->isSuccess();});
 
-        // Expect Results, is any failed, then fail
-        // @todo This will be an issue is multiple things are changing the user.
-        foreach ($results as $eventResult) {
+        if ($resultsPre->stopped()) {
 
-            if (!$eventResult->isSuccess()) {
-
-                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
-
-                return $eventResult;
-            }
+            return $resultsPre->last();
         }
 
-        $preparedUser = $results->last()->getUser();
+        $preparedUser = $resultsPre->last()->getUser();
 
-        // @todo Inject this as event
+        // @todo Inject this as event?
         // set properties
         $result = $this->getUserDataMapper()->update($preparedUser);
 
-        // @event updateUser.success/fail
-        if ($result->isSuccess()) {
-
-            $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
-        } else {
-
-            $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
-        }
+        // @event post - expects Listener to check for $result->isSuccess() for post actions
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
 
         return $result;
     }
@@ -268,34 +221,25 @@ class RcmUserDataService extends EventProvider
 
         $existingUser = $existingUserResult->getUser();
 
-        // @event deleteUser.pre
-        $results = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $existingUser));
+        // @event pre  - expects listener to return RcmUser\Model\User\Result
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('userToDelete' => $existingUser), function($result){ return !$result->isSuccess();});
 
-        // Expect Results, is any failed, then fail
-        // @todo This will be an issue is multiple things are changing the user.
-        foreach ($results as $eventResult) {
+        if ($resultsPre->stopped()) {
 
-            if (!$eventResult->isSuccess()) {
-
-                $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $eventResult, 'results' => $results));
-
-                return $eventResult;
-            }
+            return $resultsPre->last();
         }
 
         // @todo Inject this as event
-        $this->getUserDataMapper()->delete($existingUser);
-        $unsavedUser = new User();
-        $result = new Result($unsavedUser);
+        $deletedUser = new User();
+        $deletedUser->populate($existingUser);
 
-        // @event updateUser.success/fail
-        if ($result->isSuccess()) {
+        $result = $this->getUserDataMapper()->delete($existingUser);
 
-            $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('result' => $result));
-        } else {
+        // User object may be cleared on delete, so we send a copy to the post event for any addition data changes or roll-backs
+        $result->setUser($deletedUser);
 
-            $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('failResult' => $result, 'results' => null));
-        }
+        // @event post - expects Listener to check for $result->isSuccess() for post actions
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
 
         return $result;
     }

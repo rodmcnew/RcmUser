@@ -54,32 +54,24 @@ class RcmUserAuthenticationService extends EventProvider
     public function validateCredentials(User $user)
     {
 
-        // @event validateCredentials.pre
-        $eventResults = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
+        // @event pre - expects listener to return Zend\Authentication\Result with Result->identity == to user object ($user)
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user), function($result){ return $result->isValid();});
 
-        foreach ($eventResults as $eventResult) {
-
-            if ($eventResult->isValid()) {
-
-                $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('successResult' => $eventResult, 'results' => $eventResults));
-
-                return $eventResult;
-            }
+        if ($resultsPre->stopped()) {
+            // Auth success
+            return $resultsPre->last();
         }
 
         // @todo Inject this as event
         // RcmUser Auth
         $adapter = $this->getAuthService()->getAdapter();
         $adapter->setUser($user);
+        $result = $adapter->authenticate();
 
-        return $adapter->authenticate();
+        // @event post - expects Listener to check for $result->isValid() for post actions
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
 
-        // @event validateCredentials.fail
-        $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('successResult' => null, 'results' => $eventResults));
-
-        return $eventResults->last();
-
-
+        return $result;
     }
 
     /**
@@ -90,52 +82,50 @@ class RcmUserAuthenticationService extends EventProvider
     public function authenticate(User $user)
     {
 
-        // @event authenticate.pre
-        $eventResults = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user));
+        // @event pre - expects listener to return Zend\Authentication\Result with Result->identity == to user object ($user)
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user), function($result){ return $result->isValid();});
 
-        foreach ($eventResults as $eventResult) {
-
-            if ($eventResult->isValid()) {
-
-                $this->getEventManager()->trigger(__FUNCTION__ . '.success', $this, array('successResult' => $eventResult, 'results' => $eventResults));
-
-                return $eventResult;
-            }
+        if ($resultsPre->stopped()) {
+            // Auth success
+            return $resultsPre->last();
         }
 
         // @todo Inject this as event
         $adapter = $this->getAuthService()->getAdapter();
         $adapter->setUser($user);
-        $authResult = $this->getAuthService()->authenticate($adapter);
+        $result =  $this->getAuthService()->authenticate($adapter);
 
-        return $authResult;
+        // @event post - expects Listener to check for $result->isValid() for post actions
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
 
-        // @event authenticate.fail
-        $this->getEventManager()->trigger(__FUNCTION__ . '.fail', $this, array('successResult' => null, 'results' => $eventResults));
-
-        return $eventResults->last();
+        return $result;
     }
 
     public function clearIdentity()
     {
-        $currentUser = $this->getIdentity();
 
-        // @event clearSessUser
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
-
-        // @todo Inject this as event
         $authService = $this->getAuthService();
 
         if ($authService->hasIdentity()) {
+
+            $currentUser = $this->getIdentity();
+
+            // @event
+            $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
+
             $authService->clearIdentity();
         }
     }
 
     public function getIdentity()
     {
-
         $authService = $this->getAuthService();
 
-        return $authService->getIdentity();
+        $currentUser = $authService->getIdentity();
+
+        // @event
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
+
+        return $currentUser;
     }
 }

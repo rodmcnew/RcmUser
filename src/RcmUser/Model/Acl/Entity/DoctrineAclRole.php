@@ -8,19 +8,17 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Model\User\Entity;
-
+namespace RcmUser\Model\Acl\Entity;
 
 /**
- * Class DoctrineUser
+ * Class DoctrineAclRole
  *
  * @package RcmUser\Model\User\Entity
  *
  * @ORM\Entity
- * @ORM\Table(name="rcm_user_user")
+ * @ORM\Table(name="rcm_user_acl_role")
  */
-class DoctrineUserRole extends UserRole {
-
+class DoctrineAclRole extends AclRole {
     /**
      * @var integer
      * @ORM\Id
@@ -28,13 +26,18 @@ class DoctrineUserRole extends UserRole {
      */
     protected $id;
     /**
-     * @var string
-     * @ORM\Column(type="integer",nullable=false)
+     * @var integer
+     * @ORM\Column(type="integer", nullable=false)
      */
-    protected $userId;
+    protected $parentId;
     /**
      * @var string
-     * @ORM\Column(type="integer",nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
-    protected $roleId;
+    protected $roleIdentity;
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    protected $description;
 } 

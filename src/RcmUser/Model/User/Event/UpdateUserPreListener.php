@@ -31,7 +31,6 @@ class UpdateUserPreListener extends AbstractListener {
      */
     public function onEvent($e)
     {
-
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         $target = $e->getTarget();
@@ -55,7 +54,7 @@ class UpdateUserPreListener extends AbstractListener {
                 if ($dupUser->isSuccess()) {
 
                     // ERROR - user exists
-                    return new Result(null, 0, 'User could not be prepared, duplicate username.');
+                    return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
                 }
 
                 $existingUser->setUsername($updatedUsername);

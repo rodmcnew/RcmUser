@@ -63,7 +63,7 @@ class UserValidatorService
             return new Result($user);
         } else {
 
-            $result = new Result($user, 0, 'User input not valid');
+            $result = new Result($user, Result::CODE_FAIL, 'User input not valid');
 
             foreach ($inputFilter->getInvalidInput() as $key => $error) {
 

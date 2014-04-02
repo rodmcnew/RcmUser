@@ -118,7 +118,7 @@ abstract class AbstractUser implements UserInterface, \JsonSerializable
             return;
         }
 
-        throw new RcmUserException('User data could not be populated, date format not supported');
+        throw new RcmUserException('User data could not be populated, data format not supported');
     }
 
     /**

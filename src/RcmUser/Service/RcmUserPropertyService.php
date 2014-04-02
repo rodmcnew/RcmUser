@@ -16,6 +16,7 @@ use RcmUser\Model\Event\EventProvider;
 class RcmUserPropertyService  extends EventProvider {
 
     /**
+     * Expects the listener to set the property on the user object
      * @param User $user
      * @param string $propertyNameSpace
      * @param mixed $dflt default
@@ -29,7 +30,7 @@ class RcmUserPropertyService  extends EventProvider {
 
         // if a property is not set, see try to get it from an event listener
         if ($property === null || $refresh) {
-            // @event getUserProperty.pre - expects the listener to set the property on the user object
+            // @event getUserProperty.pre -
             $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user, 'propertyNameSpace' => $propertyNameSpace));
         }
 

@@ -34,19 +34,19 @@ class CreateUserPreListener extends AbstractListener {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         $target = $e->getTarget();
-        $newuser = $e->getParam('newUser');
+        $userToCreate = $e->getParam('userToCreate');
 
         // run validation rules
-        $validateResult = $target->getUserValidatorService()->validateUser($newuser);
+        $validateResult = $target->getUserValidatorService()->validateUser($userToCreate);
 
         if (!$validateResult->isSuccess()) {
 
             return $validateResult;
         }
 
-        $newuser->setId($target->buildId());
-        $newuser->setPassword($target->getEncryptor()->create($newuser->getPassword()));
+        $userToCreate->setId($target->buildId());
+        $userToCreate->setPassword($target->getEncryptor()->create($userToCreate->getPassword()));
 
-        return new Result($newuser);
+        return new Result($userToCreate);
     }
 } 
