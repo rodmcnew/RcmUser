@@ -49,7 +49,7 @@ return array(
             ),
         ),
 
-        'EventListeners' => array(),
+        'EventListeners' => 'RcmUser\User\Service\Factory\EventListeners',
     ),
 
     'RcmUser\AuthConfig' => array(
@@ -57,7 +57,9 @@ return array(
         'Adapter' => '',
         'Storage' => '',
         'AuthService' => '',
-        'EventListeners' => array(),
+
+        // @todo - config these
+        'EventListeners' => null,
     ),
 
     'RcmUser\AclConfig' => array(
@@ -69,9 +71,8 @@ return array(
         'DefaultRoleIdentities' => array('guest'),
         'DefaultAuthenticatedRoleIdentities' => array('user'),
 
-        'EventListeners' => array(),
+        'EventListeners' => 'RcmUser\Acl\Service\Factory\EventListeners',
     ),
-
 
     'controllers' => array(
         'invokables' => array(
@@ -148,24 +149,64 @@ return array(
     'service_manager' => array(
         'factories' => array(
 
+            /* REQUIRED */
             'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
+            /**
+             * Encryptor
+             * Required for:
+             * RcmUser\Authentication\Adapter\UserAdapter
+             * RcmUser\User\Event\CreateUserPreListener
+             * RcmUser\User\Service\UserDataService
+             */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+            /**
+             * InputFilter
+             * Required for:
+             * RcmUser\User\Service
+             */
             'RcmUser\User\InputFilter' => 'RcmUser\User\Service\Factory\InputFilter',
+            /**
+             * UserValidatorService
+             * Required for:
+             * RcmUser\User\Service\UserDataService
+             * RcmUser\User\Event\CreateUserPreListener
+             * RcmUser\User\Event\UpdateUserPreListener
+             */
             'RcmUser\User\UserValidator' => 'RcmUser\User\Service\Factory\UserValidator',
+
+            /**
+             * UserRolesDataMapper
+             * Required for (ACL user property):
+             * RcmUser\Acl\Event\CreateUserPostListener
+             * RcmUser\Acl\Event\DeleteUserPostListener
+             * RcmUser\Acl\Event\ReadUserPostListener
+             * RcmUser\Acl\Event\UpdateUserPostListener
+             */
             'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRolesDataMapper',
 
+            /**
+             * UserAdapter
+             * Required for (Auth):
+             * RcmUser\Authentication\Service\AuthenticationService
+             */
             'RcmUser\Authentication\Adapter' => 'RcmUser\Authentication\Service\Factory\Adapter',
+            /**
+             * UserSession
+             * Required for (Auth):
+             * RcmUser\Authentication\Service\AuthenticationService
+             */
             'RcmUser\Authentication\Storage' => 'RcmUser\Authentication\Service\Factory\Storage',
+            /**
+             * UserSession
+             * Required for (Auth):
+             * RcmUser\Authentication\Service\UserAuthenticationService
+             */
             'RcmUser\Authentication\AuthenticationService' => 'RcmUser\Authentication\Service\Factory\AuthenticationService',
 
+            /**
+             *
+             */
             'RcmUser\Acl\IdentiyProvider' => 'RcmUser\Acl\Service\Factory\IdentiyProvider',
-            'RcmUser\Acl\Event\Listeners' => 'RcmUser\Acl\Service\Factory\EventListeners',
-
-            // ****REQUIRED****
-            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
-            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
-            'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
-
 
         ),
     ),

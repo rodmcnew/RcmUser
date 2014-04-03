@@ -6,9 +6,7 @@
 namespace RcmUser;
 
 use RcmUser\Config\Config;
-use RcmUser\User\Service\UserPropertyService;
 use RcmUser\Service\RcmUserService;
-use RcmUser\User\Db\DoctrineUserRolesDataMapper;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\MvcEvent;
 
@@ -58,7 +56,10 @@ class Module implements AutoloaderProviderInterface
 
                         return new Config(isset($config['RcmUser\AclConfig']) ? $config['RcmUser\AclConfig'] : array());
                     },
-                // USER
+                // ****REQUIRED****
+                'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
+                'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
+                'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
                 'RcmUser\Service\RcmUserService' => function ($sm) {
 
                         $authServ = $sm->get('RcmUser\Authentication\Service\UserAuthenticationService');
@@ -72,47 +73,37 @@ class Module implements AutoloaderProviderInterface
 
                         return $service;
                     },
-                'RcmUser\User\Event\Listeners' => function ($sm) {
 
-                        $listeners = array();
-                        // User
-                        $createUserPreListener = new User\Event\CreateUserPreListener();
-                        $listeners[] = $createUserPreListener;
-
-                        $updateUserPreListener = new User\Event\UpdateUserPreListener();
-                        $listeners[] = $updateUserPreListener;
-
-                        return $listeners;
-                    },
-
-                // ACL
-                'RcmUser\Acl\Event\Listeners' => function ($sm) {
-
-                        $cfg = $sm->get('RcmUser\AclConfig');
-
-                        // ACL
-                        $aclCreateUserPostListener = new Acl\Event\CreateUserPostListener();
-                        $aclCreateUserPostListener->setDefaultAuthenticatedRoleIdentities($cfg->get('DefaultAuthenticatedRoleIdentities', array()));
-                        $aclCreateUserPostListener->setUserRolesDataMapper($sm->get('RcmUser\User\UserRolesDataMapper'));
-                        $listeners[] = $aclCreateUserPostListener;
-
-                        $aclReadUserPostListener = new Acl\Event\ReadUserPostListener();
-                        $aclReadUserPostListener->setDefaultAuthenticatedRoleIdentities($cfg->get('DefaultAuthenticatedRoleIdentities', array()));
-                        $aclReadUserPostListener->setUserRolesDataMapper($sm->get('RcmUser\User\UserRolesDataMapper'));
-                        $listeners[] = $aclReadUserPostListener;
-
-                        $updateUserPostListener = new Acl\Event\UpdateUserPostListener();
-                        $updateUserPostListener->setDefaultAuthenticatedRoleIdentities($cfg->get('DefaultAuthenticatedRoleIdentities', array()));
-                        $updateUserPostListener->setUserRolesDataMapper($sm->get('RcmUser\User\UserRolesDataMapper'));
-                        $listeners[] = $updateUserPostListener;
-
-                        return $listeners;
-                    },
                 // Event Aggregation
                 'RcmUser\Event\Listeners' => function ($sm) {
 
-                        // Get all events, combine them, return them.
+                        $listeners = array();
+                        return array();
+                        $eventListeners = $sm->get('RcmUser\UserConfig')->get('EventListeners', null);
+
+                        if(is_array($eventListeners)){
+
+                            $listeners = array_merge($listeners, $eventListeners);
+                        }
+
+                        $eventListeners = $sm->get('RcmUser\AuthConfig')->get('EventListeners', null);
+
+                        if(is_array($eventListeners)){
+
+                            $listeners = array_merge($listeners, $eventListeners);
+                        }
+
+
+                        $eventListeners = $sm->get('RcmUser\AclConfig')->get('EventListeners', null);
+
+                        if(is_array($eventListeners)){
+
+                            $listeners = array_merge($listeners, $eventListeners);
+                        }
+
+                        return $listeners;
                     },
+
             ),
         );
     }

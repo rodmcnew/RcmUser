@@ -11,7 +11,7 @@
 namespace RcmUser\Authentication\Service\Factory;
 
 
-use RcmUser\Authentication\Adapter\RcmUserAdapter;
+use RcmUser\Authentication\Adapter\UserAdapter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -22,7 +22,7 @@ class Adapter implements FactoryInterface
     {
 
         $userDataService = $serviceLocator->get('RcmUser\User\Service\UserDataService');
-        $adapter = new RcmUserAdapter();
+        $adapter = new UserAdapter();
         $adapter->setUserDataService($userDataService);
 
         return $adapter;

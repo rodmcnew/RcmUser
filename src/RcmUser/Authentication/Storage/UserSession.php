@@ -13,7 +13,7 @@ namespace RcmUser\Authentication\Storage;
 
 use Zend\Authentication\Storage\Session;
 
-class RcmUserSession extends Session{
+class UserSession extends Session{
 
     public function __construct($namespace = 'RcmUser', $member = 'user', SessionManager $manager = null)
     {
