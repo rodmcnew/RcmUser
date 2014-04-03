@@ -10,8 +10,11 @@
 
 namespace RcmUser\Service;
 
-use RcmUser\Model\User\Entity\User;
-use RcmUser\Model\User\Result;
+use RcmUser\Authentication\Service\UserAuthenticationService;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
+use RcmUser\User\Service\UserDataService;
+use RcmUser\User\Service\UserPropertyService;
 use ZfcBase\EventManager\EventProvider;
 
 //use ZfcUser\Service\User;
@@ -21,11 +24,11 @@ use ZfcBase\EventManager\EventProvider;
  *
  * @package RcmUser\Service
  */
-class RcmUserService extends \RcmUser\Model\Event\EventProvider
+class RcmUserService extends \RcmUser\Event\EventProvider
 {
 
     /**
-     * @var RcmUserDataService
+     * @var UserDataService
      */
     protected $userDataService;
 
@@ -40,9 +43,9 @@ class RcmUserService extends \RcmUser\Model\Event\EventProvider
     protected $userAuthService;
 
     /**
-     * @param RcmUserDataService $userDataService
+     * @param UserDataService $userDataService
      */
-    public function setUserDataService(RcmUserDataService $userDataService)
+    public function setUserDataService(UserDataService $userDataService)
     {
         $this->userDataService = $userDataService;
     }
@@ -58,7 +61,7 @@ class RcmUserService extends \RcmUser\Model\Event\EventProvider
     /**
      * @param mixed $userPropertyService
      */
-    public function setUserPropertyService(RcmUserPropertyService $userPropertyService)
+    public function setUserPropertyService(UserPropertyService $userPropertyService)
     {
         $this->userPropertyService = $userPropertyService;
     }
@@ -74,7 +77,7 @@ class RcmUserService extends \RcmUser\Model\Event\EventProvider
     /**
      * @param mixed $userAuthService
      */
-    public function setUserAuthService(RcmUserAuthenticationService $userAuthService)
+    public function setUserAuthService(UserAuthenticationService $userAuthService)
     {
         $this->userAuthService = $userAuthService;
     }

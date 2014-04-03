@@ -1,8 +1,12 @@
 <?php
 return array(
-    'rcm_user' => array(
 
-        'userInputFilter' => array(
+    'RcmUser\UserConfig' => array(
+
+        'DataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
+        'Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+        'Encryptor.passwordCost' => 14,
+        'InputFilter' => array(
 
             'username' => array(
                 'name' => 'username',
@@ -25,8 +29,7 @@ return array(
             'password' => array(
                 'name' => 'password',
                 'required' => true,
-                'filters' => array(
-                ),
+                'filters' => array(),
                 'validators' => array(
                     array(
                         'name' => 'StringLength',
@@ -46,32 +49,29 @@ return array(
             ),
         ),
 
-        /**
-         * Password Security
-         *
-         * DO NOT CHANGE THE PASSWORD HASH SETTINGS FROM THEIR DEFAULTS
-         * Unless A) you have done sufficient research and fully understand exactly
-         * what you are changing, AND B) you have a very specific reason to deviate
-         * from the default settings and know what you're doing.
-         *
-         * The password hash settings may be changed at any time without
-         * invalidating existing user accounts. Existing user passwords will be
-         * re-hashed automatically on their next successful login.
-         */
-
-        /**
-         * Password Cost
-         *
-         * The number represents the base-2 logarithm of the iteration count used for
-         * hashing. Default is 14 (about 10 hashes per second on an i5).
-         *
-         * Accepted values: integer between 4 and 31
-         */
-        'password_cost' => 14,
-
-        'aclDefaultRoleIdentities' => array('guest'),
-        'aclDefaultAuthenticatedRoleIdentities' => array('user'),
+        'EventListeners' => array(),
     ),
+
+    'RcmUser\AuthConfig' => array(
+
+        'Adapter' => '',
+        'Storage' => '',
+        'AuthService' => '',
+        'EventListeners' => array(),
+    ),
+
+    'RcmUser\AclConfig' => array(
+
+        'RoleDataMapper' => '',
+        'UserRolesDataMapper' => '',
+        'EventListeners' => array(),
+
+        'DefaultRoleIdentities' => array('guest'),
+        'DefaultAuthenticatedRoleIdentities' => array('user'),
+
+        'EventListeners' => array(),
+    ),
+
 
     'controllers' => array(
         'invokables' => array(
@@ -81,7 +81,7 @@ return array(
 
     'router' => array(
         'routes' => array(
-            'rcm-user' => array(
+            'RcmUser' => array(
 
                 'type' => 'segment',
                 'options' => array(
@@ -123,6 +123,7 @@ return array(
             ),
         ),
     ),
+
     'view_manager' => array(
         'template_path_stack' => array(
             'RcmUser' => __DIR__ . '/../view',
@@ -132,43 +133,40 @@ return array(
     'bjyauthorize' => array(
         'default_role' => 'guest',
         'authenticated_role' => 'user',
-        'identity_provider' => 'RcmUserServiceIdentiyProviderServiceFactory',
+        'identity_provider' => 'RcmUser\Acl\IdentiyProvider',
         'role_providers' => array(
-            'RcmUser\Model\Acl\Provider\RoleProvider' => array(),
-            /*'BjyAuthorize\Provider\Role\Config' => array(
-                'guest' => array(),
-                'user'  => array('children' => array(
-                    'admin' => array(),
-                )),
-            ),*/
-
+            'RcmUser\Acl\Provider\RoleProvider' => array(),
         ),
         'resource_providers' => array(
-            'RcmUser\Model\Acl\Provider\ResourceProvider' => array(),
-            /*'BjyAuthorize\Provider\Resource\Config' => array(
-                'pants' => array(),
-            ),*/
+            'RcmUser\Acl\Provider\ResourceProvider' => array(),
         ),
         'rule_providers' => array(
-            'RcmUser\Model\Acl\Provider\RuleProvider' => array(),
-            /*'BjyAuthorize\Provider\Rule\Config' => array(
-                'allow' => array(
-                    // allow guests and users (and admins, through inheritance)
-                    // the "wear" privilege on the resource "pants"
-                    array(array('guest', 'user'), 'pants')
-                ),
-
-                // Don't mix allow/deny rules if you are using role inheritance.
-                // There are some weird bugs.
-                'deny' => array(
-                    // ...
-                ),
-            ),*/
+            'RcmUser\Acl\Provider\RuleProvider' => array(),
         ),
     ),
+
     'service_manager' => array(
         'factories' => array(
-            'RcmUserServiceIdentiyProviderServiceFactory' => 'RcmUser\Service\IdentiyProviderServiceFactory',
+
+            'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
+            'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+            'RcmUser\User\InputFilter' => 'RcmUser\User\Service\Factory\InputFilter',
+            'RcmUser\User\UserValidator' => 'RcmUser\User\Service\Factory\UserValidator',
+            'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRolesDataMapper',
+
+            'RcmUser\Authentication\Adapter' => 'RcmUser\Authentication\Service\Factory\Adapter',
+            'RcmUser\Authentication\Storage' => 'RcmUser\Authentication\Service\Factory\Storage',
+            'RcmUser\Authentication\AuthenticationService' => 'RcmUser\Authentication\Service\Factory\AuthenticationService',
+
+            'RcmUser\Acl\IdentiyProvider' => 'RcmUser\Acl\Service\Factory\IdentiyProvider',
+            'RcmUser\Acl\Event\Listeners' => 'RcmUser\Acl\Service\Factory\EventListeners',
+
+            // ****REQUIRED****
+            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
+            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
+            'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
+
+
         ),
     ),
 );
