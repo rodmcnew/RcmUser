@@ -55,6 +55,10 @@ return array(
 
             'DefaultRoleIdentities' => array('guest'),
             'DefaultAuthenticatedRoleIdentities' => array('user'),
+            'Resources' => array(
+                'RcmUser.User' => array('create', 'read', 'update', 'delete'),
+                'RcmUser.Acl' => array('create', 'read', 'update', 'delete'),
+            ),
         ),
 
         'Factories' => array(
@@ -145,15 +149,18 @@ return array(
     'bjyauthorize' => array(
         'default_role' => 'guest',
         'authenticated_role' => 'user',
-        'identity_provider' => 'RcmUser\Acl\IdentiyProvider',
+        'identity_provider' => 'RcmUser\Acl\Provider\IdentiyProvider',
         'role_providers' => array(
             'RcmUser\Acl\Provider\RoleProvider' => array(),
         ),
         'resource_providers' => array(
-            'RcmUser\Acl\Provider\ResourceProvider' => array(),
+            'RcmUser\Acl\Provider\ResourceProvider' => array(
+                'RcmUser.User' => array('create', 'read', 'update', 'delete'),
+                'RcmUser.Acl' => array('create', 'read', 'update', 'delete'),
+            ),
         ),
         'rule_providers' => array(
-            'RcmUser\Acl\Provider\RuleProvider' => array(),
+            'RcmUser\Acl\Provider\RuleProvider' => 'RcmUser\Acl\Provider\RuleProvider',
         ),
     ),
 
@@ -211,6 +218,12 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'RcmUser' => __DIR__ . '/../view',
+        ),
+    ),
+
+    'service_manager' => array(
+        'factories' => array(
+
         ),
     ),
 );

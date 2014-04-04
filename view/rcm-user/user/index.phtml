@@ -89,7 +89,7 @@ echo "GenAuth Result: ".var_export($authResult->isValid(), true)."\n";
 var_dump($authResult);
 /* */
 
-/*  LOG IN *
+/*  LOG IN */
 $authResult = $userService->authenticate($user);
 
 echo "Sess Auth Result: ".var_export($authResult->isValid(), true)."\n";
@@ -110,7 +110,7 @@ var_dump($userService->getIdentity());
 /* */
 
 /* ACL ************************************/
-
+var_dump($bjyAuthService->getAcl()->getResources());
 /* */
 
 ?>

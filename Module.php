@@ -5,6 +5,9 @@
 
 namespace RcmUser;
 
+use RcmUser\Acl\Provider\IdentityProvider;
+use RcmUser\Acl\Provider\RuleProvider;
+use RcmUser\Acl\Service\Factory\IdentiyProvider;
 use RcmUser\Config\Config;
 use RcmUser\Service\RcmUserService;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
@@ -80,6 +83,24 @@ class Module implements AutoloaderProviderInterface
                     return $service;
                 },
 
+            'RcmUser\Acl\Provider\RuleProvider' => function ($sm) {
+
+                    $service = new RuleProvider();
+                    return $service;
+                },
+
+            'RcmUser\Acl\Provider\IdentiyProvider' => function ($sm) {
+
+                    $rcmUserService = $sm->get('RcmUser\Service\RcmUserService');
+                    $cfg = $sm->get('RcmUser\AclConfig');
+
+                    $service = new IdentityProvider();
+                    $service->setUserService($rcmUserService);
+                    $service->setDefaultRoleIdentity($cfg->get('DefaultRoleIdentities', array()));
+
+                    return $service;
+                },
+
             // Event Aggregation
             'RcmUser\Event\Listeners' => function ($sm) {
 
@@ -112,8 +133,7 @@ class Module implements AutoloaderProviderInterface
 
         );
 
-
-
+        // @todo this is not required, can be moved to module=>factory?
         $moduleConfig = $this->getConfig();
 
         $rcmConfig = isset($moduleConfig['RcmUser']) ? $moduleConfig['RcmUser'] : array();

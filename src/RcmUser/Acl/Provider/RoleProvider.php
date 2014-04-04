@@ -13,6 +13,7 @@ use BjyAuthorize\Provider\Role\ProviderInterface;
  */
 class RoleProvider implements ProviderInterface
 {
+
     /**
      * @return \Zend\Permissions\Acl\Role\RoleInterface[]
      */
