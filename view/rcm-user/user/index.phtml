@@ -16,45 +16,13 @@ $acl = new Acl();
 
 $user = $userService->buildNewUser();
 
-//$user->setId('fdbeae1a-3d7c-42cf-aa4d-b5aa04e4840c');
-
-//$user->setId('57a4de8e-225b-4e31-9f88-19ddb14fc13c');
-
-//$user->setId('ee827d29-4940-4181-93a7-846820a75855');
-$user->setUsername('Jimmyy');
+//$user->setId('d1c0967c-844f-4c0f-94b1-0b9bafec970b');
+$user->setUsername('Brian2');
 $user->setPassword('1231231232');
 
 echo "**Before action:\n";
 var_dump($user);
 
-/* AUTH ***********************************/
-
-/* AUTH CHECK */
-$authResult = $userService->validateCredentials($user);
-
-echo "GenAuth Result: ".var_export($authResult->isValid(), true)."\n";
-var_dump($authResult);
-/* */
-
-/*  LOG IN *
-$authResult = $userService->authenticate($user);
-
-echo "Sess Auth Result: ".var_export($authResult->isValid(), true)."\n";
-var_dump($authResult);
-/*  */
-
-/* GET SESSION USER *
-echo "Session user: \n";
-var_dump($userService->getIdentity());
-/* */
-
-/*  LOG OUT *
-$userService->clearIdentity();
-
-echo "Session user after log out: \n";
-var_dump($userService->getIdentity());
-
-/* */
 
 /* CRUD ***********************************/
 /* CREATE *
@@ -108,6 +76,36 @@ if(!$result->isSuccess()){
 
 var_dump($result->getUser());
 /* */
+
+/* */
+
+
+/* AUTH ***********************************/
+
+/* AUTH CHECK *
+$authResult = $userService->validateCredentials($user);
+
+echo "GenAuth Result: ".var_export($authResult->isValid(), true)."\n";
+var_dump($authResult);
+/* */
+
+/*  LOG IN *
+$authResult = $userService->authenticate($user);
+
+echo "Sess Auth Result: ".var_export($authResult->isValid(), true)."\n";
+var_dump($authResult);
+/* */
+
+/* GET SESSION USER *
+echo "Session user: \n";
+var_dump($userService->getIdentity());
+/* */
+
+/*  LOG OUT *
+$userService->clearIdentity();
+
+echo "Session user after log out: \n";
+var_dump($userService->getIdentity());
 
 /* */
 
