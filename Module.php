@@ -33,78 +33,99 @@ class Module implements AutoloaderProviderInterface
 
     public function getServiceConfig()
     {
-        // @todo inject what is configurable
+
+        $factories = array(
+            // Config
+            'RcmUser\Config' => function ($sm) {
+
+                    $config = $sm->get('Config');
+
+                    $rcmConfig = isset($config['RcmUser']) ? $config['RcmUser'] : array();
+
+                    return $rcmConfig;
+                },
+            'RcmUser\UserConfig' => function ($sm) {
+
+                    $config = $sm->get('RcmUser\Config');
+
+                    return new Config(isset($config['UserConfig']) ? $config['UserConfig'] : array());
+                },
+            'RcmUser\AuthConfig' => function ($sm) {
+
+                    $config = $sm->get('RcmUser\Config');
+
+                    return new Config(isset($config['AuthConfig']) ? $config['AuthConfig'] : array());
+                },
+            'RcmUser\AclConfig' => function ($sm) {
+
+                    $config = $sm->get('RcmUser\Config');
+
+                    return new Config(isset($config['AclConfig']) ? $config['AclConfig'] : array());
+                },
+            // ****REQUIRED****
+            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
+            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
+            'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
+            'RcmUser\Service\RcmUserService' => function ($sm) {
+
+                    $authServ = $sm->get('RcmUser\Authentication\Service\UserAuthenticationService');
+                    $userDataService = $sm->get('RcmUser\User\Service\UserDataService');
+                    $userPropertyService = $sm->get('RcmUser\User\Service\UserPropertyService');
+
+                    $service = new RcmUserService();
+                    $service->setUserDataService($userDataService);
+                    $service->setUserPropertyService($userPropertyService);
+                    $service->setUserAuthService($authServ);
+
+                    return $service;
+                },
+
+            // Event Aggregation
+            'RcmUser\Event\Listeners' => function ($sm) {
+
+                    $listeners = array();
+                    $config = $sm->get('Config');
+
+                    try {
+                        $eventListeners = $sm->get('RcmUser\User\EventListeners');
+                        $listeners = $eventListeners;
+                    } catch (\Exception $e) {
+                        // no listeners
+                    }
+
+                    try {
+                        $eventListeners = $sm->get('RcmUser\Authentication\EventListeners');
+                        $listeners = array_merge($eventListeners, $listeners);
+                    } catch (\Exception $e) {
+                        // no listeners
+                    }
+
+                    try {
+                        $eventListeners = $sm->get('RcmUser\Acl\EventListeners');
+                        $listeners = array_merge($eventListeners, $listeners);
+                    } catch (\Exception $e) {
+                        // no listeners
+                    }
+
+                    return $listeners;
+                },
+
+        );
+
+
+
+        $moduleConfig = $this->getConfig();
+
+        $rcmConfig = isset($moduleConfig['RcmUser']) ? $moduleConfig['RcmUser'] : array();
+
+        $factoryConfig = isset($rcmConfig['Factories']) ? $rcmConfig['Factories'] : array();
+
+        $factories = array_merge($factoryConfig, $factories);
+
+        // Actual
         return array(
             'invokables' => array(),
-            'factories' => array(
-                // Config
-                'RcmUser\UserConfig' => function ($sm) {
-
-                        $config = $sm->get('Config');
-
-                        return new Config(isset($config['RcmUser\UserConfig']) ? $config['RcmUser\UserConfig'] : array());
-                    },
-                'RcmUser\AuthConfig' => function ($sm) {
-
-                        $config = $sm->get('Config');
-
-                        return new Config(isset($config['RcmUser\AuthConfig']) ? $config['RcmUser\AuthConfig'] : array());
-                    },
-                'RcmUser\AclConfig' => function ($sm) {
-
-                        $config = $sm->get('Config');
-
-                        return new Config(isset($config['RcmUser\AclConfig']) ? $config['RcmUser\AclConfig'] : array());
-                    },
-                // ****REQUIRED****
-                'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
-                'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
-                'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
-                'RcmUser\Service\RcmUserService' => function ($sm) {
-
-                        $authServ = $sm->get('RcmUser\Authentication\Service\UserAuthenticationService');
-                        $userDataService = $sm->get('RcmUser\User\Service\UserDataService');
-                        $userPropertyService = $sm->get('RcmUser\User\Service\UserPropertyService');
-
-                        $service = new RcmUserService();
-                        $service->setUserDataService($userDataService);
-                        $service->setUserPropertyService($userPropertyService);
-                        $service->setUserAuthService($authServ);
-
-                        return $service;
-                    },
-
-                // Event Aggregation
-                'RcmUser\Event\Listeners' => function ($sm) {
-
-                        $listeners = array();
-                        return array();
-                        $eventListeners = $sm->get('RcmUser\UserConfig')->get('EventListeners', null);
-
-                        if(is_array($eventListeners)){
-
-                            $listeners = array_merge($listeners, $eventListeners);
-                        }
-
-                        $eventListeners = $sm->get('RcmUser\AuthConfig')->get('EventListeners', null);
-
-                        if(is_array($eventListeners)){
-
-                            $listeners = array_merge($listeners, $eventListeners);
-                        }
-
-
-                        $eventListeners = $sm->get('RcmUser\AclConfig')->get('EventListeners', null);
-
-                        if(is_array($eventListeners)){
-
-                            $listeners = array_merge($listeners, $eventListeners);
-                        }
-
-                        return $listeners;
-                    },
-
-            ),
+            'factories' => $factories,
         );
     }
 
@@ -114,7 +135,6 @@ class Module implements AutoloaderProviderInterface
         $sm = $application->getServiceManager();
         $eventManager = $application->getEventManager();
 
-        // @todo might create aggregate object
         try {
             $listeners = $sm->get('RcmUser\Event\Listeners');
             foreach ($listeners as $listener) {
