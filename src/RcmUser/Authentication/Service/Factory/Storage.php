@@ -10,7 +10,7 @@
 
 namespace RcmUser\Authentication\Service\Factory;
 
-use RcmUser\Authentication\Storage\RcmUserSession;
+use RcmUser\Authentication\Storage\UserSession;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -20,6 +20,6 @@ class Storage implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
 
-        return new RcmUserSession();
+        return new UserSession();
     }
 }

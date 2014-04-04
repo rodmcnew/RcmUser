@@ -16,11 +16,11 @@ use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
 
 /**
- * Class RcmUserAdapter
+ * Class UserAdapter
  *
  * @package RcmUser\Authentication\Adapter
  */
-class RcmUserAdapter extends AbstractAdapter
+class UserAdapter extends AbstractAdapter
 {
     /**
      * @var
