@@ -15,7 +15,20 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 class ResourceProvider implements ProviderInterface
 {
 
-    protected $resources = array('core' => array('create', 'read', 'update', 'delete'),);
+    protected $resources
+        = array(
+            'core' => array(
+                'read',
+                'update',
+                'create',
+                'delete',
+
+                'r.test' => array(
+                    'test.create' => array(),
+                ),
+                'r.page' => array(),
+            ),
+        );
 
     public function __construct($resources = array())
     {
@@ -33,7 +46,6 @@ class ResourceProvider implements ProviderInterface
 
         $this->resources[$key] = $value;
     }
-
 
 
     public function getResource($key, $dflt = array())

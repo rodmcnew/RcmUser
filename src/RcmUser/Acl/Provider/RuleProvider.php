@@ -22,7 +22,10 @@ class RuleProvider implements ProviderInterface
             'allow' => array(
                 // allow guests and users (and admins, through inheritance)
                 // the "wear" privilege on the resource "pants"
-                array(array('guest', 'user'), 'core', 'read')
+                array(
+                    array('r.user'),
+                    'core',
+                )
             ),
 
             // Don't mix allow/deny rules if you are using role inheritance.

@@ -55,10 +55,6 @@ return array(
 
             'DefaultRoleIdentities' => array('guest'),
             'DefaultAuthenticatedRoleIdentities' => array('user'),
-            'Resources' => array(
-                'RcmUser.User' => array('create', 'read', 'update', 'delete'),
-                'RcmUser.Acl' => array('create', 'read', 'update', 'delete'),
-            ),
         ),
 
         'Factories' => array(
@@ -74,12 +70,9 @@ return array(
              * RcmUser\User\Service\UserDataService
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
-            /**
-             * InputFilter
-             * Required for:
-             * RcmUser\User\Service
-             */
-            'RcmUser\User\InputFilter' => 'RcmUser\User\Service\Factory\InputFilter',
+
+            'RcmUser\User\UserDataPrep' => 'RcmUser\User\Service\Factory\UserDataPrep',
+
             /**
              * UserValidatorService
              * Required for:
@@ -155,12 +148,13 @@ return array(
         ),
         'resource_providers' => array(
             'RcmUser\Acl\Provider\ResourceProvider' => array(
+                'RcmUser.Core' => array('create', 'read', 'update', 'delete'),
                 'RcmUser.User' => array('create', 'read', 'update', 'delete'),
                 'RcmUser.Acl' => array('create', 'read', 'update', 'delete'),
             ),
         ),
         'rule_providers' => array(
-            'RcmUser\Acl\Provider\RuleProvider' => 'RcmUser\Acl\Provider\RuleProvider',
+            'RcmUser\Acl\Provider\RuleProvider' => array(),
         ),
     ),
 

@@ -14,7 +14,7 @@ namespace RcmUser\User\Event;
 use RcmUser\Event\AbstractListener;
 use RcmUser\User\Result;
 
-class UpdateUserPreListener extends AbstractListener {
+class UpdateUserPrePrepListener extends AbstractListener {
 
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -34,13 +34,13 @@ class UpdateUserPreListener extends AbstractListener {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         $target = $e->getTarget();
-        $existingUser = $e->getParam('existingUser');
+        $resultUser = $e->getParam('resultUser');
         $updatedUser =  $e->getParam('updatedUser');
 
 
         // USERNAME CHECKS
         $updatedUsername = $updatedUser->getUsername();
-        $existingUserName = $existingUser->getUsername();
+        $existingUserName = $resultUser->getUsername();
 
         // sync null
         if ($updatedUsername !== null) {
@@ -57,35 +57,26 @@ class UpdateUserPreListener extends AbstractListener {
                     return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
                 }
 
-                $existingUser->setUsername($updatedUsername);
+                $resultUser->setUsername($updatedUsername);
             }
         }
 
         // PASSWORD CHECKS
         $updatedPassword = $updatedUser->getPassword();
-        $existingPassword = $existingUser->getPassword();
+        $existingPassword = $resultUser->getPassword();
         $hashedPassword = $existingPassword;
         // sync null
         if ($updatedPassword !== null) {
             // if password changed
             if ($existingPassword !== $updatedPassword) {
                 // plain text
-                $existingUser->setPassword($updatedPassword);
-                $hashedPassword = $target->getEncryptor()->create($updatedPassword);
+                $resultUser->setPassword($updatedPassword);
+                $hashedPassword = $target->getUserDataPrepService()->getEncryptor()->create($updatedPassword);
             }
         }
 
-        // run validation rules
-        $validateResult = $target->getUserValidatorService()->validateUser($existingUser);
+        $resultUser->setPassword($hashedPassword);
 
-        if (!$validateResult->isSuccess()) {
-
-            return $validateResult;
-        }
-
-        // if valid:
-        $existingUser->setPassword($hashedPassword);
-
-        return new Result($existingUser);
+        return new Result($resultUser);
     }
 } 

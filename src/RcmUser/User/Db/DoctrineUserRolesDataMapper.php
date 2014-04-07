@@ -36,7 +36,7 @@ class DoctrineUserRolesDataMapper extends DoctrineMapper implements UserRolesDat
     public function read(UserInterface $user)
     {
 
-        return new Result(array('me','and','doctrine'), Result::CODE_SUCCESS);
+        return new Result(array('r.user'), Result::CODE_SUCCESS);
     }
 
     public function update(UserInterface $user, $roles = array())

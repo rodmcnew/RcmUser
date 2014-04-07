@@ -30,15 +30,13 @@ class UserDataService extends EventProvider
      */
     protected $userDataMapper;
 
-    /**
-     * @var PasswordInterface
-     */
-    protected $encryptor;
 
     /**
-     * @var
+     * @var UserValidatorServiceInterface
      */
     protected $userValidatorService;
+
+    protected $userDataPrepService;
 
     /**
      * @param mixed $userDataMapper
@@ -57,25 +55,9 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param PasswordInterface $encryptor
+     * @param UserValidatorServiceInterface $userValidatorService
      */
-    public function setEncryptor(PasswordInterface $encryptor)
-    {
-        $this->encryptor = $encryptor;
-    }
-
-    /**
-     * @return PasswordInterface
-     */
-    public function getEncryptor()
-    {
-        return $this->encryptor;
-    }
-
-    /**
-     * @param mixed $userValidatorService
-     */
-    public function setUserValidatorService($userValidatorService)
+    public function setUserValidatorService(UserValidatorServiceInterface $userValidatorService)
     {
         $this->userValidatorService = $userValidatorService;
     }
@@ -86,6 +68,22 @@ class UserDataService extends EventProvider
     public function getUserValidatorService()
     {
         return $this->userValidatorService;
+    }
+
+    /**
+     * @param UserDataPrepServiceInterface $userDataPrepService
+     */
+    public function setUserDataPrepService(UserDataPrepServiceInterface $userDataPrepService)
+    {
+        $this->userDataPrepService = $userDataPrepService;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getUserDataPrepService()
+    {
+        return $this->userDataPrepService;
     }
 
     /**
@@ -104,8 +102,11 @@ class UserDataService extends EventProvider
             return new Result(null, Result::CODE_FAIL, 'User already exists.');
         }
 
+        $resultUser = new User();
+        $resultUser->populate($user);
+
         // @event pre  - expects listener to return RcmUser\User\Result
-        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('userToCreate' => $user), function($result){ return !$result->isSuccess();});
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('userToCreate' => $user, 'resultUser' => $resultUser), function($result){ return !$result->isSuccess();});
 
         if ($resultsPre->stopped()) {
 
@@ -125,7 +126,7 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * This will read the user from Id or Username. Id will get priority if it is set.
+     * This will read the user. Id will get priority if it is set.
      *
      * @param User $user
      *
@@ -133,8 +134,11 @@ class UserDataService extends EventProvider
      */
     public function readUser(User $user)
     {
+        $resultUser = new User();
+        $resultUser->populate($user);
+
         // @event pre - expects listener to return RcmUser\User\Result
-        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('userToRead' => $user), function($result){ return !$result->isSuccess();});
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('userToRead' => $user, 'resultUser' => $resultUser), function($result){ return !$result->isSuccess();});
 
         if ($resultsPre->stopped()) {
 
@@ -173,10 +177,10 @@ class UserDataService extends EventProvider
             return $existingUserResult;
         }
 
-        $existingUser = $existingUserResult->getUser();
+        $resultUser = $existingUserResult->getUser();
 
         // @event pre  - expects listener to return RcmUser\User\Result
-        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('existingUser' => $existingUser, 'updatedUser' => $user), function($result){ return !$result->isSuccess();});
+        $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('resultUser' => $resultUser, 'updatedUser' => $user), function($result){ return !$result->isSuccess();});
 
         if ($resultsPre->stopped()) {
 
@@ -244,25 +248,4 @@ class UserDataService extends EventProvider
         return $result;
     }
 
-    /**
-     * @return string
-     */
-    public function buildId()
-    {
-
-        return $this->guidv4();
-    }
-
-    /**
-     * @return string
-     */
-    public function guidv4()
-    {
-        $data = openssl_random_pseudo_bytes(16);
-
-        $data[6] = chr(ord($data[6]) & 0x0f | 0x40); // set version to 0010
-        $data[8] = chr(ord($data[8]) & 0x3f | 0x80); // set bits 6-7 to 10
-
-        return vsprintf('%s%s-%s-%s-%s-%s%s%s', str_split(bin2hex($data), 4));
-    }
 } 

@@ -109,8 +109,18 @@ var_dump($userService->getIdentity());
 
 /* */
 
-/* ACL ************************************/
+/* ACL ************************************
+echo "ACL Roles: ";
+var_dump($bjyAuthService->getAcl()->getRoles());
+
+echo "ACL Resources: ";
 var_dump($bjyAuthService->getAcl()->getResources());
+
+echo "ACL Rules: ";
+//var_dump($bjyAuthService);
+
+echo "->isAllowed() = ";
+var_export($this->isAllowed('test.create'));
 /* */
 
 ?>

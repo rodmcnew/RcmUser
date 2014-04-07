@@ -6,6 +6,8 @@
 namespace RcmUser;
 
 use RcmUser\Acl\Provider\IdentityProvider;
+use RcmUser\Acl\Provider\ResourceProvider;
+use RcmUser\Acl\Provider\RoleProvider;
 use RcmUser\Acl\Provider\RuleProvider;
 use RcmUser\Acl\Service\Factory\IdentiyProvider;
 use RcmUser\Config\Config;
@@ -83,11 +85,7 @@ class Module implements AutoloaderProviderInterface
                     return $service;
                 },
 
-            'RcmUser\Acl\Provider\RuleProvider' => function ($sm) {
 
-                    $service = new RuleProvider();
-                    return $service;
-                },
 
             'RcmUser\Acl\Provider\IdentiyProvider' => function ($sm) {
 
@@ -101,6 +99,21 @@ class Module implements AutoloaderProviderInterface
                     return $service;
                 },
 
+            'RcmUser\Acl\Provider\RoleProvider' => function ($sm) {
+
+                    $service = new RoleProvider();
+                    return $service;
+                },
+            'RcmUser\Acl\Provider\RuleProvider' => function ($sm) {
+
+                    $service = new RuleProvider();
+                    return $service;
+                },
+            'RcmUser\Acl\Provider\ResourceProvider' => function ($sm) {
+
+                    $service = new ResourceProvider();
+                    return $service;
+                },
             // Event Aggregation
             'RcmUser\Event\Listeners' => function ($sm) {
 

@@ -10,24 +10,21 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use RcmUser\User\InputFilter\UserInputFilter;
-use Zend\InputFilter\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class InputFilter implements FactoryInterface
+class TestUserDataMapper implements FactoryInterface
 {
-
+    /**
+     * @param ServiceLocatorInterface $serviceLocator
+     *
+     * @return mixed|\RcmUser\User\Db\DoctrineUserDataMapper
+     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $inputFilter = new UserInputFilter();
-        $factory = new Factory();
-        $inputs = $serviceLocator->get('RcmUser\UserConfig')->get('InputFilter', array());
 
-        foreach ($inputs as $k => $v) {
-            $inputFilter->add($factory->createInput($v), $k);
-        }
+        $dm = new \RcmUser\User\Db\TestUserDataMapper();
 
-        return $inputFilter;
+        return $dm;
     }
 }

@@ -1,5 +1,5 @@
 <?php
-/**
+ /**
  * @category  RCM
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2012 Reliv International
@@ -10,23 +10,25 @@
 
 namespace RcmUser\User\Service\Factory;
 
+    use RcmUser\User\InputFilter\UserInputFilter;
+    use RcmUser\User\Service\UserDataPrepService;
+    use RcmUser\User\Service\UserValidatorService;
+    use Zend\InputFilter\Factory;
+    use Zend\ServiceManager\FactoryInterface;
+    use Zend\ServiceManager\ServiceLocatorInterface;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
-class UserDataService implements FactoryInterface
+class UserDataPrep implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $dm = $serviceLocator->get('RcmUser\User\UserDataMapper');
-        $vs = $serviceLocator->get('RcmUser\User\UserValidator');
-        $dps = $serviceLocator->get('RcmUser\User\UserDataPrep');
 
-        $service = new \RcmUser\User\Service\UserDataService();
+        $dm = $serviceLocator->get('RcmUser\User\UserDataMapper');
+        $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
+
+        $service = new UserDataPrepService();
         $service->setUserDataMapper($dm);
-        $service->setUserValidatorService($vs);
-        $service->setUserDataPrepService($dps);
+        $service->setEncryptor($encrypt);
 
         return $service;
     }
