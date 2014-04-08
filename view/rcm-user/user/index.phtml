@@ -16,9 +16,9 @@ $acl = new Acl();
 
 $user = $userService->buildNewUser();
 
-//$user->setId('d1c0967c-844f-4c0f-94b1-0b9bafec970b');
-$user->setUsername('Brian2');
-$user->setPassword('1231231232');
+$user->setId('f11653b8-2a4a-4784-a70b-ac7641b46c28');
+$user->setUsername('Jerry13');
+//$user->setPassword('12345678');
 
 echo "**Before action:\n";
 var_dump($user);
@@ -38,7 +38,7 @@ if(!$result->isSuccess()){
 var_dump($result->getUser());
 /* */
 
-/* READ *
+/* READ */
 $result = $userService->readUser($user);
 
 echo "**After read:\n";
@@ -109,8 +109,18 @@ var_dump($userService->getIdentity());
 
 /* */
 
-/* ACL ************************************/
+/* ACL ************************************
+echo "ACL Roles: ";
+var_dump($bjyAuthService->getAcl()->getRoles());
 
+echo "ACL Resources: ";
+var_dump($bjyAuthService->getAcl()->getResources());
+
+echo "ACL Rules: ";
+//var_dump($bjyAuthService);
+
+echo "->isAllowed() = ";
+var_export($this->isAllowed('test.create'));
 /* */
 
 ?>

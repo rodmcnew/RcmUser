@@ -125,7 +125,7 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
         }
 
         // @todo if error, fail with null
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->merge($user);
         $this->getEntityManager()->flush();
 
         return new Result($user);
@@ -138,6 +138,9 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
      */
     public function delete(UserInterface $user)
     {
+
+        return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, delete not supported.');
+        /* by default, we should not support delete
         $result = $this->getValidInstance($user);
 
         $user = $result->getUser();
@@ -148,11 +151,12 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
             return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, id required for delete.');
         }
 
-        // @todo if error, fail with null
+        //  if error, fail with null
         $this->getEntityManager()->remove($user);
         $this->getEntityManager()->flush();
 
         return new Result($user);
+        */
     }
 
     /**

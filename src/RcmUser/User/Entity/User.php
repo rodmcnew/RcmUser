@@ -84,7 +84,7 @@ class User extends AbstractUser implements \JsonSerializable
             return parent::populate($data);
         }
 
-        throw new RcmUserException('User data could not be populated, date format not supported');
+        throw new RcmUserException('User data could not be populated, data format not supported');
     }
 
     /**

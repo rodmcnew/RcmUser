@@ -14,14 +14,14 @@ namespace RcmUser\User\Event;
 use RcmUser\Event\AbstractListener;
 use RcmUser\User\Result;
 
-class CreateUserPreListener extends AbstractListener {
+class UpdateUserPreValidatorListener extends AbstractListener {
 
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
     protected $id = 'RcmUser\User\Service\UserDataService';
-    protected $event = 'createUser.pre';
+    protected $event = 'updateUser.pre';
     protected $priority = 100;
 
     /**
@@ -34,19 +34,10 @@ class CreateUserPreListener extends AbstractListener {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         $target = $e->getTarget();
-        $userToCreate = $e->getParam('userToCreate');
+        $updatedUser = $e->getParam('updatedUser');
+        $updatableUser =  $e->getParam('updatableUser');
 
         // run validation rules
-        $validateResult = $target->getUserValidatorService()->validateUser($userToCreate);
-
-        if (!$validateResult->isSuccess()) {
-
-            return $validateResult;
-        }
-
-        $userToCreate->setId($target->buildId());
-        $userToCreate->setPassword($target->getEncryptor()->create($userToCreate->getPassword()));
-
-        return new Result($userToCreate);
+        return $target->getUserValidatorService()->validateUpdateUser($updatedUser, $updatableUser);
     }
 } 

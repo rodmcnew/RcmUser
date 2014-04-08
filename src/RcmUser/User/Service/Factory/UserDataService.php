@@ -21,13 +21,12 @@ class UserDataService implements FactoryInterface
     {
         $dm = $serviceLocator->get('RcmUser\User\UserDataMapper');
         $vs = $serviceLocator->get('RcmUser\User\UserValidator');
-        $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
+        $dps = $serviceLocator->get('RcmUser\User\UserDataPrep');
 
         $service = new \RcmUser\User\Service\UserDataService();
-        // @todo de-couple encryptor
-        $service->setEncryptor($encrypt);
         $service->setUserDataMapper($dm);
         $service->setUserValidatorService($vs);
+        $service->setUserDataPrepService($dps);
 
         return $service;
     }

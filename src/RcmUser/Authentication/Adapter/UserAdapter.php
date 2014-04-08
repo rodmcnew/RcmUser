@@ -131,7 +131,7 @@ class UserAdapter extends AbstractAdapter
 
         $credential = $user->getPassword();
 
-        $isValid = $this->getUserDataService()->getEncryptor()->verify($credential, $existingHash);
+        $isValid = $this->getUserDataService()->getUserDataPrepService()->getEncryptor()->verify($credential, $existingHash);
         if ($isValid) {
 
             if ($this->getObfuscatePassword()) {

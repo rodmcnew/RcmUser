@@ -10,24 +10,23 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use RcmUser\User\InputFilter\UserInputFilter;
-use Zend\InputFilter\Factory;
+use RcmUser\User\Service\UserDataPrepService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class InputFilter implements FactoryInterface
+class UserDataPrep implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $inputFilter = new UserInputFilter();
-        $factory = new Factory();
-        $inputs = $serviceLocator->get('RcmUser\UserConfig')->get('InputFilter', array());
 
-        foreach ($inputs as $k => $v) {
-            $inputFilter->add($factory->createInput($v), $k);
-        }
+        $dm = $serviceLocator->get('RcmUser\User\UserDataMapper');
+        $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
 
-        return $inputFilter;
+        $service = new UserDataPrepService();
+        $service->setUserDataMapper($dm);
+        $service->setEncryptor($encrypt);
+
+        return $service;
     }
 }

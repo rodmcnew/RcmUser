@@ -5,6 +5,14 @@ CREATE TABLE rcm_user_user (
 	username VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL,
 	-- email    VARCHAR(255) DEFAULT NULL UNIQUE,
+	-- state VARCHAR(255) DEFAULT 'disabled', -- 'enabled', 'disabled', etc... 
+	PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
+
+CREATE TABLE rcm_user_user_role (
+	id INT AUTO_INCREMENT NOT NULL, 
+	userId VARCHAR(255) NOT NULL,
+	roleId INT NOT NULL,
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
@@ -13,27 +21,16 @@ CREATE TABLE rcm_user_acl_role (
 	parentId INT DEFAULT 0,
 	roleIdentity VARCHAR(255) NOT NULL,
 	description VARCHAR(255) DEFAULT NULL, 
-	
-	/* TRACEABILITY
-	createDate DATETIME DEFAULT NULL, 
-	createdById BIGINT DEFAULT NULL, 
-	updateDate DATETIME DEFAULT NULL, 
-	updatedById BIGINT DEFAULT NULL, 
-	*/
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
-CREATE TABLE rcm_user_user_role (
-	id INT AUTO_INCREMENT NOT NULL, 
-	userId VARCHAR(255) NOT NULL,
-	roleId INT NOT NULL,
-
-	/* TRACEABILITY
-	createDate DATETIME DEFAULT NULL, 
-	createdById BIGINT DEFAULT NULL, 
-	updateDate DATETIME DEFAULT NULL, 
-	updatedById BIGINT DEFAULT NULL, 
-	*/
+CREATE TABLE rcm_user_acl_rule (
+	id INT AUTO_INCREMENT NOT NULL,
+    parentId INT DEFAULT 0,
+	rule VARCHAR(255) NOT NULL, -- allow or deny
+	resource VARCHAR(255) NOT NULL, -- some resource value
+	privilege VARCHAR(255) NOT NULL, -- some privilege value
+	description VARCHAR(255) DEFAULT NULL, 
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 

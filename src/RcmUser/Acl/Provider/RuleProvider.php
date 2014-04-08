@@ -3,7 +3,7 @@
  *
  */
 
-namespace RcmUser\Acl\Provider\Rule;
+namespace RcmUser\Acl\Provider;
 
 use BjyAuthorize\Provider\Rule\ProviderInterface;
 
@@ -22,7 +22,10 @@ class RuleProvider implements ProviderInterface
             'allow' => array(
                 // allow guests and users (and admins, through inheritance)
                 // the "wear" privilege on the resource "pants"
-                array(array('guest', 'user'), 'pants', 'wear')
+                array(
+                    array('r.user'),
+                    'core',
+                )
             ),
 
             // Don't mix allow/deny rules if you are using role inheritance.

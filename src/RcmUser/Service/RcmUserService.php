@@ -219,11 +219,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function getCurrentUserProperty($propertyNameSpace, $dflt = null, $refresh = false)
     {
-        $user = $this->readSessUser();
+        $user = $this->getSessUser();
 
         if (empty($user)) {
 
-            return null;
+            return $dflt;
         }
 
         return $this->getUserProperty($user, $propertyNameSpace, $dflt, $refresh);

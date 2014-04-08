@@ -12,6 +12,7 @@ namespace RcmUser\User\Service;
 
 
 use RcmUser\Event\EventProvider;
+use RcmUser\User\Entity\User;
 
 class UserPropertyService  extends EventProvider {
 

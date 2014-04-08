@@ -12,7 +12,8 @@ class UserController extends AbstractActionController
     public function indexAction()
     {
         $userService = $this->getServiceLocator()->get('RcmUser\Service\RcmUserService');
-        return array('userService' => $userService);
+        $bjyAuthService = $this->getServiceLocator()->get('BjyAuthorize\Service\Authorize');
+        return array('userService' => $userService, 'bjyAuthService' => $bjyAuthService);
     }
 
     public function fooAction()

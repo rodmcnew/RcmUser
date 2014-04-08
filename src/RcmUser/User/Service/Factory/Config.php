@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * @category  RCM
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2012 Reliv International
@@ -10,23 +10,16 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use Zend\Crypt\Password\Bcrypt;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class Encryptor implements FactoryInterface
+class Config implements FactoryInterface
 {
-    /**
-     * @param ServiceLocatorInterface $serviceLocator
-     *
-     * @return mixed|PasswordInterface
-     */
+
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\User\Config');
-        $encryptor = new Bcrypt();
-        $encryptor->setCost($cfg->get('Encryptor.passwordCost', 14));
+        $config = $serviceLocator->get('RcmUser\Config');
 
-        return $encryptor;
+        return new \RcmUser\Config\Config(isset($config['User\Config']) ? $config['User\Config'] : array());
     }
 }
