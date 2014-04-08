@@ -43,18 +43,6 @@ class Module implements AutoloaderProviderInterface
             'invokables' => array(),
             'factories' => array(
 
-                'RcmUser\Acl\Provider\IdentiyProvider' => function ($sm) {
-
-                        $rcmUserService = $sm->get('RcmUser\Service\RcmUserService');
-                        $cfg = $sm->get('RcmUser\Acl\Config');
-
-                        $service = new IdentityProvider();
-                        $service->setUserService($rcmUserService);
-                        $service->setDefaultRoleIdentity($cfg->get('DefaultRoleIdentities', array()));
-
-                        return $service;
-                    },
-
                 'RcmUser\Acl\Provider\RoleProvider' => function ($sm) {
 
                         $service = new RoleProvider();

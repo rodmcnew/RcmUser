@@ -28,7 +28,7 @@ class IdentiyProvider implements FactoryInterface
 
         $service = new IdentityProvider();
         $service->setUserService($rcmUserService);
-        $service->setDefaultRoleIdentity($cfg->get('DefaultRoleIdentities', array()));
+        $service->setDefaultRoleIdentities($cfg->get('DefaultRoleIdentities', array()));
 
         return $service;
     }
