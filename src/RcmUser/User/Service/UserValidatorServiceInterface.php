@@ -15,6 +15,20 @@ use RcmUser\User\Entity\User;
 
 interface UserValidatorServiceInterface {
 
-    public function validateUser(User $user);
+    /**
+     * @param User $updatedUser
+     * @param User $updatableUser
+     *
+     * @return Result
+     */
+    public function validateUpdateUser(User $updatedUser, User $updatableUser);
+
+    /**
+     * @param User $newUser
+     * @param User $creatableUser
+     *
+     * @return mixed
+     */
+    public function validateCreateUser(User $newUser, User $creatableUser);
 
 } 

@@ -8,18 +8,18 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Service\Factory;
+namespace RcmUser\Acl\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class TestUserDataMapper implements FactoryInterface
+class Config implements FactoryInterface
 {
+
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $config = $serviceLocator->get('RcmUser\Config');
 
-        $dm = new \RcmUser\User\Db\TestUserDataMapper();
-
-        return $dm;
+        return new \RcmUser\Config\Config(isset($config['Acl\Config']) ? $config['Acl\Config'] : array());
     }
 }

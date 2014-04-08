@@ -22,7 +22,7 @@ class CreateUserPreDataPrepListener extends AbstractListener {
     protected $listeners = array();
     protected $id = 'RcmUser\User\Service\UserDataService';
     protected $event = 'createUser.pre';
-    protected $priority = 100;
+    protected $priority = 5;
 
     /**
      * @param $e
@@ -34,11 +34,9 @@ class CreateUserPreDataPrepListener extends AbstractListener {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         $target = $e->getTarget();
-        $userToCreate = $e->getParam('userToCreate');
-        $resultUser = $e->getParam('resultUser');
+        $newUser = $e->getParam('newUser');
+        $creatableUser = $e->getParam('creatableUser');
 
-        prepareUserCreate($userToCreate);
-
-        return new Result($resultUser);
+        return $target->getUserDataPrepService()->prepareUserCreate($newUser, $creatableUser);
     }
 } 

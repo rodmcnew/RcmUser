@@ -34,17 +34,10 @@ class UpdateUserPreValidatorListener extends AbstractListener {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         $target = $e->getTarget();
-        $resultUser = $e->getParam('existingUser');
-        $updatedUser =  $e->getParam('updatedUser');
+        $updatedUser = $e->getParam('updatedUser');
+        $updatableUser =  $e->getParam('updatableUser');
 
         // run validation rules
-        $validateResult = $target->getUserValidatorService()->validateUser($updatedUser);
-
-        if (!$validateResult->isSuccess()) {
-
-            return $validateResult;
-        }
-
-        return new Result($resultUser);
+        return $target->getUserValidatorService()->validateUpdateUser($updatedUser, $updatableUser);
     }
 } 

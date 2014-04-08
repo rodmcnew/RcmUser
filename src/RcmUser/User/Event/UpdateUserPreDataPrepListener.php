@@ -14,7 +14,7 @@ namespace RcmUser\User\Event;
 use RcmUser\Event\AbstractListener;
 use RcmUser\User\Result;
 
-class UpdateUserPrePrepListener extends AbstractListener {
+class UpdateUserPreDataPrepListener extends AbstractListener {
 
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -22,7 +22,7 @@ class UpdateUserPrePrepListener extends AbstractListener {
     protected $listeners = array();
     protected $id = 'RcmUser\User\Service\UserDataService';
     protected $event = 'updateUser.pre';
-    protected $priority = 100;
+    protected $priority = 5;
 
     /**
      * @param $e
@@ -34,49 +34,9 @@ class UpdateUserPrePrepListener extends AbstractListener {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
         $target = $e->getTarget();
-        $resultUser = $e->getParam('resultUser');
-        $updatedUser =  $e->getParam('updatedUser');
+        $updatedUser = $e->getParam('updatedUser');
+        $updatableUser =  $e->getParam('updatableUser');
 
-
-        // USERNAME CHECKS
-        $updatedUsername = $updatedUser->getUsername();
-        $existingUserName = $resultUser->getUsername();
-
-        // sync null
-        if ($updatedUsername !== null) {
-
-            // if username changed:
-            if ($existingUserName !== $updatedUsername) {
-
-                // make sure no duplicates
-                $dupUser = $target->getUserDataMapper()->fetchByUsername($updatedUsername);
-
-                if ($dupUser->isSuccess()) {
-
-                    // ERROR - user exists
-                    return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
-                }
-
-                $resultUser->setUsername($updatedUsername);
-            }
-        }
-
-        // PASSWORD CHECKS
-        $updatedPassword = $updatedUser->getPassword();
-        $existingPassword = $resultUser->getPassword();
-        $hashedPassword = $existingPassword;
-        // sync null
-        if ($updatedPassword !== null) {
-            // if password changed
-            if ($existingPassword !== $updatedPassword) {
-                // plain text
-                $resultUser->setPassword($updatedPassword);
-                $hashedPassword = $target->getUserDataPrepService()->getEncryptor()->create($updatedPassword);
-            }
-        }
-
-        $resultUser->setPassword($hashedPassword);
-
-        return new Result($resultUser);
+        return $target->getUserDataPrepService()->prepareUserUpdate($updatedUser, $updatableUser);
     }
 } 

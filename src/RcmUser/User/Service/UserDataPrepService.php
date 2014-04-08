@@ -12,6 +12,8 @@ namespace RcmUser\User\Service;
 
 
 use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
+use Zend\Crypt\Password\PasswordInterface;
 
 class UserDataPrepService implements UserDataPrepServiceInterface
 {
@@ -37,6 +39,14 @@ class UserDataPrepService implements UserDataPrepServiceInterface
     }
 
     /**
+     * @param mixed $encryptor
+     */
+    public function setEncryptor(PasswordInterface $encryptor)
+    {
+        $this->encryptor = $encryptor;
+    }
+
+    /**
      * @return PasswordInterface
      */
     public function getEncryptor()
@@ -44,13 +54,13 @@ class UserDataPrepService implements UserDataPrepServiceInterface
         return $this->encryptor;
     }
 
-    public function prepareUserCreate(User $userToCreate)
+    public function prepareUserCreate(User $newUser, User $creatableUser)
     {
 
-        $userToCreate->setId($this->buildId());
-        $userToCreate->setPassword($this->userDataService->getEncryptor()->create($userToCreate->getPassword()));
+        $creatableUser->setId($this->buildId());
+        $creatableUser->setPassword($this->getEncryptor()->create($newUser->getPassword()));
 
-        return new Result($userToCreate);
+        return new Result($creatableUser);
     }
 
     public function prepareUserUpdate(User $updatedUser, User $existingUser)

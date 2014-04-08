@@ -16,9 +16,27 @@ use RcmUser\User\Entity\User;
 interface UserDataPrepServiceInterface
 {
 
-    public function prepareUserCreate(User $userToCreate);
+    /**
+     * @param User $newUser
+     * @param User $userToCreate
+     *
+     * @return Result
+     */
+    public function prepareUserCreate( User $newUser, User $userToCreate);
 
+    /**
+     * @param User $updatedUser
+     * @param User $existingUser
+     *
+     * @return Result
+     */
     public function prepareUserUpdate(User $updatedUser, User $existingUser);
 
+    /**
+     * @param User $credentialUser
+     * @param User $existingUser
+     *
+     * @return Result
+     */
     public function isValidCredential(User $credentialUser, User $existingUser);
 } 

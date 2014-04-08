@@ -23,7 +23,7 @@ class Encryptor implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\UserConfig');
+        $cfg = $serviceLocator->get('RcmUser\User\Config');
         $encryptor = new Bcrypt();
         $encryptor->setCost($cfg->get('Encryptor.passwordCost', 14));
 

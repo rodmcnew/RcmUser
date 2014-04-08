@@ -22,7 +22,7 @@ class EventListeners implements FactoryInterface
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\AclConfig');
+        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
 
         // ACL
         $createUserPostListener = new CreateUserPostListener();

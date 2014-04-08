@@ -125,7 +125,7 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
         }
 
         // @todo if error, fail with null
-        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->merge($user);
         $this->getEntityManager()->flush();
 
         return new Result($user);

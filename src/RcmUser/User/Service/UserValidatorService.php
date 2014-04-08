@@ -12,7 +12,6 @@ namespace RcmUser\User\Service;
 
 
 use RcmUser\User\Entity\User;
-use RcmUser\User\InputFilter\UserInputFilter;
 use RcmUser\User\Result;
 use Zend\InputFilter\Factory;
 use Zend\InputFilter\InputFilter;
@@ -21,12 +20,12 @@ class UserValidatorService implements UserValidatorServiceInterface
 {
     protected $userInputFilterConfig;
 
-    protected $userInputFilter;
+    protected $userInputFilterClass = 'Zend\InputFilter\InputFilter\InputFilter';
 
     protected $userInputFilterFactory;
 
     /**
-     * @param mixed $userInputFilterConfig
+     * @param array $userInputFilterConfig
      */
     public function setUserInputFilterConfig($userInputFilterConfig)
     {
@@ -41,12 +40,18 @@ class UserValidatorService implements UserValidatorServiceInterface
         return $this->userInputFilterConfig;
     }
 
-    /**
-     * @param mixed $userInputFilter
-     */
-    public function setUserInputFilter(InputFilter $userInputFilter)
+    public function setUserInputFilterClass($userInputFilterClass = 'Zend\InputFilter\InputFilter\InputFilter')
     {
-        $this->userInputFilter = $userInputFilter;
+        $this->userInputFilterClass = $userInputFilterClass;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserInputFilterClass()
+    {
+        // @todo throw error if not defined
+        return $this->userInputFilterClass;
     }
 
     /**
@@ -54,11 +59,14 @@ class UserValidatorService implements UserValidatorServiceInterface
      */
     public function getUserInputFilter()
     {
-        return $this->userInputFilter;
+
+        $class = $this->getUserInputFilterClass();
+
+        return new $class();
     }
 
     /**
-     * @param mixed $userInputFilterFactory
+     * @param Factory $userInputFilterFactory
      */
     public function setUserInputFilterFactory(Factory $userInputFilterFactory)
     {
@@ -75,40 +83,62 @@ class UserValidatorService implements UserValidatorServiceInterface
 
 
     /**
-     * @param $user
+     * @param User $updatedUser
+     * @param User $updatableUser
      *
      * @return Result
      */
-    public function validateUser(User $user)
+    public function validateUpdateUser(User $updatedUser, User $updatableUser)
     {
-
-        // @todo inject this
         $inputFilter = $this->getUserInputFilter();
         $factory = $this->getUserInputFilterFactory();
-        $inputs = $this->getUserInputFilterConfig();//$serviceLocator->get('RcmUser\UserConfig')->get('InputFilter', array());
+
+        $inputs = $this->getUserInputFilterConfig();
 
         // only check values if they are not null
         // (null values are ignored so we may use the same object for validations and data values);
         // null basically means unchanged or no updated value in this case,
-        if($user->getUsername() !== null && isset($inputs['username'])){
+        if ($updatedUser->getUsername() !== null && isset($inputs['username'])) {
 
             $inputFilter->add($factory->createInput($inputs['username']), 'username');
         }
-        if($user->getPassword() !== null && isset($inputs['password'])){
+        if ($updatedUser->getPassword() !== null && isset($inputs['password'])) {
 
             $inputFilter->add($factory->createInput($inputs['password']), 'password');
         }
 
-        $inputFilter->setData($user);
+        return $this->validateUser($updatableUser, $inputFilter);
+
+    }
+
+    public function validateCreateUser(User $updatedUser, User $updatableUser)
+    {
+        $inputFilter = $this->getUserInputFilter();
+        $factory = $this->getUserInputFilterFactory();
+
+        $inputs = $this->getUserInputFilterConfig();
+
+        $inputFilter->add($factory->createInput($inputs['username']), 'username');
+
+        $inputFilter->add($factory->createInput($inputs['password']), 'password');
+
+        return $this->validateUser($updatableUser, $inputFilter);
+
+    }
+
+    public function validateUser(User $changeableUser, InputFilter $inputFilter)
+    {
+
+        $inputFilter->setData($changeableUser);
 
         if ($inputFilter->isValid()) {
 
-            $user->populate($inputFilter->getValues());
+            $changeableUser->populate($inputFilter->getValues());
 
-            return new Result($user);
+            return new Result($changeableUser);
         } else {
 
-            $result = new Result($user, Result::CODE_FAIL, 'User input not valid');
+            $result = new Result($changeableUser, Result::CODE_FAIL, 'User input not valid');
 
             foreach ($inputFilter->getInvalidInput() as $key => $error) {
 

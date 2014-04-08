@@ -18,7 +18,7 @@ class ResourceProvider implements FactoryInterface
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\AclConfig');
+        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
 
         $service = new \RcmUser\Acl\Provider\ResourceProvider($cfg->get('Resources', array()));
         return $cfg->get('Resources', array());//$service;

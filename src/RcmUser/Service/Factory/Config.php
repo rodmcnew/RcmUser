@@ -1,5 +1,5 @@
 <?php
-/**
+ /**
  * @category  RCM
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2012 Reliv International
@@ -8,18 +8,18 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Service\Factory;
+namespace RcmUser\Service\Factory;
+
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class TestUserDataMapper implements FactoryInterface
+class Config implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $config = $serviceLocator->get('Config');
 
-        $dm = new \RcmUser\User\Db\TestUserDataMapper();
-
-        return $dm;
+        return isset($config['RcmUser']) ? $config['RcmUser'] : array();
     }
 }

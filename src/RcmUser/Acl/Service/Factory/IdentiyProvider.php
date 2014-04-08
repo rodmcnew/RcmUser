@@ -24,7 +24,7 @@ class IdentiyProvider implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $rcmUserService = $serviceLocator->get('RcmUser\Service\RcmUserService');
-        $cfg = $serviceLocator->get('RcmUser\AclConfig');
+        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
 
         $service = new IdentityProvider();
         $service->setUserService($rcmUserService);
