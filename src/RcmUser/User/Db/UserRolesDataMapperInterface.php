@@ -11,7 +11,7 @@
 namespace RcmUser\User\Db;
 
 
-use RcmUser\Acl\Entity\Role;
+use RcmUser\Acl\Entity\AclRole;
 use RcmUser\User\Entity\UserInterface;
 
 /**
@@ -23,19 +23,19 @@ interface UserRolesDataMapperInterface {
 
     /**
      * @param UserInterface $user
-     * @param Role          $role
+     * @param AclRole          $role
      *
      * @return mixed
      */
-    public function add(UserInterface $user, Role $role);
+    public function add(UserInterface $user, AclRole $role);
 
     /**
      * @param UserInterface $user
-     * @param Role          $role
+     * @param AclRole          $role
      *
      * @return mixed
      */
-    public function remove(UserInterface $user, Role $role);
+    public function remove(UserInterface $user, AclRole $role);
 
     /**
      * @param UserInterface $user

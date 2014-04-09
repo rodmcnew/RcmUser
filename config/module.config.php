@@ -38,12 +38,14 @@ return array(
                                 'max' => 100,
                             ),
                         ),
-                        /*array(
+                        /*
+                        array(
                             'name' => 'Regex',
                             'options' => array(
                                 'pattern' => '^(?=.*\d)(?=.*[a-zA-Z])$'
                             ),
-                        ),*/
+                        ),
+                        */
                     ),
                 ),
             ),
@@ -125,30 +127,41 @@ return array(
             'RcmUser\Auth\Config' => 'RcmUser\Authentication\Service\Factory\Config',
             'RcmUser\Acl\Config' => 'RcmUser\Acl\Service\Factory\Config',
 
-
             /****************************************/
             /* USER *********************************/
-            // REQUIRED
-            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
-
-            // REQUIRED
-            'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
-            // REQUIRED
-            'RcmUser\User\Service\UserValidatorService' => 'RcmUser\User\Service\Factory\UserValidator',
-            // REQUIRED
-            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
-
-            // REQUIRED
-            'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
 
             /**
              * Encryptor
              * Required for:
-             * RcmUser\Authentication\Adapter\UserAdapter
-             * RcmUser\User\Event\CreateUserPreListener
-             * RcmUser\User\Service\UserDataService
+             * RcmUser\User\Service\UserDataPrepService
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+            /**
+             * UserDataPrepService
+             * Required for:
+             * RcmUser\User\Service\UserDataService
+             */
+            'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
+            /**
+             * UserValidatorService
+             * Required for:
+             * RcmUser\User\Service\UserDataService
+             */
+            'RcmUser\User\Service\UserValidatorService' => 'RcmUser\User\Service\Factory\UserValidator',
+
+            /**
+             * UserDataMapper - Data source adapter
+             * Required for:
+             * RcmUser\User\Service\UserDataService
+             */
+            'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
+
+            /**
+             * UserDataService - Core User data access service
+             * Required *
+             */
+            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
+
             /**
              * UserRolesDataMapper
              * Required for (ACL user property):
@@ -161,11 +174,16 @@ return array(
             'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRolesDataMapper',
 
             /**
+             * UserPropertyService - Allows user properties to be set and events triggered
+             * Required
+             */
+            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
+
+            /**
              * EventListeners
              * Required for (User validation and input filtering):
              */
             'RcmUser\User\EventListeners' => 'RcmUser\User\Service\Factory\EventListeners',
-
 
             /****************************************/
             /* AUTH *********************************/
