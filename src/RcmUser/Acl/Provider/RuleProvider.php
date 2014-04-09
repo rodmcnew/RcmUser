@@ -23,7 +23,7 @@ class RuleProvider implements ProviderInterface
                 // allow guests and users (and admins, through inheritance)
                 // the "wear" privilege on the resource "pants"
                 array(
-                    array('r.user'),
+                    array('user'),
                     'core',
                 )
             ),

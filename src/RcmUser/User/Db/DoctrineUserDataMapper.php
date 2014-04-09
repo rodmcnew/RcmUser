@@ -104,7 +104,7 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
             return $result;
         }
 
-        return new Result(null, Result::CODE_FAIL, 'User could not be read.');
+        return new Result(null, Result::CODE_FAIL, 'User can not be read.');
     }
 
     /**

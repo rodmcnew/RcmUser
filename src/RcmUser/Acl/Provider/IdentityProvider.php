@@ -15,7 +15,7 @@ class IdentityProvider implements ProviderInterface
 {
     protected $userService;
 
-    protected $defaultRoleIdentity = 'guest';
+    protected $DefaultRoleIdentities= array('guest');
 
     /**
      * @param RcmUserService $userService
@@ -34,19 +34,19 @@ class IdentityProvider implements ProviderInterface
     }
 
     /**
-     * @param mixed $defaultRoleIdentity
+     * @param array $DefaultRoleIdentities
      */
-    public function setDefaultRoleIdentity($defaultRoleIdentity)
+    public function setDefaultRoleIdentities($defaultRoleIdentities)
     {
-        $this->defaultRoleIdentity = $defaultRoleIdentity;
+        $this->defaultRoleIdentities = $defaultRoleIdentities;
     }
 
     /**
-     * @return mixed
+     * @return array
      */
-    public function getDefaultRoleIdentity()
+    public function getDefaultRoleIdentities()
     {
-        return $this->defaultRoleIdentity;
+        return $this->defaultRoleIdentities;
     }
 
     /**
@@ -56,7 +56,7 @@ class IdentityProvider implements ProviderInterface
      */
     public function getIdentityRoles(){
 
-        $userRoles = $this->getUserService()->getCurrentUserProperty('RcmUser\Acl\UserRoles', array($this->getDefaultRoleIdentity()), false);
+        $userRoles = $this->getUserService()->getCurrentUserProperty('RcmUser\Acl\UserRoles', $this->getDefaultRoleIdentities(), false);
 
         return $userRoles;
     }

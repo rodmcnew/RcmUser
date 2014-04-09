@@ -23,10 +23,9 @@ class ResourceProvider implements ProviderInterface
                 'create',
                 'delete',
 
-                'r.test' => array(
-                    'test.create' => array(),
+                'pages' => array(
+                    'page' => array(),
                 ),
-                'r.page' => array(),
             ),
         );
 

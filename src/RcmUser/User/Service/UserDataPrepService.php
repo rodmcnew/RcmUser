@@ -63,12 +63,12 @@ class UserDataPrepService implements UserDataPrepServiceInterface
         return new Result($creatableUser);
     }
 
-    public function prepareUserUpdate(User $updatedUser, User $existingUser)
+    public function prepareUserUpdate(User $updatedUser, User $updatableUser)
     {
 
         // USERNAME CHECKS
         $updatedUsername = $updatedUser->getUsername();
-        $existingUserName = $existingUser->getUsername();
+        $existingUserName = $updatableUser->getUsername();
 
         // sync null
         if ($updatedUsername !== null) {
@@ -85,27 +85,27 @@ class UserDataPrepService implements UserDataPrepServiceInterface
                     return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
                 }
 
-                $existingUser->setUsername($updatedUsername);
+                $updatableUser->setUsername($updatedUsername);
             }
         }
 
         // PASSWORD CHECKS
         $updatedPassword = $updatedUser->getPassword();
-        $existingPassword = $existingUser->getPassword();
+        $existingPassword = $updatableUser->getPassword();
         $hashedPassword = $existingPassword;
         // sync null
         if ($updatedPassword !== null) {
             // if password changed
             if ($existingPassword !== $updatedPassword) {
                 // plain text
-                $existingUser->setPassword($updatedPassword);
+                $updatableUser->setPassword($updatedPassword);
                 $hashedPassword = $this->getEncryptor()->create($updatedPassword);
             }
         }
 
-        $existingUser->setPassword($hashedPassword);
+        $updatableUser->setPassword($hashedPassword);
 
-        return new Result($existingUser);
+        return new Result($updatableUser);
     }
 
     public function isValidCredential(User $credentialUser, User $existingUser)

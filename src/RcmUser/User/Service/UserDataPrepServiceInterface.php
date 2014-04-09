@@ -30,7 +30,7 @@ interface UserDataPrepServiceInterface
      *
      * @return Result
      */
-    public function prepareUserUpdate(User $updatedUser, User $existingUser);
+    public function prepareUserUpdate(User $updatedUser, User $updatableUser);
 
     /**
      * @param User $credentialUser
