@@ -171,7 +171,7 @@ return array(
              * RcmUser\Acl\Event\ReadUserPostListener
              * RcmUser\Acl\Event\UpdateUserPostListener
              */
-            'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRolesDataMapper',
+            'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
 
             /**
              * UserPropertyService - Allows user properties to be set and events triggered

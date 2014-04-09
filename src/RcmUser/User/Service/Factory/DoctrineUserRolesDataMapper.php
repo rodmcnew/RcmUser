@@ -14,13 +14,13 @@ namespace RcmUser\User\Service\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class DoctrineUserRolesDataMapper implements FactoryInterface
+class DoctrineUserRoleDataMapper implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $dm = new \RcmUser\User\Db\DoctrineUserRolesDataMapper();
+        $dm = new \RcmUser\User\Db\DoctrineUserRoleDataMapper();
         $dm->setEntityManager($em);
         $dm->setEntityClass('RcmUser\User\Entity\DoctrineUserRole');
 
