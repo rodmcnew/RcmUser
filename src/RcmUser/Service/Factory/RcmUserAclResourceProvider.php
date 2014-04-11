@@ -8,19 +8,18 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Acl\Service\Factory;
+namespace RcmUser\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class ResourceProvider implements FactoryInterface
+class RcmUserAclResourceProvider implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
+        $service = new \RcmUser\Provider\RcmUserAclResourceProvider();
 
-        $service = new \RcmUser\Acl\Provider\ResourceProvider($cfg->get('Resources', array()));
-        return $cfg->get('Resources', array());//$service;
+        return $service;
     }
 }

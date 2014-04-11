@@ -36,21 +36,21 @@ class UpdateUserPostListener extends AbstractUserDataServiceListener
 
             $user = $result->getUser();
 
-            $currentRoles = $user->getProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, null);
+            $currentRoles = $user->getProperty($this->getUserPropertyKey(), null);
 
             if ($currentRoles === null) {
 
-                $user->setProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, $this->getDefaultAuthenticatedRoleIdentities());
+                $user->setProperty($this->getUserPropertyKey(), $this->getDefaultAuthenticatedRoleIdentities());
             }
 
-            $aclResult = $this->getUserRolesDataMapper()->update($user, $user->getProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, array()));
+            $aclResult = $this->getUserRolesDataMapper()->update($user, $user->getProperty($this->getUserPropertyKey(), array()));
 
             if (!$aclResult->isSuccess()) {
 
-                throw new \Exception(AbstractUserDataServiceListener::USER_PROPERTY_KEY. ': ACL Roles could not be updated for user. ' . json_encode($aclResult->getMessages()));
+                throw new \Exception($this->getUserPropertyKey(). ': ACL Roles could not be updated for user. ' . json_encode($aclResult->getMessages()));
             }
 
-            $user->setProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, $aclResult->getData());
+            $user->setProperty($this->getUserPropertyKey(), $aclResult->getData());
 
             return new Result($user, Result::CODE_SUCCESS);
         }

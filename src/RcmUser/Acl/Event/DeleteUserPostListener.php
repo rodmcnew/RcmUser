@@ -39,10 +39,10 @@ class DeleteUserPostListener extends AbstractUserDataServiceListener
 
             if (!$aclResult->isSuccess()) {
 
-                throw new \Exception(AbstractUserDataServiceListener::USER_PROPERTY_KEY . ': ACL Roles could not be deleted for user. ' . json_encode($aclResult->getMessages()));
+                throw new \Exception($this->getUserPropertyKey() . ': ACL Roles could not be deleted for user. ' . json_encode($aclResult->getMessages()));
             }
 
-            $user->setProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, $this->getDefaultRoleIdentities());
+            $user->setProperty($this->getUserPropertyKey(), $this->getDefaultRoleIdentities());
 
             return new Result($user, Result::CODE_SUCCESS);
         }

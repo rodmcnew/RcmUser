@@ -10,11 +10,10 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
-use RcmUser\Acl\Provider\IdentityProvider;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class IdentiyProvider implements FactoryInterface
+class BjyIdentityProvider implements FactoryInterface
 {
     /**
      * @param ServiceLocatorInterface $serviceLocator
@@ -26,7 +25,7 @@ class IdentiyProvider implements FactoryInterface
         $rcmUserService = $serviceLocator->get('RcmUser\Service\RcmUserService');
         $cfg = $serviceLocator->get('RcmUser\Acl\Config');
 
-        $service = new IdentityProvider();
+        $service = new \RcmUser\Acl\Provider\BjyIdentityProvider();
         $service->setUserService($rcmUserService);
         $service->setDefaultRoleIdentities($cfg->get('DefaultRoleIdentities', array()));
 

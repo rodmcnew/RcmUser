@@ -12,6 +12,8 @@ namespace RcmUser\Acl\Db;
 
 
 use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\BjyAclRole;
+use RcmUser\Acl\Entity\DoctrineAclRole;
 use RcmUser\Db\DoctrineMapper;
 use RcmUser\Result;
 
@@ -27,12 +29,21 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
      */
     public function fetchAll()
     {
-        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())->findAll();
+        //$roles = $this->getEntityManager()->getRepository($this->getEntityClass())->findAll();
+
+        $query = $this->getEntityManager()->createQuery('
+            SELECT role FROM '.$this->getEntityClass().' role
+            INDEX BY role.id'
+        );
+
+        $roles = $query->getResult();
 
         if (empty($roles)) {
 
             return new Result(null, Result::CODE_FAIL, 'Roles could not be found.');
         }
+
+        $roles = $this->prepareRoles($roles);
 
         return new Result($roles);
     }
@@ -118,14 +129,14 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     {
         $result = $this->getValidInstance($aclRole);
 
-        $aclRole = $result->getUser();
+        $aclRole = $result->getData();
         $id = $aclRole->getId();
 
         if (!empty($id)) {
 
             $result = $this->fetchById($id);
 
-            if($result->isSuccess()){
+            if ($result->isSuccess()) {
 
                 return $result;
             }
@@ -140,7 +151,7 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
             return $result;
         }
 
-        return new Result(null, Result::CODE_FAIL, 'User could not be read.');
+        return new Result(null, Result::CODE_FAIL, 'Acl Role could not be read.');
     }
 
     /**
@@ -150,7 +161,7 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
      */
     public function update(AclRole $aclRole)
     {
-
+        return new Result(null, Result::CODE_FAIL, 'Acl Role update NOT YET AVAILABLE.');
     }
 
     /**
@@ -160,7 +171,7 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
      */
     public function delete(AclRole $aclRole)
     {
-
+        return new Result(null, Result::CODE_FAIL, 'Acl Role delete NOT YET AVAILABLE.');
     }
 
     /**
@@ -173,12 +184,60 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
 
         if (!($aclRole instanceof AclRole)) {
 
-            $doctrineAclRole = new AclRole();
+            $doctrineAclRole = new DoctrineAclRole();
             $doctrineAclRole->populate($aclRole);
 
             $aclRole = $doctrineAclRole;
         }
 
         return new Result($aclRole);
+    }
+
+
+    /**
+     * @param array $roles indexed by id
+     *
+     * @return array
+     */
+    public function prepareRoles($roles){
+
+
+        foreach($roles as $key => $role){
+
+            $parentId = $role->getParentId();
+
+            if(isset($roles[$parentId])){
+                /*@todo We clone to limit nesting, is this ok?
+                $parent = new AclRole();
+                $parent->populate($roles[$parentId]);
+
+                $roles[$key]->setParentRole($parent);
+                */
+
+                // @todo this should take objects, not strings, BJY has issues with objects
+                $roles[$key]->setParentRole($roles[$parentId]->getRoleIdentity());
+            }
+        }
+
+        return $roles;
+    }
+    /**
+     * @param AclRole $role
+     * @param         $aclRoles
+     *
+     * @return string
+     */
+    public function createNamespaceId(AclRole $role, $aclRoles){
+
+        $parentId = $role->getParentId();
+        $ns = $role->getRoleIdentity();
+        if(!empty($parentId)){
+
+            $parent = $aclRoles[$parentId];
+
+            $ns = $this->createNamespaceId($parent, $aclRoles, $ns) . '.' . $ns;
+        }
+
+        return $ns;
     }
 } 

@@ -57,10 +57,12 @@ return array(
 
             'DefaultRoleIdentities' => array('guest'),
             'DefaultAuthenticatedRoleIdentities' => array('user'),
+            'ResourceProviders' => array(
+                // 'MyResourceProviderName' => 'MyResource/ResourceProvider', // implements: ResourceProviderInterface
+                'RcmUserAccess' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+            ),
         ),
     ),
-
-
 
     'controllers' => array(
         'invokables' => array(
@@ -212,11 +214,20 @@ return array(
 
             /****************************************/
             /* ACL **********************************/
+
             /**
-             * IdentiyProvider
+             *
+             */
+            'RcmUser\Acl\AclRoleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper',
+            'RcmUser\Acl\AclRuleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
+
+            /**
+             * BjyIdentityProvider
              * Required for BjyAuthorize:
              */
-            'RcmUser\Acl\IdentiyProvider' => 'RcmUser\Acl\Service\Factory\IdentiyProvider',
+            'RcmUser\Acl\BjyIdentityProvider' => 'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
+
+            'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
 
             /**
              * EventListeners
@@ -229,27 +240,33 @@ return array(
             /* CORE **********************************/
             'RcmUser\Service\RcmUserService' => 'RcmUser\Service\Factory\RcmUserService',
 
+            /**
+             * Provides the Access Resources for this Module
+             */
+            'RcmUser\Provider\RcmUserAclResourceProvider' => 'RcmUser\Service\Factory\RcmUserAclResourceProvider',
+
             // Event Aggregation
             'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
+
+            /////
+            'RcmUser\Acl\Provider\BjyRoleProvider' => 'RcmUser\Acl\Service\Factory\BjyRoleProvider',
+            'RcmUser\Acl\Provider\BjyRuleProvider' => 'RcmUser\Acl\Service\Factory\BjyRuleProvider',
+            'RcmUser\Acl\Provider\BjyResourceProvider' => 'RcmUser\Acl\Service\Factory\BjyResourceProvider',
         ),
     ),
 
     'bjyauthorize' => array(
         'default_role' => 'guest',
         'authenticated_role' => 'user',
-        'identity_provider' => 'RcmUser\Acl\IdentiyProvider',
+        'identity_provider' => 'RcmUser\Acl\BjyIdentityProvider',
         'role_providers' => array(
-            'RcmUser\Acl\Provider\RoleProvider' => array('guest'),
+            'RcmUser\Acl\Provider\BjyRoleProvider' => array('guest'),
         ),
         'resource_providers' => array(
-            'RcmUser\Acl\Provider\ResourceProvider' => array(
-                'RcmUser.Core' => array('create', 'read', 'update', 'delete'),
-                'RcmUser.User' => array('create', 'read', 'update', 'delete'),
-                'RcmUser.Acl' => array('create', 'read', 'update', 'delete'),
-            ),
+            'RcmUser\Acl\Provider\BjyResourceProvider' => array(),
         ),
         'rule_providers' => array(
-            'RcmUser\Acl\Provider\RuleProvider' => array(),
+            'RcmUser\Acl\Provider\BjyRuleProvider' => array(),
         ),
     ),
 );

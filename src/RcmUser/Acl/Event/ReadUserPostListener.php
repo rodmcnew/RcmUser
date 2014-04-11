@@ -43,7 +43,7 @@ class ReadUserPostListener extends AbstractUserDataServiceListener
                 $roles = $this->getDefaultAuthenticatedRoleIdentities();
             }
 
-            $user->setProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, $roles);
+            $user->setProperty($this->getUserPropertyKey(), $roles);
 
             return new Result($user, Result::CODE_SUCCESS);
         }

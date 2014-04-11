@@ -16,13 +16,14 @@ use RcmUser\User\Db\UserRolesDataMapperInterface;
 
 class AbstractUserDataServiceListener extends AbstractListener {
 
-    const USER_PROPERTY_KEY = 'RcmUser\Acl\UserRoles';
     protected $listeners = array();
     protected $id = 'RcmUser\User\Service\UserDataService';
     protected $event = '';
     protected $userRolesDataMapper;
     protected $defaultRoleIdentities = array();
     protected $defaultAuthenticatedRoleIdentities = array();
+
+    protected $userPropertyKey = 'RcmUser\Acl\UserRoles';
 
     /**
      * @param mixed $userRolesDataMapper
@@ -70,5 +71,21 @@ class AbstractUserDataServiceListener extends AbstractListener {
     public function getDefaultRoleIdentities()
     {
         return $this->defaultRoleIdentities;
+    }
+
+    /**
+     * @param string $userPropertyKey
+     */
+    public function setUserPropertyKey($userPropertyKey)
+    {
+        $this->userPropertyKey = $userPropertyKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserPropertyKey()
+    {
+        return $this->userPropertyKey;
     }
 } 

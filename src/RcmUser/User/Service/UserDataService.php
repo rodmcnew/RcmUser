@@ -36,6 +36,9 @@ class UserDataService extends EventProvider
      */
     protected $userValidatorService;
 
+    /**
+     * @var UserDataPrepServiceInterface
+     */
     protected $userDataPrepService;
 
     /**
@@ -47,7 +50,7 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @return mixed
+     * @return UserDataMapperInterface
      */
     public function getUserDataMapper()
     {
@@ -63,7 +66,7 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @return mixed
+     * @return UserValidatorServiceInterface
      */
     public function getUserValidatorService()
     {
@@ -79,7 +82,7 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @return mixed
+     * @return UserDataPrepServiceInterface
      */
     public function getUserDataPrepService()
     {
@@ -87,7 +90,7 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $user
+     * @param User $newUser
      *
      * @return Result
      */
@@ -125,11 +128,9 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * This will read the user. Id will get priority if it is set.
+     * @param User $readUser
      *
-     * @param User $user
-     *
-     * @return mixed
+     * @return Result
      */
     public function readUser(User $readUser)
     {
@@ -154,10 +155,9 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $user (updated user,
+     * @param User $updatedUser
      *
      * @return Result
-     * @throws \RcmUserException
      */
     public function updateUser(User $updatedUser)
     {
@@ -199,10 +199,9 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $user
+     * @param User $deleteUser
      *
-     * @return User
-     * @throws \RcmUserException
+     * @return Result
      */
     public function deleteUser(User $deleteUser)
     {

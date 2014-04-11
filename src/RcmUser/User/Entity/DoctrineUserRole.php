@@ -11,13 +11,15 @@
 namespace RcmUser\User\Entity;
 
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Class DoctrineUser
  *
  * @package RcmUser\User\Entity
  *
  * @ORM\Entity
- * @ORM\Table(name="rcm_user_user")
+ * @ORM\Table(name="rcm_user_user_role")
  */
 class DoctrineUserRole extends UserRole {
 

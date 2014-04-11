@@ -92,7 +92,7 @@ var_dump($authResult);
 /*  LOG IN */
 $authResult = $userService->authenticate($user);
 
-echo "Sess Auth Result: ".var_export($authResult->isValid(), true)."\n";
+echo "Sess Auth Result: " . var_export($authResult->isValid(), true) . "\n";
 var_dump($authResult);
 /* */
 
@@ -112,12 +112,13 @@ var_dump($userService->getIdentity());
 /* ACL ************************************/
 echo "User Roles: ";
 $currentUser = $userService->getIdentity();
-if(!empty($currentUser)){
-var_dump($currentUser->getProperty('RcmUser\Acl\UserRoles', 'NOT SET'));
+if (!empty($currentUser)) {
+    var_dump($currentUser->getProperty('RcmUser\Acl\UserRoles', 'NOT SET'));
 } else {
     echo "NOT LOGGED IN\n";
 }
 
+/* ACL CHECK */
 echo "ACL Roles: ";
 var_dump($bjyAuthService->getAcl()->getRoles());
 
@@ -126,11 +127,17 @@ var_dump($bjyAuthService->getAcl()->getResources());
 
 //echo "ACL Rules: ";
 //var_dump($bjyAuthService);
+/* */
 
-echo "->isAllowed() = ";
-var_export($this->isAllowed('pages', 'create'));
+$resource = 'RcmUserAccess'; // parent
+$privilage = 'read'; // child
+echo "->isAllowed($resource, $privilage) = ";
+var_export($this->isAllowed($resource, $privilage));
 /* */
 
 ?>
+
+
+
 
 </pre>

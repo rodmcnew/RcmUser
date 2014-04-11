@@ -11,6 +11,7 @@
 namespace RcmUser\User\Db;
 
 
+use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Db\DoctrineMapper;
 use RcmUser\User\Entity\UserInterface;
@@ -18,46 +19,114 @@ use RcmUser\Result;
 
 class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesDataMapperInterface
 {
+    protected $aclRoleDataMapper;
+
+    /**
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper
+     */
+    public function setAclRoleDataMapper(AclRoleDataMapperInterface $aclRoleDataMapper)
+    {
+        $this->aclRoleDataMapper = $aclRoleDataMapper;
+    }
+
+    /**
+     * @return AclRoleDataMapperInterface
+     */
+    public function getAclRoleDataMapper()
+    {
+        return $this->aclRoleDataMapper;
+    }
+
+
     public function add(UserInterface $user, AclRole $role)
     {
-        /* EXAMPLE
-                $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
-                if (empty($user)) {
 
-                    return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
-                }
+        $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
+        if (empty($user)) {
 
-                // This is so we get a fresh user every time
-                $this->getEntityManager()->refresh($user);
+            return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
+        }
 
-                return new Result($user);
-        */
-        return new Result(array('me', 'and', 'doctrine', 'more'), Result::CODE_SUCCESS);
+        // This is so we get a fresh user every time
+        $this->getEntityManager()->refresh($user);
+
+        return new Result($user);
     }
 
     public function remove(UserInterface $user, AclRole $role)
     {
-        return new Result(array('me', 'doctrine'), Result::CODE_SUCCESS);
+        // @todo - write me
+        return new Result(null, Result::CODE_FAIL, 'Remove not yet available.');
     }
 
     public function create(UserInterface $user, $roles = array())
     {
-        return new Result(array('me', 'and', 'doctrine'), Result::CODE_SUCCESS);
+        // @todo - write me
+        return new Result(null, Result::CODE_FAIL, 'Create not yet available.');
     }
 
     public function read(UserInterface $user)
     {
 
-        return new Result(array('user'), Result::CODE_SUCCESS);
+        $userId = $user->getId();
+
+        if (empty($userId)) {
+
+            return new Result(null, Result::CODE_FAIL, 'User id required to get user roles.');
+        }
+
+        //
+        $userRoles = $this->getEntityManager()->getRepository($this->getEntityClass())->findBy(array('userId' => $userId));
+
+        // This is so we get a fresh data every time
+        // $this->getEntityManager()->refresh($userRoles);
+
+        if (empty($userRoles)) {
+
+            // @todo - set default roles and save?
+            return new Result(null, Result::CODE_FAIL, 'User roles cannot be found.');
+        }
+
+        $aclRoleDataMapper = $this->getAclRoleDataMapper();
+
+        $userAclRoles = array();
+
+        foreach ($userRoles as $userRole) {
+
+            // @todo data checks here
+
+            $aclRoleResult = $aclRoleDataMapper->fetchById($userRole->getRoleId());
+
+            if(!$aclRoleResult->isSuccess()){
+
+                //@todo - error
+                continue;
+            }
+
+            $aclRole = $aclRoleResult->getData();
+
+            if (empty($aclRole)) {
+
+                // @todo handle this by either removing role or throwing error
+            } else {
+
+                $userAclRoles[] = $aclRole->getRoleIdentity();
+            }
+        }
+
+
+        return new Result($userAclRoles);
     }
 
     public function update(UserInterface $user, $roles = array())
     {
-        return new Result(array('new', 'with', 'doctrine2'), Result::CODE_SUCCESS);
+        // @todo - write me
+        return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
     }
 
     public function delete(UserInterface $user)
     {
-        return new Result(array(), Result::CODE_SUCCESS);
+        // @todo - write me
+        return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
     }
 } 
