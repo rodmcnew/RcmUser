@@ -14,6 +14,7 @@ namespace RcmUser\Authentication\Adapter;
 use RcmUser\User\Entity\AbstractUser;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
+use Zend\Crypt\Password\PasswordInterface;
 
 /**
  * Class UserAdapter
@@ -26,6 +27,11 @@ class UserAdapter extends AbstractAdapter
      * @var
      */
     protected $userDataService;
+
+    /**
+     * @var
+     */
+    protected $encryptor;
 
     /**
      * @var
@@ -87,6 +93,22 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
+     * @param mixed $encryptor
+     */
+    public function setEncryptor(PasswordInterface $encryptor)
+    {
+        $this->encryptor = $encryptor;
+    }
+
+    /**
+     * @return PasswordInterface
+     */
+    public function getEncryptor()
+    {
+        return $this->encryptor;
+    }
+
+    /**
      * Performs an authentication attempt
      *
      * @return \Zend\Authentication\Result
@@ -131,7 +153,7 @@ class UserAdapter extends AbstractAdapter
 
         $credential = $user->getPassword();
 
-        $isValid = $this->getUserDataService()->getUserDataPrepService()->getEncryptor()->verify($credential, $existingHash);
+        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
         if ($isValid) {
 
             if ($this->getObfuscatePassword()) {

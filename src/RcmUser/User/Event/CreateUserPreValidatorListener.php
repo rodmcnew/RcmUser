@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * @category  RCM
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2012 Reliv International
@@ -11,16 +11,11 @@
 namespace RcmUser\User\Event;
 
 
-use RcmUser\Event\AbstractListener;
 use RcmUser\User\Result;
 
-class CreateUserPreValidatorListener extends AbstractListener {
+class CreateUserPreValidatorListener extends AbstractUserValidatorListener
+{
 
-    /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = array();
-    protected $id = 'RcmUser\User\Service\UserDataService';
     protected $event = 'createUser.pre';
     protected $priority = 100;
 
@@ -33,11 +28,11 @@ class CreateUserPreValidatorListener extends AbstractListener {
     {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
-        $target = $e->getTarget();
+        //$target = $e->getTarget();
         $newUser = $e->getParam('newUser');
         $creatableUser = $e->getParam('creatableUser');
 
         // run validation rules
-        return $target->getUserValidatorService()->validateCreateUser($newUser, $creatableUser);
+        return $this->getUserValidatorService()->validateCreateUser($newUser, $creatableUser);
     }
 } 

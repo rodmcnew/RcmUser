@@ -22,8 +22,10 @@ class Adapter implements FactoryInterface
     {
 
         $userDataService = $serviceLocator->get('RcmUser\User\Service\UserDataService');
+        $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
         $adapter = new UserAdapter();
         $adapter->setUserDataService($userDataService);
+        $adapter->setEncryptor($encrypt);
 
         return $adapter;
     }

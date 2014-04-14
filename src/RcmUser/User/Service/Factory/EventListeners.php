@@ -25,12 +25,26 @@ class EventListeners implements FactoryInterface
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $vs = $serviceLocator->get('RcmUser\User\Service\UserValidatorService');
+        $dps = $serviceLocator->get('RcmUser\User\Service\UserDataPrepService');
+
         $listeners = array();
         // User
-        $listeners[] = new CreateUserPreDataPrepListener();
-        $listeners[] = new UpdateUserPreDataPrepListener();
-        $listeners[] = new CreateUserPreValidatorListener();
-        $listeners[] = new UpdateUserPreValidatorListener();
+        $createUserPreDataPrepListener = new CreateUserPreDataPrepListener();
+        $createUserPreDataPrepListener->setUserDataPrepService($dps);
+        $listeners[] = $createUserPreDataPrepListener;
+
+        $updateUserPreDataPrepListener = new UpdateUserPreDataPrepListener();
+        $updateUserPreDataPrepListener->setUserDataPrepService($dps);
+        $listeners[] = $updateUserPreDataPrepListener;
+
+        $createUserPreValidatorListener = new CreateUserPreValidatorListener();
+        $createUserPreValidatorListener->setUserValidatorService($vs);
+        $listeners[] = $createUserPreValidatorListener;
+
+        $updateUserPreValidatorListener = new UpdateUserPreValidatorListener();
+        $updateUserPreValidatorListener->setUserValidatorService($vs);
+        $listeners[] = $updateUserPreValidatorListener;
 
         return $listeners;
     }

@@ -24,22 +24,10 @@ use Zend\Crypt\Password\PasswordInterface;
  */
 class UserDataService extends EventProvider
 {
-
     /**
      * @var UserDataMapperInterface
      */
     protected $userDataMapper;
-
-
-    /**
-     * @var UserValidatorServiceInterface
-     */
-    protected $userValidatorService;
-
-    /**
-     * @var UserDataPrepServiceInterface
-     */
-    protected $userDataPrepService;
 
     /**
      * @param UserDataMapperInterface $userDataMapper
@@ -55,38 +43,6 @@ class UserDataService extends EventProvider
     public function getUserDataMapper()
     {
         return $this->userDataMapper;
-    }
-
-    /**
-     * @param UserValidatorServiceInterface $userValidatorService
-     */
-    public function setUserValidatorService(UserValidatorServiceInterface $userValidatorService)
-    {
-        $this->userValidatorService = $userValidatorService;
-    }
-
-    /**
-     * @return UserValidatorServiceInterface
-     */
-    public function getUserValidatorService()
-    {
-        return $this->userValidatorService;
-    }
-
-    /**
-     * @param UserDataPrepServiceInterface $userDataPrepService
-     */
-    public function setUserDataPrepService(UserDataPrepServiceInterface $userDataPrepService)
-    {
-        $this->userDataPrepService = $userDataPrepService;
-    }
-
-    /**
-     * @return UserDataPrepServiceInterface
-     */
-    public function getUserDataPrepService()
-    {
-        return $this->userDataPrepService;
     }
 
     /**
@@ -113,9 +69,11 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
-        }
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
 
+            return $resultPre;
+        }
 
         // @todo Inject this as event?
         $this->getUserDataMapper()->create($creatableUser);
@@ -142,7 +100,10 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
+
+            return $resultPre;
         }
 
         // @todo Inject this as event?
@@ -185,7 +146,10 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
+
+            return $resultPre;
         }
 
         // @todo Inject this as event?
@@ -230,7 +194,10 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
+
+            return $resultPre;
         }
 
         // @todo Inject this as event
