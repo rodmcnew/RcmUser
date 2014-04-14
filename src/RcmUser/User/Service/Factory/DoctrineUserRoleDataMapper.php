@@ -20,9 +20,11 @@ class DoctrineUserRoleDataMapper implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
+        $acldm = $serviceLocator->get('RcmUser\Acl\AclRoleDataMapper');
         $dm = new \RcmUser\User\Db\DoctrineUserRoleDataMapper();
         $dm->setEntityManager($em);
         $dm->setEntityClass('RcmUser\User\Entity\DoctrineUserRole');
+        $dm->setAclRoleDataMapper($acldm);
 
         return $dm;
     }

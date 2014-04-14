@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * @category  RCM
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2012 Reliv International
@@ -11,16 +11,10 @@
 namespace RcmUser\User\Event;
 
 
-use RcmUser\Event\AbstractListener;
 use RcmUser\User\Result;
 
-class UpdateUserPreDataPrepListener extends AbstractListener {
-
-    /**
-     * @var \Zend\Stdlib\CallbackHandler[]
-     */
-    protected $listeners = array();
-    protected $id = 'RcmUser\User\Service\UserDataService';
+class UpdateUserPreDataPrepListener extends AbstractUserDataPrepListener
+{
     protected $event = 'updateUser.pre';
     protected $priority = 5;
 
@@ -33,10 +27,10 @@ class UpdateUserPreDataPrepListener extends AbstractListener {
     {
         //echo $this->priority . ": ". get_class($this) . "\n";
 
-        $target = $e->getTarget();
+        // $target = $e->getTarget();
         $updatedUser = $e->getParam('updatedUser');
-        $updatableUser =  $e->getParam('updatableUser');
+        $updatableUser = $e->getParam('updatableUser');
 
-        return $target->getUserDataPrepService()->prepareUserUpdate($updatedUser, $updatableUser);
+        return $this->getUserDataPrepService()->prepareUserUpdate($updatedUser, $updatableUser);
     }
 } 

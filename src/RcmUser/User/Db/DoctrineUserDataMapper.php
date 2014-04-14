@@ -13,7 +13,7 @@ namespace RcmUser\User\Db;
 
 use RcmUser\Db\DoctrineMapper;
 use RcmUser\User\Entity\DoctrineUser;
-use RcmUser\User\Entity\UserInterface;
+use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
 class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInterface
@@ -57,11 +57,11 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function create(UserInterface $user)
+    public function create(User $user)
     {
         $result = $this->getValidInstance($user);
 
@@ -75,11 +75,11 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function read(UserInterface $user)
+    public function read(User $user)
     {
         $result = $this->getValidInstance($user);
 
@@ -108,11 +108,11 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function update(UserInterface $user)
+    public function update(User $user)
     {
         $result = $this->getValidInstance($user);
 
@@ -132,11 +132,11 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function delete(UserInterface $user)
+    public function delete(User $user)
     {
 
         return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, delete not supported.');
@@ -160,11 +160,11 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function getValidInstance(UserInterface $user)
+    public function getValidInstance(User $user)
     {
 
         if (!($user instanceof DoctrineUser)) {
@@ -179,11 +179,11 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return bool
      */
-    public function canUpdate(UserInterface $user)
+    public function canUpdate(User $user)
     {
 
         $id = $user->getId();

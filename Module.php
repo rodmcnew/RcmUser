@@ -5,13 +5,6 @@
 
 namespace RcmUser;
 
-use RcmUser\Acl\Provider\IdentityProvider;
-use RcmUser\Acl\Provider\ResourceProvider;
-use RcmUser\Acl\Provider\RoleProvider;
-use RcmUser\Acl\Provider\RuleProvider;
-use RcmUser\Acl\Service\Factory\IdentiyProvider;
-use RcmUser\Config\Config;
-use RcmUser\Service\RcmUserService;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\MvcEvent;
 
@@ -35,33 +28,13 @@ class Module implements AutoloaderProviderInterface
     {
         return include __DIR__ . '/config/module.config.php';
     }
-
+/*
     public function getServiceConfig()
     {
 
-        return array(
-            'invokables' => array(),
-            'factories' => array(
-
-                'RcmUser\Acl\Provider\RoleProvider' => function ($sm) {
-
-                        $service = new RoleProvider();
-                        return $service;
-                    },
-                'RcmUser\Acl\Provider\RuleProvider' => function ($sm) {
-
-                        $service = new RuleProvider();
-                        return $service;
-                    },
-                'RcmUser\Acl\Provider\ResourceProvider' => function ($sm) {
-
-                        $service = new ResourceProvider();
-                        return $service;
-                    },
-            ),
-        );
+        return array();
     }
-
+*/
     public function onBootstrap(MvcEvent $event)
     {
         $application = $event->getApplication();
@@ -76,7 +49,5 @@ class Module implements AutoloaderProviderInterface
         } catch (\Exception $e) {
             // no listeners
         }
-
-
     }
 }

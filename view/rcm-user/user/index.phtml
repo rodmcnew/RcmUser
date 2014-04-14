@@ -13,14 +13,14 @@ $acl = new Acl();
 */
 //$userService = new RcmUser\Service\RcmUserService();
 //var_dump($userService->getUserInputFilter()); die;
-
+$startTime = time();
 $user = $userService->buildNewUser();
 
 //$user->setId('f11653b8-2a4a-4784-a70b-ac7641b46c28');
 $user->setUsername('Jerry13');
 $user->setPassword('12345678');
 
-echo "**Before action:\n";
+echo "**INITIAL USER OBJECT:\n";
 var_dump($user);
 
 
@@ -41,7 +41,7 @@ var_dump($result->getUser());
 /* READ *
 $result = $userService->readUser($user);
 
-echo "**After read:\n";
+echo "READ: After read:\n";
 if(!$result->isSuccess()){
 
     echo "ERROR: ";
@@ -54,7 +54,7 @@ var_dump($result->getUser());
 /* UPDATE *
 $result = $userService->updateUser($user);
 
-echo "**After update:\n";
+echo "UPDATE: After update:\n";
 if(!$result->isSuccess()){
 
     echo "ERROR: ";
@@ -85,39 +85,42 @@ var_dump($result->getUser());
 /* AUTH CHECK *
 $authResult = $userService->validateCredentials($user);
 
-echo "GenAuth Result: ".var_export($authResult->isValid(), true)."\n";
+echo "AUTH CHECK Result: ".var_export($authResult->isValid(), true)."\n";
 var_dump($authResult);
 /* */
 
-/*  LOG IN */
+/*  LOG IN *
 $authResult = $userService->authenticate($user);
 
-echo "Sess Auth Result: ".var_export($authResult->isValid(), true)."\n";
+echo "LOG IN Result: " . var_export($authResult->isValid(), true) . "\n";
 var_dump($authResult);
 /* */
 
-/* GET SESSION USER */
-echo "Session user: \n";
+/* GET SESSION USER *
+echo "GET SESSION USER: \n";
 var_dump($userService->getIdentity());
 /* */
 
 /*  LOG OUT *
 $userService->clearIdentity();
 
-echo "Session user after log out: \n";
+echo "LOG OUT: Session user after log out: \n";
 var_dump($userService->getIdentity());
 
 /* */
 
-/* ACL ************************************/
+/* ACL ************************************
 echo "User Roles: ";
 $currentUser = $userService->getIdentity();
-if(!empty($currentUser)){
-var_dump($currentUser->getProperty('RcmUser\Acl\UserRoles', 'NOT SET'));
+if (!empty($currentUser)) {
+    var_dump($currentUser->getProperty('RcmUser\Acl\UserRoles', 'NOT SET'));
 } else {
     echo "NOT LOGGED IN\n";
 }
 
+/* ACL */
+
+/* ACL VALUES *
 echo "ACL Roles: ";
 var_dump($bjyAuthService->getAcl()->getRoles());
 
@@ -126,11 +129,20 @@ var_dump($bjyAuthService->getAcl()->getResources());
 
 //echo "ACL Rules: ";
 //var_dump($bjyAuthService);
-
-echo "->isAllowed() = ";
-var_export($this->isAllowed('pages', 'create'));
 /* */
 
+/* ACL CHECK *
+$resource = 'RcmUserAccess'; // parent
+$privilage = 'read'; // child
+echo "ACL CHECK: ->isAllowed($resource, $privilage) = ";
+var_export($this->isAllowed($resource, $privilage));
+/* */
+
+/* TIME */
+echo "\nTime to complete:" . (time() - $startTime) . "sec \n";
 ?>
+
+
+
 
 </pre>

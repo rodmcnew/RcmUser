@@ -8,20 +8,20 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Authentication\Service\Factory;
+namespace RcmUser\Acl\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserAuthenticationService implements FactoryInterface
+class BjyRuleProvider implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        //@todo - factory not required: $auth = $serviceLocator->get('RcmUser\Authentication\AuthenticationService');
+        $aclRuleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRuleDataMapper');
 
-        $service = new \RcmUser\Authentication\Service\UserAuthenticationService();
-
+        $service = new \RcmUser\Acl\Provider\BjyRuleProvider();
+        $service->setRuleDataMapper($aclRuleDataMapper);
         return $service;
     }
 }

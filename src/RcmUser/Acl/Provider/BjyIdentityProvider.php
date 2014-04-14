@@ -11,7 +11,7 @@ use RcmUser\Service\RcmUserService;
 /**
  *
  */
-class IdentityProvider implements ProviderInterface
+class BjyIdentityProvider implements ProviderInterface
 {
     protected $userService;
 

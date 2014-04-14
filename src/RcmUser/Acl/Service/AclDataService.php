@@ -51,4 +51,13 @@ class AclDataService {
     public function deleteRule(){
 
     }
+
+    // Resources
+    public function readResource($key){
+
+    }
+
+    public function readResources(){
+
+    }
 } 

@@ -20,17 +20,22 @@ use RcmUser\User\Event\UpdateUserPreValidatorListener;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class EventListeners implements FactoryInterface
+class DataPrepEventListeners implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $dps = $serviceLocator->get('RcmUser\User\Service\UserDataPrepService');
+
         $listeners = array();
-        // User
-        $listeners[] = new CreateUserPreDataPrepListener();
-        $listeners[] = new UpdateUserPreDataPrepListener();
-        $listeners[] = new CreateUserPreValidatorListener();
-        $listeners[] = new UpdateUserPreValidatorListener();
+
+        $createUserPreDataPrepListener = new CreateUserPreDataPrepListener();
+        $createUserPreDataPrepListener->setUserDataPrepService($dps);
+        $listeners[] = $createUserPreDataPrepListener;
+
+        $updateUserPreDataPrepListener = new UpdateUserPreDataPrepListener();
+        $updateUserPreDataPrepListener->setUserDataPrepService($dps);
+        $listeners[] = $updateUserPreDataPrepListener;
 
         return $listeners;
     }

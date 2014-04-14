@@ -24,19 +24,10 @@ use Zend\Crypt\Password\PasswordInterface;
  */
 class UserDataService extends EventProvider
 {
-
     /**
      * @var UserDataMapperInterface
      */
     protected $userDataMapper;
-
-
-    /**
-     * @var UserValidatorServiceInterface
-     */
-    protected $userValidatorService;
-
-    protected $userDataPrepService;
 
     /**
      * @param UserDataMapperInterface $userDataMapper
@@ -47,7 +38,7 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @return mixed
+     * @return UserDataMapperInterface
      */
     public function getUserDataMapper()
     {
@@ -55,39 +46,7 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param UserValidatorServiceInterface $userValidatorService
-     */
-    public function setUserValidatorService(UserValidatorServiceInterface $userValidatorService)
-    {
-        $this->userValidatorService = $userValidatorService;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserValidatorService()
-    {
-        return $this->userValidatorService;
-    }
-
-    /**
-     * @param UserDataPrepServiceInterface $userDataPrepService
-     */
-    public function setUserDataPrepService(UserDataPrepServiceInterface $userDataPrepService)
-    {
-        $this->userDataPrepService = $userDataPrepService;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getUserDataPrepService()
-    {
-        return $this->userDataPrepService;
-    }
-
-    /**
-     * @param User $user
+     * @param User $newUser
      *
      * @return Result
      */
@@ -110,9 +69,11 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
-        }
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
 
+            return $resultPre;
+        }
 
         // @todo Inject this as event?
         $this->getUserDataMapper()->create($creatableUser);
@@ -125,11 +86,9 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * This will read the user. Id will get priority if it is set.
+     * @param User $readUser
      *
-     * @param User $user
-     *
-     * @return mixed
+     * @return Result
      */
     public function readUser(User $readUser)
     {
@@ -141,7 +100,10 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
+
+            return $resultPre;
         }
 
         // @todo Inject this as event?
@@ -154,10 +116,9 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $user (updated user,
+     * @param User $updatedUser
      *
      * @return Result
-     * @throws \RcmUserException
      */
     public function updateUser(User $updatedUser)
     {
@@ -185,7 +146,10 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
+
+            return $resultPre;
         }
 
         // @todo Inject this as event?
@@ -199,10 +163,9 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $user
+     * @param User $deleteUser
      *
-     * @return User
-     * @throws \RcmUserException
+     * @return Result
      */
     public function deleteUser(User $deleteUser)
     {
@@ -231,7 +194,10 @@ class UserDataService extends EventProvider
 
         if ($resultsPre->stopped()) {
 
-            return $resultsPre->last();
+            $resultPre = $resultsPre->last();
+            $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $resultPre));
+
+            return $resultPre;
         }
 
         // @todo Inject this as event

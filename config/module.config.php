@@ -57,10 +57,12 @@ return array(
 
             'DefaultRoleIdentities' => array('guest'),
             'DefaultAuthenticatedRoleIdentities' => array('user'),
+            'ResourceProviders' => array(
+                // 'MyResourceProviderName' => 'MyResource/ResourceProvider', // implements: ResourceProviderInterface
+                'RcmUserAccess' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+            ),
         ),
     ),
-
-
 
     'controllers' => array(
         'invokables' => array(
@@ -131,24 +133,15 @@ return array(
             /* USER *********************************/
 
             /**
-             * Encryptor
-             * Required for:
-             * RcmUser\User\Service\UserDataPrepService
+             * UserDataService - Core User data access service
+             * Required *
              */
-            'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
             /**
-             * UserDataPrepService
-             * Required for:
-             * RcmUser\User\Service\UserDataService
+             * UserPropertyService - Allows user properties to be set by event listeners
+             * Required
              */
-            'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
-            /**
-             * UserValidatorService
-             * Required for:
-             * RcmUser\User\Service\UserDataService
-             */
-            'RcmUser\User\Service\UserValidatorService' => 'RcmUser\User\Service\Factory\UserValidator',
-
+            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
             /**
              * UserDataMapper - Data source adapter
              * Required for:
@@ -156,38 +149,56 @@ return array(
              */
             'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
 
-            /**
-             * UserDataService - Core User data access service
-             * Required *
-             */
-            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
-
+            // ---------------------------- //
             /**
              * UserRolesDataMapper
              * Required for (ACL user property):
              * RcmUser\Acl\Service\Factory\EventListeners
-             * RcmUser\Acl\Event\CreateUserPostListener
-             * RcmUser\Acl\Event\DeleteUserPostListener
-             * RcmUser\Acl\Event\ReadUserPostListener
-             * RcmUser\Acl\Event\UpdateUserPostListener
              */
             'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
 
+            // Validations
             /**
-             * UserPropertyService - Allows user properties to be set and events triggered
-             * Required
+             * UserValidatorService
+             * Required for:
+             * RcmUser\User\EventListeners
              */
-            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
-
+            'RcmUser\User\Service\UserValidatorService' => 'RcmUser\User\Service\Factory\UserValidator',
             /**
-             * EventListeners
+             * ValidatorEventListeners
              * Required for (User validation and input filtering):
              */
-            'RcmUser\User\EventListeners' => 'RcmUser\User\Service\Factory\EventListeners',
+            'RcmUser\User\ValidatorEventListeners' => 'RcmUser\User\Service\Factory\ValidatorEventListeners',
+
+            // Data Prep
+            /**
+             * Encryptor
+             * Required for:
+             * RcmUser\User\Service\UserDataPrepService
+             * RcmUser\Authentication\Adapter\UserAdapter
+             */
+            'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+            /**
+             * UserDataPrepService (requires Encryptor)
+             * Required for:
+             * RcmUser\User\EventListeners
+             */
+            'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
+            /**
+             * DataPrepEventListeners
+             * Required for (User preparing data for save):
+             */
+            'RcmUser\User\DataPrepEventListeners' => 'RcmUser\User\Service\Factory\DataPrepEventListeners',
 
             /****************************************/
             /* AUTH *********************************/
+            /*
+             * UserAuthenticationService
+             * Wraps events, actions are preformed in event listeners
+             */
             'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
+
+            // ---------------------------- //
             /**
              * UserAdapter
              * Required for (Auth):
@@ -201,22 +212,35 @@ return array(
              */
             'RcmUser\Authentication\Storage' => 'RcmUser\Authentication\Service\Factory\Storage',
             /**
-             * UserSession
-             * Required for (Auth):
-             * RcmUser\Authentication\Service\UserAuthenticationService
+             * AuthenticationService
+             * Required for:
+             * RcmUser\Authentication\EventListeners
              */
             'RcmUser\Authentication\AuthenticationService' => 'RcmUser\Authentication\Service\Factory\AuthenticationService',
-
-            //'RcmUser\Authentication\EventListeners' => 'RcmUser\Authentication\Service\Factory\EventListeners',
-
+            /**
+             * EventListeners
+             * Required for listening for auth related events:
+             */
+            'RcmUser\Authentication\EventListeners' => 'RcmUser\Authentication\Service\Factory\EventListeners',
 
             /****************************************/
             /* ACL **********************************/
+
             /**
-             * IdentiyProvider
-             * Required for BjyAuthorize:
+             * AclResourceService
+             * Exposes our resource aggregation methods
              */
-            'RcmUser\Acl\IdentiyProvider' => 'RcmUser\Acl\Service\Factory\IdentiyProvider',
+            'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
+            /**
+             * AclRoleDataMapper
+             * Required for
+             */
+            'RcmUser\Acl\AclRoleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper',
+            /**
+             * AclRuleDataMapper
+             * Required for
+             */
+            'RcmUser\Acl\AclRuleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
 
             /**
              * EventListeners
@@ -224,12 +248,30 @@ return array(
              */
             'RcmUser\Acl\EventListeners' => 'RcmUser\Acl\Service\Factory\EventListeners',
 
+            /**
+             * BJY-Authorize providers
+             * Required for BjyAuthorize:
+             */
+            'RcmUser\Acl\Provider\BjyIdentityProvider' => 'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
+            'RcmUser\Acl\Provider\BjyRoleProvider' => 'RcmUser\Acl\Service\Factory\BjyRoleProvider',
+            'RcmUser\Acl\Provider\BjyRuleProvider' => 'RcmUser\Acl\Service\Factory\BjyRuleProvider',
+            'RcmUser\Acl\Provider\BjyResourceProvider' => 'RcmUser\Acl\Service\Factory\BjyResourceProvider',
 
             /****************************************/
             /* CORE **********************************/
+            /**
+             * Main service facade
+             */
             'RcmUser\Service\RcmUserService' => 'RcmUser\Service\Factory\RcmUserService',
 
-            // Event Aggregation
+            /**
+             * Provides the Access Resources for this Module
+             */
+            'RcmUser\Provider\RcmUserAclResourceProvider' => 'RcmUser\Service\Factory\RcmUserAclResourceProvider',
+
+            /**
+             * Event Aggregation
+            */
             'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
         ),
     ),
@@ -237,19 +279,15 @@ return array(
     'bjyauthorize' => array(
         'default_role' => 'guest',
         'authenticated_role' => 'user',
-        'identity_provider' => 'RcmUser\Acl\IdentiyProvider',
+        'identity_provider' => 'RcmUser\Acl\Provider\BjyIdentityProvider',
         'role_providers' => array(
-            'RcmUser\Acl\Provider\RoleProvider' => array('guest'),
+            'RcmUser\Acl\Provider\BjyRoleProvider' => array('guest'),
         ),
         'resource_providers' => array(
-            'RcmUser\Acl\Provider\ResourceProvider' => array(
-                'RcmUser.Core' => array('create', 'read', 'update', 'delete'),
-                'RcmUser.User' => array('create', 'read', 'update', 'delete'),
-                'RcmUser.Acl' => array('create', 'read', 'update', 'delete'),
-            ),
+            'RcmUser\Acl\Provider\BjyResourceProvider' => array(),
         ),
         'rule_providers' => array(
-            'RcmUser\Acl\Provider\RuleProvider' => array(),
+            'RcmUser\Acl\Provider\BjyRuleProvider' => array(),
         ),
     ),
 );

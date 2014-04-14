@@ -16,34 +16,13 @@ use RcmUser\User\Entity\User;
 
 
 /**
- * AUTHENTICATION and events
+ * AUTHENTICATION events which trigger the listeners which do the actual work
  * Class UserAuthenticationService
  *
  * @package RcmUser\Service
  */
 class UserAuthenticationService extends EventProvider
 {
-
-    /**
-     * @var
-     */
-    protected $authService;
-
-    /**
-     * @param mixed $authService
-     */
-    public function setAuthService(\Zend\Authentication\AuthenticationService $authService)
-    {
-        $this->authService = $authService;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getAuthService()
-    {
-        return $this->authService;
-    }
 
     /**
      * @param User $user
@@ -56,16 +35,16 @@ class UserAuthenticationService extends EventProvider
         // @event pre - expects listener to return Zend\Authentication\Result with Result->identity == to user object ($user)
         $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user), function($result){ return $result->isValid();});
 
-        if ($resultsPre->stopped()) {
-            // Auth success
-            return $resultsPre->last();
+        $result = $resultsPre->last();
+
+        if($result === null){
+            throw new \Exception('No auth listener registered or no results returned.');
         }
 
-        // @todo Inject this as event
-        // RcmUser Auth
-        $adapter = $this->getAuthService()->getAdapter();
-        $adapter->setUser($user);
-        $result = $adapter->authenticate();
+        if ($resultsPre->stopped()) {
+            // Auth success
+            return $result;
+        }
 
         // @event post - expects Listener to check for $result->isValid() for post actions
         $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
@@ -84,15 +63,16 @@ class UserAuthenticationService extends EventProvider
         // @event pre - expects listener to return Zend\Authentication\Result with Result->identity == to user object ($user)
         $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user), function($result){ return $result->isValid();});
 
-        if ($resultsPre->stopped()) {
-            // Auth success
-            return $resultsPre->last();
+        $result = $resultsPre->last();
+
+        if($result === null){
+            throw new \Exception('No auth listener registered or no results returned.');
         }
 
-        // @todo Inject this as event
-        $adapter = $this->getAuthService()->getAdapter();
-        $adapter->setUser($user);
-        $result =  $this->getAuthService()->authenticate($adapter);
+        if ($resultsPre->stopped()) {
+            // Auth success
+            return $result;
+        }
 
         // @event post - expects Listener to check for $result->isValid() for post actions
         $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
@@ -102,25 +82,13 @@ class UserAuthenticationService extends EventProvider
 
     public function clearIdentity()
     {
-
-        $authService = $this->getAuthService();
-
-        if ($authService->hasIdentity()) {
-
-            $currentUser = $this->getIdentity();
-
-            // @event
-            $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
-
-            $authService->clearIdentity();
-        }
+        // @event
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array());
     }
 
     public function getIdentity()
     {
-        $authService = $this->getAuthService();
-
-        $currentUser = $authService->getIdentity();
+        $currentUser = new User();
 
         // @event
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));

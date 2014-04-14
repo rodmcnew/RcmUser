@@ -8,19 +8,20 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Authentication\Service\Factory;
+namespace RcmUser\Acl\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserAuthenticationService implements FactoryInterface
+class BjyRoleProvider implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        //@todo - factory not required: $auth = $serviceLocator->get('RcmUser\Authentication\AuthenticationService');
+        $aclRoleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRoleDataMapper');
 
-        $service = new \RcmUser\Authentication\Service\UserAuthenticationService();
+        $service = new \RcmUser\Acl\Provider\BjyRoleProvider();
+        $service->setAclRoleDataMapper($aclRoleDataMapper);
 
         return $service;
     }

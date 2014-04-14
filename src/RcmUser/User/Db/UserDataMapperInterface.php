@@ -11,7 +11,7 @@
 namespace RcmUser\User\Db;
 
 
-use RcmUser\User\Entity\UserInterface;
+use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
 /**
@@ -39,39 +39,39 @@ interface UserDataMapperInterface
     public function fetchByUsername($username);
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return RcmUser\User\Result
      */
-    public function create(UserInterface $user);
+    public function create(User $user);
 
     /**
      * This will read the user from Id or Username. Id will get priority if it is set.
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return RcmUser\User\Result
      */
-    public function read(UserInterface $user);
+    public function read(User $user);
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return RcmUser\User\Result
      */
-    public function update(UserInterface $user);
+    public function update(User $user);
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return RcmUser\User\Result
      */
-    public function delete(UserInterface $user);
+    public function delete(User $user);
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return RcmUser\User\Result
      */
-    //public function disable(UserInterface $user);
+    //public function disable(User $user);
 
 } 

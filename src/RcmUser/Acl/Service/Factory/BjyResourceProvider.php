@@ -8,19 +8,21 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\Authentication\Service\Factory;
+namespace RcmUser\Acl\Service\Factory;
 
+use RcmUser\Acl\Service\AclResourceService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserAuthenticationService implements FactoryInterface
+class BjyResourceProvider implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        //@todo - factory not required: $auth = $serviceLocator->get('RcmUser\Authentication\AuthenticationService');
+        $resourceProvider = $serviceLocator->get('RcmUser\Acl\Service\AclResourceService');
 
-        $service = new \RcmUser\Authentication\Service\UserAuthenticationService();
+        $service = new \RcmUser\Acl\Provider\BjyResourceProvider();
+        $service->setRcmUserResourceProvider($resourceProvider);
 
         return $service;
     }

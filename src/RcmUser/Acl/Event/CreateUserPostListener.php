@@ -35,21 +35,22 @@ class CreateUserPostListener extends AbstractUserDataServiceListener
 
             $user = $result->getUser();
 
-            $currentRoles = $user->getProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, null);
+            $currentRoles = $user->getProperty($this->getUserPropertyKey(), null);
 
             if ($currentRoles === null) {
 
-                $user->setProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, $this->getDefaultAuthenticatedRoleIdentities());
+                $user->setProperty($this->getUserPropertyKey(), $this->getDefaultAuthenticatedRoleIdentities());
             }
 
-            $aclResult = $this->getUserRolesDataMapper()->create($user, $user->getProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY));
+            $aclResult = $this->getUserRolesDataMapper()->create($user, $user->getProperty($this->getUserPropertyKey()));
 
             if (!$aclResult->isSuccess()) {
 
-                throw new \Exception(AbstractUserDataServiceListener::USER_PROPERTY_KEY . ' RcmUser could not be created for user. ' . json_encode($aclResult->getMessages()));
+                return $aclResult;
+                //throw new \Exception($this->getUserPropertyKey(). ' ACL Roles could not be created for user. ' . json_encode($aclResult->getMessages()));
             }
 
-            $user->setProperty(AbstractUserDataServiceListener::USER_PROPERTY_KEY, $aclResult->getData());
+            $user->setProperty($this->getUserPropertyKey(), $aclResult->getData());
 
             return new Result($user, Result::CODE_SUCCESS);
         }

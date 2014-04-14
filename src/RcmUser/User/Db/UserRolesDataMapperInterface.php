@@ -12,7 +12,7 @@ namespace RcmUser\User\Db;
 
 
 use RcmUser\Acl\Entity\AclRole;
-use RcmUser\User\Entity\UserInterface;
+use RcmUser\User\Entity\User;
 
 /**
  * Interface UserRolesDataMapperInterface
@@ -22,48 +22,48 @@ use RcmUser\User\Entity\UserInterface;
 interface UserRolesDataMapperInterface {
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      * @param AclRole          $role
      *
      * @return mixed
      */
-    public function add(UserInterface $user, AclRole $role);
+    public function add(User $user, AclRole $role);
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      * @param AclRole          $role
      *
      * @return mixed
      */
-    public function remove(UserInterface $user, AclRole $role);
+    public function remove(User $user, AclRole $role);
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      * @param array         $roles
      *
      * @return mixed
      */
-    public function create(UserInterface $user, $roles = array());
+    public function create(User $user, $roles = array());
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return mixed
      */
-    public function read(UserInterface $user);
+    public function read(User $user);
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      * @param array         $roles
      *
      * @return mixed
      */
-    public function update(UserInterface $user, $roles = array());
+    public function update(User $user, $roles = array());
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return mixed
      */
-    public function delete(UserInterface $user);
+    public function delete(User $user);
 } 

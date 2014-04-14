@@ -12,8 +12,10 @@ namespace RcmUser\Authentication\Adapter;
 
 
 use RcmUser\User\Entity\AbstractUser;
+use RcmUser\User\Entity\User;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
+use Zend\Crypt\Password\PasswordInterface;
 
 /**
  * Class UserAdapter
@@ -30,6 +32,11 @@ class UserAdapter extends AbstractAdapter
     /**
      * @var
      */
+    protected $encryptor;
+
+    /**
+     * @var
+     */
     protected $user;
 
     /**
@@ -39,15 +46,15 @@ class UserAdapter extends AbstractAdapter
     protected $obfuscatePassword = true;
 
     /**
-     * @param mixed $user
+     * @param User $user
      */
-    public function setUser(AbstractUser $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {
@@ -84,6 +91,22 @@ class UserAdapter extends AbstractAdapter
     public function getUserDataService()
     {
         return $this->userDataService;
+    }
+
+    /**
+     * @param mixed $encryptor
+     */
+    public function setEncryptor(PasswordInterface $encryptor)
+    {
+        $this->encryptor = $encryptor;
+    }
+
+    /**
+     * @return PasswordInterface
+     */
+    public function getEncryptor()
+    {
+        return $this->encryptor;
     }
 
     /**
@@ -131,7 +154,7 @@ class UserAdapter extends AbstractAdapter
 
         $credential = $user->getPassword();
 
-        $isValid = $this->getUserDataService()->getUserDataPrepService()->getEncryptor()->verify($credential, $existingHash);
+        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
         if ($isValid) {
 
             if ($this->getObfuscatePassword()) {
