@@ -21,8 +21,15 @@ class EventListeners implements FactoryInterface
         $listeners = array();
 
         try {
-            $eventListeners = $serviceLocator->get('RcmUser\User\EventListeners');
+            $eventListeners = $serviceLocator->get('RcmUser\User\ValidatorEventListeners');
             $listeners = $eventListeners;
+        } catch (\Exception $e) {
+            // no listeners
+        }
+
+        try {
+            $eventListeners = $serviceLocator->get('RcmUser\User\DataPrepEventListeners');
+            $listeners = array_merge($eventListeners, $listeners);
         } catch (\Exception $e) {
             // no listeners
         }

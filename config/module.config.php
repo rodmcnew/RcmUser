@@ -151,18 +151,13 @@ return array(
 
             // ---------------------------- //
             /**
-             * Encryptor
-             * Required for:
-             * RcmUser\User\Service\UserDataPrepService
-             * RcmUser\Authentication\Adapter\UserAdapter
+             * UserRolesDataMapper
+             * Required for (ACL user property):
+             * RcmUser\Acl\Service\Factory\EventListeners
              */
-            'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
-            /**
-             * UserDataPrepService
-             * Required for:
-             * RcmUser\User\EventListeners
-             */
-            'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
+            'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
+
+            // Validations
             /**
              * UserValidatorService
              * Required for:
@@ -170,16 +165,30 @@ return array(
              */
             'RcmUser\User\Service\UserValidatorService' => 'RcmUser\User\Service\Factory\UserValidator',
             /**
-             * UserRolesDataMapper
-             * Required for (ACL user property):
-             * RcmUser\Acl\Service\Factory\EventListeners
-             */
-            'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
-            /**
-             * EventListeners
+             * ValidatorEventListeners
              * Required for (User validation and input filtering):
              */
-            'RcmUser\User\EventListeners' => 'RcmUser\User\Service\Factory\EventListeners',
+            'RcmUser\User\ValidatorEventListeners' => 'RcmUser\User\Service\Factory\ValidatorEventListeners',
+
+            // Data Prep
+            /**
+             * Encryptor
+             * Required for:
+             * RcmUser\User\Service\UserDataPrepService
+             * RcmUser\Authentication\Adapter\UserAdapter
+             */
+            'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+            /**
+             * UserDataPrepService (requires Encryptor)
+             * Required for:
+             * RcmUser\User\EventListeners
+             */
+            'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
+            /**
+             * DataPrepEventListeners
+             * Required for (User preparing data for save):
+             */
+            'RcmUser\User\DataPrepEventListeners' => 'RcmUser\User\Service\Factory\DataPrepEventListeners',
 
             /****************************************/
             /* AUTH *********************************/
@@ -203,8 +212,8 @@ return array(
              */
             'RcmUser\Authentication\Storage' => 'RcmUser\Authentication\Service\Factory\Storage',
             /**
-             * UserSession
-             * Required for (Auth):
+             * AuthenticationService
+             * Required for:
              * RcmUser\Authentication\EventListeners
              */
             'RcmUser\Authentication\AuthenticationService' => 'RcmUser\Authentication\Service\Factory\AuthenticationService',
@@ -214,24 +223,24 @@ return array(
              */
             'RcmUser\Authentication\EventListeners' => 'RcmUser\Authentication\Service\Factory\EventListeners',
 
-
             /****************************************/
             /* ACL **********************************/
 
             /**
              * AclResourceService
-             * Exposes our resource
+             * Exposes our resource aggregation methods
              */
             'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
             /**
-             * Data mappers
+             * AclRoleDataMapper
+             * Required for
              */
             'RcmUser\Acl\AclRoleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper',
+            /**
+             * AclRuleDataMapper
+             * Required for
+             */
             'RcmUser\Acl\AclRuleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
-
-
-
-
 
             /**
              * EventListeners

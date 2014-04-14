@@ -16,7 +16,7 @@ $acl = new Acl();
 $startTime = time();
 $user = $userService->buildNewUser();
 
-$user->setId('f11653b8-2a4a-4784-a70b-ac7641b46c28');
+//$user->setId('f11653b8-2a4a-4784-a70b-ac7641b46c28');
 $user->setUsername('Jerry13');
 $user->setPassword('12345678');
 
@@ -38,7 +38,7 @@ if(!$result->isSuccess()){
 var_dump($result->getUser());
 /* */
 
-/* READ */
+/* READ *
 $result = $userService->readUser($user);
 
 echo "READ: After read:\n";

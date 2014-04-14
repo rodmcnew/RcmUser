@@ -27,11 +27,11 @@ class BjyAclRole extends AclRole implements HierarchicalRoleInterface
      */
     public function getParent()
     {
-        /*
+
         if (($this->parentRole instanceof AclRole)) {
+
             return $this->parentRole->getRoleIdentity();
         }
-        */
 
         return $this->parentRole;
     }
