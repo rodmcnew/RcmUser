@@ -133,51 +133,48 @@ return array(
             /* USER *********************************/
 
             /**
+             * UserDataService - Core User data access service
+             * Required *
+             */
+            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
+            /**
+             * UserPropertyService - Allows user properties to be set by event listeners
+             * Required
+             */
+            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
+            /**
              * UserDataMapper - Data source adapter
              * Required for:
              * RcmUser\User\Service\UserDataService
              */
             'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
 
-            /**
-             * UserDataService - Core User data access service
-             * Required *
-             */
-            'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
-
-            /**
-             * UserPropertyService - Allows user properties to be set and events triggered
-             * Required
-             */
-            'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
-
             // ---------------------------- //
             /**
              * Encryptor
              * Required for:
              * RcmUser\User\Service\UserDataPrepService
+             * RcmUser\Authentication\Adapter\UserAdapter
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
             /**
              * UserDataPrepService
              * Required for:
-             * RcmUser\User\Service\UserDataService
+             * RcmUser\User\EventListeners
              */
             'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
             /**
              * UserValidatorService
              * Required for:
-             * RcmUser\User\Service\UserDataService
+             * RcmUser\User\EventListeners
              */
             'RcmUser\User\Service\UserValidatorService' => 'RcmUser\User\Service\Factory\UserValidator',
-
             /**
              * UserRolesDataMapper
              * Required for (ACL user property):
              * RcmUser\Acl\Service\Factory\EventListeners
              */
             'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
-
             /**
              * EventListeners
              * Required for (User validation and input filtering):
@@ -186,8 +183,11 @@ return array(
 
             /****************************************/
             /* AUTH *********************************/
+            /*
+             * UserAuthenticationService
+             * Wraps events, actions are preformed in event listeners
+             */
             'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
-
 
             // ---------------------------- //
             /**
@@ -205,7 +205,7 @@ return array(
             /**
              * UserSession
              * Required for (Auth):
-             * RcmUser\Authentication\Service\UserAuthenticationService
+             * RcmUser\Authentication\EventListeners
              */
             'RcmUser\Authentication\AuthenticationService' => 'RcmUser\Authentication\Service\Factory\AuthenticationService',
             /**
@@ -219,6 +219,11 @@ return array(
             /* ACL **********************************/
 
             /**
+             * AclResourceService
+             * Exposes our resource
+             */
+            'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
+            /**
              * Data mappers
              */
             'RcmUser\Acl\AclRoleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper',
@@ -226,7 +231,7 @@ return array(
 
 
 
-            'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
+
 
             /**
              * EventListeners

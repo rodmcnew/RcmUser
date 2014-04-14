@@ -14,7 +14,7 @@ namespace RcmUser\User\Db;
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Db\DoctrineMapper;
-use RcmUser\User\Entity\UserInterface;
+use RcmUser\User\Entity\User;
 use RcmUser\Result;
 
 class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesDataMapperInterface
@@ -38,7 +38,7 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
     }
 
 
-    public function add(UserInterface $user, AclRole $role)
+    public function add(User $user, AclRole $role)
     {
 
         $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
@@ -53,19 +53,19 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
         return new Result($user);
     }
 
-    public function remove(UserInterface $user, AclRole $role)
+    public function remove(User $user, AclRole $role)
     {
         // @todo - write me
         return new Result(null, Result::CODE_FAIL, 'Remove not yet available.');
     }
 
-    public function create(UserInterface $user, $roles = array())
+    public function create(User $user, $roles = array())
     {
         // @todo - write me
         return new Result(null, Result::CODE_FAIL, 'Create not yet available.');
     }
 
-    public function read(UserInterface $user)
+    public function read(User $user)
     {
 
         $userId = $user->getId();
@@ -118,13 +118,13 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
         return new Result($userAclRoles);
     }
 
-    public function update(UserInterface $user, $roles = array())
+    public function update(User $user, $roles = array())
     {
         // @todo - write me
         return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
     }
 
-    public function delete(UserInterface $user)
+    public function delete(User $user)
     {
         // @todo - write me
         return new Result(null, Result::CODE_FAIL, 'Update not yet available.');

@@ -12,6 +12,7 @@ namespace RcmUser\Authentication\Adapter;
 
 
 use RcmUser\User\Entity\AbstractUser;
+use RcmUser\User\Entity\User;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\PasswordInterface;
@@ -45,15 +46,15 @@ class UserAdapter extends AbstractAdapter
     protected $obfuscatePassword = true;
 
     /**
-     * @param mixed $user
+     * @param User $user
      */
-    public function setUser(AbstractUser $user)
+    public function setUser(User $user)
     {
         $this->user = $user;
     }
 
     /**
-     * @return mixed
+     * @return User
      */
     public function getUser()
     {

@@ -13,7 +13,7 @@ namespace RcmUser\User\Db;
 
 use RcmUser\Db\DoctrineMapper;
 use RcmUser\User\Entity\DoctrineUser;
-use RcmUser\User\Entity\UserInterface;
+use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
 class AbstractUserDataMapper implements UserDataMapperInterface
@@ -39,51 +39,51 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function create(UserInterface $user)
+    public function create(User $user)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be created.');
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function read(UserInterface $user)
+    public function read(User $user)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be read.');
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function update(UserInterface $user)
+    public function update(User $user)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be updated.');
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return Result
      */
-    public function delete(UserInterface $user)
+    public function delete(User $user)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be deleted.');
     }
 
     /**
-     * @param UserInterface $user
+     * @param User $user
      *
      * @return bool
      */
-    public function canUpdate(UserInterface $user)
+    public function canUpdate(User $user)
     {
 
         $id = $user->getId();
