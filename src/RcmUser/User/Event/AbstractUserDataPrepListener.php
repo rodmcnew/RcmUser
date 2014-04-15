@@ -12,7 +12,7 @@ namespace RcmUser\User\Event;
 
 
 use RcmUser\Event\AbstractListener;
-use RcmUser\User\Service\UserDataPrepServiceInterface;
+use RcmUser\User\Data\UserDataPreparerInterface;
 
 class AbstractUserDataPrepListener extends AbstractListener  {
 
@@ -25,23 +25,23 @@ class AbstractUserDataPrepListener extends AbstractListener  {
     protected $priority = 5;
 
     /**
-     * @var UserDataPrepServiceInterface
+     * @var UserDataPreparerInterface
      */
-    protected $userDataPrepService;
+    protected $userDataPreparer;
 
     /**
-     * @param UserDataPrepServiceInterface $userDataPrepService
+     * @param UserDataPreparerInterface $UserDataPreparer
      */
-    public function setUserDataPrepService(UserDataPrepServiceInterface $userDataPrepService)
+    public function setUserDataPreparer(UserDataPreparerInterface $userDataPreparer)
     {
-        $this->userDataPrepService = $userDataPrepService;
+        $this->userDataPreparer = $userDataPreparer;
     }
 
     /**
-     * @return UserDataPrepServiceInterface
+     * @return UserDataPreparerInterface
      */
-    public function getUserDataPrepService()
+    public function getUserDataPreparer()
     {
-        return $this->userDataPrepService;
+        return $this->userDataPreparer;
     }
 } 

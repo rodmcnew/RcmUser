@@ -12,7 +12,6 @@ namespace RcmUser\User\Event;
 
 
 use RcmUser\User\Result;
-use RcmUser\User\Service\UserDataPrepServiceInterface;
 
 class CreateUserPreDataPrepListener extends AbstractUserDataPrepListener
 {
@@ -32,6 +31,6 @@ class CreateUserPreDataPrepListener extends AbstractUserDataPrepListener
         $newUser = $e->getParam('newUser');
         $creatableUser = $e->getParam('creatableUser');
 
-        return $this->getUserDataPrepService()->prepareUserCreate($newUser, $creatableUser);
+        return $this->getUserDataPreparer()->prepareUserCreate($newUser, $creatableUser);
     }
 } 

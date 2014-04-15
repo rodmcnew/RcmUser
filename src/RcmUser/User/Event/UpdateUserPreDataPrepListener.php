@@ -31,6 +31,6 @@ class UpdateUserPreDataPrepListener extends AbstractUserDataPrepListener
         $updatedUser = $e->getParam('updatedUser');
         $updatableUser = $e->getParam('updatableUser');
 
-        return $this->getUserDataPrepService()->prepareUserUpdate($updatedUser, $updatableUser);
+        return $this->getUserDataPreparer()->prepareUserUpdate($updatedUser, $updatableUser);
     }
 } 

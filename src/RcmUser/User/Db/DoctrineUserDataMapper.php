@@ -19,21 +19,20 @@ use RcmUser\User\Result;
 class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInterface
 {
     /**
-     * @param $id
+     * @param       $id
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function fetchById($id)
+    public function fetchById($id, $params = array())
     {
         //$user = $this->getEntityManager()->find($this->getEntityClass(), $id);
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT user FROM '.$this->getEntityClass().' user ' .
-            'WHERE user.id = ?1 ' .
-            'AND user.state != ?2'
+            'WHERE user.id = ?1 '
         );
         $query->setParameter(1, $id);
-        $query->setParameter(2, User::STATE_DISABLED);
 
         $users = $query->getResult();
 
@@ -51,20 +50,21 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param $username
+     * @param       $username
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function fetchByUsername($username)
+    public function fetchByUsername($username, $params = array())
     {
         //$user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
+
         $query = $this->getEntityManager()->createQuery(
             'SELECT user FROM '.$this->getEntityClass().' user ' .
-            'WHERE user.username = ?1 ' .
-            'AND user.state != ?2'
+            'WHERE user.username = ?1 '
         );
         $query->setParameter(1, $username);
-        $query->setParameter(2, User::STATE_DISABLED);
+
 
         $users = $query->getResult();
 
@@ -82,11 +82,12 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function create(User $user)
+    public function create(User $user, $params = array())
     {
         $result = $this->getValidInstance($user);
 
@@ -100,16 +101,18 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function read(User $user)
+    public function read(User $user, $params = array())
     {
         $result = $this->getValidInstance($user);
 
         $user = $result->getUser();
         $id = $user->getId();
+
         if (!empty($id)) {
 
             $result = $this->fetchById($id);
@@ -133,11 +136,12 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function update(User $user)
+    public function update(User $user, $params = array())
     {
         $result = $this->getValidInstance($user);
 
@@ -157,11 +161,12 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function delete(User $user)
+    public function delete(User $user, $params = array())
     {
 
         if (!$this->canUpdate($user)) {
@@ -170,18 +175,16 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
             return new Result(null, Result::CODE_FAIL, 'User cannot be deleted (disabled), id required for delete.');
         }
 
-        $updateUser = new User();
-        $updateUser->setId($user->getId());
-        $updateUser->setState(User::STATE_DISABLED);
+        $user->setState(User::STATE_DISABLED);
 
-        $updateResult = $this->update($updateUser);
+        $updateResult = $this->update($user);
 
         if(!$updateResult->isSuccess()){
 
             return new Result(null, Result::CODE_FAIL, 'User cannot be deleted (disabled). ' . $updateResult->getMessage());
         }
 
-        return new Result($user, Result::CODE_SUCCESS, 'User deleted (disabled) successfully.');
+        return new Result($updateResult->getUser(), Result::CODE_SUCCESS, 'User deleted (disabled) successfully.');
         /* by default, we should not support true delete
         $result = $this->getValidInstance($user);
 
@@ -236,5 +239,15 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
         }
 
         return true;
+    }
+
+    protected function parseParamValue($key, $params = array()){
+
+        if(isset($params[$key])){
+
+            return $params[$key];
+        }
+
+        return null;
     }
 } 

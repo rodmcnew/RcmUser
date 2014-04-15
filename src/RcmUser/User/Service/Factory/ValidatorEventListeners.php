@@ -25,16 +25,16 @@ class ValidatorEventListeners implements FactoryInterface
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $vs = $serviceLocator->get('RcmUser\User\Service\UserValidatorService');
+        $vs = $serviceLocator->get('RcmUser\User\Data\UserValidator');
 
         $listeners = array();
 
         $createUserPreValidatorListener = new CreateUserPreValidatorListener();
-        $createUserPreValidatorListener->setUserValidatorService($vs);
+        $createUserPreValidatorListener->setUserValidator($vs);
         $listeners[] = $createUserPreValidatorListener;
 
         $updateUserPreValidatorListener = new UpdateUserPreValidatorListener();
-        $updateUserPreValidatorListener->setUserValidatorService($vs);
+        $updateUserPreValidatorListener->setUserValidator($vs);
         $listeners[] = $updateUserPreValidatorListener;
 
         return $listeners;

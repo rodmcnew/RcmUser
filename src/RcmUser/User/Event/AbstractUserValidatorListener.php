@@ -12,8 +12,8 @@ namespace RcmUser\User\Event;
 
 
 use RcmUser\Event\AbstractListener;
-use RcmUser\User\Service\UserDataPrepServiceInterface;
-use RcmUser\User\Service\UserValidatorServiceInterface;
+use RcmUser\User\Data\UserDataPreparerInterface;
+use RcmUser\User\Data\UserValidatorInterface;
 
 class AbstractUserValidatorListener extends AbstractListener  {
 
@@ -27,23 +27,23 @@ class AbstractUserValidatorListener extends AbstractListener  {
 
 
     /**
-     * @var UserValidatorServiceInterface
+     * @var UserValidatorInterface
      */
-    protected $userValidatorService;
+    protected $userValidator;
 
     /**
-     * @param UserValidatorServiceInterface $userValidatorService
+     * @param UserValidatorInterface $UserValidator
      */
-    public function setUserValidatorService(UserValidatorServiceInterface $userValidatorService)
+    public function setUserValidator(UserValidatorInterface $userValidator)
     {
-        $this->userValidatorService = $userValidatorService;
+        $this->userValidator = $userValidator;
     }
 
     /**
-     * @return UserValidatorServiceInterface
+     * @return UserValidatorInterface
      */
-    public function getUserValidatorService()
+    public function getUserValidator()
     {
-        return $this->userValidatorService;
+        return $this->userValidator;
     }
 } 

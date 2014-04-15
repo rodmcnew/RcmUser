@@ -38,7 +38,7 @@ class User implements UserInterface, \JsonSerializable
     /**
      * @var string
      */
-    protected $state = self::STATE_DISABLED;
+    protected $state = null;
 
     /**
      * Property data injected by external sources
@@ -165,6 +165,7 @@ class User implements UserInterface, \JsonSerializable
             $this->setId($data->getId());
             $this->setUsername($data->getUsername());
             $this->setPassword($data->getPassword());
+            $this->setState($data->getState());
             $this->setProperties($data->getProperties());
 
             return;
@@ -180,6 +181,9 @@ class User implements UserInterface, \JsonSerializable
             }
             if (isset($data['password'])) {
                 $this->setPassword($data['password']);
+            }
+            if (isset($data['state'])) {
+                $this->setProperties($data['state']);
             }
             if (isset($data['properties'])) {
                 $this->setProperties($data['properties']);
@@ -209,9 +213,46 @@ class User implements UserInterface, \JsonSerializable
         $obj->id = $this->getId();
         $obj->username = $this->getUsername();
         $obj->password = self::PASSWORD_OBFUSCATE; // Might be better way to obfuscate
+        $obj->state = $this->getState();
         $obj->properties = $this->getProperties();
 
         return $obj;
+    }
+
+    /**
+     * Merges values of the $user arg into this user if the values are not set
+     * @param User $user
+     */
+    public function merge(User $user){
+
+        if($this->getId() === null){
+
+            $this->setId($user->getId());
+        }
+
+        if($this->getUsername() === null){
+
+            $this->setUsername($user->getUsername());
+        }
+
+        if($this->getPassword() === null){
+
+            $this->setPassword($user->getPassword());
+        }
+
+        if($this->getState() === null){
+
+            $this->setState($user->getState());
+        }
+
+        $properties = $user->getProperties();
+        foreach($properties as $key => $property){
+
+            if(empty($this->getProperty($key))){
+                $this->setProperty($key, $property);
+            }
+        }
+
     }
 
 

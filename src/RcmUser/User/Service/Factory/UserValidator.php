@@ -10,8 +10,6 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use RcmUser\User\InputFilter\UserInputFilter;
-use RcmUser\User\Service\UserValidatorService;
 use Zend\InputFilter\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -22,7 +20,7 @@ class UserValidator implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
 
-        $service = new UserValidatorService();
+        $service = new \RcmUser\User\Data\UserValidator();
 
         $config = $serviceLocator->get('RcmUser\User\Config')->get('InputFilter', array());
         $userInputFilterClass = 'RcmUser\User\InputFilter\UserInputFilter';

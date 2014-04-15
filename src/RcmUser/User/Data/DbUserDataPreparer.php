@@ -8,14 +8,14 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Service;
+namespace RcmUser\User\Data;
 
 
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use Zend\Crypt\Password\PasswordInterface;
 
-class UserDataPrepService implements UserDataPrepServiceInterface
+class DbUserDataPreparer implements UserDataPreparerInterface
 {
 
     protected $userDataMapper;
@@ -57,8 +57,20 @@ class UserDataPrepService implements UserDataPrepServiceInterface
     public function prepareUserCreate(User $newUser, User $creatableUser)
     {
 
+        // make sure no duplicates
+        $dupUser = $this->getUserDataMapper()->fetchByUsername($newUser->getUsername());
+
+        if ($dupUser->isSuccess()) {
+
+            // ERROR - user exists
+            return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
+        }
+
         $creatableUser->setId($this->buildId());
         $creatableUser->setPassword($this->getEncryptor()->create($newUser->getPassword()));
+        if(empty($newUser->getState())){
+            $creatableUser->setState(User::STATE_DISABLED);
+        }
 
         return new Result($creatableUser);
     }
@@ -70,40 +82,43 @@ class UserDataPrepService implements UserDataPrepServiceInterface
         $updatedUsername = $updatedUser->getUsername();
         $existingUserName = $updatableUser->getUsername();
 
-        // sync null
-        if ($updatedUsername !== null) {
+        // if username changed:
+        if ($existingUserName !== $updatedUsername) {
 
-            // if username changed:
-            if ($existingUserName !== $updatedUsername) {
+            // make sure no duplicates
+            $dupUser = $this->getUserDataMapper()->fetchByUsername($updatedUsername);
 
-                // make sure no duplicates
-                $dupUser = $this->getUserDataMapper()->fetchByUsername($updatedUsername);
+            if ($dupUser->isSuccess()) {
 
-                if ($dupUser->isSuccess()) {
-
-                    // ERROR - user exists
-                    return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
-                }
-
-                $updatableUser->setUsername($updatedUsername);
+                // ERROR - user exists
+                return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
             }
+
+            $updatableUser->setUsername($updatedUsername);
         }
 
         // PASSWORD CHECKS
         $updatedPassword = $updatedUser->getPassword();
         $existingPassword = $updatableUser->getPassword();
         $hashedPassword = $existingPassword;
-        // sync null
-        if ($updatedPassword !== null) {
-            // if password changed
-            if ($existingPassword !== $updatedPassword) {
-                // plain text
-                $updatableUser->setPassword($updatedPassword);
-                $hashedPassword = $this->getEncryptor()->create($updatedPassword);
-            }
+
+        // if password changed
+        if ($existingPassword !== $updatedPassword) {
+            // plain text
+            $updatableUser->setPassword($updatedPassword);
+            $hashedPassword = $this->getEncryptor()->create($updatedPassword);
         }
 
         $updatableUser->setPassword($hashedPassword);
+
+        // STATE
+        $updatedState = $updatedUser->getState();
+        $existingState = $updatableUser->getState();
+
+        if($updatedState !== $existingState){
+
+            $updatableUser->setState($updatedState);
+        }
 
         return new Result($updatableUser);
     }
