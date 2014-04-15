@@ -17,19 +17,6 @@ CREATE TABLE rcm_user_user_role (
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
-/*
-CREATE TABLE rcm_user_user_metadata (
-	id INT AUTO_INCREMENT NOT NULL,
-
-	userCreateDate DATETIME DEFAULT NULL,
-	userCreatedById BIGINT DEFAULT NULL,
-	userModifiedDate DATETIME DEFAULT NULL,
-	userModifiedById BIGINT DEFAULT NULL,
-
-	PRIMARY KEY(id)
-) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
-*/
-
 -- ACL
 CREATE TABLE rcm_user_acl_role (
 	id INT AUTO_INCREMENT NOT NULL, 
@@ -67,6 +54,17 @@ INSERT INTO `rcm_user_acl_rule`
 `resource`,
 `privilege`)
 VALUES
-(1, 3, 'allow', 'core', '');
+(1, 4, 'allow', 'core', '');
 
+/*
+CREATE TABLE rcm_user_user_metadata (
+	id INT AUTO_INCREMENT NOT NULL,
 
+	userCreateDate DATETIME DEFAULT NULL,
+	userCreatedById BIGINT DEFAULT NULL,
+	userModifiedDate DATETIME DEFAULT NULL,
+	userModifiedById BIGINT DEFAULT NULL,
+
+	PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
+*/
