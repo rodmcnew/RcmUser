@@ -6,7 +6,7 @@ CREATE TABLE rcm_user_user (
 	username VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL,
 	-- email    VARCHAR(255) DEFAULT NULL UNIQUE,
-	state VARCHAR(255) DEFAULT 'enabled', -- 'enabled', 'disabled', etc... 
+	state VARCHAR(255) NOT NULL DEFAULT 'disabled', -- 'enabled', 'disabled', etc... 
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
