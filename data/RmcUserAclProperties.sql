@@ -54,7 +54,7 @@ INSERT INTO `rcm_user_acl_rule`
 `resource`,
 `privilege`)
 VALUES
-(1, 3, 'allow', 'core', '');
+(1, 4, 'allow', 'core', '');
 
 /*
 CREATE TABLE rcm_user_user_metadata (

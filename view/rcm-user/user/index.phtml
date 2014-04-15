@@ -17,10 +17,10 @@ $startTime = time();
 $user = $userService->buildNewUser();
 
 //$user->setId('f11653b8-2a4a-4784-a70b-ac7641b46c28');
-$user->setUsername('Jerry13');
-$user->setPassword('12345678');
+$user->setUsername('4057510001');
+$user->setPassword('');
 
-echo "**INITIAL USER OBJECT:\n";
+echo "**REQUEST USER OBJECT:\n";
 var_dump($user);
 
 
@@ -28,7 +28,7 @@ var_dump($user);
 /* CREATE *
 $result = $userService->createUser($user);
 
-echo "**After create:\n";
+echo "\n**After create:\n";
 if(!$result->isSuccess()){
 
     echo "ERROR: ";
@@ -41,10 +41,10 @@ var_dump($result->getUser());
 /* READ *
 $result = $userService->readUser($user);
 
-echo "READ: After read:\n";
+echo "\nREAD: After read:\n";
 if(!$result->isSuccess()){
 
-    echo "ERROR: ";
+    echo "\nERROR: ";
     var_dump($result->getMessages());
 }
 
@@ -54,10 +54,10 @@ var_dump($result->getUser());
 /* UPDATE *
 $result = $userService->updateUser($user);
 
-echo "UPDATE: After update:\n";
+echo "\nUPDATE: After update:\n";
 if(!$result->isSuccess()){
 
-    echo "ERROR: ";
+    echo "\nERROR: ";
     var_dump($result->getMessages());
 }
 
@@ -67,10 +67,10 @@ var_dump($result->getUser());
 /* DELETE *
 $result = $userService->deleteUser($user);
 
-echo "**After delete:\n";
+echo "\n**After delete:\n";
 if(!$result->isSuccess()){
 
-    echo "ERROR: ";
+    echo "\nERROR: ";
     var_dump($result->getMessages());
 }
 
@@ -85,56 +85,57 @@ var_dump($result->getUser());
 /* AUTH CHECK *
 $authResult = $userService->validateCredentials($user);
 
-echo "AUTH CHECK Result: ".var_export($authResult->isValid(), true)."\n";
+echo "\nAUTH CHECK Result: ".var_export($authResult->isValid(), true)."\n";
 var_dump($authResult);
 /* */
 
 /*  LOG IN *
 $authResult = $userService->authenticate($user);
 
-echo "LOG IN Result: " . var_export($authResult->isValid(), true) . "\n";
+echo "\nLOG IN Result: " . var_export($authResult->isValid(), true) . "\n";
 var_dump($authResult);
 /* */
 
 /* GET SESSION USER *
-echo "GET SESSION USER: \n";
-var_dump($userService->getIdentity());
+echo "\nGET SESSION USER: \n";
+$sessUser = $userService->getIdentity();
+var_dump($sessUser);
 /* */
 
 /*  LOG OUT *
 $userService->clearIdentity();
 
-echo "LOG OUT: Session user after log out: \n";
+echo "\nLOG OUT: Session user after log out: \n";
 var_dump($userService->getIdentity());
 
 /* */
 
 /* ACL ************************************
-echo "User Roles: ";
+echo "\nUser Roles: ";
 $currentUser = $userService->getIdentity();
 if (!empty($currentUser)) {
     var_dump($currentUser->getProperty('RcmUser\Acl\UserRoles', 'NOT SET'));
 } else {
-    echo "NOT LOGGED IN\n";
+    echo "\nNOT LOGGED IN\n";
 }
 
 /* ACL */
 
 /* ACL VALUES *
-echo "ACL Roles: ";
+echo "\nACL Roles: ";
 var_dump($bjyAuthService->getAcl()->getRoles());
 
-echo "ACL Resources: ";
+echo "\nACL Resources: ";
 var_dump($bjyAuthService->getAcl()->getResources());
 
-//echo "ACL Rules: ";
+//echo "\nACL Rules: ";
 //var_dump($bjyAuthService);
 /* */
 
 /* ACL CHECK *
 $resource = 'RcmUserAccess'; // parent
 $privilage = 'read'; // child
-echo "ACL CHECK: ->isAllowed($resource, $privilage) = ";
+echo "\nACL CHECK: ->isAllowed($resource, $privilage) = ";
 var_export($this->isAllowed($resource, $privilage));
 /* */
 
