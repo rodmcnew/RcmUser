@@ -68,7 +68,6 @@ return array(
   'RcmUser\User\Db\TestUserDataMapper'                               => __DIR__ . '/src/RcmUser/User/Db/TestUserDataMapper.php',
   'RcmUser\User\Db\UserDataMapperInterface'                          => __DIR__ . '/src/RcmUser/User/Db/UserDataMapperInterface.php',
   'RcmUser\User\Db\UserRolesDataMapperInterface'                     => __DIR__ . '/src/RcmUser/User/Db/UserRolesDataMapperInterface.php',
-  'RcmUser\User\Entity\AbstractUser'                                 => __DIR__ . '/src/RcmUser/User/Entity/AbstractUser.php',
   'RcmUser\User\Entity\DoctrineUser'                                 => __DIR__ . '/src/RcmUser/User/Entity/DoctrineUser.php',
   'RcmUser\User\Entity\DoctrineUserRole'                             => __DIR__ . '/src/RcmUser/User/Entity/DoctrineUserRole.php',
   'RcmUser\User\Entity\User'                                         => __DIR__ . '/src/RcmUser/User/Entity/User.php',

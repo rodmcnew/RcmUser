@@ -11,14 +11,105 @@
 namespace RcmUser\User\Entity;
 
 
-class User extends AbstractUser implements \JsonSerializable
+use RcmUser\Exception\RcmUserException;
+
+class User implements UserInterface, \JsonSerializable
 {
+    const PASSWORD_OBFUSCATE = null;
+    // At the core, we only care if the user is disabled,
+    // any other value means enabled and the value is up to the implementation
+    const STATE_DISABLED = 'disabled';
+
+    /**
+     * @var string
+     */
+    protected $id = null;
+
+    /**
+     * @var string
+     */
+    protected $username = null;
+
+    /**
+     * @var string
+     */
+    protected $password = null;
+
+    /**
+     * @var string
+     */
+    protected $state = self::STATE_DISABLED;
+
     /**
      * Property data injected by external sources
      *
      * @var array
      */
     protected $properties = array();
+
+    /**
+     * @param string $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param string $username
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * @param string $password
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPassword()
+    {
+        return $this->password;
+    }
+
+    /**
+     * @param string $state
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
+    }
+
+    /**
+     * @return string
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
 
     /**
      * @param $properties
@@ -47,18 +138,18 @@ class User extends AbstractUser implements \JsonSerializable
 
     /**
      * @param      $key
-     * @param null $dflt
+     * @param null $def
      *
      * @return null
      */
-    public function getProperty($key, $dflt = null)
+    public function getProperty($key, $def = null)
     {
         if (array_key_exists($key, $this->properties)) {
 
             return $this->properties[$key];
         }
 
-        return $dflt;
+        return $def;
     }
 
     /**
@@ -66,25 +157,47 @@ class User extends AbstractUser implements \JsonSerializable
      *
      * @throws RcmUserException
      */
+
     public function populate($data = array())
     {
-        if (($data instanceof User)) {
+        if (($data instanceof UserInterface)) {
 
+            $this->setId($data->getId());
+            $this->setUsername($data->getUsername());
+            $this->setPassword($data->getPassword());
             $this->setProperties($data->getProperties());
 
-            return parent::populate($data);
+            return;
         }
 
         if (is_array($data)) {
 
+            if (isset($data['id'])) {
+                $this->setId($data['id']);
+            }
+            if (isset($data['username'])) {
+                $this->setUsername($data['username']);
+            }
+            if (isset($data['password'])) {
+                $this->setPassword($data['password']);
+            }
             if (isset($data['properties'])) {
                 $this->setProperties($data['properties']);
             }
 
-            return parent::populate($data);
+            return;
         }
 
         throw new RcmUserException('User data could not be populated, data format not supported');
+    }
+
+    /**
+     * @return \ArrayIterator|\Traversable
+     */
+    public function getIterator()
+    {
+
+        return new \ArrayIterator(get_object_vars($this));
     }
 
     /**
@@ -100,4 +213,6 @@ class User extends AbstractUser implements \JsonSerializable
 
         return $obj;
     }
+
+
 }

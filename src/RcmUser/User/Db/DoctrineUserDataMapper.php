@@ -25,11 +25,24 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
      */
     public function fetchById($id)
     {
-        $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
-        if (empty($user)) {
+        //$user = $this->getEntityManager()->find($this->getEntityClass(), $id);
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT user FROM '.$this->getEntityClass().' user ' .
+            'WHERE user.id = ?1 ' .
+            'AND user.state != ?2'
+        );
+        $query->setParameter(1, $id);
+        $query->setParameter(2, User::STATE_DISABLED);
+
+        $users = $query->getResult();
+
+        if (empty($users) || !isset($users[0])) {
 
             return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
         }
+
+        $user = $users[0];
 
         // This is so we get a fresh user every time
         $this->getEntityManager()->refresh($user);
@@ -44,11 +57,23 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
      */
     public function fetchByUsername($username)
     {
-        $user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
-        if (empty($user)) {
+        //$user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT user FROM '.$this->getEntityClass().' user ' .
+            'WHERE user.username = ?1 ' .
+            'AND user.state != ?2'
+        );
+        $query->setParameter(1, $username);
+        $query->setParameter(2, User::STATE_DISABLED);
+
+        $users = $query->getResult();
+
+        if (empty($users) || !isset($users[0])) {
 
             return new Result(null, Result::CODE_FAIL, 'User could not be found by username.');
         }
+
+        $user = $users[0];
 
         // This is so we get a fresh user every time
         $this->getEntityManager()->refresh($user);
@@ -139,8 +164,25 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     public function delete(User $user)
     {
 
-        return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, delete not supported.');
-        /* by default, we should not support delete
+        if (!$this->canUpdate($user)) {
+
+            // error, cannot update
+            return new Result(null, Result::CODE_FAIL, 'User cannot be deleted (disabled), id required for delete.');
+        }
+
+        $updateUser = new User();
+        $updateUser->setId($user->getId());
+        $updateUser->setState(User::STATE_DISABLED);
+
+        $updateResult = $this->update($updateUser);
+
+        if(!$updateResult->isSuccess()){
+
+            return new Result(null, Result::CODE_FAIL, 'User cannot be deleted (disabled). ' . $updateResult->getMessage());
+        }
+
+        return new Result($user, Result::CODE_SUCCESS, 'User deleted (disabled) successfully.');
+        /* by default, we should not support true delete
         $result = $this->getValidInstance($user);
 
         $user = $result->getUser();
