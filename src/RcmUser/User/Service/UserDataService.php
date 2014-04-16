@@ -29,6 +29,8 @@ class UserDataService extends EventProvider
      */
     protected $userDataMapper;
 
+    protected $defaultUserState = 'disabled';
+
     /**
      * @param UserDataMapperInterface $userDataMapper
      */
@@ -46,14 +48,31 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $newUser
-     *
-     * @return Result
+     * @param string $defaultUserState
      */
-    public function createUser(User $newUser)
+    public function setDefaultUserState($defaultUserState)
+    {
+        $this->defaultUserState = $defaultUserState;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultUserState()
+    {
+        return $this->defaultUserState;
+    }
+
+    /**
+     * @param User  $newUser
+     * @param array $params
+     *
+     * @return mixed|Result
+     */
+    public function createUser(User $newUser, $params = array())
     {
 
-        $result = $this->readUser($newUser);
+        $result = $this->readUser($newUser, $params);
 
         if ($result->isSuccess()) {
 
@@ -63,6 +82,10 @@ class UserDataService extends EventProvider
 
         $creatableUser = new User();
         $creatableUser->populate($newUser);
+
+        if(empty($creatableUser->getState())){
+            $creatableUser->setState($this->getDefaultUserState());
+        }
 
         // @event pre  - expects listener to return RcmUser\User\Result
         $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('newUser' => $newUser, 'creatableUser' => $creatableUser), function($result){ return !$result->isSuccess();});
@@ -75,9 +98,8 @@ class UserDataService extends EventProvider
             return $resultPre;
         }
 
-        // @todo Inject this as event?
-        $this->getUserDataMapper()->create($creatableUser);
-        $result = $this->readUser($creatableUser);
+        $this->getUserDataMapper()->create($creatableUser, $params);
+        $result = $this->readUser($creatableUser, $params);
 
         // @event post - expects Listener to check for $result->isSuccess() for post actions
         $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
@@ -86,11 +108,12 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $readUser
+     * @param User  $readUser
+     * @param array $params
      *
-     * @return Result
+     * @return mixed
      */
-    public function readUser(User $readUser)
+    public function readUser(User $readUser, $params = array())
     {
         $readableUser = new User();
         $readableUser->populate($readUser);
@@ -106,8 +129,7 @@ class UserDataService extends EventProvider
             return $resultPre;
         }
 
-        // @todo Inject this as event?
-        $result = $this->getUserDataMapper()->read($readableUser);
+        $result = $this->getUserDataMapper()->read($readableUser, $params);
 
         // @event post - expects Listener to check for $result->isSuccess() for post actions
         $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
@@ -116,11 +138,12 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $updatedUser
+     * @param User  $updatedUser
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function updateUser(User $updatedUser)
+    public function updateUser(User $updatedUser, $params = array())
     {
         // require id
         if (empty($updatedUser->getId())) {
@@ -129,7 +152,7 @@ class UserDataService extends EventProvider
         }
 
         // check if exists
-        $existingUserResult = $this->readUser($updatedUser);
+        $existingUserResult = $this->readUser($updatedUser, $params);
 
         if (!$existingUserResult->isSuccess()) {
 
@@ -137,9 +160,17 @@ class UserDataService extends EventProvider
             return $existingUserResult;
         }
 
+        $existingUser = $existingUserResult->getUser();
+
+        $updatedUser->merge($existingUser);
+
         $updatableUser = new User();
 
-        $updatableUser->populate($existingUserResult->getUser());
+        $updatableUser->populate($existingUser);
+
+        if(empty($updatableUser->getState())){
+            $updatableUser->setState($this->getDefaultUserState());
+        }
 
         // @event pre  - expects listener to return RcmUser\User\Result
         $resultsPre = $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('updatedUser' => $updatedUser, 'updatableUser' => $updatableUser), function($result){ return !$result->isSuccess();});
@@ -152,9 +183,8 @@ class UserDataService extends EventProvider
             return $resultPre;
         }
 
-        // @todo Inject this as event?
         // set properties
-        $result = $this->getUserDataMapper()->update($updatableUser);
+        $result = $this->getUserDataMapper()->update($updatableUser, $params);
 
         // @event post - expects Listener to check for $result->isSuccess() for post actions
         $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));
@@ -163,13 +193,13 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * @param User $deleteUser
+     * @param User  $deleteUser
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function deleteUser(User $deleteUser)
+    public function deleteUser(User $deleteUser, $params = array())
     {
-        // @todo Inject this as event
         // require id
         if (empty($deleteUser->getId())) {
 
@@ -177,7 +207,7 @@ class UserDataService extends EventProvider
         }
 
         // check if exists
-        $existingUserResult = $this->readUser($deleteUser);
+        $existingUserResult = $this->readUser($deleteUser, $params);
 
         if (!$existingUserResult->isSuccess()) {
 
@@ -200,11 +230,8 @@ class UserDataService extends EventProvider
             return $resultPre;
         }
 
-        // @todo Inject this as event
-        $result = $this->getUserDataMapper()->delete($deletableUser);
-
-        // User object may be cleared on delete, so we send a copy to the post event for any addition data changes or roll-backs
-        $result->setUser($deleteUser);
+        //
+        $result = $this->getUserDataMapper()->delete($deletableUser, $params);
 
         // @event post - expects Listener to check for $result->isSuccess() for post actions
         $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('result' => $result));

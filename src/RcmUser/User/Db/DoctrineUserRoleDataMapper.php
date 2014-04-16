@@ -40,8 +40,9 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
 
     public function add(User $user, AclRole $role)
     {
-
-        $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
+        // @todo - write me
+        throw new \Exception('Add User Roles not yet available.');
+        $user = $this->getEntityManager()->find($this->getEntityClass(), $user->getId());
         if (empty($user)) {
 
             return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
@@ -56,12 +57,25 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
     public function remove(User $user, AclRole $role)
     {
         // @todo - write me
+        throw new \Exception('Remove User Roles not yet available.');
         return new Result(null, Result::CODE_FAIL, 'Remove not yet available.');
     }
 
     public function create(User $user, $roles = array())
     {
+
         // @todo - write me
+        //throw new \Exception('Create User Roles not yet available.');
+        $userId = $user->getId();
+
+        if (empty($userId)) {
+
+            return new Result(null, Result::CODE_FAIL, 'User id required to get user roles.');
+        }
+
+        // check for existing roles
+        // Save each role
+
         return new Result(null, Result::CODE_FAIL, 'Create not yet available.');
     }
 
@@ -121,12 +135,16 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
     public function update(User $user, $roles = array())
     {
         // @todo - write me
+        //throw new \Exception('Update User Roles not yet available.');
         return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
     }
 
     public function delete(User $user)
     {
         // @todo - write me
-        return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
+        //throw new \Exception('Delete User Roles not yet available.');
+        return new Result(null, Result::CODE_FAIL, 'Delete not yet available.');
     }
+
+
 } 

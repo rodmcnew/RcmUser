@@ -47,7 +47,6 @@ class CreateUserPostListener extends AbstractUserDataServiceListener
             if (!$aclResult->isSuccess()) {
 
                 return $aclResult;
-                //throw new \Exception($this->getUserPropertyKey(). ' ACL Roles could not be created for user. ' . json_encode($aclResult->getMessages()));
             }
 
             $user->setProperty($this->getUserPropertyKey(), $aclResult->getData());

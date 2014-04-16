@@ -45,6 +45,30 @@ interface UserInterface extends \IteratorAggregate
     public function getUsername();
 
     /**
+     * @param array $properties
+     *
+     * @return void
+     */
+    public function setProperties($properties);
+
+    /**
+     * @return array
+     */
+    public function getProperties();
+
+    /**
+     * @param string $state
+     *
+     * @return void
+     */
+    public function setState($state);
+
+    /**
+     * @return string
+     */
+    public function getState();
+
+    /**
      * @param array $data
      *
      * @return void
@@ -56,4 +80,4 @@ interface UserInterface extends \IteratorAggregate
      */
     public function getIterator();
 
-} 
+}

@@ -8,7 +8,7 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Service;
+namespace RcmUser\User\Data;
 
 
 use RcmUser\User\Entity\User;
@@ -16,7 +16,7 @@ use RcmUser\User\Result;
 use Zend\InputFilter\Factory;
 use Zend\InputFilter\InputFilter;
 
-class UserValidatorService implements UserValidatorServiceInterface
+class UserValidator implements UserValidatorInterface
 {
     protected $userInputFilterConfig;
 

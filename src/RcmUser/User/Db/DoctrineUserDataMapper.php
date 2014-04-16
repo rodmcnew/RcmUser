@@ -19,18 +19,30 @@ use RcmUser\User\Result;
 class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInterface
 {
     /**
-     * @param $id
+     * @param       $id
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function fetchById($id)
+    public function fetchById($id, $params = array())
     {
-        $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
-        if (empty($user)) {
+        //$user = $this->getEntityManager()->find($this->getEntityClass(), $id);
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT user FROM '.$this->getEntityClass().' user ' .
+            'WHERE user.id = ?1 '
+        );
+        $query->setParameter(1, $id);
+
+        $users = $query->getResult();
+
+        if (empty($users) || !isset($users[0])) {
 
             return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
         }
 
+        $user = $users[0];
+
         // This is so we get a fresh user every time
         $this->getEntityManager()->refresh($user);
 
@@ -38,18 +50,31 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param $username
+     * @param       $username
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function fetchByUsername($username)
+    public function fetchByUsername($username, $params = array())
     {
-        $user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
-        if (empty($user)) {
+        //$user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT user FROM '.$this->getEntityClass().' user ' .
+            'WHERE user.username = ?1 '
+        );
+        $query->setParameter(1, $username);
+
+
+        $users = $query->getResult();
+
+        if (empty($users) || !isset($users[0])) {
 
             return new Result(null, Result::CODE_FAIL, 'User could not be found by username.');
         }
 
+        $user = $users[0];
+
         // This is so we get a fresh user every time
         $this->getEntityManager()->refresh($user);
 
@@ -57,11 +82,12 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function create(User $user)
+    public function create(User $user, $params = array())
     {
         $result = $this->getValidInstance($user);
 
@@ -75,16 +101,18 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function read(User $user)
+    public function read(User $user, $params = array())
     {
         $result = $this->getValidInstance($user);
 
         $user = $result->getUser();
         $id = $user->getId();
+
         if (!empty($id)) {
 
             $result = $this->fetchById($id);
@@ -108,11 +136,12 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function update(User $user)
+    public function update(User $user, $params = array())
     {
         $result = $this->getValidInstance($user);
 
@@ -132,15 +161,31 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function delete(User $user)
+    public function delete(User $user, $params = array())
     {
 
-        return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, delete not supported.');
-        /* by default, we should not support delete
+        if (!$this->canUpdate($user)) {
+
+            // error, cannot update
+            return new Result(null, Result::CODE_FAIL, 'User cannot be deleted (disabled), id required for delete.');
+        }
+
+        $user->setState(User::STATE_DISABLED);
+
+        $updateResult = $this->update($user);
+
+        if(!$updateResult->isSuccess()){
+
+            return new Result(null, Result::CODE_FAIL, 'User cannot be deleted (disabled). ' . $updateResult->getMessage());
+        }
+
+        return new Result($updateResult->getUser(), Result::CODE_SUCCESS, 'User deleted (disabled) successfully.');
+        /* by default, we should not support true delete
         $result = $this->getValidInstance($user);
 
         $user = $result->getUser();
@@ -194,5 +239,15 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
         }
 
         return true;
+    }
+
+    protected function parseParamValue($key, $params = array()){
+
+        if(isset($params[$key])){
+
+            return $params[$key];
+        }
+
+        return null;
     }
 } 

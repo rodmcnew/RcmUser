@@ -8,12 +8,11 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Service;
-
+namespace RcmUser\User\Data;
 
 use RcmUser\User\Entity\User;
 
-interface UserValidatorServiceInterface {
+interface UserValidatorInterface {
 
     /**
      * @param User $updatedUser

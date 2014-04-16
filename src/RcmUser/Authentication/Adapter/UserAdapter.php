@@ -11,7 +11,6 @@
 namespace RcmUser\Authentication\Adapter;
 
 
-use RcmUser\User\Entity\AbstractUser;
 use RcmUser\User\Entity\User;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
@@ -159,7 +158,7 @@ class UserAdapter extends AbstractAdapter
 
             if ($this->getObfuscatePassword()) {
 
-                $existingUser->setPassword(AbstractUser::PASSWORD_OBFUSCATE);
+                $existingUser->setPassword(User::PASSWORD_OBFUSCATE);
             }
 
             $result = new Result(

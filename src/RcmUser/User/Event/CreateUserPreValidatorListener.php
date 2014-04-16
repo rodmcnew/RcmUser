@@ -33,6 +33,6 @@ class CreateUserPreValidatorListener extends AbstractUserValidatorListener
         $creatableUser = $e->getParam('creatableUser');
 
         // run validation rules
-        return $this->getUserValidatorService()->validateCreateUser($newUser, $creatableUser);
+        return $this->getUserValidator()->validateCreateUser($newUser, $creatableUser);
     }
 } 

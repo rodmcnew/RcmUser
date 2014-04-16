@@ -42,4 +42,10 @@ class DoctrineUser extends User
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $password;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=false)
+     */
+    protected $state = User::STATE_DISABLED;
 } 

@@ -25,16 +25,16 @@ class DataPrepEventListeners implements FactoryInterface
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $dps = $serviceLocator->get('RcmUser\User\Service\UserDataPrepService');
+        $dps = $serviceLocator->get('RcmUser\User\Data\UserDataPreparer');
 
         $listeners = array();
 
         $createUserPreDataPrepListener = new CreateUserPreDataPrepListener();
-        $createUserPreDataPrepListener->setUserDataPrepService($dps);
+        $createUserPreDataPrepListener->setUserDataPreparer($dps);
         $listeners[] = $createUserPreDataPrepListener;
 
         $updateUserPreDataPrepListener = new UpdateUserPreDataPrepListener();
-        $updateUserPreDataPrepListener->setUserDataPrepService($dps);
+        $updateUserPreDataPrepListener->setUserDataPreparer($dps);
         $listeners[] = $updateUserPreDataPrepListener;
 
         return $listeners;

@@ -25,53 +25,50 @@ interface UserDataMapperInterface
     const USERNAME_FIELD = 'username';
 
     /**
-     * @param $id
+     * @param       $id
+     * @param array $params
      *
-     * @return RcmUser\User\Result
+     * @return mixed
      */
     public function fetchById($id);
 
     /**
-     * @param $username
+     * @param       $username
+     * @param array $params
      *
-     * @return RcmUser\User\Result
+     * @return mixed
      */
     public function fetchByUsername($username);
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return RcmUser\User\Result
+     * @return mixed
      */
     public function create(User $user);
 
     /**
-     * This will read the user from Id or Username. Id will get priority if it is set.
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return RcmUser\User\Result
+     * @return mixed
      */
     public function read(User $user);
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return RcmUser\User\Result
+     * @return mixed
      */
     public function update(User $user);
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return RcmUser\User\Result
+     * @return mixed
      */
     public function delete(User $user);
-
-    /**
-     * @param User $user
-     *
-     * @return RcmUser\User\Result
-     */
-    //public function disable(User $user);
-
 } 

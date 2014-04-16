@@ -10,11 +10,10 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use RcmUser\User\Service\UserDataPrepService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserDataPrep implements FactoryInterface
+class DbUserDataPreparer implements FactoryInterface
 {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
@@ -23,7 +22,7 @@ class UserDataPrep implements FactoryInterface
         $dm = $serviceLocator->get('RcmUser\User\UserDataMapper');
         $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
 
-        $service = new UserDataPrepService();
+        $service = new \RcmUser\User\Data\DbUserDataPreparer();
         $service->setUserDataMapper($dm);
         $service->setEncryptor($encrypt);
 

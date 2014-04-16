@@ -19,71 +19,78 @@ use RcmUser\User\Result;
 class AbstractUserDataMapper implements UserDataMapperInterface
 {
     /**
-     * @param $id
+     * @param       $id
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function fetchById($id)
+    public function fetchById($id, $params = array())
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be found by id.');
     }
 
     /**
-     * @param $username
+     * @param       $username
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function fetchByUsername($username)
+    public function fetchByUsername($username, $params = array())
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be found by username.');
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function create(User $user)
+    public function create(User $user, $params = array())
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be created.');
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function read(User $user)
+    public function read(User $user, $params = array())
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be read.');
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function update(User $user)
+    public function update(User $user, $params = array())
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be updated.');
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function delete(User $user)
+    public function delete(User $user, $params = array())
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be deleted.');
     }
 
     /**
-     * @param User $user
+     * @param User  $user
+     * @param array $params
      *
      * @return bool
      */
-    public function canUpdate(User $user)
+    public function canUpdate(User $user, $params = array())
     {
 
         $id = $user->getId();
@@ -94,5 +101,15 @@ class AbstractUserDataMapper implements UserDataMapperInterface
         }
 
         return true;
+    }
+
+    protected function parseParamValue($key, $params = array()){
+
+        if(isset($params[$key])){
+
+            return $params[$key];
+        }
+
+        return null;
     }
 } 

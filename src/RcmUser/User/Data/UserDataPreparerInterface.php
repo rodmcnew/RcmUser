@@ -8,12 +8,12 @@
  * @link      http://ci.reliv.com/confluence
  */
 
-namespace RcmUser\User\Service;
+namespace RcmUser\User\Data;
 
 
 use RcmUser\User\Entity\User;
 
-interface UserDataPrepServiceInterface
+interface UserDataPreparerInterface
 {
 
     /**
@@ -26,17 +26,9 @@ interface UserDataPrepServiceInterface
 
     /**
      * @param User $updatedUser
-     * @param User $existingUser
+     * @param User $updatableUser
      *
      * @return Result
      */
     public function prepareUserUpdate(User $updatedUser, User $updatableUser);
-
-    /**
-     * @param User $credentialUser
-     * @param User $existingUser
-     *
-     * @return Result
-     */
-    public function isValidCredential(User $credentialUser, User $existingUser);
 } 

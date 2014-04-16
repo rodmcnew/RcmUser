@@ -4,6 +4,8 @@ return array(
     'RcmUser' => array(
         'User\Config' => array(
 
+            'DefaultUserState' => 'disabled',
+
             'Encryptor.passwordCost' => 14,
             'InputFilter' => array(
 
@@ -159,11 +161,11 @@ return array(
 
             // Validations
             /**
-             * UserValidatorService
+             * UserValidator
              * Required for:
              * RcmUser\User\EventListeners
              */
-            'RcmUser\User\Service\UserValidatorService' => 'RcmUser\User\Service\Factory\UserValidator',
+            'RcmUser\User\Data\UserValidator' => 'RcmUser\User\Service\Factory\UserValidator',
             /**
              * ValidatorEventListeners
              * Required for (User validation and input filtering):
@@ -174,16 +176,16 @@ return array(
             /**
              * Encryptor
              * Required for:
-             * RcmUser\User\Service\UserDataPrepService
+             * RcmUser\User\Data\DbUserDataPreparer
              * RcmUser\Authentication\Adapter\UserAdapter
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
             /**
-             * UserDataPrepService (requires Encryptor)
+             * UserDataPreparer (requires Encryptor)
              * Required for:
              * RcmUser\User\EventListeners
              */
-            'RcmUser\User\Service\UserDataPrepService' => 'RcmUser\User\Service\Factory\UserDataPrep',
+            'RcmUser\User\Data\UserDataPreparer' => 'RcmUser\User\Service\Factory\DbUserDataPreparer',
             /**
              * DataPrepEventListeners
              * Required for (User preparing data for save):
