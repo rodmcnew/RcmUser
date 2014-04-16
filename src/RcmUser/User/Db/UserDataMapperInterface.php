@@ -30,7 +30,7 @@ interface UserDataMapperInterface
      *
      * @return mixed
      */
-    public function fetchById($id, $params = array());
+    public function fetchById($id);
 
     /**
      * @param       $username
@@ -38,7 +38,7 @@ interface UserDataMapperInterface
      *
      * @return mixed
      */
-    public function fetchByUsername($username, $params = array());
+    public function fetchByUsername($username);
 
     /**
      * @param User  $user
@@ -46,7 +46,7 @@ interface UserDataMapperInterface
      *
      * @return mixed
      */
-    public function create(User $user, $params = array());
+    public function create(User $user);
 
     /**
      * @param User  $user
@@ -54,7 +54,7 @@ interface UserDataMapperInterface
      *
      * @return mixed
      */
-    public function read(User $user, $params = array());
+    public function read(User $user);
 
     /**
      * @param User  $user
@@ -62,7 +62,7 @@ interface UserDataMapperInterface
      *
      * @return mixed
      */
-    public function update(User $user, $params = array());
+    public function update(User $user);
 
     /**
      * @param User  $user
@@ -70,5 +70,5 @@ interface UserDataMapperInterface
      *
      * @return mixed
      */
-    public function delete(User $user, $params = array());
+    public function delete(User $user);
 } 

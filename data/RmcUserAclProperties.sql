@@ -1,8 +1,10 @@
 use wespresslocal;
-
+######################
+# RcmUser Create Script
+######################
 -- USER
 CREATE TABLE rcm_user_user (
-    id VARCHAR(255) NOT NULL UNIQUE,
+  id VARCHAR(255) NOT NULL UNIQUE,
 	username VARCHAR(255) NOT NULL UNIQUE,
 	password VARCHAR(255) NOT NULL,
 	-- email    VARCHAR(255) DEFAULT NULL UNIQUE,
