@@ -18,10 +18,36 @@ The RcmUserService facade exposes all of the useful methods for manipulating a U
 - Methods for doing authentication of user (log in, log out, credential checks)
 - Methods for checking user access (ACL)
 
-### User (UserDataService) ###
+### User ###
 
+#### User class ####
+
+The User class is the module's main user entity.
+
+- id
+-- A unique identifier, by default this is generated on create by the DbUserDataPreparer
+- username
+-- A unique username
+- password
+-- A password, by default this is hashed by the Encryptor on create/update by the DbUserDataPreparer
+-- The Auth UserAdapter also uses the same Encryptor to authenticate password
+- state
+-- State is used to provide a tag for the users state.
+-- There is only one state provided ('disabled'), any other state my be created and utilized as needed.
+- properties
+-- An aggregation of arbitrary properties
+-- These can be injected into the User objectic by using event listeners for the User data events or the property events.
+-- These can also be injected directly in the data mappers if you provide you own.
+
+#### User DataMapper ####
+
+The UserDataMapper is an adapter used to populate the User object and store the user data.
+By default this module uses the DoctrineUserDataMapper.
+Any data mapper can be written and configured so that the user may be stored based on your requirements.
 
 ### Authentication ###
+
+
 
 ### ACL ###
 
@@ -156,7 +182,7 @@ return array(
             'ResourceProviders' => array(
                 /*
                  * RcmUserAccess
-                 * This module inject some of this modules resources.
+                 * This module inject some of this module's resources.
                  */
                 'RcmUserAccess' => 'RcmUser\Provider\RcmUserAclResourceProvider',
             ),
@@ -319,7 +345,7 @@ return array(
              * Used by:
              *  RcmUser\Acl\Provider\BjyResourceProvider
              *
-             * Exposes this modules resource aggregation methods
+             * Exposes this module's resource aggregation methods
              */
             'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
 

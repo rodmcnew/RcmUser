@@ -102,7 +102,7 @@ return array(
             'ResourceProviders' => array(
                 /*
                  * RcmUserAccess
-                 * This module inject some of this modules resources.
+                 * This module inject some of this module's resources.
                  */
                 'RcmUserAccess' => 'RcmUser\Provider\RcmUserAclResourceProvider',
             ),
@@ -265,7 +265,7 @@ return array(
              * Used by:
              *  RcmUser\Acl\Provider\BjyResourceProvider
              *
-             * Exposes this modules resource aggregation methods
+             * Exposes this module's resource aggregation methods
              */
             'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
 
