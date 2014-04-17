@@ -21,11 +21,13 @@ class RcmUserService implements FactoryInterface
         $authServ = $serviceLocator->get('RcmUser\Authentication\Service\UserAuthenticationService');
         $userDataService = $serviceLocator->get('RcmUser\User\Service\UserDataService');
         $userPropertyService = $serviceLocator->get('RcmUser\User\Service\UserPropertyService');
+        $userAuthorizeService = $serviceLocator->get('RcmUser\Acl\Service\UserAuthorizeService');
 
         $service = new \RcmUser\Service\RcmUserService();
         $service->setUserDataService($userDataService);
         $service->setUserPropertyService($userPropertyService);
         $service->setUserAuthService($authServ);
+        $service->setUserAuthorizeService($userAuthorizeService);
 
         return $service;
     }

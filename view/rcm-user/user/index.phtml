@@ -145,6 +145,8 @@ echo "\nACL CHECK: controllerPlugin->isAllowed($resource, $privilage) = ";
 var_export($this->userController->isAllowed($resource, $privilage));
 /* */
 /* RcmUser *
+echo "\nACL CHECK: rcmUserService->rcmUserIsAllowed($resource, $privilage) = ";
+var_export($this->rcmUserService->IsAllowed($resource, $privilage));
 echo "\nACL CHECK: viewHelper->rcmUserIsAllowed($resource, $privilage) = ";
 var_export($this->rcmUserIsAllowed($resource, $privilage));
 echo "\nACL CHECK: controllerPlugin->rcmUserIsAllowed($resource, $privilage) = ";

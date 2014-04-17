@@ -14,11 +14,11 @@ namespace RcmUser\Acl\Service\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class BjyAuthorizeService implements FactoryInterface {
+class UserAuthorizeService implements FactoryInterface {
 
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new \RcmUser\Acl\Service\BjyAuthorizeService($serviceLocator->get('BjyAuthorize\Config'), $serviceLocator);
+        return new \RcmUser\Acl\Service\UserAuthorizeService($serviceLocator->get('BjyAuthorize\Config'), $serviceLocator);
     }
 
 } 
