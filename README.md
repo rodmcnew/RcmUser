@@ -25,19 +25,19 @@ The RcmUserService facade exposes all of the useful methods for manipulating a U
 The User class is the module's main user entity.
 
 - id
--- A unique identifier, by default this is generated on create by the DbUserDataPreparer
+ - A unique identifier, by default this is generated on create by the DbUserDataPreparer
 - username
--- A unique username
+ - A unique username
 - password
--- A password, by default this is hashed by the Encryptor on create/update by the DbUserDataPreparer
--- The Auth UserAdapter also uses the same Encryptor to authenticate password
+ - A password, by default this is hashed by the Encryptor on create/update by the DbUserDataPreparer
+ - The Auth UserAdapter also uses the same Encryptor to authenticate password
 - state
--- State is used to provide a tag for the users state.
--- There is only one state provided ('disabled'), any other state my be created and utilized as needed.
+ - State is used to provide a tag for the users state.
+ - There is only one state provided ('disabled'), any other state my be created and utilized as needed.
 - properties
--- An aggregation of arbitrary properties
--- These can be injected into the User objectic by using event listeners for the User data events or the property events.
--- These can also be injected directly in the data mappers if you provide you own.
+ - An aggregation of arbitrary properties
+ - These can be injected into the User objectic by using event listeners for the User data events or the property events.
+ - These can also be injected directly in the data mappers if you provide you own.
 
 #### User DataMapper ####
 
