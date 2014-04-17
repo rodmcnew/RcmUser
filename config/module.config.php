@@ -119,9 +119,9 @@ return array(
             'RcmUser\Auth\Config' => 'RcmUser\Authentication\Service\Factory\Config',
             'RcmUser\Acl\Config' => 'RcmUser\Acl\Service\Factory\Config',
 
-            /****************************************/
-            /* USER *********************************/
-            /****************************************/
+            /* ************************************** */
+            /* USER ********************************* */
+            /* ************************************** */
 
             /**
              * UserDataService - Core User data access service
@@ -148,7 +148,7 @@ return array(
              */
             'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
 
-            // ---------------------------- //
+            /* ---------------------------- */
             /**
              * UserRolesDataMapper
              * Required for (ACL user property):
@@ -159,7 +159,7 @@ return array(
              */
             'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
 
-            // Validations
+            /* - Validations - */
             /**
              * UserValidator - Validates User object data on create and update
              * Required for:
@@ -178,7 +178,7 @@ return array(
              */
             'RcmUser\User\ValidatorEventListeners' => 'RcmUser\User\Service\Factory\ValidatorEventListeners',
 
-            // Data Prep
+            /* - Data Prep - */
             /**
              * Encryptor
              * Required for:
@@ -207,9 +207,9 @@ return array(
              */
             'RcmUser\User\DataPrepEventListeners' => 'RcmUser\User\Service\Factory\DataPrepEventListeners',
 
-            /****************************************/
-            /* AUTH *********************************/
-            /****************************************/
+            /* ************************************** */
+            /* AUTH ********************************* */
+            /* ************************************** */
             /*
              * UserAuthenticationService
              * Required *
@@ -218,7 +218,7 @@ return array(
              */
             'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
 
-            // ---------------------------- //
+            /* ---------------------------- */
             /**
              * UserAdapter
              * Required for (Auth):
@@ -256,9 +256,9 @@ return array(
              */
             'RcmUser\Authentication\EventListeners' => 'RcmUser\Authentication\Service\Factory\EventListeners',
 
-            /****************************************/
-            /* ACL **********************************/
-            /****************************************/
+            /* ************************************** */
+            /* ACL ********************************** */
+            /* ************************************** */
 
             /**
              * AclResourceService
@@ -328,9 +328,9 @@ return array(
              */
             'BjyAuthorize\Service\Authorize' => 'RcmUser\Acl\Service\Factory\UserAuthorizeService',
 
-            /****************************************/
-            /* CORE *********************************/
-            /****************************************/
+            /* ************************************** */
+            /* CORE ********************************* */
+            /* ************************************** */
             /**
              * Main service facade
              * Uses:
