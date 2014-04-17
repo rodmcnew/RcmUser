@@ -2,7 +2,7 @@
     "name": "reliv/RcmUser",
     "description": "User management, auth and ACL",
     "type": "library",
-    "license": "MIT",
+    "license": "BSD-3-Clause",
     "keywords": [
         "reliv",
         "user",

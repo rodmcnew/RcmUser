@@ -233,6 +233,11 @@ return array(
              * Exposes our resource aggregation methods
              */
             'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
+
+            /**
+             *
+             */
+            'RcmUser\Acl\Service\AuthorizeService' => 'RcmUser\Acl\Service\Factory\BjyAuthorizeService',
             /**
              * AclRoleDataMapper
              * Required for
@@ -259,6 +264,9 @@ return array(
             'RcmUser\Acl\Provider\BjyRuleProvider' => 'RcmUser\Acl\Service\Factory\BjyRuleProvider',
             'RcmUser\Acl\Provider\BjyResourceProvider' => 'RcmUser\Acl\Service\Factory\BjyResourceProvider',
 
+            // @override - We want specific functionality for isAllowed
+            'BjyAuthorize\Service\Authorize' => 'RcmUser\Acl\Service\Factory\BjyAuthorizeService',
+
             /****************************************/
             /* CORE **********************************/
             /**
@@ -273,10 +281,23 @@ return array(
 
             /**
              * Event Aggregation
-            */
+             */
             'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
         ),
     ),
+
+    'controller_plugins' => array(
+        'factories' => array(
+            'rcmUserIsAllowed' => 'RcmUser\Service\Factory\ControllerPluginRcmUserIsAllowed',
+        ),
+    ),
+
+    'view_helpers' => array(
+        'factories' => array(
+            'rcmUserIsAllowed' => 'RcmUser\Service\Factory\ViewHelperRcmUserIsAllowed',
+        ),
+    ),
+
 
     'bjyauthorize' => array(
         'default_role' => 'guest',

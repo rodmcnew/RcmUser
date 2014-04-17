@@ -27,7 +27,8 @@ class UserAuthenticationService extends EventProvider
     /**
      * @param User $user
      *
-     * @return Result
+     * @return mixed
+     * @throws \Exception
      */
     public function validateCredentials(User $user)
     {
@@ -55,7 +56,8 @@ class UserAuthenticationService extends EventProvider
     /**
      * @param User $user
      *
-     * @return Result
+     * @return mixed
+     * @throws \Exception
      */
     public function authenticate(User $user)
     {
@@ -80,12 +82,18 @@ class UserAuthenticationService extends EventProvider
         return $result;
     }
 
+    /**
+     *
+     */
     public function clearIdentity()
     {
         // @event
         $this->getEventManager()->trigger(__FUNCTION__, $this, array());
     }
 
+    /**
+     * @return User
+     */
     public function getIdentity()
     {
         $currentUser = new User();

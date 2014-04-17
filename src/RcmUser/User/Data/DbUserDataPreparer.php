@@ -100,16 +100,14 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         // PASSWORD CHECKS
         $updatedPassword = $updatedUser->getPassword();
         $existingPassword = $updatableUser->getPassword();
-        $hashedPassword = $existingPassword;
+        //$hashedPassword = $existingPassword;
 
         // if password changed
         if ($existingPassword !== $updatedPassword) {
-            // plain text
-            $updatableUser->setPassword($updatedPassword);
-            $hashedPassword = $this->getEncryptor()->create($updatedPassword);
-        }
 
-        $updatableUser->setPassword($hashedPassword);
+            $hashedPassword = $this->getEncryptor()->create($updatedPassword);
+            $updatableUser->setPassword($hashedPassword);
+        }
 
         // STATE
         $updatedState = $updatedUser->getState();
