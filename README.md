@@ -17,6 +17,7 @@ The RcmUserService facade exposes all of the useful methods for manipulating a U
 - Methods for accessing User->properties on demand (properties that are only populated as needed)
 - Methods for doing authentication of user (log in, log out, credential checks)
 - Methods for checking user access (ACL)
+- Other utility and helpful methods are also provided
 
 ### User ###
 
@@ -24,32 +25,54 @@ The RcmUserService facade exposes all of the useful methods for manipulating a U
 
 The User class is the module's main user entity.
 
+The User class has the properties of:
+
 - id
- - A unique identifier, by default this is generated on create by the DbUserDataPreparer
+ - A unique identifier, by default this is generated on create by the DbUserDataPreparer.
 - username
- - A unique username
+ - A unique username.
 - password
- - A password, by default this is hashed by the Encryptor on create/update by the DbUserDataPreparer
- - The Auth UserAdapter also uses the same Encryptor to authenticate password
+ - A password, by default this is hashed by the Encryptor on create/update by the DbUserDataPreparer.
+ - The Auth UserAdapter also uses the same Encryptor to authenticate password.
 - state
  - State is used to provide a tag for the users state.
  - There is only one state provided ('disabled'), any other state my be created and utilized as needed.
 - properties
  - An aggregation of arbitrary properties
- - These can be injected into the User objectic by using event listeners for the User data events or the property events.
- - These can also be injected directly in the data mappers if you provide you own.
+ - These can be injected into the User object by using event listeners for the User data events or the property events.
+ - These can also be injected directly in the data mappers if you provide your own.
+
+ By default, there is a ACL roles property injected for the User.  This property is the one which is used by this module's ACL.
 
 #### User DataMapper ####
 
 The UserDataMapper is an adapter used to populate the User object and store the user data.
 By default this module uses the DoctrineUserDataMapper.
-Any data mapper can be written and configured so that the user may be stored based on your requirements.
+Any data mapper can be written and configured so that the User may be stored based on your requirements.
 
 ### Authentication ###
 
+This module uses the ZF2 Authentication libraries.  This requires it to provide:
 
+- AuthenticationService
+ - By default, this module uses the ZF2 class without modification.
+ - You may inject your own as required.
+- Adapter
+ - By default, this module uses it's UserAdapter which requires Encryptor and UserDataService.
+ - You may inject your own as required.
+- Storage
+ - By default, this module uses UserSession which is a session storage with $namespace = 'RcmUser', $member = 'user' and the default session container.
 
 ### ACL ###
+
+This module utilizes bjyoungblood/bjy-authorize (https://github.com/bjyoungblood/BjyAuthorize) for it's ACL logic.
+This module wraps resources in a root schema and provides data mappers for storage of roles and rules.
+This module also provides a service, controller plug-in and view helper for isAllowed (rcmUserIsAllowed for plug-in and helper)
+
+One additional feature that is provided is inheriting of resources when the resource is not found.
+To do this we need to provide the resource ('PAGE_X') and its parent ('PAGES).
+We accomplish this by passing 'PAGES.PAGE_X' to isAllowed().
+Our isAllowed override allows the checking of 'PAGE_X' first and if it is not found, we check 'PAGES'.
 
 Requirements
 ------------
@@ -71,6 +94,8 @@ Installation
 - Download from GitHub
 - Configure module
 - Run install.sql (as needed)
+
+@future composer based install
 
 Configuration
 -------------
