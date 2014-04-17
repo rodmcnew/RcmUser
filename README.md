@@ -5,6 +5,7 @@ Introduction
 ------------
 
 The main goal of this module is to expose a simple and configurable user object as well as the services related to user storage, access control and authentication.
+@future Provide user managment html/ajax interface
 
 Features
 --------
