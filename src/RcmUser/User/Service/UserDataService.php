@@ -160,13 +160,11 @@ class UserDataService extends EventProvider
             return $existingUserResult;
         }
 
-        $existingUser = $existingUserResult->getUser();
+        $updatableUser = $existingUserResult->getUser();
 
-        $updatedUser->merge($existingUser);
+        $updatedUser->merge($updatableUser);
 
-        $updatableUser = new User();
-
-        $updatableUser->populate($existingUser);
+        $updatableUser->merge($updatedUser);
 
         if(empty($updatableUser->getState())){
             $updatableUser->setState($this->getDefaultUserState());
