@@ -10,6 +10,7 @@
 
 namespace RcmUser\Service;
 
+use RcmUser\Acl\Service\UserAuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
@@ -33,14 +34,20 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     protected $userDataService;
 
     /**
-     * @var
+     * @var UserPropertyService
      */
     protected $userPropertyService;
 
     /**
-     * @var
+     * @var UserAuthenticationService
      */
     protected $userAuthService;
+
+    /*
+     * ACL
+     * @var UserAuthorizeService
+     */
+    protected $userAuthorizeService;
 
     /**
      * @param UserDataService $userDataService
@@ -88,6 +95,24 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     public function getUserAuthService()
     {
         return $this->userAuthService;
+    }
+
+    /**
+     * ACL
+     * @param UserAuthorizeService $userAuthorizeService
+     */
+    public function setUserAuthorizeService(UserAuthorizeService $userAuthorizeService)
+    {
+        $this->userAuthorizeService = $userAuthorizeService;
+    }
+
+    /**
+     * ACL
+     * @return UserAuthorizeService
+     */
+    public function getUserAuthorizeService()
+    {
+        return $this->userAuthorizeService;
     }
 
     /** HELPERS ***************************************/
@@ -295,6 +320,13 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
 
         return $this->getUserAuthService()->getIdentity();
+    }
+
+    /* ACL HELPERS ********************************/
+
+    public function isAllowed($resource, $privilege = null, $user = null){
+
+        return $this->getUserAuthorizeService()->isAllowed($resource, $privilege, $user);
     }
 
     /* UTILITIES **************************************/

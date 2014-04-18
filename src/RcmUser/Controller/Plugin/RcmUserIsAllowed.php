@@ -2,22 +2,22 @@
 
 namespace RcmUser\Controller\Plugin;
 
-use RcmUser\Acl\Service\BjyAuthorizeService;
+use RcmUser\Acl\Service\UserAuthorizeService;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 
 class RcmUserIsAllowed extends AbstractPlugin
 {
 
-    protected $authorizeService;
+    protected $userAuthorizeService;
 
-    public function __construct(BjyAuthorizeService $authorizeService)
+    public function __construct(UserAuthorizeService $userAuthorizeService)
     {
-        $this->authorizeService = $authorizeService;
+        $this->userAuthorizeService = $userAuthorizeService;
     }
 
     public function __invoke($resource, $privilege = null, $user = null)
     {
-        return $this->authorizeService->isAllowed($resource, $privilege, $user);
+        return $this->userAuthorizeService->isAllowed($resource, $privilege, $user);
     }
 }

@@ -14,7 +14,7 @@ namespace RcmUser\Acl\Service;
 use BjyAuthorize\Service\Authorize;
 use Zend\Permissions\Acl\Exception\InvalidArgumentException;
 
-class BjyAuthorizeService extends Authorize
+class UserAuthorizeService extends Authorize
 {
     const RESOURCE_DELIMITER = '.';
 

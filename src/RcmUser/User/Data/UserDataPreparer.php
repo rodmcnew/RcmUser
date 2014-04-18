@@ -15,7 +15,7 @@ use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use Zend\Crypt\Password\PasswordInterface;
 
-class AbstractUserDataPreparer implements UserDataPreparerInterface
+class UserDataPreparer implements UserDataPreparerInterface
 {
 
     public function prepareUserCreate(User $newUser, User $creatableUser)
