@@ -1,18 +1,41 @@
 <?php
- /**
- * @category  RCM
+/**
+ * DoctrineMapper
+ *
+ * DoctrineMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Db;
 
 use Doctrine\ORM\EntityManager;
 
-class DoctrineMapper {
+/**
+ * DoctrineMapper
+ *
+ * DoctrineMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class DoctrineMapper
+{
     /**
      * @var EntityManager $entityManager
      */
@@ -24,7 +47,11 @@ class DoctrineMapper {
     protected $entityClass;
 
     /**
-     * @param EntityManager $entityManager
+     * setEntityManager
+     *
+     * @param EntityManager $entityManager entityManager
+     *
+     * @return void
      */
     public function setEntityManager(EntityManager $entityManager)
     {
@@ -32,7 +59,9 @@ class DoctrineMapper {
     }
 
     /**
-     * @return mixed
+     * getEntityManager
+     *
+     * @return EntityManager
      */
     public function getEntityManager()
     {
@@ -41,7 +70,11 @@ class DoctrineMapper {
     }
 
     /**
-     * @param mixed $entityClass
+     * setEntityClass
+     *
+     * @param string $entityClass entityClass namespace
+     *
+     * @return void
      */
     public function setEntityClass($entityClass)
     {
@@ -49,7 +82,9 @@ class DoctrineMapper {
     }
 
     /**
-     * @return mixed
+     * getEntityClass
+     *
+     * @return string
      */
     public function getEntityClass()
     {

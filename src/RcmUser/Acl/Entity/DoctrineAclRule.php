@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * DoctrineAclRule.php
+ *
+ * DoctrineAclRule
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Entity;
@@ -13,15 +20,27 @@ namespace RcmUser\Acl\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
+
 /**
- * Class DoctrineAclRule
+ * DoctrineAclRule
  *
- * @package RcmUser\Acl\Entity
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  *
  * @ORM\Entity
  * @ORM\Table(name="rcm_user_acl_rule")
  */
-class DoctrineAclRule extends AclRule {
+class DoctrineAclRule extends AclRule
+{
 
     /**
      * @var integer
@@ -61,9 +80,12 @@ class DoctrineAclRule extends AclRule {
     protected $privilege;
 
 
-
     /**
-     * @param mixed $roleId
+     * setRoleId
+     *
+     * @param int $roleId role id
+     *
+     * @return void
      */
     public function setRoleId($roleId)
     {
@@ -71,7 +93,9 @@ class DoctrineAclRule extends AclRule {
     }
 
     /**
-     * @return mixed
+     * getRoleId
+     *
+     * @return int
      */
     public function getRoleId()
     {
@@ -79,7 +103,11 @@ class DoctrineAclRule extends AclRule {
     }
 
     /**
-     * @param mixed $id
+     * setId
+     *
+     * @param int $id id
+     *
+     * @return void
      */
     public function setId($id)
     {
@@ -87,7 +115,9 @@ class DoctrineAclRule extends AclRule {
     }
 
     /**
-     * @return mixed
+     * getId
+     *
+     * @return int
      */
     public function getId()
     {

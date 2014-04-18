@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * AbstractUserDataServiceListener.php
+ *
+ * AbstractUserDataServiceListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Event;
@@ -14,27 +21,71 @@ namespace RcmUser\Acl\Event;
 use RcmUser\Event\AbstractListener;
 use RcmUser\User\Db\UserRolesDataMapperInterface;
 
-class AbstractUserDataServiceListener extends AbstractListener {
+/**
+ * AbstractUserDataServiceListener
+ *
+ * AbstractUserDataServiceListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class AbstractUserDataServiceListener extends AbstractListener
+{
 
+    /**
+     * @var array
+     */
     protected $listeners = array();
+    /**
+     * @var string
+     */
     protected $id = 'RcmUser\User\Service\UserDataService';
+    /**
+     * @var string
+     */
     protected $event = '';
+    /**
+     * @var
+     */
     protected $userRolesDataMapper;
+    /**
+     * @var array
+     */
     protected $defaultRoleIdentities = array();
+    /**
+     * @var array
+     */
     protected $defaultAuthenticatedRoleIdentities = array();
 
+    /**
+     * @var string
+     */
     protected $userPropertyKey = 'RcmUser\Acl\UserRoles';
 
     /**
-     * @param mixed $userRolesDataMapper
+     * setUserRolesDataMapper
+     *
+     * @param UserRolesDataMapperInterface $userRolesDataMapper UserRolesDataMapperInterface
+     *
+     * @return void
      */
-    public function setUserRolesDataMapper(UserRolesDataMapperInterface $userRolesDataMapper)
-    {
+    public function setUserRolesDataMapper(
+        UserRolesDataMapperInterface $userRolesDataMapper
+    ) {
         $this->userRolesDataMapper = $userRolesDataMapper;
     }
 
     /**
-     * @return mixed
+     * getUserRolesDataMapper
+     *
+     * @return UserRolesDataMapperInterface
      */
     public function getUserRolesDataMapper()
     {
@@ -42,14 +93,22 @@ class AbstractUserDataServiceListener extends AbstractListener {
     }
 
     /**
-     * @param array $defaultAuthenticatedRoleIdentities
+     * setDefaultAuthenticatedRoleIdentities
+     *
+     * @param array $defaultAuthenticatedRoleIdentities default auth identity strings
+     *
+     * @return void
      */
-    public function setDefaultAuthenticatedRoleIdentities($defaultAuthenticatedRoleIdentities)
-    {
-        $this->defaultAuthenticatedRoleIdentities = $defaultAuthenticatedRoleIdentities;
+    public function setDefaultAuthenticatedRoleIdentities(
+        $defaultAuthenticatedRoleIdentities
+    ) {
+        $this->defaultAuthenticatedRoleIdentities
+            = $defaultAuthenticatedRoleIdentities;
     }
 
     /**
+     * getDefaultAuthenticatedRoleIdentities
+     *
      * @return array
      */
     public function getDefaultAuthenticatedRoleIdentities()
@@ -58,7 +117,11 @@ class AbstractUserDataServiceListener extends AbstractListener {
     }
 
     /**
-     * @param array $defaultRoleIdentities
+     * setDefaultRoleIdentities
+     *
+     * @param array $defaultRoleIdentities default roles identity strings
+     *
+     * @return void
      */
     public function setDefaultRoleIdentities($defaultRoleIdentities)
     {
@@ -66,6 +129,8 @@ class AbstractUserDataServiceListener extends AbstractListener {
     }
 
     /**
+     * getDefaultRoleIdentities
+     *
      * @return array
      */
     public function getDefaultRoleIdentities()
@@ -74,7 +139,11 @@ class AbstractUserDataServiceListener extends AbstractListener {
     }
 
     /**
-     * @param string $userPropertyKey
+     * setUserPropertyKey
+     *
+     * @param string $userPropertyKey user property key
+     *
+     * @return void
      */
     public function setUserPropertyKey($userPropertyKey)
     {
@@ -82,6 +151,8 @@ class AbstractUserDataServiceListener extends AbstractListener {
     }
 
     /**
+     * getUserPropertyKey
+     *
      * @return string
      */
     public function getUserPropertyKey()

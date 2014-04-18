@@ -1,82 +1,133 @@
 <?php
 /**
- * @category  RCM
+ * UserInterface.php
+ *
+ * UserInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Entity;
 
-
+/**
+ * Interface UserInterface
+ *
+ * UserInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 interface UserInterface extends \IteratorAggregate
 {
 
     /**
-     * @param string $id
+     * setId
+     *
+     * @param mixed $id id
+     *
+     * @return void
      */
     public function setId($id);
 
     /**
-     * @param string
+     * getId
+     *
+     * @return mixed
      */
     public function getId();
 
     /**
-     * @param string $password
+     * setPassword
+     *
+     * @param string $password password
+     *
+     * @return void
      */
     public function setPassword($password);
 
     /**
+     * getPassword
+     *
      * @return string
      */
     public function getPassword();
 
     /**
-     * @param string $username
+     * setUsername
+     *
+     * @param string $username username
+     *
+     * @return void
      */
     public function setUsername($username);
 
     /**
+     * getUsername
+     *
      * @return string
      */
     public function getUsername();
 
     /**
-     * @param array $properties
+     * setProperties
+     *
+     * @param array $properties properties
      *
      * @return void
      */
     public function setProperties($properties);
 
     /**
+     * getProperties
+     *
      * @return array
      */
     public function getProperties();
 
     /**
-     * @param string $state
+     * setState
      *
-     * @return void
+     * @param string $state state
+     *
+     * @return mixed
      */
     public function setState($state);
 
     /**
+     * getState
+     *
      * @return string
      */
     public function getState();
 
     /**
-     * @param array $data
+     * populate
      *
-     * @return void
+     * @param array $data data
+     *
+     * @return mixed
      */
     public function populate($data = array());
 
     /**
-     * @return ArrayIterator
+     * getIterator
+     *
+     * @return \Traversable
      */
     public function getIterator();
 

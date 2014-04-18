@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * BjyIdentityProvider.php
+ *
+ * BjyIdentityProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Service\Factory;
@@ -13,12 +20,29 @@ namespace RcmUser\Acl\Service\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * BjyIdentityProvider
+ *
+ * BjyIdentityProvider Factory
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Service\Factory
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class BjyIdentityProvider implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * createService
      *
-     * @return mixed|Provider
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     *
+     * @return mixed|\RcmUser\Acl\Provider\BjyIdentityProvider
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -27,7 +51,9 @@ class BjyIdentityProvider implements FactoryInterface
 
         $service = new \RcmUser\Acl\Provider\BjyIdentityProvider();
         $service->setUserService($rcmUserService);
-        $service->setDefaultRoleIdentities($cfg->get('DefaultRoleIdentities', array()));
+        $service->setDefaultRoleIdentities(
+            $cfg->get('DefaultRoleIdentities', array())
+        );
 
         return $service;
     }

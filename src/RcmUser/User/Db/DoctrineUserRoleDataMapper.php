@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * DoctrineUserRoleDataMapper.php
+ *
+ * DoctrineUserRoleDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Db;
@@ -17,19 +24,45 @@ use RcmUser\Db\DoctrineMapper;
 use RcmUser\User\Entity\User;
 use RcmUser\Result;
 
-class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesDataMapperInterface
+/**
+ * Class DoctrineUserRoleDataMapper
+ *
+ * DoctrineUserRoleDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class DoctrineUserRoleDataMapper extends DoctrineMapper implements
+    UserRolesDataMapperInterface
 {
+    /**
+     * @var AclRoleDataMapperInterface $aclRoleDataMapper
+     */
     protected $aclRoleDataMapper;
 
     /**
-     * @param AclRoleDataMapperInterface $aclRoleDataMapper
+     * setAclRoleDataMapper
+     *
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
+     *
+     * @return void
      */
-    public function setAclRoleDataMapper(AclRoleDataMapperInterface $aclRoleDataMapper)
-    {
+    public function setAclRoleDataMapper(
+        AclRoleDataMapperInterface $aclRoleDataMapper
+    ) {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
     /**
+     * getAclRoleDataMapper
+     *
      * @return AclRoleDataMapperInterface
      */
     public function getAclRoleDataMapper()
@@ -38,14 +71,29 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
     }
 
 
+    /**
+     * add
+     *
+     * @param User    $user user
+     * @param AclRole $role role
+     *
+     * @return Result
+     * @throws \Exception
+     */
     public function add(User $user, AclRole $role)
     {
         // @todo - write me
         throw new \Exception('Add User Roles not yet available.');
-        $user = $this->getEntityManager()->find($this->getEntityClass(), $user->getId());
+        $user = $this->getEntityManager()->find(
+            $this->getEntityClass(), $user->getId()
+        );
         if (empty($user)) {
 
-            return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User could not be found by id.'
+            );
         }
 
         // This is so we get a fresh user every time
@@ -54,13 +102,31 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
         return new Result($user);
     }
 
+    /**
+     * remove
+     *
+     * @param User    $user user
+     * @param AclRole $role role
+     *
+     * @return Result
+     * @throws \Exception
+     */
     public function remove(User $user, AclRole $role)
     {
         // @todo - write me
         throw new \Exception('Remove User Roles not yet available.');
+
         return new Result(null, Result::CODE_FAIL, 'Remove not yet available.');
     }
 
+    /**
+     * create
+     *
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return Result
+     */
     public function create(User $user, $roles = array())
     {
 
@@ -70,7 +136,11 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
 
         if (empty($userId)) {
 
-            return new Result(null, Result::CODE_FAIL, 'User id required to get user roles.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User id required to get user roles.'
+            );
         }
 
         // check for existing roles
@@ -79,6 +149,13 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
         return new Result(null, Result::CODE_FAIL, 'Create not yet available.');
     }
 
+    /**
+     * read
+     *
+     * @param User $user user
+     *
+     * @return Result
+     */
     public function read(User $user)
     {
 
@@ -86,11 +163,17 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
 
         if (empty($userId)) {
 
-            return new Result(null, Result::CODE_FAIL, 'User id required to get user roles.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User id required to get user roles.'
+            );
         }
 
         //
-        $userRoles = $this->getEntityManager()->getRepository($this->getEntityClass())->findBy(array('userId' => $userId));
+        $userRoles = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )->findBy(array('userId' => $userId));
 
         // This is so we get a fresh data every time
         // $this->getEntityManager()->refresh($userRoles);
@@ -98,7 +181,11 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
         if (empty($userRoles)) {
 
             // @todo - set default roles and save?
-            return new Result(null, Result::CODE_FAIL, 'User roles cannot be found.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User roles cannot be found.'
+            );
         }
 
         $aclRoleDataMapper = $this->getAclRoleDataMapper();
@@ -111,7 +198,7 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
 
             $aclRoleResult = $aclRoleDataMapper->fetchById($userRole->getRoleId());
 
-            if(!$aclRoleResult->isSuccess()){
+            if (!$aclRoleResult->isSuccess()) {
 
                 //@todo - error
                 continue;
@@ -132,6 +219,14 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
         return new Result($userAclRoles);
     }
 
+    /**
+     * update
+     *
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return Result
+     */
     public function update(User $user, $roles = array())
     {
         // @todo - write me
@@ -139,6 +234,13 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements UserRolesData
         return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
     }
 
+    /**
+     * delete
+     *
+     * @param User $user user
+     *
+     * @return Result
+     */
     public function delete(User $user)
     {
         // @todo - write me

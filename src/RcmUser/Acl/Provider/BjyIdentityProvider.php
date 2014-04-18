@@ -1,24 +1,58 @@
 <?php
 /**
+ * BjyIdentityProvider.php
  *
+ * BjyIdentityProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
-namespace  RcmUser\Acl\Provider;
+namespace RcmUser\Acl\Provider;
 
 use BjyAuthorize\Provider\Identity\ProviderInterface;
 use RcmUser\Service\RcmUserService;
 
 /**
+ * BjyIdentityProvider
  *
+ * BjyIdentityProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class BjyIdentityProvider implements ProviderInterface
 {
+    /**
+     * @var
+     */
     protected $userService;
 
-    protected $DefaultRoleIdentities= array('guest');
+    /**
+     * @var array
+     */
+    protected $DefaultRoleIdentities = array('guest');
 
     /**
-     * @param RcmUserService $userService
+     * setUserService
+     *
+     * @param RcmUserService $userService userService
+     *
+     * @return void
      */
     public function setUserService(RcmUserService $userService)
     {
@@ -26,7 +60,9 @@ class BjyIdentityProvider implements ProviderInterface
     }
 
     /**
-     * @return mixed
+     * getUserService
+     *
+     * @return RcmUserService
      */
     public function getUserService()
     {
@@ -34,7 +70,11 @@ class BjyIdentityProvider implements ProviderInterface
     }
 
     /**
-     * @param array $DefaultRoleIdentities
+     * setDefaultRoleIdentities
+     *
+     * @param array $defaultRoleIdentities defaultRoleIdentities
+     *
+     * @return void
      */
     public function setDefaultRoleIdentities($defaultRoleIdentities)
     {
@@ -42,6 +82,8 @@ class BjyIdentityProvider implements ProviderInterface
     }
 
     /**
+     * getDefaultRoleIdentities
+     *
      * @return array
      */
     public function getDefaultRoleIdentities()
@@ -50,13 +92,17 @@ class BjyIdentityProvider implements ProviderInterface
     }
 
     /**
-     * Retrieve roles for the current identity
+     * getIdentity
+     * Roles Retrieve roles for the current identity
      *
-     * @return string[]|\Zend\Permissions\Acl\Role\RoleInterface[]
+     * @return mixed|null|\string[]|\Zend\Permissions\Acl\Role\RoleInterface[]
      */
-    public function getIdentityRoles(){
+    public function getIdentityRoles()
+    {
 
-        $userRoles = $this->getUserService()->getCurrentUserProperty('RcmUser\Acl\UserRoles', $this->getDefaultRoleIdentities(), false);
+        $userRoles = $this->getUserService()->getCurrentUserProperty(
+            'RcmUser\Acl\UserRoles', $this->getDefaultRoleIdentities(), false
+        );
 
         return $userRoles;
     }

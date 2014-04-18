@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * User.php
+ *
+ * Primary User class
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Entity;
@@ -13,42 +20,66 @@ namespace RcmUser\User\Entity;
 
 use RcmUser\Exception\RcmUserException;
 
+/**
+ * Class User
+ *
+ * Primary User class
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class User implements UserInterface, \JsonSerializable
 {
+    /**
+     * PASSWORD_OBFUSCATE
+     */
     const PASSWORD_OBFUSCATE = null;
-    // At the core, we only care if the user is disabled,
-    // any other value means enabled and the value is up to the implementation
+    /**
+     * At the core, we only care if the user is disabled,
+     * any other value means enabled and the value is up to the implementation
+     */
     const STATE_DISABLED = 'disabled';
 
     /**
-     * @var string
+     * @var mixed $id
      */
     protected $id = null;
 
     /**
-     * @var string
+     * @var string $username
      */
     protected $username = null;
 
     /**
-     * @var string
+     * @var string $password
      */
     protected $password = null;
 
     /**
-     * @var string
+     * @var string $state
      */
     protected $state = null;
 
     /**
      * Property data injected by external sources
      *
-     * @var array
+     * @var array $properties
      */
     protected $properties = array();
 
     /**
-     * @param string $id
+     * setId
+     *
+     * @param mixed $id id
+     *
+     * @return void
      */
     public function setId($id)
     {
@@ -56,7 +87,9 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @return string
+     * getId
+     *
+     * @return mixed
      */
     public function getId()
     {
@@ -64,7 +97,11 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @param string $username
+     * setUsername
+     *
+     * @param string $username username
+     *
+     * @return void
      */
     public function setUsername($username)
     {
@@ -72,6 +109,8 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * getUsername
+     *
      * @return string
      */
     public function getUsername()
@@ -80,7 +119,11 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @param string $password
+     * setPassword
+     *
+     * @param string $password password
+     *
+     * @return void
      */
     public function setPassword($password)
     {
@@ -88,6 +131,8 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * getPassword
+     *
      * @return string
      */
     public function getPassword()
@@ -96,7 +141,11 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @param string $state
+     * setState
+     *
+     * @param string $state state
+     *
+     * @return void
      */
     public function setState($state)
     {
@@ -104,6 +153,8 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * getState
+     *
      * @return string
      */
     public function getState()
@@ -112,7 +163,11 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @param $properties
+     * setProperties
+     *
+     * @param array $properties properties
+     *
+     * @return void
      */
     public function setProperties($properties)
     {
@@ -120,6 +175,8 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * getProperties
+     *
      * @return array
      */
     public function getProperties()
@@ -128,8 +185,12 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @param $key
-     * @param $val
+     * setProperty
+     *
+     * @param string $key key
+     * @param mixed  $val val
+     *
+     * @return void
      */
     public function setProperty($key, $val)
     {
@@ -137,8 +198,10 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @param      $key
-     * @param null $def
+     * getProperty
+     *
+     * @param string $key key
+     * @param null   $def def
      *
      * @return null
      */
@@ -153,11 +216,13 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @param array $data
+     * populate
      *
-     * @throws RcmUserException
+     * @param array $data data
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
-
     public function populate($data = array())
     {
         if (($data instanceof UserInterface)) {
@@ -192,10 +257,14 @@ class User implements UserInterface, \JsonSerializable
             return;
         }
 
-        throw new RcmUserException('User data could not be populated, data format not supported');
+        throw new RcmUserException(
+            'User data could not be populated, data format not supported'
+        );
     }
 
     /**
+     * getIterator
+     *
      * @return \ArrayIterator|\Traversable
      */
     public function getIterator()
@@ -205,14 +274,17 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
-     * @return mixed|\stdClass
+     * jsonSerialize
+     *
+     * @return \stdClass
      */
     public function jsonSerialize()
     {
         $obj = new \stdClass();
         $obj->id = $this->getId();
         $obj->username = $this->getUsername();
-        $obj->password = self::PASSWORD_OBFUSCATE; // Might be better way to obfuscate
+        $obj->password
+            = self::PASSWORD_OBFUSCATE; // Might be better way to obfuscate
         $obj->state = $this->getState();
         $obj->properties = $this->getProperties();
 
@@ -221,34 +293,38 @@ class User implements UserInterface, \JsonSerializable
 
     /**
      * Merges values of the $user arg into this user if the values are not set
-     * @param User $user
+     *
+     * @param User $user user
+     *
+     * @return void
      */
-    public function merge(User $user){
+    public function merge(User $user)
+    {
 
-        if($this->getId() === null){
+        if ($this->getId() === null) {
 
             $this->setId($user->getId());
         }
 
-        if($this->getUsername() === null){
+        if ($this->getUsername() === null) {
 
             $this->setUsername($user->getUsername());
         }
 
-        if($this->getPassword() === null){
+        if ($this->getPassword() === null) {
 
             $this->setPassword($user->getPassword());
         }
 
-        if($this->getState() === null){
+        if ($this->getState() === null) {
 
             $this->setState($user->getState());
         }
 
         $properties = $user->getProperties();
-        foreach($properties as $key => $property){
+        foreach ($properties as $key => $property) {
 
-            if(empty($this->getProperty($key))){
+            if (empty($this->getProperty($key))) {
                 $this->setProperty($key, $property);
             }
         }

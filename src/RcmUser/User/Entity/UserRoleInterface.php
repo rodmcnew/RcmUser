@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * UserRoleInterface.php
+ *
+ * UserRoleInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Entity;
@@ -14,37 +21,65 @@ namespace RcmUser\User\Entity;
 /**
  * Interface UserRoleInterface
  *
- * @package RcmUser\User\Entity
+ * UserRoleInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 interface UserRoleInterface
 {
     /**
-     * @param int $id
+     * setId
+     *
+     * @param mixed $id id
+     *
+     * @return void
      */
     public function setId($id);
 
     /**
-     * @return int
+     * getId
+     *
+     * @return mixed
      */
     public function getId();
 
     /**
-     * @param int $roleId
+     * setRoleId
+     *
+     * @param mixed $roleId roleId
+     *
+     * @return void
      */
     public function setRoleId($roleId);
 
     /**
-     * @return int
+     * getRoleId
+     *
+     * @return mixed
      */
     public function getRoleId();
 
     /**
-     * @param int $userId
+     * setUserId
+     *
+     * @param mixed $userId userId
+     *
+     * @return void
      */
     public function setUserId($userId);
 
     /**
-     * @return int
+     * getUserId
+     *
+     * @return mixed
      */
     public function getUserId();
 } 

@@ -1,13 +1,19 @@
 <?php
 /**
- * @category  RCM
+ * AbstractUserDataMapper.php
+ *
+ * AbstractUserDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
-
 namespace RcmUser\User\Db;
 
 
@@ -16,13 +22,30 @@ use RcmUser\User\Entity\DoctrineUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
+/**
+ * Class AbstractUserDataMapper
+ *
+ * AbstractUserDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class AbstractUserDataMapper implements UserDataMapperInterface
 {
     /**
-     * @param       $id
-     * @param array $params
+     * fetchById
      *
-     * @return mixed|Result
+     * @param mixed $id     id
+     * @param array $params params
+     *
+     * @return Result
      */
     public function fetchById($id, $params = array())
     {
@@ -30,21 +53,29 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
-     * @param       $username
-     * @param array $params
+     * fetchByUsername
      *
-     * @return mixed|Result
+     * @param string $username username
+     * @param array  $params   params
+     *
+     * @return Result
      */
     public function fetchByUsername($username, $params = array())
     {
-        return new Result(null, Result::CODE_FAIL, 'User cannot be found by username.');
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'User cannot be found by username.'
+        );
     }
 
     /**
-     * @param User  $user
-     * @param array $params
+     * create
      *
-     * @return mixed|Result
+     * @param User  $user   user
+     * @param array $params params
+     *
+     * @return Result
      */
     public function create(User $user, $params = array())
     {
@@ -52,10 +83,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
-     * @param User  $user
-     * @param array $params
+     * read
      *
-     * @return mixed|Result
+     * @param User  $user   user
+     * @param array $params params
+     *
+     * @return Result
      */
     public function read(User $user, $params = array())
     {
@@ -63,10 +96,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
-     * @param User  $user
-     * @param array $params
+     * update
      *
-     * @return mixed|Result
+     * @param User  $user   user
+     * @param array $params params
+     *
+     * @return Result
      */
     public function update(User $user, $params = array())
     {
@@ -74,8 +109,10 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
-     * @param User  $user
-     * @param array $params
+     * delete
+     *
+     * @param User  $user   user
+     * @param array $params params
      *
      * @return mixed|Result
      */
@@ -85,14 +122,15 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
-     * @param User  $user
-     * @param array $params
+     * canUpdate
+     *
+     * @param User  $user   user
+     * @param array $params params
      *
      * @return bool
      */
     public function canUpdate(User $user, $params = array())
     {
-
         $id = $user->getId();
 
         if (empty($id)) {
@@ -103,9 +141,17 @@ class AbstractUserDataMapper implements UserDataMapperInterface
         return true;
     }
 
-    protected function parseParamValue($key, $params = array()){
-
-        if(isset($params[$key])){
+    /**
+     * parseParamValue
+     *
+     * @param string $key    key
+     * @param array  $params params
+     *
+     * @return mixed
+     */
+    protected function parseParamValue($key, $params = array())
+    {
+        if (isset($params[$key])) {
 
             return $params[$key];
         }

@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * DeleteUserPostListener.php
+ *
+ * DeleteUserPostListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Event;
@@ -13,17 +20,39 @@ namespace RcmUser\Acl\Event;
 
 use RcmUseRcmUserResult;
 
+/**
+ * DeleteUserPostListener
+ *
+ * DeleteUserPostListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class DeleteUserPostListener extends AbstractUserDataServiceListener
 {
 
+    /**
+     * @var string
+     */
     protected $event = 'deleteUser.post';
+    /**
+     * @var int
+     */
     protected $priority = 100;
 
     /**
-     * @param $e
+     * onEvent
      *
-     * @return Result|void
-     * @throws \Exception
+     * @param Event $e evnet
+     *
+     * @return mixed|Result|void
      */
     public function onEvent($e)
     {
@@ -42,7 +71,9 @@ class DeleteUserPostListener extends AbstractUserDataServiceListener
                 return $aclResult;
             }
 
-            $user->setProperty($this->getUserPropertyKey(), $this->getDefaultRoleIdentities());
+            $user->setProperty(
+                $this->getUserPropertyKey(), $this->getDefaultRoleIdentities()
+            );
 
             return new Result($user, Result::CODE_SUCCESS);
         }

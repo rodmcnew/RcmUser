@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * RcmUserAclResourceProvider.php
+ *
+ * RcmUserAclResourceProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Provider
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Provider;
@@ -13,6 +20,21 @@ namespace RcmUser\Provider;
 
 use RcmUser\Acl\Provider\ResourceProviderInterface;
 
+/**
+ * RcmUserAclResourceProvider
+ *
+ * RcmUserAclResourceProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class RcmUserAclResourceProvider implements ResourceProviderInterface
 {
 
@@ -25,6 +47,7 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
         );
 
     /**
+     * getAll
      * Return a multi-dimensional array of resources and privileges
      * containing ALL possible resources
      *
@@ -38,7 +61,9 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
 
 
     /**
-     * @return array
+     * getAvailableAtRuntime
+     *
+     * @return array|mixed
      */
     public function getAvailableAtRuntime()
     {

@@ -1,23 +1,47 @@
 <?php
- /**
- * @category  RCM
+/**
+ * GetIdentityListener.php
+ *
+ * GetIdentityListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Authentication\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Authentication\Event;
 
-
-class GetIdentityListener extends AbstractAuthServiceListener {
+/**
+ * GetIdentityListener
+ *
+ * GetIdentityListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Authentication\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class GetIdentityListener extends AbstractAuthServiceListener
+{
 
     protected $event = 'getIdentity';
     protected $priority = 100;
 
     /**
-     * @param $e
+     * onEvent
+     *
+     * @param Event $e e
      *
      * @return Result
      */
@@ -29,7 +53,7 @@ class GetIdentityListener extends AbstractAuthServiceListener {
 
         $currentUser = $authService->getIdentity();
 
-        if(!empty($currentUser)){
+        if (!empty($currentUser)) {
 
             $user->populate($currentUser);
         }

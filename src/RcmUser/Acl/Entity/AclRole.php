@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * AclRole.php
+ *
+ * AclRole
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Entity;
@@ -14,9 +21,19 @@ use Zend\Permissions\Acl\Role\RoleInterface;
 
 
 /**
- * Class AclRole
+ * AclRole
  *
- * @package RcmUser\Acl\Entity
+ * AclRole
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
 {
@@ -29,10 +46,17 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     protected $description;
 
+    /**
+     * @var null
+     */
     protected $parentRole = null;
 
     /**
-     * @param string $roleIdentity
+     * setRoleIdentity
+     *
+     * @param string $roleIdentity role identity
+     *
+     * @return void
      */
     public function setRoleIdentity($roleIdentity)
     {
@@ -40,6 +64,8 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
+     * getRoleIdentity
+     *
      * @return string
      */
     public function getRoleIdentity()
@@ -48,7 +74,11 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @param string $description
+     * setDescription
+     *
+     * @param string $description description
+     *
+     * @return void
      */
     public function setDescription($description)
     {
@@ -56,6 +86,8 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
+     * getDescription
+     *
      * @return string
      */
     public function getDescription()
@@ -64,7 +96,11 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @param AclRole|null $parentRole
+     * setParentRole
+     *
+     * @param AclRole|null $parentRole parent role
+     *
+     * @return void
      */
     public function setParentRole($parentRole)
     {
@@ -72,7 +108,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return null
+     * getParentRole
+     *
+     * @return AclRole|null
      */
     public function getParentRole()
     {
@@ -80,7 +118,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return null
+     * getParent
+     *
+     * @return null|AclRole
      */
     public function getParent()
     {
@@ -88,7 +128,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return string|void
+     * getRoleId
+     *
+     * @return string
      */
     public function getRoleId()
     {
@@ -96,8 +138,11 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @param array|AclRole $data
+     * populate
      *
+     * @param array|AclRole $data data to populate with
+     *
+     * @return void
      * @throws RcmUserException
      */
     public function populate($data = array())
@@ -121,6 +166,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
             if (isset($data['parentRole'])) {
                 $this->setRoleIdentity($data['parentRole']);
             }
+
             return;
         }
 
@@ -128,7 +174,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return stdClass
+     * jsonSerialize
+     *
+     * @return \stdClass
      */
     public function jsonSerialize()
     {
@@ -141,7 +189,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return \ArrayIterator
+     * getIterator
+     *
+     * @return \ArrayIterator|\Traversable
      */
     public function getIterator()
     {

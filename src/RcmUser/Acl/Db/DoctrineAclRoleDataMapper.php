@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * DoctrineAclRoleDataMapper.php
+ *
+ * DoctrineAclRoleDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Db;
@@ -18,21 +25,36 @@ use RcmUser\Db\DoctrineMapper;
 use RcmUser\Result;
 
 /**
- * Interface AclRoleDataMapperInterface
+ * DoctrineAclRoleDataMapper
  *
- * @package RcmUser\User\Db
+ * DoctrineAclRoleDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
-class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMapperInterface
+class DoctrineAclRoleDataMapper
+    extends DoctrineMapper
+    implements AclRoleDataMapperInterface
 {
     /**
-     * @return array
+     * fetchAll
+     *
+     * @return Result|Result
      */
     public function fetchAll()
     {
         //$roles = $this->getEntityManager()->getRepository($this->getEntityClass())->findAll();
 
-        $query = $this->getEntityManager()->createQuery('
-            SELECT role FROM '.$this->getEntityClass().' role
+        $query = $this->getEntityManager()->createQuery(
+            '
+                        SELECT role FROM ' . $this->getEntityClass() . ' role
             INDEX BY role.id'
         );
 
@@ -49,9 +71,11 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param int $id
+     * fetchById
      *
-     * @return Role
+     * @param int $id id
+     *
+     * @return Result|Result
      */
     public function fetchById($id)
     {
@@ -69,13 +93,16 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param $parentId
+     * fetchByParentId
+     *
+     * @param mixed $parentId the parent id
      *
      * @return array
      */
     public function fetchByParentId($parentId)
     {
-        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())->findBy(array('parentId' => $parentId));
+        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
+            ->findBy(array('parentId' => $parentId));
 
         if (empty($roles)) {
 
@@ -86,13 +113,16 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param $roleIdentity
+     * fetchByRoleIdentity
+     *
+     * @param string $roleIdentity the role identity string
      *
      * @return Role
      */
     public function fetchByRoleIdentity($roleIdentity)
     {
-        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())->findBy(array('roleIdentity' => $roleIdentity));
+        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
+            ->findBy(array('roleIdentity' => $roleIdentity));
 
         if (empty($roles)) {
 
@@ -103,7 +133,9 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param AclRole $aclRole
+     * create
+     *
+     * @param AclRole $aclRole acl role
      *
      * @return mixed|void
      */
@@ -121,7 +153,9 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param AclRole $aclRole
+     * read
+     *
+     * @param AclRole $aclRole the acl role
      *
      * @return mixed
      */
@@ -155,7 +189,9 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param AclRole $aclRole
+     * update
+     *
+     * @param AclRole $aclRole acl role
      *
      * @return mixed
      */
@@ -165,7 +201,9 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param AclRole $aclRole
+     * delete
+     *
+     * @param AclRole $aclRole acl role
      *
      * @return mixed
      */
@@ -175,7 +213,9 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
     }
 
     /**
-     * @param AclRole $aclRole
+     * getValidInstance
+     *
+     * @param AclRole $aclRole acl role
      *
      * @return Result
      */
@@ -195,18 +235,21 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
 
 
     /**
+     * prepareRoles
+     *
      * @param array $roles indexed by id
      *
      * @return array
      */
-    public function prepareRoles($roles){
+    public function prepareRoles($roles)
+    {
 
 
-        foreach($roles as $key => $role){
+        foreach ($roles as $key => $role) {
 
             $parentId = $role->getParentId();
 
-            if(isset($roles[$parentId])){
+            if (isset($roles[$parentId])) {
                 /*@todo We clone to limit nesting, is this ok?
                 $parent = new AclRole();
                 $parent->populate($roles[$parentId]);
@@ -221,17 +264,21 @@ class DoctrineAclRoleDataMapper extends DoctrineMapper implements AclRoleDataMap
 
         return $roles;
     }
+
     /**
-     * @param AclRole $role
-     * @param         $aclRoles
+     * createNamespaceId
+     *
+     * @param AclRole $role     acl role
+     * @param array   $aclRoles array of roles
      *
      * @return string
      */
-    public function createNamespaceId(AclRole $role, $aclRoles){
+    public function createNamespaceId(AclRole $role, $aclRoles)
+    {
 
         $parentId = $role->getParentId();
         $ns = $role->getRoleIdentity();
-        if(!empty($parentId)){
+        if (!empty($parentId)) {
 
             $parent = $aclRoles[$parentId];
 

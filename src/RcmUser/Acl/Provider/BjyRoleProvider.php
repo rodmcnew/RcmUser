@@ -1,6 +1,18 @@
 <?php
 /**
+ * BjyRoleProvider.php
  *
+ * BjyRoleProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Provider;
@@ -11,24 +23,49 @@ use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 
 /**
+ * BjyRoleProvider
  *
+ * BjyRoleProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class BjyRoleProvider implements ProviderInterface
 {
 
+    /**
+     * @var
+     */
     protected $aclRoleDataMapper;
 
+    /**
+     * @var array
+     */
     protected $roles = array();
 
     /**
-     * @param AclRoleDataMapperInterface $aclRoleDataMapper
+     * setAclRoleDataMapper
+     *
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
+     *
+     * @return void
      */
-    public function setAclRoleDataMapper(AclRoleDataMapperInterface $aclRoleDataMapper)
-    {
+    public function setAclRoleDataMapper(
+        AclRoleDataMapperInterface $aclRoleDataMapper
+    ) {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
     /**
+     * getAclRoleDataMapper
+     *
      * @return AclRoleDataMapperInterface
      */
     public function getAclRoleDataMapper()
@@ -37,12 +74,14 @@ class BjyRoleProvider implements ProviderInterface
     }
 
     /**
-     * @return \Zend\Permissions\Acl\Role\RoleInterface[]
+     * getRoles
+     *
+     * @return array|\Zend\Permissions\Acl\Role\RoleInterface[]
      */
     public function getRoles()
     {
         // cache
-        if(!empty($this->roles)){
+        if (!empty($this->roles)) {
 
             return $this->roles;
         }
@@ -51,7 +90,7 @@ class BjyRoleProvider implements ProviderInterface
 
         $results = $alcRoleDataMapper->fetchAll();
 
-        if(!$results->isSuccess()){
+        if (!$results->isSuccess()) {
             // @todo Throw error?
             return array();
         }

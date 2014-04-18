@@ -1,6 +1,18 @@
 <?php
 /**
+ * BjyRuleProvider.php
  *
+ * BjyRuleProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Provider;
@@ -10,14 +22,33 @@ use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRule;
 
 /**
+ * BjyRuleProvider
  *
+ * BjyRuleProvider
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class BjyRuleProvider implements ProviderInterface
 {
+    /**
+     * @var
+     */
     protected $ruleDataMapper;
 
     /**
-     * @param AclRuleDataMapperInterface $ruleDataMapper
+     * setRuleDataMapper
+     *
+     * @param AclRuleDataMapperInterface $ruleDataMapper ruleDataMapper
+     *
+     * @return void
      */
     public function setRuleDataMapper(AclRuleDataMapperInterface $ruleDataMapper)
     {
@@ -25,6 +56,8 @@ class BjyRuleProvider implements ProviderInterface
     }
 
     /**
+     * getRuleDataMapper
+     *
      * @return AclRuleDataMapperInterface
      */
     public function getRuleDataMapper()
@@ -33,6 +66,8 @@ class BjyRuleProvider implements ProviderInterface
     }
 
     /**
+     * getRules
+     *
      * @return array
      * @throws \Exception
      */
@@ -56,6 +91,11 @@ class BjyRuleProvider implements ProviderInterface
         return $rules;
     }
 
+    /**
+     * getAllowRules
+     *
+     * @return array
+     */
     public function getAllowRules()
     {
 
@@ -69,6 +109,11 @@ class BjyRuleProvider implements ProviderInterface
         return $this->prepareRcmRules($result->getData());
     }
 
+    /**
+     * getDenyRules
+     *
+     * @return array
+     */
     public function getDenyRules()
     {
 
@@ -82,6 +127,13 @@ class BjyRuleProvider implements ProviderInterface
         return $result->getData();
     }
 
+    /**
+     * prepareRcmRules
+     *
+     * @param array $rcmRules rcmRules
+     *
+     * @return array
+     */
     public function prepareRcmRules($rcmRules)
     {
         $bjyRules = array('allow' => array(), 'deny' => array());
