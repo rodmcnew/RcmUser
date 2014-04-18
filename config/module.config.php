@@ -123,14 +123,14 @@ return array(
             /* USER ********************************* */
             /* ************************************** */
 
-            /**
+            /*
              * UserDataService - Core User data access service
              * Required *
              *
              * This service exposes basic CRUD operations for the User objects.
              */
             'RcmUser\User\Service\UserDataService' => 'RcmUser\User\Service\Factory\UserDataService',
-            /**
+            /*
              * UserPropertyService - Allows user properties to be set by event listeners
              * Required *
              *
@@ -138,7 +138,7 @@ return array(
              * This helps reduce the size of the User object as non-essential properties may be loaded when needed.
              */
             'RcmUser\User\Service\UserPropertyService' => 'RcmUser\User\Service\Factory\UserPropertyService',
-            /**
+            /*
              * UserDataMapper - Data source adapter
              * Required for:
              *  RcmUser\User\Service\UserDataService
@@ -149,7 +149,7 @@ return array(
             'RcmUser\User\UserDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
 
             /* ---------------------------- */
-            /**
+            /*
              * UserRolesDataMapper
              * Required for (ACL user property):
              *  RcmUser\Acl\Service\Factory\EventListeners
@@ -160,7 +160,7 @@ return array(
             'RcmUser\User\UserRolesDataMapper' => 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
 
             /* - Validations - */
-            /**
+            /*
              * UserValidator - Validates User object data on create and update
              * Required for:
              *  RcmUser\User\EventListeners
@@ -169,7 +169,7 @@ return array(
              * This may be configured to use a custom UserValidator as required.
              */
             'RcmUser\User\Data\UserValidator' => 'RcmUser\User\Service\Factory\UserValidator',
-            /**
+            /*
              * ValidatorEventListeners
              * Required for (User validation and input filtering):
              *  RcmUser\User\Data\UserValidator
@@ -179,7 +179,7 @@ return array(
             'RcmUser\User\ValidatorEventListeners' => 'RcmUser\User\Service\Factory\ValidatorEventListeners',
 
             /* - Data Prep - */
-            /**
+            /*
              * Encryptor
              * Required for:
              *  RcmUser\User\Data\DbUserDataPreparer
@@ -189,7 +189,7 @@ return array(
              * May not be required depending on the DbUserDataPreparer and UserAdapter that is being used.
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
-            /**
+            /*
              * UserDataPreparer (requires Encryptor)
              * Required for:
              *  RcmUser\User\EventListeners
@@ -199,7 +199,7 @@ return array(
              * This may be configured to use a custom UserDataPreparer as required
              */
             'RcmUser\User\Data\UserDataPreparer' => 'RcmUser\User\Service\Factory\DbUserDataPreparer',
-            /**
+            /*
              * DataPrepEventListeners
              * Required for (User preparing data for save):
              *
@@ -219,7 +219,7 @@ return array(
             'RcmUser\Authentication\Service\UserAuthenticationService' => 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
 
             /* ---------------------------- */
-            /**
+            /*
              * UserAdapter
              * Required for (Auth):
              *  RcmUser\Authentication\Service\AuthenticationService
@@ -228,7 +228,7 @@ return array(
              * This may be configured to use a custom auth Adapter as required
              */
             'RcmUser\Authentication\Adapter' => 'RcmUser\Authentication\Service\Factory\Adapter',
-            /**
+            /*
              * UserSession
              * Required for (Auth):
              *  RcmUser\Authentication\Service\AuthenticationService
@@ -237,7 +237,7 @@ return array(
              * This may be configured to use a custom Storage object as required
              */
             'RcmUser\Authentication\Storage' => 'RcmUser\Authentication\Service\Factory\Storage',
-            /**
+            /*
              * AuthenticationService
              * Required for:
              *  RcmUser\Authentication\EventListeners
@@ -247,7 +247,7 @@ return array(
              * This may be configure to use custom AuthenticationService as required
              */
             'RcmUser\Authentication\AuthenticationService' => 'RcmUser\Authentication\Service\Factory\AuthenticationService',
-            /**
+            /*
              * EventListeners
              * Used for listening for auth related events:
              *
@@ -260,7 +260,7 @@ return array(
             /* ACL ********************************** */
             /* ************************************** */
 
-            /**
+            /*
              * AclResourceService
              * Used by:
              *  RcmUser\Acl\Provider\BjyResourceProvider
@@ -269,14 +269,14 @@ return array(
              */
             'RcmUser\Acl\Service\AclResourceService' => 'RcmUser\Acl\Service\Factory\AclResourceService',
 
-            /**
+            /*
              * UserAuthorizeService (ACL)
              * Used by RcmUserService, ControllerPluginRcmUserIsAllowed, ViewHelperRcmUserIsAllowed
              *
              * Exposes the ACL isAllowed method
              */
             'RcmUser\Acl\Service\UserAuthorizeService' => 'RcmUser\Acl\Service\Factory\UserAuthorizeService',
-            /**
+            /*
              * AclRoleDataMapper
              * Required for:
              *  BjyRoleProvider
@@ -284,7 +284,7 @@ return array(
              * This may be configured to use a custom data mapper if required
              */
             'RcmUser\Acl\AclRoleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper',
-            /**
+            /*
              * AclRuleDataMapper
              * Required for:
              * This data mapper adapter allows this module to read rules from a data source
@@ -292,13 +292,13 @@ return array(
              */
             'RcmUser\Acl\AclRuleDataMapper' => 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
 
-            /**
+            /*
              * EventListeners
              * Required for (User Property populating):
              */
             'RcmUser\Acl\EventListeners' => 'RcmUser\Acl\Service\Factory\EventListeners',
 
-            /**
+            /*
              * BJY-Authorize providers - This module depends on bjyauthorize for ACL logic
              * Required for BjyAuthorize:
              *
@@ -331,7 +331,7 @@ return array(
             /* ************************************** */
             /* CORE ********************************* */
             /* ************************************** */
-            /**
+            /*
              * Main service facade
              * Uses:
              *  UserDataService
@@ -341,13 +341,13 @@ return array(
              */
             'RcmUser\Service\RcmUserService' => 'RcmUser\Service\Factory\RcmUserService',
 
-            /**
+            /*
              * Provides the Access Resources for this Module to ACL
              * Require *
              */
             'RcmUser\Provider\RcmUserAclResourceProvider' => 'RcmUser\Service\Factory\RcmUserAclResourceProvider',
 
-            /**
+            /*
              * Event Aggregation
              * Required *
              */
