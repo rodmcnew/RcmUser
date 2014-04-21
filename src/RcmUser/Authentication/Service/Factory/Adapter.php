@@ -50,7 +50,9 @@ class Adapter implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
 
-        $userDataService = $serviceLocator->get('RcmUser\User\Service\UserDataService');
+        $userDataService = $serviceLocator->get(
+            'RcmUser\User\Service\UserDataService'
+        );
         $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
         $adapter = new UserAdapter();
         $adapter->setUserDataService($userDataService);

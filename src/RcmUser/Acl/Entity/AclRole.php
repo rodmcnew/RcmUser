@@ -170,7 +170,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
             return;
         }
 
-        throw new RcmUserException('Role data could not be populated, data format not supported');
+        throw new RcmUserException(
+            'Role data could not be populated, data format not supported'
+        );
     }
 
     /**

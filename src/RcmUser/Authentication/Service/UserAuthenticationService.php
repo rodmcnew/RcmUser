@@ -50,7 +50,8 @@ class UserAuthenticationService extends EventProvider
     public function validateCredentials(User $user)
     {
 
-        // @event pre - expects listener to return Zend\Authentication\Result with Result->identity == to user object ($user)
+        // @event pre - expects listener to return
+        // Zend\Authentication\Result with Result->identity == to user object ($user)
         $resultsPre = $this->getEventManager()->trigger(
             __FUNCTION__ . '.pre', $this, array('user' => $user),
             function ($result) {
@@ -61,7 +62,9 @@ class UserAuthenticationService extends EventProvider
         $result = $resultsPre->last();
 
         if ($result === null) {
-            throw new \Exception('No auth listener registered or no results returned.');
+            throw new \Exception(
+                'No auth listener registered or no results returned.'
+            );
         }
 
         if ($resultsPre->stopped()) {
@@ -69,7 +72,8 @@ class UserAuthenticationService extends EventProvider
             return $result;
         }
 
-        // @event post - expects Listener to check for $result->isValid() for post actions
+        // @event post
+        // - expects Listener to check for $result->isValid() for post actions
         $this->getEventManager()->trigger(
             __FUNCTION__ . '.post', $this, array('result' => $result)
         );
@@ -88,7 +92,8 @@ class UserAuthenticationService extends EventProvider
     public function authenticate(User $user)
     {
 
-        // @event pre - expects listener to return Zend\Authentication\Result with Result->identity == to user object ($user)
+        // @event pre - expects listener to return
+        // Zend\Authentication\Result with Result->identity == to user object ($user)
         $resultsPre = $this->getEventManager()->trigger(
             __FUNCTION__ . '.pre', $this, array('user' => $user),
             function ($result) {
@@ -99,7 +104,9 @@ class UserAuthenticationService extends EventProvider
         $result = $resultsPre->last();
 
         if ($result === null) {
-            throw new \Exception('No auth listener registered or no results returned.');
+            throw new \Exception(
+                'No auth listener registered or no results returned.'
+            );
         }
 
         if ($resultsPre->stopped()) {
@@ -107,7 +114,8 @@ class UserAuthenticationService extends EventProvider
             return $result;
         }
 
-        // @event post - expects Listener to check for $result->isValid() for post actions
+        // @event post
+        // - expects Listener to check for $result->isValid() for post actions
         $this->getEventManager()->trigger(
             __FUNCTION__ . '.post', $this, array('result' => $result)
         );

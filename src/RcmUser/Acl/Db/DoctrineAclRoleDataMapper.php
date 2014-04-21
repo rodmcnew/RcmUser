@@ -50,12 +50,13 @@ class DoctrineAclRoleDataMapper
      */
     public function fetchAll()
     {
-        //$roles = $this->getEntityManager()->getRepository($this->getEntityClass())->findAll();
+        //$roles = $this->getEntityManager()->getRepository(
+        //    $this->getEntityClass()
+        //)->findAll();
 
         $query = $this->getEntityManager()->createQuery(
-            '
-                        SELECT role FROM ' . $this->getEntityClass() . ' role
-            INDEX BY role.id'
+            'SELECT role FROM ' . $this->getEntityClass() . ' role ' .
+            'INDEX BY role.id'
         );
 
         $roles = $query->getResult();
@@ -83,7 +84,11 @@ class DoctrineAclRoleDataMapper
 
         if (empty($role)) {
 
-            return new Result(null, Result::CODE_FAIL, 'Role could not be found by id.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Role could not be found by id.'
+            );
         }
 
         // This is so we get a fresh user every time
@@ -106,7 +111,11 @@ class DoctrineAclRoleDataMapper
 
         if (empty($roles)) {
 
-            return new Result(null, Result::CODE_FAIL, 'Roles could not be found by parentId.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Roles could not be found by parentId.'
+            );
         }
 
         return new Result($roles);
@@ -126,7 +135,11 @@ class DoctrineAclRoleDataMapper
 
         if (empty($roles)) {
 
-            return new Result(null, Result::CODE_FAIL, 'Roles could not be found by roleIdentity.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Roles could not be found by roleIdentity.'
+            );
         }
 
         return new Result($roles);
@@ -197,7 +210,11 @@ class DoctrineAclRoleDataMapper
      */
     public function update(AclRole $aclRole)
     {
-        return new Result(null, Result::CODE_FAIL, 'Acl Role update NOT YET AVAILABLE.');
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Acl Role update NOT YET AVAILABLE.'
+        );
     }
 
     /**
@@ -209,7 +226,11 @@ class DoctrineAclRoleDataMapper
      */
     public function delete(AclRole $aclRole)
     {
-        return new Result(null, Result::CODE_FAIL, 'Acl Role delete NOT YET AVAILABLE.');
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Acl Role delete NOT YET AVAILABLE.'
+        );
     }
 
     /**
@@ -257,7 +278,8 @@ class DoctrineAclRoleDataMapper
                 $roles[$key]->setParentRole($parent);
                 */
 
-                // @todo this should take objects, not strings, BJY has issues with objects
+                // @todo this should take objects, not strings,
+                // BJY has issues with objects
                 $roles[$key]->setParentRole($roles[$parentId]->getRoleIdentity());
             }
         }

@@ -46,9 +46,9 @@ class UserAuthorizeService extends Authorize
     /**
      * isAllowed
      *
-     * @param string|\Zend\Permissions\Acl\Resource\ResourceInterface $resource  resource
-     * @param null                                                    $privilege privilege
-     * @param null                                                    $user      user
+     * @param string|ResourceInterface $resource  resource
+     * @param null                     $privilege privilege
+     * @param null                     $user      user
      *
      * @return bool
      * @throws \Exception
@@ -59,8 +59,13 @@ class UserAuthorizeService extends Authorize
 
         if (!empty($user)) {
 
-            // @todo implement this if possible. NOTE: BJY is doing something here that my not allow for direct checking of this.
-            throw new \Exception('Checking ACL->isAllowed on user object directly is not yet supported.');
+            // @todo implement this if possible.
+            // NOTE: BJY is doing something here that my not allow
+            // for direct checking of this.
+            throw new \Exception(
+                'Checking ACL->isAllowed '.
+                'on user object directly is not yet supported.'
+            );
         }
 
         $resources = $this->parseResource($resource);

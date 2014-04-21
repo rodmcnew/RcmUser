@@ -25,7 +25,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 /**
  * DoctrineAclRole
  *
- * LongDescHere
+ * DoctrineAclRole
  *
  * PHP version 5
  *

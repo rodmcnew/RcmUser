@@ -72,7 +72,7 @@ class AbstractUserDataServiceListener extends AbstractListener
     /**
      * setUserRolesDataMapper
      *
-     * @param UserRolesDataMapperInterface $userRolesDataMapper UserRolesDataMapperInterface
+     * @param UserRolesDataMapperInterface $userRolesDataMapper userRolesDataMapper
      *
      * @return void
      */

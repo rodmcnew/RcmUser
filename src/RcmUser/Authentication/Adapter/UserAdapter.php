@@ -57,7 +57,8 @@ class UserAdapter extends AbstractAdapter
 
     /**
      * @var bool
-     * Force returned user to hide password, can cause issues is return object is meant to be saved.
+     * Force returned user to hide password,
+     * can cause issues is return object is meant to be saved.
      */
     protected $obfuscatePassword = true;
 
@@ -172,7 +173,8 @@ class UserAdapter extends AbstractAdapter
             );
         }
 
-        // We will remove id is set so that we only read from username, this will eliminate an incorrect id/username match in the object
+        // We will remove id is set so that we only read from username,
+        // this will eliminate an incorrect id/username match in the object
         $user->setId(null);
 
         $existingUserResult = $this->getUserDataService()->readUser($user);

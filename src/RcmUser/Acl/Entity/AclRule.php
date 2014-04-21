@@ -37,17 +37,18 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
 {
 
     /**
-     *
+     * string
      */
     const RULE_ALLOW = 'allow';
     /**
-     *
+     * string
      */
     const RULE_DENY = 'deny';
     /**
-     *
+     * string
+     * this rule is a way of disabling a rule without deleting it
      */
-    const RULE_IGNORE = 'ignore'; // this rule is a way of disabling a rule without deleting it
+    const RULE_IGNORE = 'ignore';
 
     /**
      * @var

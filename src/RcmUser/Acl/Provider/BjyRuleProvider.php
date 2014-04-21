@@ -85,7 +85,9 @@ class BjyRuleProvider implements ProviderInterface
 
         if (empty($rules['allow'])) {
 
-            throw new \Exception('No allow rules set, allow rules are required for any access');
+            throw new \Exception(
+                'No allow rules set, allow rules are required for any access'
+            );
         }
 
         return $rules;

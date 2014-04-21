@@ -23,7 +23,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Class DoctrineUser
  *
- * LongDescHere
+ * DoctrineUser
  *
  * PHP version 5
  *

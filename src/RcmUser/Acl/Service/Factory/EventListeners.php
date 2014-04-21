@@ -85,7 +85,9 @@ class EventListeners implements FactoryInterface
         $deleteUserPostListener->setDefaultRoleIdentities(
             $cfg->get('DefaultRoleIdentities', array())
         );
-        //$deleteUserPostListener->setDefaultAuthenticatedRoleIdentities($cfg->get('DefaultAuthenticatedRoleIdentities', array()));
+        //$deleteUserPostListener->setDefaultAuthenticatedRoleIdentities(
+        //    $cfg->get('DefaultAuthenticatedRoleIdentities', array())
+        //);
         $deleteUserPostListener->setUserRolesDataMapper(
             $serviceLocator->get('RcmUser\User\UserRolesDataMapper')
         );

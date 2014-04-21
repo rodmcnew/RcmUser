@@ -24,7 +24,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 /**
  * DoctrineAclRule
  *
- * LongDescHere
+ * DoctrineAclRule
  *
  * PHP version 5
  *
