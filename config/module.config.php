@@ -413,6 +413,8 @@ return array(
              */
             'RcmUser\Service\RcmUserService' =>
                 'RcmUser\Service\Factory\RcmUserService',
+            // @todo TEMP to fix existing user issues with service manager
+            'rcmUserMgr' => 'RcmUser\Service\Factory\RcmUserService',
 
             /*
              * Provides the Access Resources for this Module to ACL

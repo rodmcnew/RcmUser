@@ -182,12 +182,22 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function getSessUser()
     {
-
         $user = $this->getIdentity();
 
         return $user;
     }
 
+    /**
+     * getLoggedInUser
+     *
+     * @return User
+     */
+    public function getLoggedInUser()
+    {
+        $user = $this->getIdentity();
+
+        return $user;
+    }
     /**
      * getNewUser
      *
