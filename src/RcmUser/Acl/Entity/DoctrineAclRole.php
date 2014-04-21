@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * DoctrineAclRole.php
+ *
+ * DoctrineAclRole
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Entity;
@@ -16,9 +23,19 @@ use Doctrine\ORM\Mapping\OneToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
- * Class DoctrineAclRole
+ * DoctrineAclRole
  *
- * @package RcmUser\User\Entity
+ * DoctrineAclRole
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  *
  * @ORM\Entity
  * @ORM\Table(name="rcm_user_acl_role")
@@ -26,6 +43,9 @@ use Doctrine\ORM\Mapping\JoinColumn;
 class DoctrineAclRole extends BjyAclRole
 {
 
+    /**
+     *
+     */
     const ROLE_ROOT_ID = 0;
 
     /**
@@ -60,7 +80,11 @@ class DoctrineAclRole extends BjyAclRole
     protected $parentRole;
 
     /**
-     * @param int $id
+     * setId
+     *
+     * @param int $id id
+     *
+     * @return void
      */
     public function setId($id)
     {
@@ -68,6 +92,8 @@ class DoctrineAclRole extends BjyAclRole
     }
 
     /**
+     * getId
+     *
      * @return int
      */
     public function getId()
@@ -76,7 +102,11 @@ class DoctrineAclRole extends BjyAclRole
     }
 
     /**
-     * @param int $parentId
+     * setParentId
+     *
+     * @param int $parentId parent id
+     *
+     * @return void
      */
     public function setParentId($parentId)
     {
@@ -84,6 +114,8 @@ class DoctrineAclRole extends BjyAclRole
     }
 
     /**
+     * getParentId
+     *
      * @return int
      */
     public function getParentId()

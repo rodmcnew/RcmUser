@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * AclRuleDataMapperInterface.php
+ *
+ * AclRuleDataMapperInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Db;
@@ -17,67 +24,87 @@ use RcmUser\Acl\Entity\AclRule;
 /**
  * Interface AclRuleDataMapperInterface
  *
- * @package RcmUser\Acl\Db
+ * AclRuleDataMapperInterface Interface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
-interface AclRuleDataMapperInterface {
+interface AclRuleDataMapperInterface
+{
 
 
     /**
+     * fetchAll
+     *
      * @return Result
      */
     public function fetchAll();
 
     /**
-     * @param int $id
+     * fetchById
+     *
+     * @param mixed $id id
      *
      * @return Result
      */
     public function fetchById($id);
 
     /**
-     * @param $parentId
+     * fetchByRole
      *
-     * @return Result
-     */
-    public function fetchByParentId($parentId);
-
-    /**
-     * @param $roleId
+     * @param mixed $roleId role id
      *
      * @return Result
      */
     public function fetchByRole($roleId);
 
     /**
-     * @param string $rule
+     * fetchByRule
+     *
+     * @param AclRule $rule rule
      *
      * @return Result
      */
     public function fetchByRule($rule);
 
     /**
-     * @param AclRule $aclRule
+     * create
+     *
+     * @param AclRule $aclRule acl rule
      *
      * @return Result
      */
     public function create(AclRule $aclRule);
 
     /**
-     * @param AclRule $aclRule
+     * read
+     *
+     * @param AclRule $aclRule acl rule
      *
      * @return Result
      */
     public function read(AclRule $aclRule);
 
     /**
-     * @param AclRule $aclRule
+     * update
+     *
+     * @param AclRule $aclRule acl rule
      *
      * @return Result
      */
     public function update(AclRule $aclRule);
 
     /**
-     * @param AclRule $aclRule
+     * delete
+     *
+     * @param AclRule $aclRule acl rule
      *
      * @return Result
      */

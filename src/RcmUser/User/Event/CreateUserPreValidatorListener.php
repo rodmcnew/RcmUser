@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * CreateUserPreValidatorListener.php
+ *
+ * CreateUserPreValidatorListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Event;
@@ -13,6 +20,21 @@ namespace RcmUser\User\Event;
 
 use RcmUser\User\Result;
 
+/**
+ * Class CreateUserPreValidatorListener
+ *
+ * CreateUserPreValidatorListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class CreateUserPreValidatorListener extends AbstractUserValidatorListener
 {
 
@@ -20,7 +42,9 @@ class CreateUserPreValidatorListener extends AbstractUserValidatorListener
     protected $priority = 100;
 
     /**
-     * @param $e
+     * onEvent
+     *
+     * @param Event $e e
      *
      * @return Result
      */
@@ -33,6 +57,9 @@ class CreateUserPreValidatorListener extends AbstractUserValidatorListener
         $creatableUser = $e->getParam('creatableUser');
 
         // run validation rules
-        return $this->getUserValidator()->validateCreateUser($newUser, $creatableUser);
+        return $this->getUserValidator()->validateCreateUser(
+            $newUser,
+            $creatableUser
+        );
     }
 } 

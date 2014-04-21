@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * UserValidator.php
+ *
+ * UserValidator
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Data
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Data;
@@ -16,16 +23,44 @@ use RcmUser\User\Result;
 use Zend\InputFilter\Factory;
 use Zend\InputFilter\InputFilter;
 
+/**
+ * Class UserValidator
+ *
+ * UserValidator
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Data
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class UserValidator implements UserValidatorInterface
 {
+    /**
+     * @var array $userInputFilterConfig
+     */
     protected $userInputFilterConfig;
 
+    /**
+     * @var string $userInputFilterClass
+     */
     protected $userInputFilterClass = 'Zend\InputFilter\InputFilter\InputFilter';
 
+    /**
+     * @var Factory $userInputFilterFactory
+     */
     protected $userInputFilterFactory;
 
     /**
-     * @param array $userInputFilterConfig
+     * setUserInputFilterConfig
+     *
+     * @param array $userInputFilterConfig userInputFilterConfig from module.config
+     *
+     * @return void
      */
     public function setUserInputFilterConfig($userInputFilterConfig)
     {
@@ -33,19 +68,31 @@ class UserValidator implements UserValidatorInterface
     }
 
     /**
-     * @return mixed
+     * getUserInputFilterConfig
+     *
+     * @return array
      */
     public function getUserInputFilterConfig()
     {
         return $this->userInputFilterConfig;
     }
 
-    public function setUserInputFilterClass($userInputFilterClass = 'Zend\InputFilter\InputFilter\InputFilter')
-    {
+    /**
+     * setUserInputFilterClass
+     *
+     * @param string $userInputFilterClass userInputFilterClass
+     *
+     * @return void
+     */
+    public function setUserInputFilterClass(
+        $userInputFilterClass = 'Zend\InputFilter\InputFilter'
+    ) {
         $this->userInputFilterClass = $userInputFilterClass;
     }
 
     /**
+     * getUserInputFilterClass
+     *
      * @return string
      */
     public function getUserInputFilterClass()
@@ -55,7 +102,9 @@ class UserValidator implements UserValidatorInterface
     }
 
     /**
-     * @return mixed
+     * getUserInputFilter
+     *
+     * @return \Zend\InputFilter\InputFilterInterface
      */
     public function getUserInputFilter()
     {
@@ -66,7 +115,11 @@ class UserValidator implements UserValidatorInterface
     }
 
     /**
-     * @param Factory $userInputFilterFactory
+     * setUserInputFilterFactory
+     *
+     * @param Factory $userInputFilterFactory userInputFilterFactory
+     *
+     * @return void
      */
     public function setUserInputFilterFactory(Factory $userInputFilterFactory)
     {
@@ -74,7 +127,9 @@ class UserValidator implements UserValidatorInterface
     }
 
     /**
-     * @return mixed
+     * getUserInputFilterFactory
+     *
+     * @return Factory
      */
     public function getUserInputFilterFactory()
     {
@@ -83,8 +138,10 @@ class UserValidator implements UserValidatorInterface
 
 
     /**
-     * @param User $updatedUser
-     * @param User $updatableUser
+     * validateUpdateUser
+     *
+     * @param User $updatedUser   updatedUser
+     * @param User $updatableUser updatableUser
      *
      * @return Result
      */
@@ -96,21 +153,34 @@ class UserValidator implements UserValidatorInterface
         $inputs = $this->getUserInputFilterConfig();
 
         // only check values if they are not null
-        // (null values are ignored so we may use the same object for validations and data values);
+        // (null values are ignored so we may use
+        // the same object for validations and data values);
         // null basically means unchanged or no updated value in this case,
         if ($updatedUser->getUsername() !== null && isset($inputs['username'])) {
 
-            $inputFilter->add($factory->createInput($inputs['username']), 'username');
+            $inputFilter->add(
+                $factory->createInput($inputs['username']), 'username'
+            );
         }
         if ($updatedUser->getPassword() !== null && isset($inputs['password'])) {
 
-            $inputFilter->add($factory->createInput($inputs['password']), 'password');
+            $inputFilter->add(
+                $factory->createInput($inputs['password']), 'password'
+            );
         }
 
         return $this->validateUser($updatableUser, $inputFilter);
 
     }
 
+    /**
+     * validateCreateUser
+     *
+     * @param User $updatedUser   updatedUser
+     * @param User $updatableUser updatableUser
+     *
+     * @return Result
+     */
     public function validateCreateUser(User $updatedUser, User $updatableUser)
     {
         $inputFilter = $this->getUserInputFilter();
@@ -126,6 +196,14 @@ class UserValidator implements UserValidatorInterface
 
     }
 
+    /**
+     * validateUser
+     *
+     * @param User        $changeableUser changeableUser
+     * @param InputFilter $inputFilter    inputFilter
+     *
+     * @return Result
+     */
     public function validateUser(User $changeableUser, InputFilter $inputFilter)
     {
 
@@ -138,7 +216,11 @@ class UserValidator implements UserValidatorInterface
             return new Result($changeableUser);
         } else {
 
-            $result = new Result($changeableUser, Result::CODE_FAIL, 'User input not valid');
+            $result = new Result(
+                $changeableUser,
+                Result::CODE_FAIL,
+                'User input not valid'
+            );
 
             foreach ($inputFilter->getInvalidInput() as $key => $error) {
 

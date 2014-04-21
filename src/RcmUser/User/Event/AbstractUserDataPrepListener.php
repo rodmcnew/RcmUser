@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * AbstractUserDataPrepListener.php
+ *
+ * AbstractUserDataPrepListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Event;
@@ -14,7 +21,23 @@ namespace RcmUser\User\Event;
 use RcmUser\Event\AbstractListener;
 use RcmUser\User\Data\UserDataPreparerInterface;
 
-class AbstractUserDataPrepListener extends AbstractListener  {
+/**
+ * Class AbstractUserDataPrepListener
+ *
+ * AbstractUserDataPrepListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class AbstractUserDataPrepListener extends AbstractListener
+{
 
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -30,7 +53,11 @@ class AbstractUserDataPrepListener extends AbstractListener  {
     protected $userDataPreparer;
 
     /**
-     * @param UserDataPreparerInterface $UserDataPreparer
+     * setUserDataPreparer
+     *
+     * @param UserDataPreparerInterface $userDataPreparer userDataPreparer
+     *
+     * @return void
      */
     public function setUserDataPreparer(UserDataPreparerInterface $userDataPreparer)
     {
@@ -38,6 +65,8 @@ class AbstractUserDataPrepListener extends AbstractListener  {
     }
 
     /**
+     * getUserDataPreparer
+     *
      * @return UserDataPreparerInterface
      */
     public function getUserDataPreparer()

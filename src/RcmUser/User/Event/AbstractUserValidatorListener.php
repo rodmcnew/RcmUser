@@ -1,21 +1,43 @@
 <?php
- /**
- * @category  RCM
+/**
+ * AbstractUserValidatorListener.php
+ *
+ * AbstractUserValidatorListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Event;
 
 
 use RcmUser\Event\AbstractListener;
-use RcmUser\User\Data\UserDataPreparerInterface;
 use RcmUser\User\Data\UserValidatorInterface;
 
-class AbstractUserValidatorListener extends AbstractListener  {
+/**
+ * Class AbstractUserValidatorListener
+ *
+ * AbstractUserValidatorListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class AbstractUserValidatorListener extends AbstractListener
+{
 
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
@@ -32,7 +54,11 @@ class AbstractUserValidatorListener extends AbstractListener  {
     protected $userValidator;
 
     /**
-     * @param UserValidatorInterface $UserValidator
+     * setUserValidator
+     *
+     * @param UserValidatorInterface $userValidator userValidator
+     *
+     * @return void
      */
     public function setUserValidator(UserValidatorInterface $userValidator)
     {
@@ -40,6 +66,8 @@ class AbstractUserValidatorListener extends AbstractListener  {
     }
 
     /**
+     * getUserValidator
+     *
      * @return UserValidatorInterface
      */
     public function getUserValidator()

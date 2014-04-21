@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * AbstractAuthServiceListener.php
+ *
+ * AbstractAuthServiceListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Authentication\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Authentication\Event;
@@ -13,14 +20,39 @@ namespace RcmUser\Authentication\Event;
 
 use RcmUser\Event\AbstractListener;
 
-class AbstractAuthServiceListener extends AbstractListener {
+/**
+ * AbstractAuthServiceListener
+ *
+ * AbstractAuthServiceListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Authentication\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class AbstractAuthServiceListener extends AbstractListener
+{
 
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = array();
+    /**
+     * @var string
+     */
     protected $id = 'RcmUser\Authentication\Service\UserAuthenticationService';
+    /**
+     * @var string
+     */
     protected $event = 'authentication';
+    /**
+     * @var int
+     */
     protected $priority = 100;
 
     /**
@@ -29,15 +61,22 @@ class AbstractAuthServiceListener extends AbstractListener {
     protected $authService;
 
     /**
-     * @param mixed $authService
+     * setAuthService
+     *
+     * @param \Zend\Authentication\AuthenticationService $authService authService
+     *
+     * @return void
      */
-    public function setAuthService(\Zend\Authentication\AuthenticationService $authService)
-    {
+    public function setAuthService(
+        \Zend\Authentication\AuthenticationService $authService
+    ) {
         $this->authService = $authService;
     }
 
     /**
-     * @return mixed
+     * getAuthService
+     *
+     * @return AuthenticationService
      */
     public function getAuthService()
     {

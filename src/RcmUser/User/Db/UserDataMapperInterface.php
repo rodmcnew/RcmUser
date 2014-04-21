@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * UserDataMapperInterface.php
+ *
+ * UserDataMapperInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Db;
@@ -17,7 +24,17 @@ use RcmUser\User\Result;
 /**
  * Interface UserDataMapperInterface
  *
- * @package RcmUser\User
+ * UserDataMapperInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 interface UserDataMapperInterface
 {
@@ -25,50 +42,56 @@ interface UserDataMapperInterface
     const USERNAME_FIELD = 'username';
 
     /**
-     * @param       $id
-     * @param array $params
+     * fetchById
      *
-     * @return mixed
+     * @param mixed $id id
+     *
+     * @return Result
      */
     public function fetchById($id);
 
     /**
-     * @param       $username
-     * @param array $params
+     * fetchByUsername
      *
-     * @return mixed
+     * @param string $username username
+     *
+     * @return Result
      */
     public function fetchByUsername($username);
 
     /**
-     * @param User  $user
-     * @param array $params
+     * create
      *
-     * @return mixed
+     * @param User $user user
+     *
+     * @return Result
      */
     public function create(User $user);
 
     /**
-     * @param User  $user
-     * @param array $params
+     * read
      *
-     * @return mixed
+     * @param User $user user
+     *
+     * @return Result
      */
     public function read(User $user);
 
     /**
-     * @param User  $user
-     * @param array $params
+     * update
      *
-     * @return mixed
+     * @param User $user user
+     *
+     * @return Result
      */
     public function update(User $user);
 
     /**
-     * @param User  $user
-     * @param array $params
+     * delete
      *
-     * @return mixed
+     * @param User $user user
+     *
+     * @return mixed Result
      */
     public function delete(User $user);
 } 

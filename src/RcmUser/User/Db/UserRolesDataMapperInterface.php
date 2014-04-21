@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * UserRolesDataMapperInterface.php
+ *
+ * UserRolesDataMapperInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Db;
@@ -17,53 +24,76 @@ use RcmUser\User\Entity\User;
 /**
  * Interface UserRolesDataMapperInterface
  *
- * @package RcmUser\User\Db
+ * UserRolesDataMapperInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
-interface UserRolesDataMapperInterface {
+interface UserRolesDataMapperInterface
+{
 
     /**
-     * @param User $user
-     * @param AclRole          $role
+     * add
      *
-     * @return mixed
+     * @param User    $user user
+     * @param AclRole $role role
+     *
+     * @return Result
      */
     public function add(User $user, AclRole $role);
 
     /**
-     * @param User $user
-     * @param AclRole          $role
+     * remove
      *
-     * @return mixed
+     * @param User    $user user
+     * @param AclRole $role role
+     *
+     * @return Result
      */
     public function remove(User $user, AclRole $role);
 
     /**
-     * @param User $user
-     * @param array         $roles
+     * create
      *
-     * @return mixed
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return Result
      */
     public function create(User $user, $roles = array());
 
     /**
-     * @param User $user
+     * read
      *
-     * @return mixed
+     * @param User $user user
+     *
+     * @return Result
      */
     public function read(User $user);
 
     /**
-     * @param User $user
-     * @param array         $roles
+     * update
      *
-     * @return mixed
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return Result
      */
     public function update(User $user, $roles = array());
 
     /**
-     * @param User $user
+     * delete
      *
-     * @return mixed
+     * @param User $user user
+     *
+     * @return Result
      */
     public function delete(User $user);
 } 

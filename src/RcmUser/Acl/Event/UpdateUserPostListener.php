@@ -1,29 +1,57 @@
 <?php
 /**
- * @category  RCM
+ * UpdateUserPostListener.php
+ *
+ * UpdateUserPostListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
-
 namespace RcmUser\Acl\Event;
 
 
 use RcmUser\User\Result;
 
+/**
+ * UpdateUserPostListener
+ *
+ * UpdateUserPostListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class UpdateUserPostListener extends AbstractUserDataServiceListener
 {
 
+    /**
+     * @var string
+     */
     protected $event = 'updateUser.post';
+    /**
+     * @var int
+     */
     protected $priority = 100;
 
     /**
-     * @param $e
+     * onEvent
      *
-     * @return Result|void
-     * @throws \Exception
+     * @param Event $e event
+     *
+     * @return mixed|Result|void
      */
     public function onEvent($e)
     {
@@ -40,10 +68,15 @@ class UpdateUserPostListener extends AbstractUserDataServiceListener
 
             if ($currentRoles === null) {
 
-                $user->setProperty($this->getUserPropertyKey(), $this->getDefaultAuthenticatedRoleIdentities());
+                $user->setProperty(
+                    $this->getUserPropertyKey(),
+                    $this->getDefaultAuthenticatedRoleIdentities()
+                );
             }
 
-            $aclResult = $this->getUserRolesDataMapper()->update($user, $user->getProperty($this->getUserPropertyKey(), array()));
+            $aclResult = $this->getUserRolesDataMapper()->update(
+                $user, $user->getProperty($this->getUserPropertyKey(), array())
+            );
 
             if (!$aclResult->isSuccess()) {
 

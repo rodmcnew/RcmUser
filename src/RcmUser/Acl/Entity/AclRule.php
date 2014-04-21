@@ -1,33 +1,81 @@
 <?php
 /**
- * @category  RCM
+ * AclRole.php
+ *
+ * AclRole
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Entity;
 
 
+/**
+ * AclRule
+ *
+ * AclRule entity
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class AclRule implements \JsonSerializable, \IteratorAggregate
 {
 
+    /**
+     * string
+     */
     const RULE_ALLOW = 'allow';
+    /**
+     * string
+     */
     const RULE_DENY = 'deny';
-    const RULE_IGNORE = 'ignore'; // this rule is a way of disabling a rule without deleting it
+    /**
+     * string
+     * this rule is a way of disabling a rule without deleting it
+     */
+    const RULE_IGNORE = 'ignore';
 
+    /**
+     * @var
+     */
     protected $rule;
 
+    /**
+     * @var
+     */
     protected $role;
 
+    /**
+     * @var
+     */
     protected $resource;
 
+    /**
+     * @var
+     */
     protected $privilege;
 
     /**
-     * @param mixed $privilege
+     * setPrivilege
+     *
+     * @param string $privilege privilege
+     *
+     * @return void
      */
     public function setPrivilege($privilege)
     {
@@ -35,7 +83,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return mixed
+     * getPrivilege
+     *
+     * @return string
      */
     public function getPrivilege()
     {
@@ -43,7 +93,11 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @param string $resource
+     * setResource
+     *
+     * @param string $resource resource
+     *
+     * @return void
      */
     public function setResource($resource)
     {
@@ -51,6 +105,8 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
+     * getResource
+     *
      * @return string
      */
     public function getResource()
@@ -59,7 +115,11 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @param AclRole $role
+     * setRole
+     *
+     * @param AclRole $role role
+     *
+     * @return void
      */
     public function setRole(AclRole $role)
     {
@@ -67,7 +127,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return AclRole
+     * getRole
+     *
+     * @return mixed
      */
     public function getRole()
     {
@@ -75,7 +137,11 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @param string $rule
+     * setRule
+     *
+     * @param string $rule rule
+     *
+     * @return void
      */
     public function setRule($rule)
     {
@@ -83,7 +149,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return string
+     * getRule
+     *
+     * @return mixed
      */
     public function getRule()
     {
@@ -91,7 +159,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return stdClass
+     * jsonSerialize
+     *
+     * @return \stdClass
      */
     public function jsonSerialize()
     {
@@ -105,7 +175,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * @return \ArrayIterator
+     * getIterator
+     *
+     * @return \ArrayIterator|\Traversable
      */
     public function getIterator()
     {

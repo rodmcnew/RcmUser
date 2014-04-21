@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * DbUserDataPreparer.php
+ *
+ * DbUserDataPreparer
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Data
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Data;
@@ -15,23 +22,50 @@ use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use Zend\Crypt\Password\PasswordInterface;
 
+/**
+ * Class DbUserDataPreparer
+ *
+ * DbUserDataPreparer
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Data
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class DbUserDataPreparer implements UserDataPreparerInterface
 {
 
+    /**
+     * @var UserDataMapperInterface $userDataMapper
+     */
     protected $userDataMapper;
 
+    /**
+     * @var PasswordInterface $encryptor
+     */
     protected $encryptor;
 
     /**
-     * @param mixed $userDataMapper
+     * setUserDataMapper
+     *
+     * @param UserDataMapperInterface $userDataMapper userDataMapper
+     *
+     * @return void
      */
-    public function setUserDataMapper($userDataMapper)
+    public function setUserDataMapper(UserDataMapperInterface $userDataMapper)
     {
         $this->userDataMapper = $userDataMapper;
     }
 
     /**
-     * @return mixed
+     * getUserDataMapper
+     *
+     * @return UserDataMapperInterface
      */
     public function getUserDataMapper()
     {
@@ -39,7 +73,11 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     }
 
     /**
-     * @param mixed $encryptor
+     * setEncryptor
+     *
+     * @param PasswordInterface $encryptor encryptor
+     *
+     * @return void
      */
     public function setEncryptor(PasswordInterface $encryptor)
     {
@@ -47,6 +85,8 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     }
 
     /**
+     * getEncryptor
+     *
      * @return PasswordInterface
      */
     public function getEncryptor()
@@ -54,27 +94,51 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         return $this->encryptor;
     }
 
+    /**
+     * prepareUserCreate
+     *
+     * @param User $newUser       newUser
+     * @param User $creatableUser creatableUser
+     *
+     * @return Result
+     */
     public function prepareUserCreate(User $newUser, User $creatableUser)
     {
 
         // make sure no duplicates
-        $dupUser = $this->getUserDataMapper()->fetchByUsername($newUser->getUsername());
+        $dupUser = $this->getUserDataMapper()->fetchByUsername(
+            $newUser->getUsername()
+        );
 
         if ($dupUser->isSuccess()) {
 
             // ERROR - user exists
-            return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User could not be prepared, duplicate username.'
+            );
         }
 
         $creatableUser->setId($this->buildId());
-        $creatableUser->setPassword($this->getEncryptor()->create($newUser->getPassword()));
-        if(empty($newUser->getState())){
+        $creatableUser->setPassword(
+            $this->getEncryptor()->create($newUser->getPassword())
+        );
+        if (empty($newUser->getState())) {
             $creatableUser->setState(User::STATE_DISABLED);
         }
 
         return new Result($creatableUser);
     }
 
+    /**
+     * prepareUserUpdate
+     *
+     * @param User $updatedUser   updatedUser
+     * @param User $updatableUser updatableUser
+     *
+     * @return Result
+     */
     public function prepareUserUpdate(User $updatedUser, User $updatableUser)
     {
 
@@ -91,7 +155,11 @@ class DbUserDataPreparer implements UserDataPreparerInterface
             if ($dupUser->isSuccess()) {
 
                 // ERROR - user exists
-                return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
+                return new Result(
+                    null,
+                    Result::CODE_FAIL,
+                    'User could not be prepared, duplicate username.'
+                );
             }
 
             $updatableUser->setUsername($updatedUsername);
@@ -113,7 +181,7 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         $updatedState = $updatedUser->getState();
         $existingState = $updatableUser->getState();
 
-        if($updatedState !== $existingState){
+        if ($updatedState !== $existingState) {
 
             $updatableUser->setState($updatedState);
         }
@@ -121,6 +189,14 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         return new Result($updatableUser);
     }
 
+    /**
+     * isValidCredential
+     *
+     * @param User $credentialUser credentialUser
+     * @param User $existingUser   existingUser
+     *
+     * @return bool
+     */
     public function isValidCredential(User $credentialUser, User $existingUser)
     {
 
@@ -134,6 +210,8 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     }
 
     /**
+     * buildId
+     *
      * @return string
      */
     public function buildId()
@@ -143,6 +221,8 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     }
 
     /**
+     * guidv4: UUID generation
+     *
      * @return string
      */
     public function guidv4()

@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * UserRole.php
+ *
+ * UserRole
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Entity;
@@ -14,26 +21,40 @@ namespace RcmUser\User\Entity;
 /**
  * Class UserRole
  *
- * @package RcmUser\User\Entity
+ * UserRole
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class UserRole implements UserRoleInterface
 {
 
     /**
-     * @var int
+     * @var mixed $id
      */
     protected $id;
     /**
-     * @var int
+     * @var mixed $userId
      */
     protected $userId;
     /**
-     * @var int
+     * @var mixed $roleId
      */
     protected $roleId;
 
     /**
-     * @param int $id
+     * setId
+     *
+     * @param mixed $id id
+     *
+     * @return void
      */
     public function setId($id)
     {
@@ -41,7 +62,9 @@ class UserRole implements UserRoleInterface
     }
 
     /**
-     * @return int
+     * getId
+     *
+     * @return mixed
      */
     public function getId()
     {
@@ -49,7 +72,11 @@ class UserRole implements UserRoleInterface
     }
 
     /**
-     * @param int $roleId
+     * setRoleId
+     *
+     * @param mixed $roleId roleId
+     *
+     * @return void
      */
     public function setRoleId($roleId)
     {
@@ -57,7 +84,9 @@ class UserRole implements UserRoleInterface
     }
 
     /**
-     * @return int
+     * getRoleId
+     *
+     * @return mixed
      */
     public function getRoleId()
     {
@@ -65,7 +94,11 @@ class UserRole implements UserRoleInterface
     }
 
     /**
-     * @param int $userId
+     * setUserId
+     *
+     * @param mixed $userId userId
+     *
+     * @return void
      */
     public function setUserId($userId)
     {
@@ -73,7 +106,9 @@ class UserRole implements UserRoleInterface
     }
 
     /**
-     * @return int
+     * getUserId
+     *
+     * @return mixed
      */
     public function getUserId()
     {
@@ -81,8 +116,11 @@ class UserRole implements UserRoleInterface
     }
 
     /**
-     * @param UserRole|array $data
+     * populate
      *
+     * @param array $data data
+     *
+     * @return void
      * @throws RcmUserException
      */
     public function populate($data = array())
@@ -111,6 +149,8 @@ class UserRole implements UserRoleInterface
             return;
         }
 
-        throw new RcmUserException('User role data could not be populated, date format not supported');
+        throw new RcmUserException(
+            'User role data could not be populated, date format not supported'
+        );
     }
 } 

@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * UserMeta.php
+ *
+ * UserMeta
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Entity;
@@ -14,33 +21,50 @@ namespace RcmUser\User\Entity;
 /**
  * Class UserMeta
  *
- * @package RcmUser\User\Entity
+ * UserMeta
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
-class UserMeta extends AbstractProperty {
+class UserMeta extends AbstractProperty
+{
 
     /**
-     * @var
+     * @var DataTime $createDate
      */
     protected $createDate;
     /**
-     * @var
+     * @var DataTime $updateDate
      */
     protected $updateDate;
     /**
-     * @var
+     * @var mixed $updatedById
      */
-    protected $updatedByUuid;
+    protected $updatedById;
 
     /**
-     * @param mixed $createDate
+     * setCreateDate
+     *
+     * @param DataTime $createDate createDate
+     *
+     * @return void
      */
-    public function setCreateDate($createDate)
+    public function setCreateDate(DataTime $createDate)
     {
         $this->createDate = $createDate;
     }
 
     /**
-     * @return mixed
+     * getCreateDate
+     *
+     * @return DataTime
      */
     public function getCreateDate()
     {
@@ -48,15 +72,21 @@ class UserMeta extends AbstractProperty {
     }
 
     /**
-     * @param mixed $updateDate
+     * setUpdateDate
+     *
+     * @param DataTime $updateDate updateDate
+     *
+     * @return void
      */
-    public function setUpdateDate($updateDate)
+    public function setUpdateDate(DataTime $updateDate)
     {
         $this->updateDate = $updateDate;
     }
 
     /**
-     * @return mixed
+     * getUpdateDate
+     *
+     * @return DataTime
      */
     public function getUpdateDate()
     {
@@ -64,21 +94,24 @@ class UserMeta extends AbstractProperty {
     }
 
     /**
-     * @param mixed $updatedByUuid
+     * setUpdatedById
+     *
+     * @param mixed $updatedById updatedById
+     *
+     * @return void
      */
-    public function setUpdatedByUuid($updatedByUuid)
+    public function setUpdatedById($updatedById)
     {
-        $this->updatedByUuid = $updatedByUuid;
+        $this->updatedById = $updatedById;
     }
 
     /**
+     * getUpdatedById
+     *
      * @return mixed
      */
-    public function getUpdatedByUuid()
+    public function getUpdatedById()
     {
-        return $this->updatedByUuid;
+        return $this->updatedById;
     }
-
-
-
 } 

@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * AclRoleDataMapperInterface.php
+ *
+ * AclRoleDataMapperInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Acl\Db;
@@ -16,62 +23,88 @@ use RcmUser\Acl\Entity\AclRole;
 /**
  * Interface AclRoleDataMapperInterface
  *
- * @package RcmUser\Acl\Db
+ * AclRoleDataMapperInterface Interface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Acl\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
-interface AclRoleDataMapperInterface {
-
+interface AclRoleDataMapperInterface
+{
 
     /**
-     * @return array
+     * fetchAll
+     *
+     * @return Result
      */
     public function fetchAll();
 
     /**
-     * @param int $id
+     * fetchById
      *
-     * @return AclRole
+     * @param int $id id
+     *
+     * @return Result
      */
     public function fetchById($id);
 
     /**
-     * @param $parentId
+     * fetchByParentId
      *
-     * @return array
+     * @param int $parentId parent id
+     *
+     * @return Result
      */
     public function fetchByParentId($parentId);
 
     /**
-     * @param $roleIdentity
+     * fetchByRoleIdentity
      *
-     * @return AclRole
+     * @param string $roleIdentity role identity
+     *
+     * @return Result
      */
     public function fetchByRoleIdentity($roleIdentity);
 
     /**
-     * @param AclRole $aclRole
+     * create
      *
-     * @return mixed
+     * @param AclRole $aclRole acl role
+     *
+     * @return Result
      */
     public function create(AclRole $aclRole);
 
     /**
-     * @param AclRole $aclRole
+     * read
      *
-     * @return mixed
+     * @param AclRole $aclRole acl role
+     *
+     * @return Result
      */
     public function read(AclRole $aclRole);
 
     /**
-     * @param AclRole $aclRole
+     * update
      *
-     * @return mixed
+     * @param AclRole $aclRole acl role
+     *
+     * @return Result
      */
     public function update(AclRole $aclRole);
 
     /**
-     * @param AclRole $aclRole
+     * delete
      *
-     * @return mixed
+     * @param AclRole $aclRole acl role
+     *
+     * @return Result
      */
     public function delete(AclRole $aclRole);
 } 

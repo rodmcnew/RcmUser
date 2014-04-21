@@ -1,11 +1,18 @@
 <?php
 /**
- * @category  RCM
+ * UserDataPreparerInterface.php
+ *
+ * UserDataPreparerInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Data
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Data;
@@ -13,20 +20,39 @@ namespace RcmUser\User\Data;
 
 use RcmUser\User\Entity\User;
 
+/**
+ * Interface UserDataPreparerInterface
+ *
+ * UserDataPreparerInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Data
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 interface UserDataPreparerInterface
 {
 
     /**
-     * @param User $newUser
-     * @param User $userToCreate
+     * prepareUserCreate
+     *
+     * @param User $newUser      newUser
+     * @param User $userToCreate userToCreate
      *
      * @return Result
      */
-    public function prepareUserCreate( User $newUser, User $userToCreate);
+    public function prepareUserCreate(User $newUser, User $userToCreate);
 
     /**
-     * @param User $updatedUser
-     * @param User $updatableUser
+     * prepareUserUpdate
+     *
+     * @param User $updatedUser   updatedUser
+     * @param User $updatableUser updatableUser
      *
      * @return Result
      */
