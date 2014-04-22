@@ -198,7 +198,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function isSessUser(User $user)
     {
-        $sessUser = $this->getSessUser();
+        $sessUser = $this->getIdentity();
 
         if (empty($sessUser)) {
 
@@ -302,9 +302,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      * @return mixed
      */
     public function getCurrentUserProperty(
-        $propertyNameSpace, $dflt = null, $refresh = false
+        $propertyNameSpace,
+        $dflt = null,
+        $refresh = false
     ) {
-        $user = $this->getSessUser();
+        $user = $this->getIdentity();
 
         if (empty($user)) {
 
