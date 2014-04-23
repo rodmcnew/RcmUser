@@ -176,51 +176,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * getSessUser
-     *
-     * @return User
-     */
-    public function getSessUser()
-    {
-        $user = $this->getIdentity();
-
-        return $user;
-    }
-
-    /**
-     * getLoggedInUser
-     *
-     * @return User
-     */
-    public function getLoggedInUser()
-    {
-        $user = $this->getIdentity();
-
-        return $user;
-    }
-    /**
-     * getNewUser
-     *
-     * @return User
-     */
-    public function getNewUser()
-    {
-        return $this->buildNewUser();
-    }
-
-    /**
-     * isRegistered
-     *
-     * @param User $user user
-     *
-     * @return bool
-     */
-    public function isRegistered(User $user)
-    {
-        return $this->userExists($user);
-    }
-
-    /**
      * userExists
      *
      * @param User $user user
@@ -243,7 +198,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function isSessUser(User $user)
     {
-        $sessUser = $this->getSessUser();
+        $sessUser = $this->getIdentity();
 
         if (empty($sessUser)) {
 
@@ -347,9 +302,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      * @return mixed
      */
     public function getCurrentUserProperty(
-        $propertyNameSpace, $dflt = null, $refresh = false
+        $propertyNameSpace,
+        $dflt = null,
+        $refresh = false
     ) {
-        $user = $this->getSessUser();
+        $user = $this->getIdentity();
 
         if (empty($user)) {
 
@@ -372,28 +329,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /* AUTHENTICATION HELPERS ********************************/
-
-    /**
-     * logIn
-     *
-     * @param User $user user
-     *
-     * @return Result
-     */
-    public function logIn(User $user)
-    {
-        return $this->authenticate($user);
-    }
-
-    /**
-     * logOut
-     *
-     * @return void
-     */
-    public function logOut()
-    {
-        return $this->clearIdentity();
-    }
 
     /**
      * validateCredentials
