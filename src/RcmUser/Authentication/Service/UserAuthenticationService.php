@@ -20,6 +20,7 @@ namespace RcmUser\Authentication\Service;
 
 use RcmUser\Event\EventProvider;
 use RcmUser\User\Entity\User;
+use Zend\Authentication\Result;
 
 /**
  * UserAuthenticationService
@@ -50,10 +51,19 @@ class UserAuthenticationService extends EventProvider
     public function validateCredentials(User $user)
     {
 
-        // @event pre - expects listener to return
-        // Zend\Authentication\Result with Result->identity == to user object ($user)
+        /* + VALIDATE - low level business logic to reduce issues */
+        if(!$user->isEnabled()){
+            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+        }
+        /* - VALIDATE */
+
+        /* @event validateCredentials
+         * - expects listener to return
+         * Zend\Authentication\Result with
+         * Result->identity == to user object ($user)
+         */
         $resultsPre = $this->getEventManager()->trigger(
-            __FUNCTION__ . '.pre', $this, array('user' => $user),
+            'validateCredentials', $this, array('user' => $user),
             function ($result) {
                 return $result->isValid();
             }
@@ -68,14 +78,22 @@ class UserAuthenticationService extends EventProvider
         }
 
         if ($resultsPre->stopped()) {
-            // Auth success
+
+            /*
+             * @event validateCredentialsSuccess
+             */
+            $this->getEventManager()->trigger(
+                'validateCredentialsSuccess', $this, array('result' => $result)
+            );
+
             return $result;
         }
 
-        // @event post
-        // - expects Listener to check for $result->isValid() for post actions
+        /*
+         * @event validateCredentialsFail
+         */
         $this->getEventManager()->trigger(
-            __FUNCTION__ . '.post', $this, array('result' => $result)
+            'validateCredentialsFail', $this, array('result' => $result)
         );
 
         return $result;
@@ -91,11 +109,19 @@ class UserAuthenticationService extends EventProvider
      */
     public function authenticate(User $user)
     {
+        /* + VALIDATE - low level business logic to reduce issues */
+        if(!$user->isEnabled()){
+            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+        }
+        /* - VALIDATE */
 
-        // @event pre - expects listener to return
-        // Zend\Authentication\Result with Result->identity == to user object ($user)
+        /* @event authenticate
+         * - expects listener to return
+         * Zend\Authentication\Result with
+         * Result->identity == to user object ($user)
+         */
         $resultsPre = $this->getEventManager()->trigger(
-            __FUNCTION__ . '.pre', $this, array('user' => $user),
+            'authenticate', $this, array('user' => $user),
             function ($result) {
                 return $result->isValid();
             }
@@ -110,14 +136,26 @@ class UserAuthenticationService extends EventProvider
         }
 
         if ($resultsPre->stopped()) {
-            // Auth success
+
+            /*
+             * @event authenticateSuccess
+             */
+            $this->getEventManager()->trigger(
+                'authenticateSuccess',
+                $this,
+                array('result' => $result)
+            );
+
             return $result;
         }
 
-        // @event post
-        // - expects Listener to check for $result->isValid() for post actions
+        /*
+         * @event authenticateFail
+         */
         $this->getEventManager()->trigger(
-            __FUNCTION__ . '.post', $this, array('result' => $result)
+            'authenticateFail',
+            $this,
+            array('result' => $result)
         );
 
         return $result;
@@ -130,8 +168,16 @@ class UserAuthenticationService extends EventProvider
      */
     public function clearIdentity()
     {
-        // @event
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array());
+        /*
+         * @event clearIdentity
+         */
+        $this->getEventManager()->trigger(
+            'clearIdentity',
+            $this,
+            array()
+        );
+
+        return new User();
     }
 
     /**
@@ -143,10 +189,22 @@ class UserAuthenticationService extends EventProvider
     {
         $currentUser = new User();
 
-        // @event
+        /*
+         * @event getIdentity
+         */
         $this->getEventManager()->trigger(
-            __FUNCTION__, $this, array('user' => $currentUser)
+            'getIdentity',
+            $this,
+            array('user' => $currentUser)
         );
+
+        /* + VALIDATE - low level business logic to reduce issues */
+        if(!$currentUser->isEnabled()){
+
+            $user = $this->clearIdentity();
+            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+        }
+        /* - VALIDATE */
 
         return $currentUser;
     }

@@ -62,37 +62,41 @@ interface UserDataMapperInterface
     /**
      * create
      *
-     * @param User $user user
+     * @param User $newUser
+     * @param User $creatableUser
      *
-     * @return Result
+     * @return mixed
      */
-    public function create(User $user);
+    public function create(User $newUser, User $creatableUser);
 
     /**
      * read
      *
-     * @param User $user user
+     * @param User $readUser
+     * @param User $readableUser
      *
-     * @return Result
+     * @return mixed
      */
-    public function read(User $user);
+    public function read(User $readUser, User $readableUser);
 
     /**
      * update
      *
-     * @param User $user         user - updated user object
-     * @param User $existingUser existingUser - user object before update
+     * @param User $updatedUser
+     * @param User $updatableUser
+     * @param User $existingUser
      *
      * @return mixed
      */
-    public function update(User $user, User $existingUser);
+    public function update(User $updatedUser, User $updatableUser, User $existingUser);
 
     /**
      * delete
      *
-     * @param User $user user
+     * @param User $deleteUser
+     * @param User $deletableUser
      *
-     * @return mixed Result
+     * @return mixed
      */
-    public function delete(User $user);
+    public function delete(User $deleteUser, User $deletableUser);
 } 

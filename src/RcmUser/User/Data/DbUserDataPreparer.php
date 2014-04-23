@@ -40,38 +40,10 @@ use Zend\Crypt\Password\PasswordInterface;
  */
 class DbUserDataPreparer implements UserDataPreparerInterface
 {
-
-    /**
-     * @var UserDataMapperInterface $userDataMapper
-     */
-    protected $userDataMapper;
-
     /**
      * @var PasswordInterface $encryptor
      */
     protected $encryptor;
-
-    /**
-     * setUserDataMapper
-     *
-     * @param UserDataMapperInterface $userDataMapper userDataMapper
-     *
-     * @return void
-     */
-    public function setUserDataMapper(UserDataMapperInterface $userDataMapper)
-    {
-        $this->userDataMapper = $userDataMapper;
-    }
-
-    /**
-     * getUserDataMapper
-     *
-     * @return UserDataMapperInterface
-     */
-    public function getUserDataMapper()
-    {
-        return $this->userDataMapper;
-    }
 
     /**
      * setEncryptor
@@ -106,26 +78,11 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     public function prepareUserCreate(User $newUser, User $creatableUser)
     {
 
-        // make sure no duplicates
-        $dupUser = $this->getUserDataMapper()->fetchByUsername(
-            $newUser->getUsername()
-        );
-
-        if ($dupUser->isSuccess()) {
-
-            // ERROR - user exists
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User could not be prepared, duplicate username.'
-            );
-        }
-
         $creatableUser->setId($this->buildId());
         $creatableUser->setPassword(
             $this->getEncryptor()->create($newUser->getPassword())
         );
-        if (empty($newUser->getState())) {
+        if (empty($creatableUser->getState())) {
             $creatableUser->setState(User::STATE_DISABLED);
         }
 
@@ -146,29 +103,6 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         User $updatableUser,
         User $existingUser
     ) {
-        // USERNAME CHECKS
-        $updatedUsername = $updatedUser->getUsername();
-        $existingUserName = $existingUser->getUsername();
-
-        // if username changed:
-        if ($existingUserName !== $updatedUsername) {
-
-            // make sure no duplicates
-            $dupUser = $this->getUserDataMapper()->fetchByUsername($updatedUsername);
-
-            if ($dupUser->isSuccess()) {
-
-                // ERROR - user exists
-                return new Result(
-                    null,
-                    Result::CODE_FAIL,
-                    'User could not be prepared, duplicate username.'
-                );
-            }
-
-            $updatableUser->setUsername($updatedUsername);
-        }
-
         // PASSWORD CHECKS
         $updatedPassword = $updatedUser->getPassword();
         $existingPassword = $existingUser->getPassword();

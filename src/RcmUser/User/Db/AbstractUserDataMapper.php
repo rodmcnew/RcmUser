@@ -18,6 +18,8 @@ namespace RcmUser\User\Db;
 
 
 use RcmUser\Db\DoctrineMapper;
+use RcmUser\User\Data\UserDataPreparerInterface;
+use RcmUser\User\Data\UserValidatorInterface;
 use RcmUser\User\Entity\DoctrineUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
@@ -40,14 +42,67 @@ use RcmUser\User\Result;
 class AbstractUserDataMapper implements UserDataMapperInterface
 {
     /**
+     * @var UserDataPreparerInterface
+     */
+    protected $userDataPreparer;
+
+    /**
+     * @var UserValidatorInterface
+     */
+    protected $userValidator;
+
+    /**
+     * setUserDataPreparer
+     *
+     * @param UserDataPreparerInterface $userDataPreparer userDataPreparer
+     *
+     * @return void
+     */
+    public function setUserDataPreparer(UserDataPreparerInterface $userDataPreparer)
+    {
+        $this->userDataPreparer = $userDataPreparer;
+    }
+
+    /**
+     * getUserDataPreparer
+     *
+     * @return UserDataPreparerInterface
+     */
+    public function getUserDataPreparer()
+    {
+        return $this->userDataPreparer;
+    }
+
+    /**
+     * setUserValidator
+     *
+     * @param UserValidatorInterface $userValidator userValidator
+     *
+     * @return void
+     */
+    public function setUserValidator(UserValidatorInterface $userValidator)
+    {
+        $this->userValidator = $userValidator;
+    }
+
+    /**
+     * getUserValidator
+     *
+     * @return UserValidatorInterface
+     */
+    public function getUserValidator()
+    {
+        return $this->userValidator;
+    }
+
+    /**
      * fetchById
      *
-     * @param mixed $id     id
-     * @param array $params params
+     * @param mixed $id
      *
      * @return Result
      */
-    public function fetchById($id, $params = array())
+    public function fetchById($id)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be found by id.');
     }
@@ -55,12 +110,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * fetchByUsername
      *
-     * @param string $username username
-     * @param array  $params   params
+     * @param string $username
      *
      * @return Result
      */
-    public function fetchByUsername($username, $params = array())
+    public function fetchByUsername($username)
     {
         return new Result(
             null,
@@ -72,12 +126,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * create
      *
-     * @param User  $user   user
-     * @param array $params params
+     * @param User $newUser
+     * @param User $creatableUser
      *
      * @return Result
      */
-    public function create(User $user, $params = array())
+    public function create(User $newUser, User $creatableUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be created.');
     }
@@ -85,12 +139,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * read
      *
-     * @param User  $user   user
-     * @param array $params params
+     * @param User $readUser
+     * @param User $readableUser
      *
      * @return Result
      */
-    public function read(User $user, $params = array())
+    public function read(User $readUser, User $readableUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be read.');
     }
@@ -98,13 +152,13 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * update
      *
-     * @param User  $user         user
-     * @param User  $existingUser existingUser
-     * @param array $params       params
+     * @param User $updatedUser
+     * @param User $updatableUser
+     * @param User $existingUser
      *
      * @return mixed|Result
      */
-    public function update(User $user, User $existingUser, $params = array())
+    public function update(User $updatedUser, User $updatableUser, User $existingUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be updated.');
     }
@@ -112,12 +166,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * delete
      *
-     * @param User  $user   user
-     * @param array $params params
+     * @param User $deleteUser
+     * @param User $deletableUser
      *
      * @return mixed|Result
      */
-    public function delete(User $user, $params = array())
+    public function delete(User $deleteUser, User $deletableUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be deleted.');
     }
@@ -139,23 +193,5 @@ class AbstractUserDataMapper implements UserDataMapperInterface
         }
 
         return true;
-    }
-
-    /**
-     * parseParamValue
-     *
-     * @param string $key    key
-     * @param array  $params params
-     *
-     * @return mixed
-     */
-    protected function parseParamValue($key, $params = array())
-    {
-        if (isset($params[$key])) {
-
-            return $params[$key];
-        }
-
-        return null;
     }
 } 
