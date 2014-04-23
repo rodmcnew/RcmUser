@@ -98,12 +98,13 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * update
      *
-     * @param User  $user   user
-     * @param array $params params
+     * @param User  $user         user
+     * @param User  $existingUser existingUser
+     * @param array $params       params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function update(User $user, $params = array())
+    public function update(User $user, User $existingUser, $params = array())
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be updated.');
     }
@@ -124,12 +125,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * canUpdate
      *
-     * @param User  $user   user
-     * @param array $params params
+     * @param User  $user user
      *
      * @return bool
      */
-    public function canUpdate(User $user, $params = array())
+    public function canUpdate(User $user)
     {
         $id = $user->getId();
 

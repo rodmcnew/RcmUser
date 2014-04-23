@@ -58,11 +58,15 @@ class AbstractUserDataPreparer implements UserDataPreparerInterface
      *
      * @param User $updatedUser   updatedUser
      * @param User $updatableUser updatableUser
+     * @param User $existingUser $existingUser
      *
      * @return Result
      */
-    public function prepareUserUpdate(User $updatedUser, User $updatableUser)
-    {
+    public function prepareUserUpdate(
+        User $updatedUser,
+        User $updatableUser,
+        User $existingUser
+    ) {
         return new Result($updatableUser);
     }
 } 

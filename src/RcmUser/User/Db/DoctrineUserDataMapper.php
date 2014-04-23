@@ -38,8 +38,9 @@ use RcmUser\User\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineUserDataMapper extends DoctrineMapper implements
-    UserDataMapperInterface
+class DoctrineUserDataMapper
+    extends DoctrineMapper
+    implements UserDataMapperInterface
 {
     /**
      * fetchById
@@ -179,12 +180,13 @@ class DoctrineUserDataMapper extends DoctrineMapper implements
     /**
      * update
      *
-     * @param User  $user   user
-     * @param array $params params
+     * @param User  $user         user
+     * @param User  $existingUser existingUser
+     * @param array $params       params
      *
-     * @return Result
+     * @return mixed|Result
      */
-    public function update(User $user, $params = array())
+    public function update(User $user, User $existingUser, $params = array())
     {
         $result = $this->getValidInstance($user);
 
@@ -230,7 +232,7 @@ class DoctrineUserDataMapper extends DoctrineMapper implements
 
         $user->setState(User::STATE_DISABLED);
 
-        $updateResult = $this->update($user);
+        $updateResult = $this->update($user, $user);
 
         if (!$updateResult->isSuccess()) {
 

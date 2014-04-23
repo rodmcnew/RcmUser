@@ -216,6 +216,16 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * isEnabled - Any state that is not disabled is considered enabled
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->getState() !== self::STATE_DISABLED;
+    }
+
+    /**
      * populate
      *
      * @param array $data data
@@ -269,7 +279,6 @@ class User implements UserInterface, \JsonSerializable
      */
     public function getIterator()
     {
-
         return new \ArrayIterator(get_object_vars($this));
     }
 
@@ -300,7 +309,6 @@ class User implements UserInterface, \JsonSerializable
      */
     public function merge(User $user)
     {
-
         if ($this->getId() === null) {
 
             $this->setId($user->getId());
@@ -328,7 +336,6 @@ class User implements UserInterface, \JsonSerializable
                 $this->setProperty($key, $property);
             }
         }
-
     }
 
 

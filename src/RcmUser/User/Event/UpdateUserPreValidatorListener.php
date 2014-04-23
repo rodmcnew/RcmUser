@@ -55,11 +55,13 @@ class UpdateUserPreValidatorListener extends AbstractUserValidatorListener
         //$target = $e->getTarget();
         $updatedUser = $e->getParam('updatedUser');
         $updatableUser = $e->getParam('updatableUser');
+        $existingUser =  $e->getParam('existingUser');
 
         // run validation rules
         return $this->getUserValidator()->validateUpdateUser(
             $updatedUser,
-            $updatableUser
+            $updatableUser,
+            $existingUser
         );
     }
 } 

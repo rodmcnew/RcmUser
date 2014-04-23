@@ -21,8 +21,8 @@ $user = $rcmUserService->buildNewUser();
 //$user->setPassword('');
 //$user->setState('enabled');
 
-//$user->setId('a399b850-0a00-42b8-ac8a-d6fa6f5fa641');
-//$user->setUsername('JamesJervysCd');
+//$user->setId('97e74d3d-5a29-4ee4-af43-443782d471c7');
+$user->setUsername('bjanish');
 //$user->setPassword('1234567890');
 
 echo "**REQUEST USER OBJECT:\n";
@@ -42,7 +42,7 @@ if(!$result->isSuccess()){
 var_dump($result->getUser());
 /* */
 
-/* READ *
+/* READ */
 $result = $rcmUserService->readUser($user);
 
 echo "\nREAD: After read:\n";

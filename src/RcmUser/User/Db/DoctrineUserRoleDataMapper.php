@@ -39,8 +39,9 @@ use RcmUser\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineUserRoleDataMapper extends DoctrineMapper implements
-    UserRolesDataMapperInterface
+class DoctrineUserRoleDataMapper
+    extends DoctrineMapper
+    implements UserRolesDataMapperInterface
 {
     /**
      * @var AclRoleDataMapperInterface $aclRoleDataMapper

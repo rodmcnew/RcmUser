@@ -36,17 +36,6 @@ use RcmUser\User\Entity\User;
  */
 interface UserValidatorInterface
 {
-
-    /**
-     * validateUpdateUser
-     *
-     * @param User $updatedUser   updatedUser
-     * @param User $updatableUser updatableUser
-     *
-     * @return Result
-     */
-    public function validateUpdateUser(User $updatedUser, User $updatableUser);
-
     /**
      * validateCreateUser
      *
@@ -56,5 +45,16 @@ interface UserValidatorInterface
      * @return Result
      */
     public function validateCreateUser(User $newUser, User $creatableUser);
+
+    /**
+     * validateUpdateUser
+     *
+     * @param User $updatedUser   updatedUser
+     * @param User $updatableUser updatableUser
+     * @param User $existingUser  existingUser
+     *
+     * @return Result
+     */
+    public function validateUpdateUser(User $updatedUser, User $updatableUser, User $existingUser);
 
 } 

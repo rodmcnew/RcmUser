@@ -28,7 +28,7 @@ return array(
              * This is the default user state that will
              * be set on create/update if none is set.
              */
-            'DefaultUserState' => 'disabled',
+            'DefaultUserState' => 'enabled',
 
             /*
              * Encryptor.passwordCost

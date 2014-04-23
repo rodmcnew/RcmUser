@@ -18,6 +18,7 @@
 namespace RcmUser\User\Data;
 
 
+use RcmUser\User\Db\UserDataMapperInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use Zend\Crypt\Password\PasswordInterface;
@@ -136,15 +137,18 @@ class DbUserDataPreparer implements UserDataPreparerInterface
      *
      * @param User $updatedUser   updatedUser
      * @param User $updatableUser updatableUser
+     * @param User $existingUser  existingUser
      *
      * @return Result
      */
-    public function prepareUserUpdate(User $updatedUser, User $updatableUser)
-    {
-
+    public function prepareUserUpdate(
+        User $updatedUser,
+        User $updatableUser,
+        User $existingUser
+    ) {
         // USERNAME CHECKS
         $updatedUsername = $updatedUser->getUsername();
-        $existingUserName = $updatableUser->getUsername();
+        $existingUserName = $existingUser->getUsername();
 
         // if username changed:
         if ($existingUserName !== $updatedUsername) {
@@ -167,7 +171,7 @@ class DbUserDataPreparer implements UserDataPreparerInterface
 
         // PASSWORD CHECKS
         $updatedPassword = $updatedUser->getPassword();
-        $existingPassword = $updatableUser->getPassword();
+        $existingPassword = $existingUser->getPassword();
         //$hashedPassword = $existingPassword;
 
         // if password changed
@@ -179,7 +183,7 @@ class DbUserDataPreparer implements UserDataPreparerInterface
 
         // STATE
         $updatedState = $updatedUser->getState();
-        $existingState = $updatableUser->getState();
+        $existingState = $existingUser->getState();
 
         if ($updatedState !== $existingState) {
 

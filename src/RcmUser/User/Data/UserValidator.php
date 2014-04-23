@@ -142,27 +142,25 @@ class UserValidator implements UserValidatorInterface
      *
      * @param User $updatedUser   updatedUser
      * @param User $updatableUser updatableUser
+     * @param User $existingUser  existingUser
      *
      * @return Result
      */
-    public function validateUpdateUser(User $updatedUser, User $updatableUser)
+    public function validateUpdateUser(User $updatedUser, User $updatableUser, User $existingUser)
     {
         $inputFilter = $this->getUserInputFilter();
         $factory = $this->getUserInputFilterFactory();
 
         $inputs = $this->getUserInputFilterConfig();
 
-        // only check values if they are not null
-        // (null values are ignored so we may use
-        // the same object for validations and data values);
-        // null basically means unchanged or no updated value in this case,
-        if ($updatedUser->getUsername() !== null && isset($inputs['username'])) {
+        if ($updatedUser->getUsername() !== $existingUser->getUsername() && isset($inputs['username'])) {
 
             $inputFilter->add(
                 $factory->createInput($inputs['username']), 'username'
             );
         }
-        if ($updatedUser->getPassword() !== null && isset($inputs['password'])) {
+
+        if ($updatedUser->getPassword() !== $existingUser->getPassword() && isset($inputs['password'])) {
 
             $inputFilter->add(
                 $factory->createInput($inputs['password']), 'password'
@@ -170,7 +168,6 @@ class UserValidator implements UserValidatorInterface
         }
 
         return $this->validateUser($updatableUser, $inputFilter);
-
     }
 
     /**

@@ -231,21 +231,28 @@ class UserDataService extends EventProvider
             return $existingUserResult;
         }
 
-        $updatableUser = $existingUserResult->getUser();
+        $existingUser = $existingUserResult->getUser();
 
-        $updatedUser->merge($updatableUser);
+        $updatedUser->merge($existingUser);
 
-        $updatableUser->merge($updatedUser);
+        $updatableUser = new User();
+
+        $updatableUser->populate($updatedUser);
 
         if (empty($updatableUser->getState())) {
             $updatableUser->setState($this->getDefaultUserState());
         }
 
+        var_dump(__METHOD__,$updatedUser, $updatableUser);
         // @event pre  - expects listener to return RcmUser\User\Result
         $resultsPre = $this->getEventManager()->trigger(
             __FUNCTION__ . '.pre',
             $this,
-            array('updatedUser' => $updatedUser, 'updatableUser' => $updatableUser),
+            array(
+                'updatedUser' => $updatedUser,
+                'updatableUser' => $updatableUser,
+                'existingUser' => $existingUser
+            ),
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -264,7 +271,8 @@ class UserDataService extends EventProvider
         }
 
         // set properties
-        $result = $this->getUserDataMapper()->update($updatableUser, $params);
+        $result = $this->getUserDataMapper()
+            ->update($updatableUser, $existingUser, $params);
 
         // @event post
         // - expects Listener to check for $result->isSuccess() for post actions

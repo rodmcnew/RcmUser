@@ -80,11 +80,12 @@ interface UserDataMapperInterface
     /**
      * update
      *
-     * @param User $user user
+     * @param User $user         user - updated user object
+     * @param User $existingUser existingUser - user object before update
      *
-     * @return Result
+     * @return mixed
      */
-    public function update(User $user);
+    public function update(User $user, User $existingUser);
 
     /**
      * delete
