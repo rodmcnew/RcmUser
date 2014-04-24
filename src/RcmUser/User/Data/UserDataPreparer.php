@@ -43,28 +43,29 @@ class UserDataPreparer implements UserDataPreparerInterface
     /**
      * prepareUserCreate
      *
-     * @param User $newUser       newUser
-     * @param User $creatableUser creatableUser
+     * @param User $requestUser       requestUser
+     * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function prepareUserCreate(User $newUser, User $creatableUser)
+    public function prepareUserCreate(User $requestUser, User $responseUser)
     {
-        return new Result($creatableUser);
+        return new Result($responseUser);
     }
 
     /**
      * prepareUserUpdate
      *
-     * @param User $updatedUser   updatedUser
-     * @param User $updatableUser updatableUser
+     * @param User $requestUser   requestUser
+     * @param User $responseUser responseUser
+     * @param User $existingUser  existingUser
      *
      * @return Result
      */
-    public function prepareUserUpdate(User $updatedUser, User $updatableUser)
+    public function prepareUserUpdate(User $requestUser, User $responseUser, User $existingUser)
     {
-        $updatableUser->populate($updatedUser);
+        $responseUser->populate($requestUser);
 
-        return new Result($updatableUser);
+        return new Result($responseUser);
     }
 } 

@@ -1,13 +1,13 @@
 <?php
 /**
- * DbUserDataPreparer.php
+ * UserAuthenticationServiceListeners.php
  *
- * DbUserDataPreparer
+ * UserAuthenticationServiceListeners
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\User\Service\Factory
+ * @package   RcmUser\Authentication\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
@@ -15,27 +15,27 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUser\User\Service\Factory;
+namespace RcmUser\Authentication\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Class DbUserDataPreparer
+ * UserAuthenticationServiceListeners
  *
- * DbUserDataPreparer
+ * UserAuthenticationServiceListeners
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\User\Service\Factory
+ * @package   RcmUser\Authentication\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DbUserDataPreparer implements FactoryInterface
+class UserAuthenticationServiceListeners implements FactoryInterface
 {
 
     /**
@@ -43,14 +43,14 @@ class DbUserDataPreparer implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return DbUserDataPreparer
+     * @return array|mixed
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $auth = $serviceLocator->get('RcmUser\Authentication\AuthenticationService');
 
-        $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
-        $service = new \RcmUser\User\Data\DbUserDataPreparer();
-        $service->setEncryptor($encrypt);
+        $service = new \RcmUser\Authentication\Event\UserAuthenticationServiceListeners();
+        $service->setAuthService($auth);
 
         return $service;
     }

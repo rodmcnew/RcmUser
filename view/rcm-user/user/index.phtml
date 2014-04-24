@@ -14,34 +14,25 @@ $acl = new Acl();
 //$rcmUserService = new RcmUser\Service\$rcmUserService();
 //var_dump($rcmUserService->getUserInputFilter()); die;
 $startTime = time();
-$user = $rcmUserService->buildNewUser();
+//$user = $rcmUserService->buildNewUser();
+$user = new RcmUser\User\Entity\User();
 
-//$user->setId('7924890001');
+//$user->setId('7680114101');
 //$user->setUsername('7680114101');
 //$user->setPassword('');
-//$user->setState('enabled');
+//$user->setState('disabled');
 
-//$user->setId('a399b850-0a00-42b8-ac8a-d6fa6f5fa641');
-//$user->setUsername('JamesJervysCd');
-//$user->setPassword('1234567890');
+//
+//$user->setId('d0bbdc68-5f02-4b4a-bca2-c6a092aebd8f');
+//$user->setUsername('Berry1');
+//$user->setPassword('123456789');
+//$user->setProperty('RcmUser\Acl\UserRoles', array('admin'));
+//$user->setState('enabled');
 
 echo "**REQUEST USER OBJECT:\n";
 var_dump($user);
 
 /* CRUD ***********************************/
-/* CREATE *
-$result = $rcmUserService->createUser($user);
-
-echo "\n**After create:\n";
-if(!$result->isSuccess()){
-
-    echo "ERROR: ";
-    var_dump($result->getMessages());
-}
-
-var_dump($result->getUser());
-/* */
-
 /* READ *
 $result = $rcmUserService->readUser($user);
 
@@ -49,6 +40,19 @@ echo "\nREAD: After read:\n";
 if(!$result->isSuccess()){
 
     echo "\nERROR: ";
+    var_dump($result->getMessages());
+}
+
+var_dump($result->getUser());
+/* */
+
+/* CREATE *
+$result = $rcmUserService->createUser($user);
+
+echo "\n**After create:\n";
+if(!$result->isSuccess()){
+
+    echo "ERROR: ";
     var_dump($result->getMessages());
 }
 
@@ -72,6 +76,19 @@ var_dump($result->getUser());
 $result = $rcmUserService->deleteUser($user);
 
 echo "\n**After delete:\n";
+if(!$result->isSuccess()){
+
+    echo "\nERROR: ";
+    var_dump($result->getMessages());
+}
+
+var_dump($result->getUser());
+/* */
+
+/* READ *
+$result = $rcmUserService->readUser($user);
+
+echo "\nREAD: After read:\n";
 if(!$result->isSuccess()){
 
     echo "\nERROR: ";

@@ -39,8 +39,9 @@ use RcmUser\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineUserRoleDataMapper extends DoctrineMapper implements
-    UserRolesDataMapperInterface
+class DoctrineUserRoleDataMapper
+    extends DoctrineMapper
+    implements UserRolesDataMapperInterface
 {
     /**
      * @var AclRoleDataMapperInterface $aclRoleDataMapper
@@ -83,7 +84,9 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
     public function add(User $user, AclRole $role)
     {
         // @todo - write me
-        throw new \Exception('Add User Roles not yet available.');
+        //throw new \Exception('Add User Roles not yet available.');
+        var_dump("\n***Add User Role not yet available. Add not done***\n");
+        return new Result(null, Result::CODE_FAIL, 'Add not yet available.');
         $user = $this->getEntityManager()->find(
             $this->getEntityClass(), $user->getId()
         );
@@ -115,7 +118,7 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
     {
         // @todo - write me
         throw new \Exception('Remove User Roles not yet available.');
-
+        var_dump("\n***Remove User Role not yet available. Remove not done***\n");
         return new Result(null, Result::CODE_FAIL, 'Remove not yet available.');
     }
 
@@ -127,11 +130,14 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
      *
      * @return Result
      */
-    public function create(User $user, $roles = array())
+    public function create(User $user, $userRoles = array())
     {
 
         // @todo - write me
         //throw new \Exception('Create User Roles not yet available.');
+        var_dump("\n***Create User Roles not yet available. Create not done***\n");
+        return new Result(null, Result::CODE_FAIL, 'Create not yet available.');
+
         $userId = $user->getId();
 
         if (empty($userId)) {
@@ -141,6 +147,29 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
                 Result::CODE_FAIL,
                 'User id required to get user roles.'
             );
+        }
+
+        foreach ($userRoles as $roleIdentity) {
+
+            // @todo data checks here
+
+            $aclRoleResult = $aclRoleDataMapper->fetchByRoleIdentity($roleIdentity);
+
+            if (!$aclRoleResult->isSuccess()) {
+
+                //@todo - error
+                continue;
+            }
+
+            $aclRole = $aclRoleResult->getData();
+
+            if (empty($aclRole)) {
+
+                // @todo handle this by either removing role or throwing error
+            } else {
+
+                $userAclRoles[] = $aclRole->getRoleIdentity();
+            }
         }
 
         // check for existing roles
@@ -158,7 +187,6 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
      */
     public function read(User $user)
     {
-
         $userId = $user->getId();
 
         if (empty($userId)) {
@@ -175,12 +203,8 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
             $this->getEntityClass()
         )->findBy(array('userId' => $userId));
 
-        // This is so we get a fresh data every time
-        // $this->getEntityManager()->refresh($userRoles);
-
         if (empty($userRoles)) {
 
-            // @todo - set default roles and save?
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -200,7 +224,7 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
 
             if (!$aclRoleResult->isSuccess()) {
 
-                //@todo - error
+                //@todo - error OR delete
                 continue;
             }
 
@@ -231,6 +255,7 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
     {
         // @todo - write me
         //throw new \Exception('Update User Roles not yet available.');
+        var_dump("\n***Update User Roles not yet available. Update not done***\n");
         return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
     }
 
@@ -245,6 +270,7 @@ class DoctrineUserRoleDataMapper extends DoctrineMapper implements
     {
         // @todo - write me
         //throw new \Exception('Delete User Roles not yet available.');
+        var_dump("\n***Delete User Roles not yet available. Delete not done***\n");
         return new Result(null, Result::CODE_FAIL, 'Delete not yet available.');
     }
 

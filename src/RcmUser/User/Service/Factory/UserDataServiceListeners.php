@@ -1,8 +1,8 @@
 <?php
 /**
- * DbUserDataPreparer.php
+ * UserDataServiceListeners.php
  *
- * DbUserDataPreparer
+ * UserDataServiceListeners
  *
  * PHP version 5
  *
@@ -21,9 +21,9 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Class DbUserDataPreparer
+ * Class UserDataServiceListeners
  *
- * DbUserDataPreparer
+ * UserDataServiceListeners
  *
  * PHP version 5
  *
@@ -35,7 +35,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DbUserDataPreparer implements FactoryInterface
+class UserDataServiceListeners implements FactoryInterface
 {
 
     /**
@@ -43,14 +43,15 @@ class DbUserDataPreparer implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return DbUserDataPreparer
+     * @return Config
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $dm = $serviceLocator->get('RcmUser\User\UserDataMapper');
 
-        $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
-        $service = new \RcmUser\User\Data\DbUserDataPreparer();
-        $service->setEncryptor($encrypt);
+        $service = new \RcmUser\User\Event\UserDataServiceListeners();
+
+        $service->setUserDataMapper($dm);
 
         return $service;
     }

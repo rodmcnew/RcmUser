@@ -17,6 +17,8 @@
 
 namespace RcmUser\User;
 
+use RcmUser\User\Entity\User;
+
 
 /**
  * Class Result
@@ -169,7 +171,7 @@ class Result
     /**
      * setUser
      *
-     * @param User $user user
+     * @param User|null $user user
      *
      * @return void
      */

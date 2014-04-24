@@ -28,7 +28,7 @@ return array(
              * This is the default user state that will
              * be set on create/update if none is set.
              */
-            'DefaultUserState' => 'disabled',
+            'DefaultUserState' => 'enabled',
 
             /*
              * Encryptor.passwordCost
@@ -197,23 +197,13 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\EventListeners
+             *  RcmUser\User\UserDataMapper
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
              */
             'RcmUser\User\Data\UserValidator' =>
                 'RcmUser\User\Service\Factory\UserValidator',
-            /*
-             * ValidatorEventListeners
-             * Required for (User validation and input filtering):
-             *  RcmUser\User\Data\UserValidator
-             *
-             * Creates event listeners that use the UserValidator
-             * to do validation checks on User create and update.
-             */
-            'RcmUser\User\ValidatorEventListeners' =>
-                'RcmUser\User\Service\Factory\ValidatorEventListeners',
 
             /* - Data Prep - */
             /*
@@ -230,7 +220,7 @@ return array(
             /*
              * UserDataPreparer (requires Encryptor)
              * Required for:
-             *  RcmUser\User\EventListeners
+             *  RcmUser\User\UserDataMapper
              *
              * Used by default to prepare data for DB storage.
              * By default, encrypts passwords and creates id (UUID)
@@ -238,15 +228,19 @@ return array(
              */
             'RcmUser\User\Data\UserDataPreparer' =>
                 'RcmUser\User\Service\Factory\DbUserDataPreparer',
+
             /*
-             * DataPrepEventListeners
-             * Required for (User preparing data for save):
+             * UserDataServiceListeners
+             * Required
+             *  to validate, prepare and save (CRUD) User:
              *
-             * Creates event listeners that use the UserDataPreparer
-             * to prepare data on User create and update.
+             * Requires: RcmUser\User\UserDataMapper
+             *
+             * Creates event listeners that use the UserValidator
+             * to do validation checks on User create and update.
              */
-            'RcmUser\User\DataPrepEventListeners' =>
-                'RcmUser\User\Service\Factory\DataPrepEventListeners',
+            'RcmUser\User\UserDataServiceListeners' =>
+                'RcmUser\User\Service\Factory\UserDataServiceListeners',
 
             /* ************************************** */
             /* AUTH ********************************* */
@@ -263,7 +257,7 @@ return array(
 
             /* ---------------------------- */
             /*
-             * UserAdapter
+             * UserAdapter (requires Encryptor)
              * Required for (Auth):
              *  RcmUser\Authentication\Service\AuthenticationService
              *
@@ -304,8 +298,8 @@ return array(
              * This may be configured to use custom event listeners
              * or disabled if not required
              */
-            'RcmUser\Authentication\EventListeners' =>
-                'RcmUser\Authentication\Service\Factory\EventListeners',
+            'RcmUser\Authentication\UserAuthenticationServiceListeners' =>
+                'RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners',
 
             /* ************************************** */
             /* ACL ********************************** */
@@ -353,11 +347,11 @@ return array(
                 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
 
             /*
-             * EventListeners
+             * UserDataServiceListeners
              * Required for (User Property populating):
              */
-            'RcmUser\Acl\EventListeners' =>
-                'RcmUser\Acl\Service\Factory\EventListeners',
+            'RcmUser\Acl\UserDataServiceListeners' =>
+                'RcmUser\Acl\Service\Factory\UserDataServiceListeners',
 
             /*
              * BJY-Authorize providers
@@ -416,7 +410,7 @@ return array(
 
             /*
              * Provides the Access Resources for this Module to ACL
-             * Require *
+             * Required *
              */
             'RcmUser\Provider\RcmUserAclResourceProvider' =>
                 'RcmUser\Service\Factory\RcmUserAclResourceProvider',

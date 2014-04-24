@@ -216,41 +216,61 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * isEnabled - Any state that is not disabled is considered enabled
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->getState() !== self::STATE_DISABLED;
+    }
+
+    /**
      * populate
      *
-     * @param array $data data
+     * @param User|array $data    data as User or array
+     * @param array      $exclude list of object properties to ignore (not populate)
      *
-     * @return void
+     * @return mixed|void
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function populate($data = array())
+    public function populate($data, $exclude = array())
     {
         if (($data instanceof UserInterface)) {
 
-            $this->setId($data->getId());
-            $this->setUsername($data->getUsername());
-            $this->setPassword($data->getPassword());
-            $this->setState($data->getState());
-            $this->setProperties($data->getProperties());
-
+            if(!in_array('id', $exclude)){
+                $this->setId($data->getId());
+            }
+            if(!in_array('username', $exclude)){
+                $this->setUsername($data->getUsername());
+            }
+            if(!in_array('password', $exclude)){
+                $this->setPassword($data->getPassword());
+            }
+            if(!in_array('state', $exclude)){
+                $this->setState($data->getState());
+            }
+            if(!in_array('properties', $exclude)){
+                $this->setProperties($data->getProperties());
+            }
             return;
         }
 
         if (is_array($data)) {
 
-            if (isset($data['id'])) {
+            if (isset($data['id']) && !in_array('id', $exclude)) {
                 $this->setId($data['id']);
             }
-            if (isset($data['username'])) {
+            if (isset($data['username']) && !in_array('username', $exclude)) {
                 $this->setUsername($data['username']);
             }
-            if (isset($data['password'])) {
+            if (isset($data['password']) && !in_array('password', $exclude)) {
                 $this->setPassword($data['password']);
             }
-            if (isset($data['state'])) {
+            if (isset($data['state']) && !in_array('state', $exclude)) {
                 $this->setProperties($data['state']);
             }
-            if (isset($data['properties'])) {
+            if (isset($data['properties']) && !in_array('properties', $exclude)) {
                 $this->setProperties($data['properties']);
             }
 
@@ -269,7 +289,6 @@ class User implements UserInterface, \JsonSerializable
      */
     public function getIterator()
     {
-
         return new \ArrayIterator(get_object_vars($this));
     }
 
@@ -300,7 +319,6 @@ class User implements UserInterface, \JsonSerializable
      */
     public function merge(User $user)
     {
-
         if ($this->getId() === null) {
 
             $this->setId($user->getId());
@@ -328,7 +346,6 @@ class User implements UserInterface, \JsonSerializable
                 $this->setProperty($key, $property);
             }
         }
-
     }
 
 

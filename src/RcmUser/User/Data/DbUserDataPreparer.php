@@ -18,6 +18,7 @@
 namespace RcmUser\User\Data;
 
 
+use RcmUser\User\Db\UserDataMapperInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use Zend\Crypt\Password\PasswordInterface;
@@ -39,38 +40,10 @@ use Zend\Crypt\Password\PasswordInterface;
  */
 class DbUserDataPreparer implements UserDataPreparerInterface
 {
-
-    /**
-     * @var UserDataMapperInterface $userDataMapper
-     */
-    protected $userDataMapper;
-
     /**
      * @var PasswordInterface $encryptor
      */
     protected $encryptor;
-
-    /**
-     * setUserDataMapper
-     *
-     * @param UserDataMapperInterface $userDataMapper userDataMapper
-     *
-     * @return void
-     */
-    public function setUserDataMapper(UserDataMapperInterface $userDataMapper)
-    {
-        $this->userDataMapper = $userDataMapper;
-    }
-
-    /**
-     * getUserDataMapper
-     *
-     * @return UserDataMapperInterface
-     */
-    public function getUserDataMapper()
-    {
-        return $this->userDataMapper;
-    }
 
     /**
      * setEncryptor
@@ -97,96 +70,61 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     /**
      * prepareUserCreate
      *
-     * @param User $newUser       newUser
-     * @param User $creatableUser creatableUser
+     * @param User $requestUser       requestUser
+     * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function prepareUserCreate(User $newUser, User $creatableUser)
+    public function prepareUserCreate(User $requestUser, User $responseUser)
     {
 
-        // make sure no duplicates
-        $dupUser = $this->getUserDataMapper()->fetchByUsername(
-            $newUser->getUsername()
+        $responseUser->setId($this->buildId());
+        $responseUser->setPassword(
+            $this->getEncryptor()->create($requestUser->getPassword())
         );
-
-        if ($dupUser->isSuccess()) {
-
-            // ERROR - user exists
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User could not be prepared, duplicate username.'
-            );
+        if (empty($responseUser->getState())) {
+            $responseUser->setState(User::STATE_DISABLED);
         }
 
-        $creatableUser->setId($this->buildId());
-        $creatableUser->setPassword(
-            $this->getEncryptor()->create($newUser->getPassword())
-        );
-        if (empty($newUser->getState())) {
-            $creatableUser->setState(User::STATE_DISABLED);
-        }
-
-        return new Result($creatableUser);
+        return new Result($responseUser);
     }
 
     /**
      * prepareUserUpdate
      *
-     * @param User $updatedUser   updatedUser
-     * @param User $updatableUser updatableUser
+     * @param User $requestUser   requestUser
+     * @param User $responseUser responseUser
+     * @param User $existingUser  existingUser
      *
      * @return Result
      */
-    public function prepareUserUpdate(User $updatedUser, User $updatableUser)
-    {
-
-        // USERNAME CHECKS
-        $updatedUsername = $updatedUser->getUsername();
-        $existingUserName = $updatableUser->getUsername();
-
-        // if username changed:
-        if ($existingUserName !== $updatedUsername) {
-
-            // make sure no duplicates
-            $dupUser = $this->getUserDataMapper()->fetchByUsername($updatedUsername);
-
-            if ($dupUser->isSuccess()) {
-
-                // ERROR - user exists
-                return new Result(
-                    null,
-                    Result::CODE_FAIL,
-                    'User could not be prepared, duplicate username.'
-                );
-            }
-
-            $updatableUser->setUsername($updatedUsername);
-        }
-
+    public function prepareUserUpdate(
+        User $requestUser,
+        User $responseUser,
+        User $existingUser
+    ) {
         // PASSWORD CHECKS
-        $updatedPassword = $updatedUser->getPassword();
-        $existingPassword = $updatableUser->getPassword();
+        $requestPassword = $requestUser->getPassword();
+        $existingPassword = $existingUser->getPassword();
         //$hashedPassword = $existingPassword;
 
         // if password changed
-        if ($existingPassword !== $updatedPassword) {
+        if ($existingPassword !== $requestPassword) {
 
-            $hashedPassword = $this->getEncryptor()->create($updatedPassword);
-            $updatableUser->setPassword($hashedPassword);
+            $hashedPassword = $this->getEncryptor()->create($requestPassword);
+            $responseUser->setPassword($hashedPassword);
         }
 
         // STATE
-        $updatedState = $updatedUser->getState();
-        $existingState = $updatableUser->getState();
+        $requestState = $requestUser->getState();
+        $existingState = $existingUser->getState();
 
-        if ($updatedState !== $existingState) {
+        if ($requestState !== $existingState) {
 
-            $updatableUser->setState($updatedState);
+            $responseUser->setState($requestState);
         }
 
-        return new Result($updatableUser);
+        return new Result($responseUser);
     }
 
     /**

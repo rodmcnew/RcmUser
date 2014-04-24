@@ -38,7 +38,6 @@ use Zend\EventManager\ListenerAggregateInterface;
  */
 class AbstractListener implements ListenerAggregateInterface
 {
-
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
@@ -46,7 +45,6 @@ class AbstractListener implements ListenerAggregateInterface
     protected $id = 'RcmUser\Service\RcmUserService';
     protected $event = 'someEvent';
     protected $priority = 100;
-
 
     /**
      * attach

@@ -46,52 +46,74 @@ interface UserDataMapperInterface
      *
      * @param mixed $id id
      *
-     * @return Result
+     * @return \RcmUser\User\Result
      */
-    public function fetchById($id);
+    public function fetchById(
+        $id
+    );
 
     /**
      * fetchByUsername
      *
      * @param string $username username
      *
-     * @return Result
+     * @return \RcmUser\User\Result
      */
-    public function fetchByUsername($username);
+    public function fetchByUsername(
+        $username
+    );
 
     /**
      * create
      *
-     * @param User $user user
+     * @param User $requestUser  User new data (AKA request)
+     * @param User $responseUser User new data prepared (VIA Event Listeners)
      *
-     * @return Result
+     * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
-    public function create(User $user);
+    public function create(
+        User $requestUser,
+        User $responseUser
+    );
 
     /**
      * read
      *
-     * @param User $user user
+     * @param User $requestUser  User read data (AKA request)
+     * @param User $responseUser User read data prepared (VIA Event Listeners)
      *
-     * @return Result
+     * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
-    public function read(User $user);
+    public function read(
+        User $requestUser,
+        User $responseUser
+    );
 
     /**
      * update
      *
-     * @param User $user user
+     * @param User $requestUser  User update data (AKA request)
+     * @param User $responseUser User update data prepared (VIA Event Listeners)
+     * @param User $existingUser User that currently exists
      *
-     * @return Result
+     * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
-    public function update(User $user);
+    public function update(
+        User $requestUser,
+        User $responseUser,
+        User $existingUser
+    );
 
     /**
      * delete
      *
-     * @param User $user user
+     * @param User $requestUser  User delete data (AKA request)
+     * @param User $responseUser User delete data prepared (VIA Event Listeners)
      *
-     * @return mixed Result
+     * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
-    public function delete(User $user);
+    public function delete(
+        User $requestUser,
+        User $responseUser
+    );
 } 

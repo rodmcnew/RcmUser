@@ -122,7 +122,6 @@ class AclResourceService
      */
     public function getResources()
     {
-        //var_dump($this->resources);
         if (!$this->isCached) {
             foreach ($this->getResourceProviders() as $providerName => $provider) {
 
