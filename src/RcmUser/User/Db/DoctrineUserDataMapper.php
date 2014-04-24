@@ -19,7 +19,6 @@ namespace RcmUser\User\Db;
 
 
 use Doctrine\ORM\EntityManager;
-use RcmUser\Db\DoctrineMapper;
 use RcmUser\User\Entity\DoctrineUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
@@ -43,6 +42,7 @@ class DoctrineUserDataMapper
     extends AbstractUserDataMapper
     implements UserDataMapperInterface
 {
+    const USER_DELETED_STATE = 'deleted';
     /**
      * @var EntityManager $entityManager
      */
@@ -109,9 +109,11 @@ class DoctrineUserDataMapper
     {
         $query = $this->getEntityManager()->createQuery(
             'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
-            'WHERE user.id = ?1 '
+            'WHERE user.id = ?1 ' .
+            'AND user.state != ?2'
         );
         $query->setParameter(1, $id);
+        $query->setParameter(2, self::USER_DELETED_STATE);
 
         $users = $query->getResult();
 
@@ -143,9 +145,11 @@ class DoctrineUserDataMapper
     {
         $query = $this->getEntityManager()->createQuery(
             'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
-            'WHERE user.username = ?1 '
+            'WHERE user.username = ?1 ' .
+            'AND user.state != ?2'
         );
         $query->setParameter(1, $username);
+        $query->setParameter(2, self::USER_DELETED_STATE);
 
 
         $users = $query->getResult();
@@ -170,20 +174,27 @@ class DoctrineUserDataMapper
     /**
      * create
      *
-     * @param User $newUser
-     * @param User $creatableUser
+     * @param User $requestUser
+     * @param User $responseUser
      *
      * @return \RcmUser\User\Result
      */
-    public function create(User $newUser, User $creatableUser)
+    public function create(User $requestUser, User $responseUser)
     {
         /* VALIDATE */
+        if (empty($responseUser->getState())) {
+
+            $responseUser->setState($this->getDefaultUserState());
+        }
+
         $result = $this->getUserValidator()->validateCreateUser(
-            $newUser,
-            $creatableUser
+            $requestUser,
+            $responseUser
         );
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
+
+            $responseUser->setState(null);
 
             return $result;
         }
@@ -191,10 +202,12 @@ class DoctrineUserDataMapper
         /* PREPARE */
         // make sure no duplicates
         $dupUser = $this->fetchByUsername(
-            $newUser->getUsername()
+            $requestUser->getUsername()
         );
 
         if ($dupUser->isSuccess()) {
+
+            $responseUser->setState(null);
 
             // ERROR - user exists
             return new Result(
@@ -205,38 +218,40 @@ class DoctrineUserDataMapper
         }
 
         $result = $this->getUserDataPreparer()->prepareUserCreate(
-            $newUser,
-            $creatableUser
+            $requestUser,
+            $responseUser
         );
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
+
+            $responseUser->setState(null);
 
             return $result;
         }
 
         /* SAVE */
-        $user = $result->getUser();
+        $responseUser = $this->getValidInstance($responseUser);
 
-        $creatableUser = $this->getValidInstance($user);
-
-        // @todo if error, fail with null
-        $this->getEntityManager()->persist($creatableUser);
+        // @todo if error, fail with null and set user state back
+        $this->getEntityManager()->persist($responseUser);
         $this->getEntityManager()->flush();
 
-        return new Result($creatableUser);
+        // @todo unset password $responseUser->setPassword(null);
+
+        return new Result($responseUser);
     }
 
     /**
      * read
      *
-     * @param User $readUser
-     * @param User $readableUser
+     * @param User $requestUser
+     * @param User $responseUser
      *
      * @return mixed|Result
      */
-    public function read(User $readUser, User $readableUser)
+    public function read(User $requestUser, User $responseUser)
     {
-        $id = $readUser->getId();
+        $id = $requestUser->getId();
 
         if (!empty($id)) {
 
@@ -244,15 +259,26 @@ class DoctrineUserDataMapper
 
             if ($result->isSuccess()) {
 
+                // we want to populate everything but properties.
+                $responseUser->populate($result->getUser(), array('properties'));
+                $result->setUser($responseUser);
+
                 return $result;
             }
         }
 
-        $username = $readUser->getUsername();
+        $username = $requestUser->getUsername();
 
         if (!empty($username)) {
 
             $result = $this->fetchByUsername($username);
+
+            if ($result->isSuccess()) {
+
+                // we want to populate everything but properties.
+                $responseUser->populate($result->getUser(), array('properties'));
+                $result->setUser($responseUser);
+            }
 
             return $result;
         }
@@ -263,16 +289,16 @@ class DoctrineUserDataMapper
     /**
      * update
      *
-     * @param User $updatedUser
-     * @param User $updatableUser
+     * @param User $requestUser
+     * @param User $responseUser
      * @param User $existingUser
      *
      * @return \RcmUser\User|Result
      */
-    public function update(User $updatedUser, User $updatableUser, User $existingUser)
+    public function update(User $requestUser, User $responseUser, User $existingUser)
     {
         /* VALIDATE */
-        if (!$this->canUpdate($updatedUser)) {
+        if (!$this->canUpdate($requestUser)) {
 
             // error, cannot update
             return new Result(
@@ -283,14 +309,14 @@ class DoctrineUserDataMapper
         }
 
         // USERNAME CHECKS
-        $updatedUsername = $updatedUser->getUsername();
+        $requestUsername = $requestUser->getUsername();
         $existingUserName = $existingUser->getUsername();
 
         // if username changed:
-        if ($existingUserName !== $updatedUsername) {
+        if ($existingUserName !== $requestUsername) {
 
             // make sure no duplicates
-            $dupUser = $this->fetchByUsername($updatedUsername);
+            $dupUser = $this->fetchByUsername($requestUsername);
 
             if ($dupUser->isSuccess()) {
 
@@ -302,54 +328,54 @@ class DoctrineUserDataMapper
                 );
             }
 
-            $updatableUser->setUsername($updatedUsername);
+            $responseUser->setUsername($requestUsername);
         }
 
         $result = $this->getUserValidator()->validateUpdateUser(
-            $updatedUser,
-            $updatableUser,
+            $requestUser,
+            $responseUser,
             $existingUser
         );
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             return $result;
         }
 
         /* PREPARE */
         $result = $this->getUserDataPreparer()->prepareUserUpdate(
-            $updatedUser,
-            $updatableUser,
+            $requestUser,
+            $responseUser,
             $existingUser
         );
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             return $result;
         }
 
         /* SAVE */
-        $user = $this->getValidInstance($updatableUser);
+        $responseUser = $this->getValidInstance($responseUser);
 
         // @todo if error, fail with null
-        $this->getEntityManager()->merge($user);
+        $this->getEntityManager()->merge($responseUser);
         $this->getEntityManager()->flush();
 
-        return new Result($user);
+        return new Result($responseUser);
     }
 
     /**
      * delete
      *
-     * @param User $deleteUser
-     * @param User $deletableUser
+     * @param User $requestUser
+     * @param User $responseUser
      *
      * @return mixed|Result
      */
-    public function delete(User $deleteUser, User $deletableUser)
+    public function delete(User $requestUser, User $responseUser)
     {
         /* VALIDATE */
-        if (!$this->canUpdate($deleteUser)) {
+        if (!$this->canUpdate($requestUser)) {
 
             // error, cannot update
             return new Result(
@@ -360,19 +386,20 @@ class DoctrineUserDataMapper
         }
 
         /* PREPARE */
-        $deletableUser->setState(User::STATE_DISABLED);
+        $responseUser->setUsername($this->buildDeletedUsername($responseUser));
+        $responseUser->setState(self::USER_DELETED_STATE);
 
         /* SAVE */
-        $deletableUser = $this->getValidInstance($deletableUser);
+        $responseUser = $this->getValidInstance($responseUser);
 
         // @todo if error, fail with null
-        $this->getEntityManager()->merge($deletableUser);
+        $this->getEntityManager()->merge($responseUser);
         /* by default, we should not support true delete
         $this->getEntityManager()->remove($user);
         */
         $this->getEntityManager()->flush();
 
-        return new Result($deletableUser);
+        return new Result($responseUser);
     }
 
     /**
@@ -393,5 +420,39 @@ class DoctrineUserDataMapper
         }
 
         return $user;
+    }
+
+    public function buildDeletedUsername(User $user)
+    {
+        $usernameArr = array(
+            self::USER_DELETED_STATE,
+            $user->getId(),
+            $user->getUsername()
+        );
+
+        return json_encode($usernameArr);
+    }
+
+    public function parseDeletedUsername(User $user)
+    {
+        try{
+
+            $usernameArr = json_decode($user->getUsername(), true);
+        }catch (\Exception $e){
+
+            return null;
+        }
+
+        if(count($usernameArr) !== 3){
+
+            return null;
+        }
+
+        if($usernameArr[1] !== $user->getId()){
+
+            return null;
+        }
+
+        return $usernameArr[2];
     }
 } 

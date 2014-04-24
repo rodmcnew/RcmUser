@@ -48,10 +48,8 @@ class UserDataService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\User\Config');
-
+        // @todo invokable
         $service = new \RcmUser\User\Service\UserDataService();
-        $service->setDefaultUserState($cfg->get('DefaultUserState', 'disabled'));
 
         return $service;
     }

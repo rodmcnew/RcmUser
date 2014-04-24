@@ -17,10 +17,8 @@
 namespace RcmUser\User\Db;
 
 
-use RcmUser\Db\DoctrineMapper;
 use RcmUser\User\Data\UserDataPreparerInterface;
 use RcmUser\User\Data\UserValidatorInterface;
-use RcmUser\User\Entity\DoctrineUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
@@ -41,6 +39,11 @@ use RcmUser\User\Result;
  */
 class AbstractUserDataMapper implements UserDataMapperInterface
 {
+    /**
+     * @var string
+     */
+    protected $defaultUserState = User::STATE_DISABLED;
+
     /**
      * @var UserDataPreparerInterface
      */
@@ -96,9 +99,25 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
+     * @param string $defaultUserState defaultUserState
+     */
+    public function setDefaultUserState($defaultUserState)
+    {
+        $this->defaultUserState = $defaultUserState;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDefaultUserState()
+    {
+        return $this->defaultUserState;
+    }
+
+    /**
      * fetchById
      *
-     * @param mixed $id
+     * @param mixed $id id
      *
      * @return Result
      */
@@ -110,7 +129,7 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * fetchByUsername
      *
-     * @param string $username
+     * @param string $username username
      *
      * @return Result
      */
@@ -126,12 +145,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * create
      *
-     * @param User $newUser
-     * @param User $creatableUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function create(User $newUser, User $creatableUser)
+    public function create(User $requestUser, User $responseUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be created.');
     }
@@ -139,12 +158,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * read
      *
-     * @param User $readUser
-     * @param User $readableUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function read(User $readUser, User $readableUser)
+    public function read(User $requestUser, User $responseUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be read.');
     }
@@ -152,13 +171,13 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * update
      *
-     * @param User $updatedUser
-     * @param User $updatableUser
-     * @param User $existingUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
+     * @param User $existingUser existingUser
      *
      * @return mixed|Result
      */
-    public function update(User $updatedUser, User $updatableUser, User $existingUser)
+    public function update(User $requestUser, User $responseUser, User $existingUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be updated.');
     }
@@ -166,12 +185,12 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * delete
      *
-     * @param User $deleteUser
-     * @param User $deletableUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
      *
      * @return mixed|Result
      */
-    public function delete(User $deleteUser, User $deletableUser)
+    public function delete(User $requestUser, User $responseUser)
     {
         return new Result(null, Result::CODE_FAIL, 'User cannot be deleted.');
     }

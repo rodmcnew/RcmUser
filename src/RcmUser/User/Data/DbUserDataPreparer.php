@@ -70,61 +70,61 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     /**
      * prepareUserCreate
      *
-     * @param User $newUser       newUser
-     * @param User $creatableUser creatableUser
+     * @param User $requestUser       requestUser
+     * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function prepareUserCreate(User $newUser, User $creatableUser)
+    public function prepareUserCreate(User $requestUser, User $responseUser)
     {
 
-        $creatableUser->setId($this->buildId());
-        $creatableUser->setPassword(
-            $this->getEncryptor()->create($newUser->getPassword())
+        $responseUser->setId($this->buildId());
+        $responseUser->setPassword(
+            $this->getEncryptor()->create($requestUser->getPassword())
         );
-        if (empty($creatableUser->getState())) {
-            $creatableUser->setState(User::STATE_DISABLED);
+        if (empty($responseUser->getState())) {
+            $responseUser->setState(User::STATE_DISABLED);
         }
 
-        return new Result($creatableUser);
+        return new Result($responseUser);
     }
 
     /**
      * prepareUserUpdate
      *
-     * @param User $updatedUser   updatedUser
-     * @param User $updatableUser updatableUser
+     * @param User $requestUser   requestUser
+     * @param User $responseUser responseUser
      * @param User $existingUser  existingUser
      *
      * @return Result
      */
     public function prepareUserUpdate(
-        User $updatedUser,
-        User $updatableUser,
+        User $requestUser,
+        User $responseUser,
         User $existingUser
     ) {
         // PASSWORD CHECKS
-        $updatedPassword = $updatedUser->getPassword();
+        $requestPassword = $requestUser->getPassword();
         $existingPassword = $existingUser->getPassword();
         //$hashedPassword = $existingPassword;
 
         // if password changed
-        if ($existingPassword !== $updatedPassword) {
+        if ($existingPassword !== $requestPassword) {
 
-            $hashedPassword = $this->getEncryptor()->create($updatedPassword);
-            $updatableUser->setPassword($hashedPassword);
+            $hashedPassword = $this->getEncryptor()->create($requestPassword);
+            $responseUser->setPassword($hashedPassword);
         }
 
         // STATE
-        $updatedState = $updatedUser->getState();
+        $requestState = $requestUser->getState();
         $existingState = $existingUser->getState();
 
-        if ($updatedState !== $existingState) {
+        if ($requestState !== $existingState) {
 
-            $updatableUser->setState($updatedState);
+            $responseUser->setState($requestState);
         }
 
-        return new Result($updatableUser);
+        return new Result($responseUser);
     }
 
     /**

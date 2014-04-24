@@ -94,15 +94,15 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
 
     public function onCreateUser($e)
     {
-        $newUser = $e->getParam('newUser');
-        $creatableUser = $e->getParam('creatableUser');
+        $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->create($newUser, $creatableUser);
+        $result = $this->getUserDataMapper()->create($requestUser, $responseUser);
 
         if($result->isSuccess()){
 
             // @todo may not be required if can assign (by reference)
-            $creatableUser->populate($result->getUser());
+            $responseUser->populate($result->getUser());
         }
 
         return $result;
@@ -116,15 +116,15 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
     public function onReadUser($e)
     {
         //$target = $e->getTarget();
-        $readUser = $e->getParam('readUser');
-        $readableUser = $e->getParam('readableUser');
+        $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->read($readUser, $readableUser);
+        $result = $this->getUserDataMapper()->read($requestUser, $responseUser);
 
         if($result->isSuccess()){
 
             // @todo may not be required if can assign (by reference)
-            $readableUser->populate($result->getUser());
+            $responseUser->populate($result->getUser());
         }
 
         return $result;
@@ -133,21 +133,21 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
     public function onUpdateUser($e)
     {
         //$target = $e->getTarget();
-        $updatedUser = $e->getParam('updatedUser');
-        $updatableUser = $e->getParam('updatableUser');
+        $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
         $existingUser =  $e->getParam('existingUser');
 
         $result = $this->getUserDataMapper()
             ->update(
-                $updatedUser,
-                $updatableUser,
+                $requestUser,
+                $responseUser,
                 $existingUser
             );
 
         if($result->isSuccess()){
 
             // @todo may not be required if can assign (by reference)
-            $updatableUser->populate($result->getUser());
+            $responseUser->populate($result->getUser());
         }
 
         return $result;
@@ -161,15 +161,15 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
     public function onDeleteUser($e)
     {
         //$target = $e->getTarget();
-        $deleteUser = $e->getParam('deleteUser');
-        $deletableUser = $e->getParam('deletableUser');
+        $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->delete($deleteUser, $deletableUser);
+        $result = $this->getUserDataMapper()->delete($requestUser, $responseUser);
 
         if($result->isSuccess()){
 
             // @todo may not be required if can assign (by reference)
-            $deletableUser->populate($result->getUser());
+            $responseUser->populate($result->getUser());
         }
 
         return $result;

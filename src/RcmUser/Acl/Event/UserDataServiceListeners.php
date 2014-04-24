@@ -183,11 +183,11 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onBeforeCreateUser($e)
     {
-        $newUser = $e->getParam('newUser');
-        $creatableUser = $e->getParam('creatableUser');
+        $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
 
         /* VALIDATE */
-        $aclRoles = $creatableUser->getProperty($this->getUserPropertyKey());
+        $aclRoles = $responseUser->getProperty($this->getUserPropertyKey());
 
         if (!empty($aclRoles)) {
 
@@ -195,7 +195,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
             // make sure the role sent in is valid
         }
 
-        return new Result($creatableUser);
+        return new Result($responseUser);
     }
 
 
@@ -212,20 +212,20 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
 
         if ($result->isSuccess()) {
 
-            $user = $result->getUser();
+            $responseUser = $result->getUser();
 
-            $currentRoles = $user->getProperty($this->getUserPropertyKey(), null);
+            $currentRoles = $responseUser->getProperty($this->getUserPropertyKey(), null);
 
             if ($currentRoles === null) {
 
-                $user->setProperty(
+                $responseUser->setProperty(
                     $this->getUserPropertyKey(),
                     $this->getDefaultAuthenticatedRoleIdentities()
                 );
             }
 
             $aclResult = $this->getUserRolesDataMapper()->create(
-                $user, $user->getProperty($this->getUserPropertyKey())
+                $responseUser, $responseUser->getProperty($this->getUserPropertyKey())
             );
 
             if (!$aclResult->isSuccess()) {
@@ -233,9 +233,9 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
                 return $aclResult;
             }
 
-            $user->setProperty($this->getUserPropertyKey(), $aclResult->getData());
+            $responseUser->setProperty($this->getUserPropertyKey(), $aclResult->getData());
 
-            return new Result($user, Result::CODE_SUCCESS);
+            return new Result($responseUser, Result::CODE_SUCCESS);
         }
 
         return $result;
@@ -253,16 +253,16 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
         if ($result->isSuccess()) {
 
-            $user = $result->getUser();
+            $responseUser = $result->getUser();
 
-            $readResult = $this->getUserRolesDataMapper()->read($user);
+            $readResult = $this->getUserRolesDataMapper()->read($responseUser);
 
             if ($readResult->isSuccess()) {
 
                 $roles = $readResult->getData();
             } else {
 
-                if (empty($user->getId())) {
+                if (empty($responseUser->getId())) {
 
                     $roles = $this->getDefaultRoleIdentities();
                 } else {
@@ -271,9 +271,9 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
                 }
             }
 
-            $user->setProperty($this->getUserPropertyKey(), $roles);
+            $responseUser->setProperty($this->getUserPropertyKey(), $roles);
 
-            return new Result($user, Result::CODE_SUCCESS);
+            return new Result($responseUser, Result::CODE_SUCCESS);
         }
 
         return $result;
@@ -288,12 +288,12 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onBeforeUpdateUser($e)
     {
-        $updatedUser = $e->getParam('updatedUser');
-        $updatableUser = $e->getParam('updatableUser');
+        $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
         $existingUser = $e->getParam('existingUser');
 
         /* VALIDATE */
-        $aclRoles = $updatableUser->getProperty($this->getUserPropertyKey());
+        $aclRoles = $responseUser->getProperty($this->getUserPropertyKey());
 
         if (!empty($aclRoles)) {
 
@@ -301,7 +301,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
             // make sure the role sent in is valid
         }
 
-        return new Result($updatableUser);
+        return new Result($responseUser);
     }
 
     public function onUpdateUserSuccess($e)
@@ -310,20 +310,20 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
 
         if ($result->isSuccess()) {
 
-            $user = $result->getUser();
+            $responseUser = $result->getUser();
 
-            $currentRoles = $user->getProperty($this->getUserPropertyKey(), null);
+            $currentRoles = $responseUser->getProperty($this->getUserPropertyKey(), null);
 
             if ($currentRoles === null) {
 
-                $user->setProperty(
+                $responseUser->setProperty(
                     $this->getUserPropertyKey(),
                     $this->getDefaultAuthenticatedRoleIdentities()
                 );
             }
 
             $aclResult = $this->getUserRolesDataMapper()->update(
-                $user, $user->getProperty($this->getUserPropertyKey(), array())
+                $responseUser, $responseUser->getProperty($this->getUserPropertyKey(), array())
             );
 
             if (!$aclResult->isSuccess()) {
@@ -331,9 +331,9 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
                 return $aclResult;
             }
 
-            $user->setProperty($this->getUserPropertyKey(), $aclResult->getData());
+            $responseUser->setProperty($this->getUserPropertyKey(), $aclResult->getData());
 
-            return new Result($user, Result::CODE_SUCCESS);
+            return new Result($responseUser, Result::CODE_SUCCESS);
         }
 
         return $result;
@@ -345,20 +345,20 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
 
         if ($result->isSuccess()) {
 
-            $user = $result->getUser();
+            $responseUser = $result->getUser();
 
-            $aclResult = $this->getUserRolesDataMapper()->delete($user);
+            $aclResult = $this->getUserRolesDataMapper()->delete($responseUser);
 
             if (!$aclResult->isSuccess()) {
 
                 return $aclResult;
             }
 
-            $user->setProperty(
+            $responseUser->setProperty(
                 $this->getUserPropertyKey(), $this->getDefaultRoleIdentities()
             );
 
-            return new Result($user, Result::CODE_SUCCESS);
+            return new Result($responseUser, Result::CODE_SUCCESS);
         }
 
         return $result;

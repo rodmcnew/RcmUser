@@ -157,12 +157,13 @@ class ReadOnlyUser extends User
     /**
      * populate
      *
-     * @param array $data data
+     * @param User|array $data    data as User or array
+     * @param array      $exclude list of object properties to ignore (not populate)
      *
-     * @return void
-     * @throws \RcmUser\Exception\RcmUserReadOnlyException
+     * @return mixed|void
+     * @throws \RcmUser\Exception\RcmUserException|\RcmUser\Exception\RcmUserReadOnlyException
      */
-    public function populate($data = array())
+    public function populate($data, $exclude = array())
     {
         if (!$this->locked) {
 

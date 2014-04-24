@@ -40,46 +40,17 @@ use RcmUser\User\Result;
  */
 class UserDataService extends EventProvider
 {
-
-    /**
-     * @var string
-     */
-    protected $defaultUserState = User::STATE_DISABLED;
-
-    /**
-     * setDefaultUserState
-     *
-     * @param string $defaultUserState defaultUserState
-     *
-     * @return void
-     */
-    public function setDefaultUserState($defaultUserState)
-    {
-        $this->defaultUserState = $defaultUserState;
-    }
-
-    /**
-     * getDefaultUserState
-     *
-     * @return string
-     */
-    public function getDefaultUserState()
-    {
-        return $this->defaultUserState;
-    }
-
     /**
      * createUser
      *
-     * @param User  $newUser newUser
-     * @param array $params  params
+     * @param User  $requestUser requestUser
      *
      * @return Result
      */
-    public function createUser(User $newUser, $params = array())
+    public function createUser(User $requestUser)
     {
-        /* + PREP - low level business logic to reduce issues */
-        $result = $this->readUser($newUser, $params);
+        /* + LOW_LEVEL_PREP */
+        $result = $this->readUser($requestUser);
 
         if ($result->isSuccess()) {
 
@@ -87,24 +58,19 @@ class UserDataService extends EventProvider
             return new Result(null, Result::CODE_FAIL, 'User already exists.');
         }
 
-        $creatableUser = new User();
-        $creatableUser->populate($newUser);
+        $responseUser = new User();
+        $responseUser->populate($requestUser);
 
-        $newUser = new ReadOnlyUser($newUser);
-
-        // This is set to default
-        if (empty($creatableUser->getState())) {
-            $creatableUser->setState($this->getDefaultUserState());
-        }
-        /* - PREP */
+        $requestUser = new ReadOnlyUser($requestUser);
+        /* - LOW_LEVEL_PREP */
 
         /* @event beforeCreateUser */
         $results = $this->getEventManager()->trigger(
             'beforeCreateUser',
             $this,
             array(
-                'newUser' => $newUser,
-                'creatableUser' => $creatableUser
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
             ),
             function ($result) {
                 return !$result->isSuccess();
@@ -121,8 +87,8 @@ class UserDataService extends EventProvider
             'createUser',
             $this,
             array(
-                'newUser' => $newUser,
-                'creatableUser' => $creatableUser
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
             ),
             function ($result) {
                 return !$result->isSuccess();
@@ -142,10 +108,7 @@ class UserDataService extends EventProvider
             return $result;
         }
 
-        // read created user for success return
-        // this causes issues for later events
-        // $result = $this->readUser($creatableUser, $params);
-        $result = new Result($creatableUser);
+        $result = new Result($responseUser);
 
         if(!$result->isSuccess()){
             $this->getEventManager()->trigger(
@@ -170,25 +133,24 @@ class UserDataService extends EventProvider
     /**
      * readUser
      *
-     * @param User  $readUser readUser
-     * @param array $params   params
+     * @param User  $requestUser requestUser
      *
      * @return Result
      */
-    public function readUser(User $readUser, $params = array())
+    public function readUser(User $requestUser)
     {
-        $readableUser = new User();
-        $readableUser->populate($readUser);
+        $responseUser = new User();
+        $responseUser->populate($requestUser);
 
-        $readUser = new ReadOnlyUser($readUser);
+        $requestUser = new ReadOnlyUser($requestUser);
 
         /* @event beforeReadUser */
         $results = $this->getEventManager()->trigger(
             'beforeReadUser',
             $this, 
             array(
-                'readUser' => $readUser, 
-                'readableUser' => $readableUser),
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser),
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -204,8 +166,8 @@ class UserDataService extends EventProvider
             'readUser',
             $this,
             array(
-                'readUser' => $readUser,
-                'readableUser' => $readableUser),
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser),
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -223,7 +185,7 @@ class UserDataService extends EventProvider
             return $result;
         }
 
-        $result = new Result($readableUser);
+        $result = new Result($responseUser);
 
         /* @event readUserSuccess */
         $this->getEventManager()->trigger(
@@ -238,16 +200,15 @@ class UserDataService extends EventProvider
     /**
      * updateUser
      *
-     * @param User  $updatedUser updatedUser
-     * @param array $params      params
+     * @param User  $requestUser requestUser
      *
      * @return Result
      */
-    public function updateUser(User $updatedUser, $params = array())
+    public function updateUser(User $requestUser)
     {
         /* + PREP - low level business logic to reduce issues */
         // require id
-        if (empty($updatedUser->getId())) {
+        if (empty($requestUser->getId())) {
 
             return new Result(
                 null,
@@ -257,7 +218,7 @@ class UserDataService extends EventProvider
         }
 
         // check if exists
-        $existingUserResult = $this->readUser($updatedUser, $params);
+        $existingUserResult = $this->readUser($requestUser);
 
         if (!$existingUserResult->isSuccess()) {
 
@@ -269,16 +230,16 @@ class UserDataService extends EventProvider
 
         $existingUser = new ReadOnlyUser($existingUser);
 
-        $updatedUser->merge($existingUser);
+        $requestUser->merge($existingUser);
 
-        $updatableUser = new User();
+        $responseUser = new User();
 
-        $updatableUser->populate($updatedUser);
+        $responseUser->populate($requestUser);
 
-        $updatedUser = new ReadOnlyUser($updatedUser);
+        $requestUser = new ReadOnlyUser($requestUser);
 
-        if (empty($updatableUser->getState())) {
-            $updatableUser->setState($this->getDefaultUserState());
+        if (empty($responseUser->getState())) {
+            $responseUser->setState($this->getDefaultUserState());
         }
         /* - PREP */
 
@@ -287,8 +248,8 @@ class UserDataService extends EventProvider
             'beforeUpdateUser',
             $this,
             array(
-                'updatedUser' => $updatedUser,
-                'updatableUser' => $updatableUser,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser,
                 'existingUser' => $existingUser
             ),
             function ($result) {
@@ -306,8 +267,8 @@ class UserDataService extends EventProvider
             'updateUser',
             $this,
             array(
-                'updatedUser' => $updatedUser,
-                'updatableUser' => $updatableUser,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser,
                 'existingUser' => $existingUser
             ),
             function ($result) {
@@ -327,7 +288,7 @@ class UserDataService extends EventProvider
             return $result;
         }
 
-        $result = new Result($updatableUser);
+        $result = new Result($responseUser);
 
         /* @event updateUser */
         $this->getEventManager()->trigger(
@@ -342,16 +303,15 @@ class UserDataService extends EventProvider
     /**
      * deleteUser
      *
-     * @param User  $deleteUser deleteUser
-     * @param array $params     params
+     * @param User  $requestUser requestUser
      *
      * @return mixed|Result
      */
-    public function deleteUser(User $deleteUser, $params = array())
+    public function deleteUser(User $requestUser)
     {
         /* + PREP - low level business logic to reduce issues */
         // require id
-        if (empty($deleteUser->getId())) {
+        if (empty($requestUser->getId())) {
 
             return new Result(
                 null,
@@ -361,7 +321,7 @@ class UserDataService extends EventProvider
         }
 
         // check if exists
-        $existingUserResult = $this->readUser($deleteUser, $params);
+        $existingUserResult = $this->readUser($requestUser);
 
         if (!$existingUserResult->isSuccess()) {
 
@@ -369,11 +329,11 @@ class UserDataService extends EventProvider
             return $existingUserResult;
         }
 
-        $deletableUser = new User();
+        $responseUser = new User();
 
-        $deletableUser->populate($existingUserResult->getUser());
+        $responseUser->populate($existingUserResult->getUser());
 
-        $deleteUser = new ReadOnlyUser($deleteUser);
+        $requestUser = new ReadOnlyUser($requestUser);
         /* - PREP */
 
         /* @event beforeDeleteUser */
@@ -381,8 +341,8 @@ class UserDataService extends EventProvider
             'beforeDeleteUser',
             $this,
             array(
-                'deleteUser' => $deleteUser,
-                'deletableUser' => $deletableUser
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
             ),
             function ($result) {
                 return !$result->isSuccess();
@@ -399,8 +359,8 @@ class UserDataService extends EventProvider
             'deleteUser',
             $this,
             array(
-                'deleteUser' => $deleteUser,
-                'deletableUser' => $deletableUser
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
             ),
             function ($result) {
                 return !$result->isSuccess();
@@ -419,7 +379,7 @@ class UserDataService extends EventProvider
             return $result;
         }
 
-        $result = new Result($deletableUser);
+        $result = new Result($responseUser);
 
         /* @event deleteUserSuccess */
         $this->getEventManager()->trigger(
