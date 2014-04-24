@@ -39,7 +39,9 @@ use Zend\EventManager\ListenerAggregateInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserDataServiceListeners extends AbstractUserDataServiceListeners implements ListenerAggregateInterface
+class UserDataServiceListeners
+    extends AbstractUserDataServiceListeners
+    implements ListenerAggregateInterface
 {
     protected $priority = -1;
     protected $listenerMethods
@@ -92,6 +94,13 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         return $this->userDataMapper;
     }
 
+    /**
+     * onCreateUser
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
     public function onCreateUser($e)
     {
         $requestUser = $e->getParam('requestUser');
@@ -99,7 +108,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
 
         $result = $this->getUserDataMapper()->create($requestUser, $responseUser);
 
-        if($result->isSuccess()){
+        if ($result->isSuccess()) {
 
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
@@ -108,11 +117,25 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         return $result;
     }
 
+    /**
+     * onCreateUserFail
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result|void
+     */
     public function onCreateUserFail($e)
     {
         //@todo do delete?
     }
 
+    /**
+     * onReadUser
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
     public function onReadUser($e)
     {
         //$target = $e->getTarget();
@@ -121,7 +144,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
 
         $result = $this->getUserDataMapper()->read($requestUser, $responseUser);
 
-        if($result->isSuccess()){
+        if ($result->isSuccess()) {
 
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
@@ -130,12 +153,19 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         return $result;
     }
 
+    /**
+     * onUpdateUser
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
     public function onUpdateUser($e)
     {
         //$target = $e->getTarget();
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
-        $existingUser =  $e->getParam('existingUser');
+        $existingUser = $e->getParam('existingUser');
 
         $result = $this->getUserDataMapper()
             ->update(
@@ -144,7 +174,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
                 $existingUser
             );
 
-        if($result->isSuccess()){
+        if ($result->isSuccess()) {
 
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
@@ -153,11 +183,25 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         return $result;
     }
 
+    /**
+     * onUpdateUserFail
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result|void
+     */
     public function onUpdateUserFail($e)
     {
         // @todo revert?
     }
 
+    /**
+     * onDeleteUser
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
     public function onDeleteUser($e)
     {
         //$target = $e->getTarget();
@@ -166,7 +210,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
 
         $result = $this->getUserDataMapper()->delete($requestUser, $responseUser);
 
-        if($result->isSuccess()){
+        if ($result->isSuccess()) {
 
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
@@ -175,6 +219,13 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         return $result;
     }
 
+    /**
+     * onDeleteUserFail
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result|void
+     */
     public function onDeleteUserFail($e)
     {
         // @todo restore?

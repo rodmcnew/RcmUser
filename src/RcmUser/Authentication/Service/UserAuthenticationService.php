@@ -52,8 +52,12 @@ class UserAuthenticationService extends EventProvider
     {
 
         /* + VALIDATE - low level business logic to reduce issues */
-        if(!$user->isEnabled()){
-            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+        if (!$user->isEnabled()) {
+            return new Result(
+                Result::FAILURE_UNCATEGORIZED,
+                $user,
+                array('User is disabled.')
+            );
         }
         /* - VALIDATE */
 
@@ -83,7 +87,9 @@ class UserAuthenticationService extends EventProvider
              * @event validateCredentialsSuccess
              */
             $this->getEventManager()->trigger(
-                'validateCredentialsSuccess', $this, array('result' => $result)
+                'validateCredentialsSuccess',
+                $this,
+                array('result' => $result)
             );
 
             return $result;
@@ -93,7 +99,9 @@ class UserAuthenticationService extends EventProvider
          * @event validateCredentialsFail
          */
         $this->getEventManager()->trigger(
-            'validateCredentialsFail', $this, array('result' => $result)
+            'validateCredentialsFail',
+            $this,
+            array('result' => $result)
         );
 
         return $result;
@@ -110,8 +118,12 @@ class UserAuthenticationService extends EventProvider
     public function authenticate(User $user)
     {
         /* + VALIDATE - low level business logic to reduce issues */
-        if(!$user->isEnabled()){
-            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+        if (!$user->isEnabled()) {
+            return new Result(
+                Result::FAILURE_UNCATEGORIZED,
+                $user,
+                array('User is disabled.')
+            );
         }
         /* - VALIDATE */
 
@@ -199,11 +211,17 @@ class UserAuthenticationService extends EventProvider
         );
 
         /* + VALIDATE - low level business logic to reduce issues */
-        if(!$currentUser->isEnabled()){
+        if (!$currentUser->isEnabled()) {
 
             $user = $this->clearIdentity();
-            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+
+            return new Result(
+                Result::FAILURE_UNCATEGORIZED,
+                $user,
+                array('User is disabled.')
+            );
         }
+
         /* - VALIDATE */
 
         return $currentUser;

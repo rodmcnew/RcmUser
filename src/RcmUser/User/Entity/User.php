@@ -238,21 +238,22 @@ class User implements UserInterface, \JsonSerializable
     {
         if (($data instanceof UserInterface)) {
 
-            if(!in_array('id', $exclude)){
+            if (!in_array('id', $exclude)) {
                 $this->setId($data->getId());
             }
-            if(!in_array('username', $exclude)){
+            if (!in_array('username', $exclude)) {
                 $this->setUsername($data->getUsername());
             }
-            if(!in_array('password', $exclude)){
+            if (!in_array('password', $exclude)) {
                 $this->setPassword($data->getPassword());
             }
-            if(!in_array('state', $exclude)){
+            if (!in_array('state', $exclude)) {
                 $this->setState($data->getState());
             }
-            if(!in_array('properties', $exclude)){
+            if (!in_array('properties', $exclude)) {
                 $this->setProperties($data->getProperties());
             }
+
             return;
         }
 

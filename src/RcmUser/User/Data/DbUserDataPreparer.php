@@ -70,13 +70,15 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     /**
      * prepareUserCreate
      *
-     * @param User $requestUser       requestUser
+     * @param User $requestUser  requestUser
      * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function prepareUserCreate(User $requestUser, User $responseUser)
-    {
+    public function prepareUserCreate(
+        User $requestUser,
+        User $responseUser
+    ) {
 
         $responseUser->setId($this->buildId());
         $responseUser->setPassword(
@@ -92,9 +94,9 @@ class DbUserDataPreparer implements UserDataPreparerInterface
     /**
      * prepareUserUpdate
      *
-     * @param User $requestUser   requestUser
+     * @param User $requestUser  requestUser
      * @param User $responseUser responseUser
-     * @param User $existingUser  existingUser
+     * @param User $existingUser existingUser
      *
      * @return Result
      */

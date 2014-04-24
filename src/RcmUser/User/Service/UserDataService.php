@@ -43,7 +43,7 @@ class UserDataService extends EventProvider
     /**
      * createUser
      *
-     * @param User  $requestUser requestUser
+     * @param User $requestUser requestUser
      *
      * @return Result
      */
@@ -110,7 +110,7 @@ class UserDataService extends EventProvider
 
         $result = new Result($responseUser);
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
             $this->getEventManager()->trigger(
                 'createUserFail',
                 $this,
@@ -133,7 +133,7 @@ class UserDataService extends EventProvider
     /**
      * readUser
      *
-     * @param User  $requestUser requestUser
+     * @param User $requestUser requestUser
      *
      * @return Result
      */
@@ -147,10 +147,11 @@ class UserDataService extends EventProvider
         /* @event beforeReadUser */
         $results = $this->getEventManager()->trigger(
             'beforeReadUser',
-            $this, 
+            $this,
             array(
                 'requestUser' => $requestUser,
-                'responseUser' => $responseUser),
+                'responseUser' => $responseUser
+            ),
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -167,7 +168,8 @@ class UserDataService extends EventProvider
             $this,
             array(
                 'requestUser' => $requestUser,
-                'responseUser' => $responseUser),
+                'responseUser' => $responseUser
+            ),
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -200,7 +202,7 @@ class UserDataService extends EventProvider
     /**
      * updateUser
      *
-     * @param User  $requestUser requestUser
+     * @param User $requestUser requestUser
      *
      * @return Result
      */
@@ -303,7 +305,7 @@ class UserDataService extends EventProvider
     /**
      * deleteUser
      *
-     * @param User  $requestUser requestUser
+     * @param User $requestUser requestUser
      *
      * @return mixed|Result
      */
