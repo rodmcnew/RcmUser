@@ -39,22 +39,22 @@ interface UserValidatorInterface
     /**
      * validateCreateUser
      *
-     * @param User $newUser       newUser
-     * @param User $creatableUser creatableUser
+     * @param User $requestUser       requestUser
+     * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function validateCreateUser(User $newUser, User $creatableUser);
+    public function validateCreateUser(User $requestUser, User $responseUser);
 
     /**
      * validateUpdateUser
      *
-     * @param User $updatedUser   updatedUser
-     * @param User $updatableUser updatableUser
+     * @param User $requestUser   requestUser
+     * @param User $responseUser responseUser
      * @param User $existingUser  existingUser
      *
      * @return Result
      */
-    public function validateUpdateUser(User $updatedUser, User $updatableUser, User $existingUser);
+    public function validateUpdateUser(User $requestUser, User $responseUser, User $existingUser);
 
 } 

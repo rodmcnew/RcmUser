@@ -118,11 +118,13 @@ interface UserInterface extends \IteratorAggregate
     /**
      * populate
      *
-     * @param array $data data
+     * @param User|array $data    data as User or array
+     * @param array      $exclude list of object properties to ignore (not populate)
      *
-     * @return mixed
+     * @return mixed|void
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function populate($data = array());
+    public function populate($data, $exclude = array());
 
     /**
      * getIterator

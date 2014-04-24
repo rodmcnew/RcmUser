@@ -88,13 +88,13 @@ class Module implements AutoloaderProviderInterface
         $sm = $application->getServiceManager();
         $eventManager = $application->getEventManager();
 
-        try {
+        //try {
             $listeners = $sm->get('RcmUser\Event\Listeners');
             foreach ($listeners as $listener) {
                 $listener->attach($eventManager);
             }
-        } catch (\Exception $e) {
+        //} catch (\Exception $e) {
             // no listeners
-        }
+        //}
     }
 }
