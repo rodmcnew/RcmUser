@@ -109,7 +109,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
      *
      * @param Event $e e
      *
-     * @return bool|Result
+     * @return bool
      */
     public function onClearIdentity($e)
     {
@@ -128,21 +128,17 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
      *
      * @param Event $e e
      *
-     * @return Result
+     * @return User|null
      */
     public function onGetIdentity($e)
     {
-        $user = $e->getParam('user');
-
         $authService = $this->getAuthService();
 
-        $currentUser = $authService->getIdentity();
+        if ($authService->hasIdentity()) {
 
-        if (!empty($currentUser)) {
-
-            $user->populate($currentUser);
+            return  $authService->getIdentity();
         }
 
-        return $user;
+        return null;
     }
 } 

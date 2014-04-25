@@ -50,6 +50,8 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     protected $priority = -1;
     protected $listenerMethods
         = array(
+            'onBuildUser' => 'buildUser',
+
             'onBeforeCreateUser' => 'beforeCreateUser',
             'onCreateUser' => 'createUser',
             'onCreateUserFail' => 'createUserFail',
@@ -107,6 +109,21 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
                 unset($this->listeners[$index]);
             }
         }
+    }
+    /**
+     * onBuildUser
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
+    public function onBuildUser($e)
+    {
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Listener ('.__METHOD__.') not defined.'
+        );
     }
 
     /**

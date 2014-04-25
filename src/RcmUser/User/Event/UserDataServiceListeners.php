@@ -46,6 +46,8 @@ class UserDataServiceListeners
     protected $priority = -1;
     protected $listenerMethods
         = array(
+            //'onBuildUser' => 'buildUser',
+
             //'onBeforeCreateUser' => 'beforeCreateUser',
             'onCreateUser' => 'createUser',
             //'onCreateUserFail' => 'createUserFail',

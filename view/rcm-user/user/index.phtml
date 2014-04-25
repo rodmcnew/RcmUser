@@ -14,8 +14,8 @@ $acl = new Acl();
 //$rcmUserService = new RcmUser\Service\$rcmUserService();
 //var_dump($rcmUserService->getUserInputFilter()); die;
 $startTime = time();
-//$user = $rcmUserService->buildNewUser();
-$user = new RcmUser\User\Entity\User();
+//$user = new RcmUser\User\Entity\User();
+$user = $rcmUserService->buildNewUser();
 
 //$user->setId('7680114101');
 //$user->setUsername('7680114101');

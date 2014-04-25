@@ -41,6 +41,36 @@ use RcmUser\User\Result;
 class UserDataService extends EventProvider
 {
     /**
+     * buildUser - Allows events listeners to set default values for a new
+     * user as needed.  Very helpful for creating guest or ambiguous users
+     *
+     * @param User $requestUser requestUser
+     *
+     * @return Result
+     */
+    public function buildUser(User $requestUser){
+
+        /* + LOW_LEVEL_PREP */
+        $responseUser = new User();
+        $responseUser->populate($requestUser);
+
+        $requestUser = new ReadOnlyUser($requestUser);
+        /* - LOW_LEVEL_PREP */
+
+        /* @event buildUser */
+        $results = $this->getEventManager()->trigger(
+            'buildUser',
+            $this,
+            array(
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
+            )
+        );
+
+        return $results->last();
+    }
+
+    /**
      * createUser
      *
      * @param User $requestUser requestUser
@@ -208,7 +238,7 @@ class UserDataService extends EventProvider
      */
     public function updateUser(User $requestUser)
     {
-        /* + PREP - low level business logic to reduce issues */
+        /* + LOW_LEVEL_PREP */
         // require id
         if (empty($requestUser->getId())) {
 
@@ -243,7 +273,7 @@ class UserDataService extends EventProvider
         if (empty($responseUser->getState())) {
             $responseUser->setState($this->getDefaultUserState());
         }
-        /* - PREP */
+        /* - LOW_LEVEL_PREP */
 
         /* @event beforeUpdateUser */
         $results = $this->getEventManager()->trigger(
@@ -311,7 +341,7 @@ class UserDataService extends EventProvider
      */
     public function deleteUser(User $requestUser)
     {
-        /* + PREP - low level business logic to reduce issues */
+        /* + LOW_LEVEL_PREP */
         // require id
         if (empty($requestUser->getId())) {
 
@@ -336,7 +366,7 @@ class UserDataService extends EventProvider
         $responseUser->populate($existingUserResult->getUser());
 
         $requestUser = new ReadOnlyUser($requestUser);
-        /* - PREP */
+        /* - LOW_LEVEL_PREP */
 
         /* @event beforeDeleteUser */
         $results = $this->getEventManager()->trigger(
@@ -392,5 +422,4 @@ class UserDataService extends EventProvider
 
         return $result;
     }
-
 } 

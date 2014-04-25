@@ -50,8 +50,7 @@ class UserAuthenticationService extends EventProvider
      */
     public function validateCredentials(User $user)
     {
-
-        /* + VALIDATE - low level business logic to reduce issues */
+        /* + LOW_LEVEL_PREP */
         if (!$user->isEnabled()) {
             return new Result(
                 Result::FAILURE_UNCATEGORIZED,
@@ -59,21 +58,21 @@ class UserAuthenticationService extends EventProvider
                 array('User is disabled.')
             );
         }
-        /* - VALIDATE */
+        /* - LOW_LEVEL_PREP */
 
         /* @event validateCredentials
          * - expects listener to return
          * Zend\Authentication\Result with
          * Result->identity == to user object ($user)
          */
-        $resultsPre = $this->getEventManager()->trigger(
+        $results = $this->getEventManager()->trigger(
             'validateCredentials', $this, array('user' => $user),
             function ($result) {
                 return $result->isValid();
             }
         );
 
-        $result = $resultsPre->last();
+        $result = $results->last();
 
         if ($result === null) {
             throw new \Exception(
@@ -81,7 +80,7 @@ class UserAuthenticationService extends EventProvider
             );
         }
 
-        if ($resultsPre->stopped()) {
+        if ($results->stopped()) {
 
             /*
              * @event validateCredentialsSuccess
@@ -117,7 +116,7 @@ class UserAuthenticationService extends EventProvider
      */
     public function authenticate(User $user)
     {
-        /* + VALIDATE - low level business logic to reduce issues */
+        /* + LOW_LEVEL_PREP */
         if (!$user->isEnabled()) {
             return new Result(
                 Result::FAILURE_UNCATEGORIZED,
@@ -125,21 +124,21 @@ class UserAuthenticationService extends EventProvider
                 array('User is disabled.')
             );
         }
-        /* - VALIDATE */
+        /* - LOW_LEVEL_PREP */
 
         /* @event authenticate
          * - expects listener to return
          * Zend\Authentication\Result with
          * Result->identity == to user object ($user)
          */
-        $resultsPre = $this->getEventManager()->trigger(
+        $results = $this->getEventManager()->trigger(
             'authenticate', $this, array('user' => $user),
             function ($result) {
                 return $result->isValid();
             }
         );
 
-        $result = $resultsPre->last();
+        $result = $results->last();
 
         if ($result === null) {
             throw new \Exception(
@@ -147,7 +146,7 @@ class UserAuthenticationService extends EventProvider
             );
         }
 
-        if ($resultsPre->stopped()) {
+        if ($results->stopped()) {
 
             /*
              * @event authenticateSuccess
@@ -189,41 +188,34 @@ class UserAuthenticationService extends EventProvider
             array()
         );
 
-        return new User();
+        return true;
     }
 
     /**
      * getIdentity
      *
-     * @return User
+     * @param null $deflt default is no identity
+     *
+     * @return mixed|null
      */
-    public function getIdentity()
+    public function getIdentity($deflt = null)
     {
-        $currentUser = new User();
-
         /*
          * @event getIdentity
          */
-        $this->getEventManager()->trigger(
+        $results = $this->getEventManager()->trigger(
             'getIdentity',
             $this,
-            array('user' => $currentUser)
+            array()
         );
 
-        /* + VALIDATE - low level business logic to reduce issues */
-        if (!$currentUser->isEnabled()) {
+        $user = $results->last();
 
-            $user = $this->clearIdentity();
+        if(empty($user)){
 
-            return new Result(
-                Result::FAILURE_UNCATEGORIZED,
-                $user,
-                array('User is disabled.')
-            );
+            return $deflt;
         }
 
-        /* - VALIDATE */
-
-        return $currentUser;
+        return $user;
     }
 }

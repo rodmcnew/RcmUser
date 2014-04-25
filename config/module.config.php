@@ -93,7 +93,9 @@ return array(
             ),
         ),
 
-        'Auth\Config' => array(),
+        'Auth\Config' => array(
+            'ObfuscatePasswordOnAuth' => true,
+        ),
 
         'Acl\Config' => array(
 
@@ -197,7 +199,7 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\UserDataMapper
+             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
@@ -212,7 +214,7 @@ return array(
              *  RcmUser\User\Data\DbUserDataPreparer
              *  RcmUser\Authentication\Adapter\UserAdapter
              *
-             * Used for encrypting passwords by default.
+             * Used for encrypting/hashing passwords by default.
              * May not be required depending
              * on the DbUserDataPreparer and UserAdapter that is being used.
              */
@@ -220,7 +222,7 @@ return array(
             /*
              * UserDataPreparer (requires Encryptor)
              * Required for:
-             *  RcmUser\User\UserDataMapper
+             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Used by default to prepare data for DB storage.
              * By default, encrypts passwords and creates id (UUID)

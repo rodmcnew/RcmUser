@@ -48,6 +48,8 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      */
     protected $listenerMethods
         = array(
+            'onBuildUser' => 'buildUser',
+
             'onBeforeCreateUser' => 'beforeCreateUser',
             //'onCreateUser' => 'createUser',
             //'onCreateUserFail' => 'createUserFail',
@@ -202,6 +204,22 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
         return new Result($responseUser);
     }
 
+    /**
+     * onBuildUser
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
+    public function onBuildUser($e)
+    {
+        // $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
+
+        $responseUser->setProperty($this->getUserPropertyKey(), $this->getDefaultRoleIdentities());
+
+        return new Result($responseUser);
+    }
 
     /**
      * onCreateUserSuccess

@@ -19,6 +19,7 @@ namespace RcmUser\Service;
 
 use RcmUser\Acl\Service\UserAuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
+use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
@@ -140,7 +141,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function setUserAuthorizeService(
         UserAuthorizeService $userAuthorizeService
-    ) {
+    )
+    {
         $this->userAuthorizeService = $userAuthorizeService;
     }
 
@@ -283,7 +285,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    ) {
+    )
+    {
         return $this->getUserPropertyService()->getUserProperty(
             $user,
             $propertyNameSpace,
@@ -305,7 +308,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    ) {
+    )
+    {
         $user = $this->getIdentity();
 
         if (empty($user)) {
@@ -371,8 +375,12 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function getIdentity()
     {
-        return $this->getUserAuthService()->getIdentity();
+
+        return $this->getUserAuthService()->getIdentity($this->buildNewUser());
     }
+
+    //@todo implement guestIdentity - if getIdentity is empty return guest and save updates in session
+    // on login we can sync the guest user or the session user as needed
 
     /* ACL HELPERS ********************************/
 
@@ -404,6 +412,30 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
         $user = new User();
 
-        return $user;
+        return $this->buildUser($user);
     }
+
+    /**
+     * buildUser - build a user populated with defaults from event listeners
+     *
+     * @param User $user user
+     *
+     * @return User
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function buildUser(User $user)
+    {
+
+        $result = $this->getUserDataService()->buildUser($user);
+
+        if($result->isSuccess() || $result->getUser() == null){
+
+            return $result->getUser();
+        } else {
+
+            // this should not fail, if it does, something is really wrong
+            throw new RcmUserException('User could not be built or was not returned');
+        }
+    }
+
 }
