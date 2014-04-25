@@ -236,12 +236,14 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
 
             $responseUser = $result->getUser();
 
+            $defaultRoleIdentities = $this->getDefaultRoleIdentities();
+
             $currentRoles = $responseUser->getProperty(
                 $this->getUserPropertyKey(),
-                null
+                $defaultRoleIdentities
             );
 
-            if ($currentRoles === null) {
+            if ($currentRoles == $defaultRoleIdentities) {
 
                 $responseUser->setProperty(
                     $this->getUserPropertyKey(),

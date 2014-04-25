@@ -45,10 +45,6 @@ class UserController extends AbstractActionController
     {
         $test = array(
             'userController' => $this,
-            'rcmUserService' => $this->getServiceLocator()
-                ->get('RcmUser\Service\RcmUserService'),
-            'bjyAuthService' => $this->getServiceLocator()
-                ->get('BjyAuthorize\Service\Authorize'),
         );
 
         return $test;
