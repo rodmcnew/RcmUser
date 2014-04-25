@@ -1,28 +1,45 @@
 <?php
 /**
- * @category  RCM
+ * Class RcmUserService
+ *
+ * RcmUserService
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Service
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Service;
 
+use RcmUser\Acl\Service\UserAuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
 use RcmUser\User\Service\UserPropertyService;
-use ZfcBase\EventManager\EventProvider;
 
 //use ZfcUser\Service\User;
 
 /**
  * Class RcmUserService
  *
- * @package RcmUser\Service
+ * RcmUserService
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Service
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class RcmUserService extends \RcmUser\Event\EventProvider
 {
@@ -33,17 +50,27 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     protected $userDataService;
 
     /**
-     * @var
+     * @var UserPropertyService
      */
     protected $userPropertyService;
 
     /**
-     * @var
+     * @var UserAuthenticationService
      */
     protected $userAuthService;
 
+    /*
+     * ACL
+     * @var UserAuthorizeService
+     */
+    protected $userAuthorizeService;
+
     /**
-     * @param UserDataService $userDataService
+     * setUserDataService
+     *
+     * @param UserDataService $userDataService userDataService
+     *
+     * @return void
      */
     public function setUserDataService(UserDataService $userDataService)
     {
@@ -51,7 +78,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @return mixed
+     * getUserDataService
+     *
+     * @return UserDataService
      */
     public function getUserDataService()
     {
@@ -59,7 +88,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @param mixed $userPropertyService
+     * setUserPropertyService
+     *
+     * @param UserPropertyService $userPropertyService userPropertyService
+     *
+     * @return void
      */
     public function setUserPropertyService(UserPropertyService $userPropertyService)
     {
@@ -67,7 +100,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @return mixed
+     * getUserPropertyService
+     *
+     * @return UserPropertyService
      */
     public function getUserPropertyService()
     {
@@ -75,7 +110,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @param mixed $userAuthService
+     * setUserAuthService
+     *
+     * @param UserAuthenticationService $userAuthService userAuthService
+     *
+     * @return void
      */
     public function setUserAuthService(UserAuthenticationService $userAuthService)
     {
@@ -83,19 +122,46 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @return mixed
+     * getUserAuthService
+     *
+     * @return UserAuthenticationService
      */
     public function getUserAuthService()
     {
         return $this->userAuthService;
     }
 
+    /**
+     * setUserAuthorizeService: ACL Service
+     *
+     * @param UserAuthorizeService $userAuthorizeService userAuthorizeService
+     *
+     * @return void
+     */
+    public function setUserAuthorizeService(
+        UserAuthorizeService $userAuthorizeService
+    ) {
+        $this->userAuthorizeService = $userAuthorizeService;
+    }
+
+    /**
+     * getUserAuthorizeService: ACL service
+     *
+     * @return mixed
+     */
+    public function getUserAuthorizeService()
+    {
+        return $this->userAuthorizeService;
+    }
+
     /** HELPERS ***************************************/
 
     /**
-     * @param User $user
+     * getRegisteredUser
      *
-     * @return null
+     * @param User $user user
+     *
+     * @return null|User
      */
     public function getRegisteredUser(User $user)
     {
@@ -110,36 +176,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @return mixed
-     */
-    public function getSessUser()
-    {
-
-        $user = $this->getIdentity();
-
-        return $user;
-    }
-
-    /**
-     * @return User
-     */
-    public function getNewUser()
-    {
-        return $this->buildNewUser();
-    }
-
-    /**
-     * @param User $user
+     * userExists
      *
-     * @return bool
-     */
-    public function isRegistered(User $user)
-    {
-        return $this->userExists($user);
-    }
-
-    /**
-     * @param User $user
+     * @param User $user user
      *
      * @return bool
      */
@@ -151,13 +190,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @param User $user
+     * isSessUser
+     *
+     * @param User $user user
      *
      * @return bool
      */
     public function isSessUser(User $user)
     {
-        $sessUser = $this->getSessUser();
+        $sessUser = $this->getIdentity();
 
         if (empty($sessUser)) {
 
@@ -165,7 +206,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         }
 
         // @todo make sure this is a valid check for all cases
-        if ($user->getId() === $sessUser->getId() || $user->getUsername() === $sessUser->getUsername()) {
+        if ($user->getId() === $sessUser->getId()
+            || $user->getUsername() === $sessUser->getUsername()
+        ) {
 
             return true;
         }
@@ -175,21 +218,49 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /* CRUD HELPERS ***********************************/
 
+    /**
+     * readUser
+     *
+     * @param User $user user
+     *
+     * @return Result
+     */
     public function readUser(User $user)
     {
         return $this->getUserDataService()->readUser($user);
     }
 
+    /**
+     * createUser
+     *
+     * @param User $user user
+     *
+     * @return Result
+     */
     public function createUser(User $user)
     {
         return $this->getUserDataService()->createUser($user);
     }
 
+    /**
+     * updateUser
+     *
+     * @param User $user user
+     *
+     * @return Result
+     */
     public function updateUser(User $user)
     {
         return $this->getUserDataService()->updateUser($user);
     }
 
+    /**
+     * deleteUser
+     *
+     * @param User $user user
+     *
+     * @return Result
+     */
     public function deleteUser(User $user)
     {
         return $this->getUserDataService()->deleteUser($user);
@@ -198,28 +269,44 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /* PROPERTY HELPERS *******************************/
 
     /**
-     * @param User $user
-     * @param string $propertyNameSpace
-     * @param mixed $dflt default
-     * @param bool $refresh
+     * getUserProperty
+     *
+     * @param User   $user              user
+     * @param string $propertyNameSpace propertyNameSpace
+     * @param mixed  $dflt              dflt
+     * @param bool   $refresh           refresh
      *
      * @return mixed
      */
-    public function getUserProperty(User $user, $propertyNameSpace, $dflt = null, $refresh = false)
-    {
-        return $this->getUserPropertyService()->getUserProperty($user, $propertyNameSpace, $dflt, $refresh);
+    public function getUserProperty(
+        User $user,
+        $propertyNameSpace,
+        $dflt = null,
+        $refresh = false
+    ) {
+        return $this->getUserPropertyService()->getUserProperty(
+            $user,
+            $propertyNameSpace,
+            $dflt,
+            $refresh
+        );
     }
 
     /**
-     * @param string $propertyNameSpace
-     * @param mixed $dflt default
-     * @param bool $refresh
+     * getCurrentUserProperty
      *
-     * @return mixed|null
+     * @param string $propertyNameSpace propertyNameSpace
+     * @param null   $dflt              dflt
+     * @param bool   $refresh           refresh
+     *
+     * @return mixed
      */
-    public function getCurrentUserProperty($propertyNameSpace, $dflt = null, $refresh = false)
-    {
-        $user = $this->getSessUser();
+    public function getCurrentUserProperty(
+        $propertyNameSpace,
+        $dflt = null,
+        $refresh = false
+    ) {
+        $user = $this->getIdentity();
 
         if (empty($user)) {
 
@@ -231,56 +318,45 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @param User $user
+     * disableUser @todo WRITE THIS
+     *
+     * @param User $user user
+     *
+     * @return void
      */
     public function disableUser(User $user)
     {
-
-        // @todo write me
     }
 
     /* AUTHENTICATION HELPERS ********************************/
 
     /**
-     * @param User $user
+     * validateCredentials
      *
-     * @return Result
-     */
-    public function logIn(User $user)
-    {
-
-        return $this->authenticate($user);
-    }
-
-    public function logOut()
-    {
-
-        return $this->clearIdentity();
-    }
-
-    /**
-     * @param User $user
+     * @param User $user user
      *
      * @return Result
      */
     public function validateCredentials(User $user)
     {
-
         return $this->getUserAuthService()->validateCredentials($user);
     }
 
     /**
-     * @param User $user
+     * authenticate
+     *
+     * @param User $user user
      *
      * @return Result
      */
     public function authenticate(User $user)
     {
-
         return $this->getUserAuthService()->authenticate($user);
     }
 
     /**
+     * clearIdentity
+     *
      * @return void
      */
     public function clearIdentity()
@@ -289,21 +365,43 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * @return void
+     * getIdentity
+     *
+     * @return User
      */
     public function getIdentity()
     {
-
         return $this->getUserAuthService()->getIdentity();
+    }
+
+    /* ACL HELPERS ********************************/
+
+    /**
+     * isAllowed
+     *
+     * @param string|AclResource $resource  resource
+     * @param null               $privilege privilege
+     * @param null               $user      user
+     *
+     * @return bool
+     */
+    public function isAllowed($resource, $privilege = null, $user = null)
+    {
+        return $this->getUserAuthorizeService()->isAllowed(
+            $resource,
+            $privilege,
+            $user
+        );
     }
 
     /* UTILITIES **************************************/
     /**
+     * buildNewUser
+     *
      * @return User
      */
     public function buildNewUser()
     {
-
         $user = new User();
 
         return $user;

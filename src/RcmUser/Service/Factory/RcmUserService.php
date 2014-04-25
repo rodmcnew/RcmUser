@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * RcmUserService.php
+ *
+ * RcmUserService
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Service\Factory;
@@ -14,18 +21,50 @@ namespace RcmUser\Service\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * RcmUserService
+ *
+ * RcmUserService
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Service\Factory
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class RcmUserService implements FactoryInterface
 {
+    /**
+     * createService
+     *
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     *
+     * @return mixed|\RcmUser\Service\RcmUserService
+     */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $authServ = $serviceLocator->get('RcmUser\Authentication\Service\UserAuthenticationService');
-        $userDataService = $serviceLocator->get('RcmUser\User\Service\UserDataService');
-        $userPropertyService = $serviceLocator->get('RcmUser\User\Service\UserPropertyService');
+        $authServ = $serviceLocator->get(
+            'RcmUser\Authentication\Service\UserAuthenticationService'
+        );
+        $userDataService = $serviceLocator->get(
+            'RcmUser\User\Service\UserDataService'
+        );
+        $userPropertyService = $serviceLocator->get(
+            'RcmUser\User\Service\UserPropertyService'
+        );
+        $userAuthorizeService = $serviceLocator->get(
+            'RcmUser\Acl\Service\UserAuthorizeService'
+        );
 
         $service = new \RcmUser\Service\RcmUserService();
         $service->setUserDataService($userDataService);
         $service->setUserPropertyService($userPropertyService);
         $service->setUserAuthService($authServ);
+        $service->setUserAuthorizeService($userAuthorizeService);
 
         return $service;
     }

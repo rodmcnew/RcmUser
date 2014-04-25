@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * UserPropertyService.php
+ *
+ * UserPropertyService
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Service
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Service;
@@ -14,25 +21,50 @@ namespace RcmUser\User\Service;
 use RcmUser\Event\EventProvider;
 use RcmUser\User\Entity\User;
 
-class UserPropertyService  extends EventProvider {
+/**
+ * Class UserPropertyService
+ *
+ * UserPropertyService
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Service
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class UserPropertyService extends EventProvider
+{
 
     /**
-     * Expects the listener to set the property on the user object
-     * @param User $user
-     * @param string $propertyNameSpace
-     * @param mixed $dflt default
-     * @param bool $refresh
+     * getUserProperty
+     *
+     * @param User   $user              user
+     * @param string $propertyNameSpace propertyNameSpace
+     * @param null   $dflt              dflt
+     * @param bool   $refresh           refresh
      *
      * @return mixed
      */
-    public function getUserProperty(User $user, $propertyNameSpace, $dflt = null, $refresh = false)
-    {
+    public function getUserProperty(
+        User $user,
+        $propertyNameSpace,
+        $dflt = null,
+        $refresh = false
+    ) {
         $property = $user->getProperty($propertyNameSpace, null);
 
         // if a property is not set, see try to get it from an event listener
         if ($property === null || $refresh) {
             // @event getUserProperty.pre -
-            $this->getEventManager()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user, 'propertyNameSpace' => $propertyNameSpace));
+            $this->getEventManager()->trigger(
+                __FUNCTION__ . '.pre',
+                $this,
+                array('user' => $user, 'propertyNameSpace' => $propertyNameSpace)
+            );
         }
 
         $property = $user->getProperty($propertyNameSpace, $dflt);

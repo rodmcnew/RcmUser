@@ -1,35 +1,132 @@
 <?php
 /**
- * @category  RCM
+ * DoctrineUserDataMapper.php
+ *
+ * DoctrineUserDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Db;
 
 
-use RcmUser\Db\DoctrineMapper;
+use Doctrine\ORM\EntityManager;
 use RcmUser\User\Entity\DoctrineUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
-class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInterface
+/**
+ * Class DoctrineUserDataMapper
+ *
+ * DoctrineUserDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class DoctrineUserDataMapper
+    extends AbstractUserDataMapper
+    implements UserDataMapperInterface
 {
+    const USER_DELETED_STATE = 'deleted';
     /**
-     * @param $id
+     * @var EntityManager $entityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var
+     */
+    protected $entityClass;
+
+    /**
+     * setEntityManager
+     *
+     * @param EntityManager $entityManager entityManager
+     *
+     * @return void
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * getEntityManager
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+
+        return $this->entityManager;
+    }
+
+    /**
+     * setEntityClass
+     *
+     * @param string $entityClass entityClass namespace
+     *
+     * @return void
+     */
+    public function setEntityClass($entityClass)
+    {
+        $this->entityClass = (string)$entityClass;
+    }
+
+    /**
+     * getEntityClass
+     *
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
+
+    /**
+     * fetchById
+     *
+     * @param mixed $id
      *
      * @return Result
      */
     public function fetchById($id)
     {
-        $user = $this->getEntityManager()->find($this->getEntityClass(), $id);
-        if (empty($user)) {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
+            'WHERE user.id = ?1 ' .
+            'AND user.state != ?2'
+        );
+        $query->setParameter(1, $id);
+        $query->setParameter(2, self::USER_DELETED_STATE);
 
-            return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
+        $users = $query->getResult();
+
+        if (empty($users) || !isset($users[0])) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User could not be found by id.'
+            );
         }
+
+        $user = $users[0];
 
         // This is so we get a fresh user every time
         $this->getEntityManager()->refresh($user);
@@ -38,17 +135,35 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param $username
+     * fetchByUsername
+     *
+     * @param string $username
      *
      * @return Result
      */
     public function fetchByUsername($username)
     {
-        $user = $this->getEntityManager()->getRepository($this->getEntityClass())->findOneBy(array('username' => $username));
-        if (empty($user)) {
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
+            'WHERE user.username = ?1 ' .
+            'AND user.state != ?2'
+        );
+        $query->setParameter(1, $username);
+        $query->setParameter(2, self::USER_DELETED_STATE);
 
-            return new Result(null, Result::CODE_FAIL, 'User could not be found by username.');
+
+        $users = $query->getResult();
+
+        if (empty($users) || !isset($users[0])) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User could not be found by username.'
+            );
         }
+
+        $user = $users[0];
 
         // This is so we get a fresh user every time
         $this->getEntityManager()->refresh($user);
@@ -57,49 +172,113 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * create
      *
-     * @return Result
+     * @param User $requestUser
+     * @param User $responseUser
+     *
+     * @return \RcmUser\User\Result
      */
-    public function create(User $user)
+    public function create(User $requestUser, User $responseUser)
     {
-        $result = $this->getValidInstance($user);
+        /* VALIDATE */
+        if (empty($responseUser->getState())) {
 
-        $user = $result->getUser();
+            $responseUser->setState($this->getDefaultUserState());
+        }
 
-        // @todo if error, fail with null
-        $this->getEntityManager()->persist($user);
+        $result = $this->getUserValidator()->validateCreateUser(
+            $requestUser,
+            $responseUser
+        );
+
+        if (!$result->isSuccess()) {
+
+            $responseUser->setState(null);
+
+            return $result;
+        }
+
+        /* PREPARE */
+        // make sure no duplicates
+        $dupUser = $this->fetchByUsername(
+            $requestUser->getUsername()
+        );
+
+        if ($dupUser->isSuccess()) {
+
+            $responseUser->setState(null);
+
+            // ERROR - user exists
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User could not be prepared, duplicate username.'
+            );
+        }
+
+        $result = $this->getUserDataPreparer()->prepareUserCreate(
+            $requestUser,
+            $responseUser
+        );
+
+        if (!$result->isSuccess()) {
+
+            $responseUser->setState(null);
+
+            return $result;
+        }
+
+        /* SAVE */
+        $responseUser = $this->getValidInstance($responseUser);
+
+        // @todo if error, fail with null and set user state back
+        $this->getEntityManager()->persist($responseUser);
         $this->getEntityManager()->flush();
 
-        return new Result($user);
+        // @todo unset password $responseUser->setPassword(null);
+
+        return new Result($responseUser);
     }
 
     /**
-     * @param User $user
+     * read
      *
-     * @return Result
+     * @param User $requestUser
+     * @param User $responseUser
+     *
+     * @return mixed|Result
      */
-    public function read(User $user)
+    public function read(User $requestUser, User $responseUser)
     {
-        $result = $this->getValidInstance($user);
+        $id = $requestUser->getId();
 
-        $user = $result->getUser();
-        $id = $user->getId();
         if (!empty($id)) {
 
             $result = $this->fetchById($id);
 
-            if($result->isSuccess()){
+            if ($result->isSuccess()) {
+
+                // we want to populate everything but properties.
+                $responseUser->populate($result->getUser(), array('properties'));
+                $result->setUser($responseUser);
 
                 return $result;
             }
         }
 
-        $username = $user->getUsername();
+        $username = $requestUser->getUsername();
 
         if (!empty($username)) {
 
             $result = $this->fetchByUsername($username);
+
+            if ($result->isSuccess()) {
+
+                // we want to populate everything but properties.
+                $responseUser->populate($result->getUser(), array('properties'));
+                $result->setUser($responseUser);
+            }
 
             return $result;
         }
@@ -108,65 +287,130 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
     }
 
     /**
-     * @param User $user
+     * update
      *
-     * @return Result
+     * @param User $requestUser
+     * @param User $responseUser
+     * @param User $existingUser
+     *
+     * @return \RcmUser\User|Result
      */
-    public function update(User $user)
+    public function update(User $requestUser, User $responseUser, User $existingUser)
     {
-        $result = $this->getValidInstance($user);
-
-        $user = $result->getUser();
-
-        if (!$this->canUpdate($user)) {
+        /* VALIDATE */
+        if (!$this->canUpdate($requestUser)) {
 
             // error, cannot update
-            return new Result(null, Result::CODE_FAIL, 'User cannot be updated, id required for update.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User cannot be updated, id required for update.'
+            );
         }
+
+        // USERNAME CHECKS
+        $requestUsername = $requestUser->getUsername();
+        $existingUserName = $existingUser->getUsername();
+
+        // if username changed:
+        if ($existingUserName !== $requestUsername) {
+
+            // make sure no duplicates
+            $dupUser = $this->fetchByUsername($requestUsername);
+
+            if ($dupUser->isSuccess()) {
+
+                // ERROR - user exists
+                return new Result(
+                    null,
+                    Result::CODE_FAIL,
+                    'User could not be prepared, duplicate username.'
+                );
+            }
+
+            $responseUser->setUsername($requestUsername);
+        }
+
+        $result = $this->getUserValidator()->validateUpdateUser(
+            $requestUser,
+            $responseUser,
+            $existingUser
+        );
+
+        if (!$result->isSuccess()) {
+
+            return $result;
+        }
+
+        /* PREPARE */
+        $result = $this->getUserDataPreparer()->prepareUserUpdate(
+            $requestUser,
+            $responseUser,
+            $existingUser
+        );
+
+        if (!$result->isSuccess()) {
+
+            return $result;
+        }
+
+        /* SAVE */
+        $responseUser = $this->getValidInstance($responseUser);
 
         // @todo if error, fail with null
-        $this->getEntityManager()->merge($user);
+        $this->getEntityManager()->merge($responseUser);
         $this->getEntityManager()->flush();
 
-        return new Result($user);
+        return new Result($responseUser);
     }
 
     /**
-     * @param User $user
+     * delete
      *
-     * @return Result
+     * @param User $requestUser
+     * @param User $responseUser
+     *
+     * @return mixed|Result
      */
-    public function delete(User $user)
+    public function delete(User $requestUser, User $responseUser)
     {
-
-        return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, delete not supported.');
-        /* by default, we should not support delete
-        $result = $this->getValidInstance($user);
-
-        $user = $result->getUser();
-
-        if (!$this->canUpdate($user)) {
+        /* VALIDATE */
+        if (!$this->canUpdate($requestUser)) {
 
             // error, cannot update
-            return new Result(null, Result::CODE_FAIL, 'User cannot be deleted, id required for delete.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User cannot be deleted (disabled), id required for delete.'
+            );
         }
 
-        //  if error, fail with null
+        /* PREPARE */
+        $responseUser->setUsername($this->buildDeletedUsername($responseUser));
+        $responseUser->setState(self::USER_DELETED_STATE);
+
+        /* SAVE */
+        $responseUser = $this->getValidInstance($responseUser);
+
+        // @todo if error, fail with null
+        $this->getEntityManager()->merge($responseUser);
+        /* by default, we should not support true delete
         $this->getEntityManager()->remove($user);
+        */
         $this->getEntityManager()->flush();
 
-        return new Result($user);
-        */
+        return new Result($responseUser);
     }
 
     /**
-     * @param User $user
+     * getValidInstance
      *
-     * @return Result
+     * @param User $user user
+     *
+     * @return User
      */
     public function getValidInstance(User $user)
     {
-
         if (!($user instanceof DoctrineUser)) {
 
             $doctrineUser = new DoctrineUser();
@@ -175,24 +419,40 @@ class DoctrineUserDataMapper extends DoctrineMapper implements UserDataMapperInt
             $user = $doctrineUser;
         }
 
-        return new Result($user);
+        return $user;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function canUpdate(User $user)
+    public function buildDeletedUsername(User $user)
     {
+        $usernameArr = array(
+            self::USER_DELETED_STATE,
+            $user->getId(),
+            $user->getUsername()
+        );
 
-        $id = $user->getId();
+        return json_encode($usernameArr);
+    }
 
-        if (empty($id)) {
+    public function parseDeletedUsername(User $user)
+    {
+        try{
 
-            return false;
+            $usernameArr = json_decode($user->getUsername(), true);
+        }catch (\Exception $e){
+
+            return null;
         }
 
-        return true;
+        if(count($usernameArr) !== 3){
+
+            return null;
+        }
+
+        if($usernameArr[1] !== $user->getId()){
+
+            return null;
+        }
+
+        return $usernameArr[2];
     }
 } 

@@ -11,35 +11,30 @@ var_dump($u);
 
 $acl = new Acl();
 */
-//$userService = new RcmUser\Service\RcmUserService();
-//var_dump($userService->getUserInputFilter()); die;
+//$rcmUserService = new RcmUser\Service\$rcmUserService();
+//var_dump($rcmUserService->getUserInputFilter()); die;
 $startTime = time();
-$user = $userService->buildNewUser();
+//$user = $rcmUserService->buildNewUser();
+$user = new RcmUser\User\Entity\User();
 
-//$user->setId('f11653b8-2a4a-4784-a70b-ac7641b46c28');
-$user->setUsername('4057510001');
-$user->setPassword('');
+//$user->setId('7680114101');
+//$user->setUsername('7680114101');
+//$user->setPassword('');
+//$user->setState('disabled');
+
+//
+//$user->setId('d0bbdc68-5f02-4b4a-bca2-c6a092aebd8f');
+//$user->setUsername('Berry1');
+//$user->setPassword('123456789');
+//$user->setProperty('RcmUser\Acl\UserRoles', array('admin'));
+//$user->setState('enabled');
 
 echo "**REQUEST USER OBJECT:\n";
 var_dump($user);
 
-
 /* CRUD ***********************************/
-/* CREATE *
-$result = $userService->createUser($user);
-
-echo "\n**After create:\n";
-if(!$result->isSuccess()){
-
-    echo "ERROR: ";
-    var_dump($result->getMessages());
-}
-
-var_dump($result->getUser());
-/* */
-
 /* READ *
-$result = $userService->readUser($user);
+$result = $rcmUserService->readUser($user);
 
 echo "\nREAD: After read:\n";
 if(!$result->isSuccess()){
@@ -51,8 +46,21 @@ if(!$result->isSuccess()){
 var_dump($result->getUser());
 /* */
 
+/* CREATE *
+$result = $rcmUserService->createUser($user);
+
+echo "\n**After create:\n";
+if(!$result->isSuccess()){
+
+    echo "ERROR: ";
+    var_dump($result->getMessages());
+}
+
+var_dump($result->getUser());
+/* */
+
 /* UPDATE *
-$result = $userService->updateUser($user);
+$result = $rcmUserService->updateUser($user);
 
 echo "\nUPDATE: After update:\n";
 if(!$result->isSuccess()){
@@ -65,9 +73,22 @@ var_dump($result->getUser());
 /* */
 
 /* DELETE *
-$result = $userService->deleteUser($user);
+$result = $rcmUserService->deleteUser($user);
 
 echo "\n**After delete:\n";
+if(!$result->isSuccess()){
+
+    echo "\nERROR: ";
+    var_dump($result->getMessages());
+}
+
+var_dump($result->getUser());
+/* */
+
+/* READ *
+$result = $rcmUserService->readUser($user);
+
+echo "\nREAD: After read:\n";
 if(!$result->isSuccess()){
 
     echo "\nERROR: ";
@@ -83,14 +104,14 @@ var_dump($result->getUser());
 /* AUTH ***********************************/
 
 /* AUTH CHECK *
-$authResult = $userService->validateCredentials($user);
+$authResult = $rcmUserService->validateCredentials($user);
 
 echo "\nAUTH CHECK Result: ".var_export($authResult->isValid(), true)."\n";
 var_dump($authResult);
 /* */
 
 /*  LOG IN *
-$authResult = $userService->authenticate($user);
+$authResult = $rcmUserService->authenticate($user); // OR ->logIn($user)
 
 echo "\nLOG IN Result: " . var_export($authResult->isValid(), true) . "\n";
 var_dump($authResult);
@@ -98,21 +119,21 @@ var_dump($authResult);
 
 /* GET SESSION USER *
 echo "\nGET SESSION USER: \n";
-$sessUser = $userService->getIdentity();
+$sessUser = $rcmUserService->getIdentity();
 var_dump($sessUser);
 /* */
 
 /*  LOG OUT *
-$userService->clearIdentity();
+$rcmUserService->clearIdentity(); ; // OR ->logOut($user)
 
 echo "\nLOG OUT: Session user after log out: \n";
-var_dump($userService->getIdentity());
+var_dump($rcmUserService->getIdentity());
 
 /* */
 
 /* ACL ************************************
 echo "\nUser Roles: ";
-$currentUser = $userService->getIdentity();
+$currentUser = $rcmUserService->getIdentity();
 if (!empty($currentUser)) {
     var_dump($currentUser->getProperty('RcmUser\Acl\UserRoles', 'NOT SET'));
 } else {
@@ -133,10 +154,21 @@ var_dump($bjyAuthService->getAcl()->getResources());
 /* */
 
 /* ACL CHECK *
-$resource = 'RcmUserAccess'; // parent
+$resource = 'RcmUserAccess.dev'; // parent
 $privilage = 'read'; // child
-echo "\nACL CHECK: ->isAllowed($resource, $privilage) = ";
+/* BJY Check *
+echo "\nACL CHECK: viewHelper->isAllowed($resource, $privilage) = ";
 var_export($this->isAllowed($resource, $privilage));
+echo "\nACL CHECK: controllerPlugin->isAllowed($resource, $privilage) = ";
+var_export($this->userController->isAllowed($resource, $privilage));
+/* */
+/* RcmUser *
+echo "\nACL CHECK: rcmUserService->rcmUserIsAllowed($resource, $privilage) = ";
+var_export($this->rcmUserService->IsAllowed($resource, $privilage));
+echo "\nACL CHECK: viewHelper->rcmUserIsAllowed($resource, $privilage) = ";
+var_export($this->rcmUserIsAllowed($resource, $privilage));
+echo "\nACL CHECK: controllerPlugin->rcmUserIsAllowed($resource, $privilage) = ";
+var_export($this->userController->rcmUserIsAllowed($resource, $privilage));
 /* */
 
 /* TIME */

@@ -1,26 +1,43 @@
 <?php
 /**
- * @category  RCM
+ * UserAdapter.php
+ *
+ * UserAdapter
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Authentication\Adapter
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Authentication\Adapter;
 
 
-use RcmUser\User\Entity\AbstractUser;
 use RcmUser\User\Entity\User;
+use RcmUser\User\Service\UserDataService;
 use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\PasswordInterface;
 
 /**
- * Class UserAdapter
+ * UserAdapter
  *
- * @package RcmUser\Authentication\Adapter
+ * UserAdapter
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Authentication\Adapter
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class UserAdapter extends AbstractAdapter
 {
@@ -41,12 +58,17 @@ class UserAdapter extends AbstractAdapter
 
     /**
      * @var bool
-     * Force returned user to hide password, can cause issues is return object is meant to be saved.
+     * Force returned user to hide password,
+     * can cause issues is return object is meant to be saved.
      */
     protected $obfuscatePassword = true;
 
     /**
-     * @param User $user
+     * setUser
+     *
+     * @param User $user user
+     *
+     * @return void
      */
     public function setUser(User $user)
     {
@@ -54,6 +76,8 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
+     * getUser
+     *
      * @return User
      */
     public function getUser()
@@ -62,7 +86,11 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
-     * @param boolean $obfuscatePassword
+     * setObfuscatePassword
+     *
+     * @param bool $obfuscatePassword obfuscatePassword
+     *
+     * @return void
      */
     public function setObfuscatePassword($obfuscatePassword)
     {
@@ -70,7 +98,9 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
-     * @return boolean
+     * getObfuscatePassword
+     *
+     * @return bool
      */
     public function getObfuscatePassword()
     {
@@ -78,15 +108,21 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
-     * @param mixed $userDataService
+     * setUserDataService
+     *
+     * @param UserDataService $userDataService userDataService
+     *
+     * @return void
      */
-    public function setUserDataService($userDataService)
+    public function setUserDataService(UserDataService $userDataService)
     {
         $this->userDataService = $userDataService;
     }
 
     /**
-     * @return mixed
+     * getUserDataService
+     *
+     * @return UserDataService
      */
     public function getUserDataService()
     {
@@ -94,7 +130,11 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
-     * @param mixed $encryptor
+     * setEncryptor
+     *
+     * @param PasswordInterface $encryptor encryptor
+     *
+     * @return void
      */
     public function setEncryptor(PasswordInterface $encryptor)
     {
@@ -102,7 +142,9 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
-     * @return PasswordInterface
+     * getEncryptor
+     *
+     * @return mixed
      */
     public function getEncryptor()
     {
@@ -110,11 +152,9 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
-     * Performs an authentication attempt
+     * authenticate: Performs an authentication attempt
      *
-     * @return \Zend\Authentication\Result
-     * @throws \Zend\Authentication\Adapter\Exception\ExceptionInterface
-     *               If authentication cannot be performed
+     * @return Result
      */
     public function authenticate()
     {
@@ -134,7 +174,8 @@ class UserAdapter extends AbstractAdapter
             );
         }
 
-        // We will remove id is set so that we only read from username, this will eliminate an incorrect id/username match in the object
+        // We will remove id is set so that we only read from username,
+        // this will eliminate an incorrect id/username match in the object
         $user->setId(null);
 
         $existingUserResult = $this->getUserDataService()->readUser($user);
@@ -159,7 +200,7 @@ class UserAdapter extends AbstractAdapter
 
             if ($this->getObfuscatePassword()) {
 
-                $existingUser->setPassword(AbstractUser::PASSWORD_OBFUSCATE);
+                $existingUser->setPassword(User::PASSWORD_OBFUSCATE);
             }
 
             $result = new Result(

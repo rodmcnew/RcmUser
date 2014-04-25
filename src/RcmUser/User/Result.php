@@ -1,35 +1,54 @@
 <?php
 /**
- * @category  RCM
+ * Result.php
+ *
+ * Result
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User;
+
+use RcmUser\User\Entity\User;
 
 
 /**
  * Class Result
  *
- * @package RcmUser\User
+ * Result
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
  */
 class Result
 {
 
     /**
-     *
+     * int
      */
     const CODE_SUCCESS = 1;
     /**
-     *
+     * int
      */
     const CODE_FAIL = 0;
 
     /**
-     *
+     * string
      */
     const DEFAULT_KEY = '_default';
 
@@ -48,22 +67,33 @@ class Result
      */
     protected $messages = array();
 
+    /**
+     * __construct
+     *
+     * @param User  $user     user
+     * @param int   $code     code
+     * @param array $messages messages
+     */
     public function __construct($user = null, $code = 1, $messages = array())
     {
         $this->setUser($user);
 
         $this->setCode($code);
 
-        if(!is_array($messages)){
+        if (!is_array($messages)) {
 
-            $messages = array(self::DEFAULT_KEY => (string) $messages);
+            $messages = array(self::DEFAULT_KEY => (string)$messages);
         }
 
         $this->setMessages($messages);
     }
 
     /**
-     * @param int $code
+     * setCode
+     *
+     * @param int $code code
+     *
+     * @return void
      */
     public function setCode($code)
     {
@@ -71,6 +101,8 @@ class Result
     }
 
     /**
+     * getCode
+     *
      * @return int
      */
     public function getCode()
@@ -79,7 +111,11 @@ class Result
     }
 
     /**
-     * @param array $messages
+     * setMessages
+     *
+     * @param array $messages messages
+     *
+     * @return void
      */
     public function setMessages($messages)
     {
@@ -87,6 +123,8 @@ class Result
     }
 
     /**
+     * getMessages
+     *
      * @return array
      */
     public function getMessages()
@@ -95,8 +133,12 @@ class Result
     }
 
     /**
-     * @param $key
-     * @param $value
+     * setMessage
+     *
+     * @param string $key   key
+     * @param mixed  $value value
+     *
+     * @return void
      */
     public function setMessage($key = null, $value = null)
     {
@@ -108,8 +150,10 @@ class Result
     }
 
     /**
-     * @param      $key
-     * @param null $deflt
+     * getMessage
+     *
+     * @param string $key   key
+     * @param mixed  $deflt deflt
      *
      * @return mixed
      */
@@ -125,7 +169,11 @@ class Result
     }
 
     /**
-     * @param null $user
+     * setUser
+     *
+     * @param User|null $user user
+     *
+     * @return void
      */
     public function setUser($user)
     {
@@ -133,7 +181,9 @@ class Result
     }
 
     /**
-     * @return null
+     * getUser
+     *
+     * @return User|null
      */
     public function getUser()
     {
@@ -141,6 +191,8 @@ class Result
     }
 
     /**
+     * isSuccess
+     *
      * @return bool
      */
     public function isSuccess()

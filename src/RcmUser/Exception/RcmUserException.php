@@ -1,15 +1,37 @@
 <?php
- /**
- * @category  RCM
+/**
+ * RcmUserException
+ *
+ * RcmUserException
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Exception
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Exception;
 
-
-class RcmUserException extends \Exception {
+/**
+ * RcmUserException
+ *
+ * RcmUserException
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Exception
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class RcmUserException extends \Exception
+{
 } 

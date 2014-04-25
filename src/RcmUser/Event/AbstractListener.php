@@ -1,11 +1,18 @@
 <?php
- /**
- * @category  RCM
+/**
+ * AbstractListener
+ *
+ * AbstractListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\Event;
@@ -14,8 +21,23 @@ namespace RcmUser\Event;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 
-class AbstractListener implements ListenerAggregateInterface {
-
+/**
+ * AbstractListener
+ *
+ * AbstractListener
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Event
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class AbstractListener implements ListenerAggregateInterface
+{
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
@@ -24,18 +46,27 @@ class AbstractListener implements ListenerAggregateInterface {
     protected $event = 'someEvent';
     protected $priority = 100;
 
-
     /**
-     * {@inheritDoc}
+     * attach
+     *
+     * @param EventManagerInterface $events events
+     *
+     * @return void
      */
     public function attach(EventManagerInterface $events)
     {
-        $sharedEvents      = $events->getSharedManager();
-        $this->listeners[] = $sharedEvents->attach($this->id, $this->event, array($this, 'onEvent'), $this->priority);
+        $sharedEvents = $events->getSharedManager();
+        $this->listeners[] = $sharedEvents->attach(
+            $this->id, $this->event, array($this, 'onEvent'), $this->priority
+        );
     }
 
     /**
-     * {@inheritDoc}
+     * detach
+     *
+     * @param EventManagerInterface $events events
+     *
+     * @return void
      */
     public function detach(EventManagerInterface $events)
     {
@@ -47,7 +78,11 @@ class AbstractListener implements ListenerAggregateInterface {
     }
 
     /**
-     * @param $e
+     * onEvent
+     *
+     * @param Event $e e
+     *
+     * @return void
      */
     public function onEvent($e)
     {

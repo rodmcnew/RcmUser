@@ -1,32 +1,64 @@
 <?php
 /**
- * @category  RCM
+ * DoctrineUserDataMapper.php
+ *
+ * DoctrineUserDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2012 Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
- * @version   GIT: reliv
- * @link      http://ci.reliv.com/confluence
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
  */
 
 namespace RcmUser\User\Service\Factory;
 
+use RcmUser\User\Entity\User;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
+/**
+ * Class DoctrineUserDataMapper
+ *
+ * DoctrineUserDataMapper
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Service\Factory
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class DoctrineUserDataMapper implements FactoryInterface
 {
     /**
-     * @param ServiceLocatorInterface $serviceLocator
+     * createService
      *
-     * @return mixed|\RcmUser\User\Db\DoctrineUserDataMapper
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     *
+     * @return DoctrineUserDataMapper
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $cfg = $serviceLocator->get('RcmUser\User\Config');
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $dm = new \RcmUser\User\Db\DoctrineUserDataMapper();
-        $dm->setEntityManager($em);
-        $dm->setEntityClass('RcmUser\User\Entity\DoctrineUser');
+        $udp = $serviceLocator->get('RcmUser\User\Data\UserDataPreparer');
+        $udv = $serviceLocator->get('RcmUser\User\Data\UserValidator');
 
-        return $dm;
+        $service = new \RcmUser\User\Db\DoctrineUserDataMapper();
+        $service->setDefaultUserState($cfg->get('DefaultUserState', User::STATE_DISABLED));
+        $service->setEntityManager($em);
+        $service->setEntityClass('RcmUser\User\Entity\DoctrineUser');
+        $service->setUserDataPreparer($udp);
+        $service->setUserValidator($udv);
+
+        return $service;
     }
 }
