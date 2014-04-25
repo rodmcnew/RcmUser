@@ -269,7 +269,7 @@ class User implements UserInterface, \JsonSerializable
                 $this->setPassword($data['password']);
             }
             if (isset($data['state']) && !in_array('state', $exclude)) {
-                $this->setProperties($data['state']);
+                $this->setState($data['state']);
             }
             if (isset($data['properties']) && !in_array('properties', $exclude)) {
                 $this->setProperties($data['properties']);
