@@ -198,7 +198,7 @@ class Tester implements ServiceLocatorAwareInterface
         $password = self::parseParam(
             $params, 'userPlainTextPassword', 'pass_testCase_2_word1'
         );
-
+var_dump('mnmnmn',$user);
         // build new user if
         if (empty($user)) {
             $user = new User();

@@ -5,7 +5,18 @@
 /* Implementation test */
 require_once(dirname(__FILE__) . '../../../../test/ImplementationTest/Tester.php');
 try {
-    echo \RcmUser\ImplementationTest\Tester::testAll($userController->getServiceLocator());
+
+    $params =array();
+    $params['user'] = new \RcmUser\User\Entity\User();
+    $params['user']->setUsername('7');
+    $params['user']->setPassword('Netsteps');
+
+    $params['userPlainTextPassword'] = 'Netsteps';
+
+    //echo \RcmUser\ImplementationTest\Tester::testAll($userController->getServiceLocator());
+
+    echo \RcmUser\ImplementationTest\Tester::testCase2($userController->getServiceLocator(), $params);
+
 } catch (\Exception $e){
 
     echo "\nERROR: " . $e->getMessage();
