@@ -42,6 +42,73 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class Tester implements ServiceLocatorAwareInterface
 {
+    public $testId = '';
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+    /**
+     * @var \RcmUser\Service\RcmUserService'
+     */
+    protected $rcmUserService;
+    /**
+     * @var \BjyAuthorize\Service\Authorize
+     */
+    protected $bjyAuthService;
+
+    /* ********************** */
+    /**
+     * @var string
+     */
+    protected $message = '';
+
+    /**
+     * __construct
+     *
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     */
+    public function __construct(ServiceLocatorInterface $serviceLocator)
+    {
+
+        $this->setServiceLocator($serviceLocator);
+
+        $this->rcmUserService = $this->getServiceLocator()
+            ->get('RcmUser\Service\RcmUserService');
+
+        $this->bjyAuthService = $this->getServiceLocator()
+            ->get('BjyAuthorize\Service\Authorize');
+    }
+
+    /**
+     * getServiceLocator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
+    }
+
+    /**
+     * setServiceLocator
+     *
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     *
+     * @return void
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    /**
+     * testAll
+     *
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     * @param array                   $params         params
+     *
+     * @return string
+     */
     public static function testAll(
         ServiceLocatorInterface $serviceLocator,
         $params = array()
@@ -176,10 +243,177 @@ class Tester implements ServiceLocatorAwareInterface
     }
 
     /**
+     * parseParam
+     *
+     * @param      $params  params
+     * @param      $key     key
+     * @param null $default default
+     *
+     * @return null
+     */
+    public static function parseParam($params, $key, $default = null)
+    {
+        if (isset($params[$key])) {
+
+            return $params[$key];
+        }
+
+        return $default;
+    }
+
+    /**
+     * addMessage
+     *
+     * @param string $message message
+     *
+     * @return void
+     */
+    public function addMessage($message)
+    {
+        $this->message .= "\n[" . $this->testId . "] - " . $message . "\n";
+    }
+
+    /**
+     * testCreateUser
+     *
+     * @param User $user user
+     *
+     * @return bool
+     */
+    public function testCreateUser(User $user)
+    {
+        /* CREATE */
+        $result = $this->rcmUserService->createUser($user);
+
+        $this->addMessage("** CREATE **");
+
+        if (!$result->isSuccess()) {
+
+            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
+
+            return null;
+        }
+
+        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
+
+        return $result->getUser();
+        /* */
+    }
+
+    /**
+     * getMessage
+     *
+     * @param bool $clear clear messages
+     *
+     * @return string
+     */
+    public function getMessage($clear = true)
+    {
+        $message = $this->message;
+
+        if ($clear) {
+            $this->clearMessage();
+        }
+
+        return $message;
+    }
+
+    /**
+     * clearMessage
+     *
+     * @return void
+     */
+    public function clearMessage()
+    {
+        $this->message = '';
+    }
+
+    /**
+     * testReadUser
+     *
+     * @param User $user user
+     *
+     * @return bool
+     */
+    public function testReadUser(User $user)
+    {
+        /* READ */
+        $result = $this->rcmUserService->readUser($user);
+
+        $this->addMessage("** READ **");
+
+        if (!$result->isSuccess()) {
+
+            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
+
+            return null;
+        }
+
+        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
+
+        return $result->getUser();
+        /* */
+    }
+
+    /**
+     * testUpdateUser
+     *
+     * @param User $user user
+     *
+     * @return bool
+     */
+    public function testUpdateUser(User $user)
+    {
+        /* CREATE */
+        $result = $this->rcmUserService->updateUser($user);
+
+        $this->addMessage("** UPDATE **");
+
+        if (!$result->isSuccess()) {
+
+            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
+
+            return null;
+        }
+
+        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
+
+        return $result->getUser();
+        /* */
+    }
+
+    /**
+     * testDeleteUser
+     *
+     * @param User $user user
+     *
+     * @return bool
+     */
+    public function testDeleteUser(User $user)
+    {
+        /* CREATE */
+        $result = $this->rcmUserService->deleteUser($user);
+
+        $this->addMessage("DELETE");
+
+        if (!$result->isSuccess()) {
+
+            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
+
+            return null;
+        }
+
+        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
+
+        return $result->getUser();
+        /* */
+    }
+
+    /**
      * testCase2
      *
-     * @param ServiceLocatorInterface $serviceLocator
-     * @param array                   $params
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     * @param array                   $params         params
      *
      * @return string
      */
@@ -198,7 +432,7 @@ class Tester implements ServiceLocatorAwareInterface
         $password = self::parseParam(
             $params, 'userPlainTextPassword', 'pass_testCase_2_word1'
         );
-var_dump('mnmnmn',$user);
+
         // build new user if
         if (empty($user)) {
             $user = new User();
@@ -288,6 +522,77 @@ var_dump('mnmnmn',$user);
         return $tester->getMessage();
     }
 
+
+    /* ********************** */
+
+    /**
+     * testValidateCredentials
+     *
+     * @param User $user user
+     *
+     * @return null
+     */
+    public function testValidateCredentials(User $user)
+    {
+
+        /* AUTH CHECK */
+        $authResult = $this->rcmUserService->validateCredentials($user);
+
+        if (!$authResult->isValid()) {
+
+            $this->addMessage(
+                " ERROR: " . var_export($authResult->getMessages(), true)
+            );
+
+            return null;
+        }
+
+        $this->addMessage(
+            " SUCCESS: " . var_export($authResult->getIdentity(), true)
+        );
+
+        return $authResult->getIdentity();
+        /* */
+    }
+
+    /**
+     * testAuthenticate
+     *
+     * @param User $user user
+     *
+     * @return null
+     */
+    public function testAuthenticate(User $user)
+    {
+
+        /* AUTH CHECK */
+        $authResult = $this->rcmUserService->authenticate($user);
+
+        if (!$authResult->isValid()) {
+
+            $this->addMessage(
+                " ERROR: " . var_export($authResult->getMessages(), true)
+            );
+
+            return null;
+        }
+
+        $this->addMessage(
+            " SUCCESS: " . var_export($authResult->getIdentity(), true)
+        );
+
+        return $authResult->getIdentity();
+        /* */
+    }
+
+    /**
+     * testCase3
+     *
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     * @param array                   $params         params
+     *
+     * @return string
+     */
     public static function testCase3(
         ServiceLocatorInterface $serviceLocator,
         $params = array()
@@ -326,7 +631,7 @@ var_dump('mnmnmn',$user);
         }
 
         $resource = self::parseParam($params, 'resource', 'RcmUser');
-        $privilage = self::parseParam($params, 'privilage', '');
+        $privilege = self::parseParam($params, 'privilege', '');
 
         $user->setPassword($password);
         $tester->addMessage("Log in user: ");
@@ -353,23 +658,47 @@ var_dump('mnmnmn',$user);
 
 
         /* ACL VALUES */
-        $tester->addMessage("ACL Roles (from BJY): " . var_export($tester->bjyAuthService->getAcl()->getRoles(), true));
-        $tester->addMessage("ACL Resources (from BJY): " . var_export($tester->bjyAuthService->getAcl()->getResources(), true));
+        $tester->addMessage(
+            "ACL Roles (from BJY): " .
+            var_export($tester->bjyAuthService->getAcl()->getRoles(), true)
+        );
+        $tester->addMessage(
+            "ACL Resources (from BJY): " .
+            var_export($tester->bjyAuthService->getAcl()->getResources(), true)
+        );
 
         /* ACL CHECK */
         /* BJY Check *
-        echo "\nACL CHECK: viewHelper->isAllowed($resource, $privilage) = ";
-        var_export($this->isAllowed($resource, $privilage));
-        echo "\nACL CHECK: controllerPlugin->isAllowed($resource, $privilage) = ";
-        var_export($this->userController->isAllowed($resource, $privilage));
+        $tester->addMessage(
+            "ACL CHECK: viewHelper->isAllowed($resource, $privilege) = ".
+            var_export($this->isAllowed($resource, $privilege))
+        );
+        $tester->addMessage(
+            "ACL CHECK: controllerPlugin->isAllowed($resource, $privilege) = ".
+            var_export($this->userController->isAllowed($resource, $privilege))
+        );
         /* */
         /* RcmUser */
-        $tester->addMessage("ACL CHECK: rcmUserService->rcmUserIsAllowed($resource, $privilage) = " . json_encode($tester->rcmUserService->IsAllowed($resource, $privilage)));
+        $tester->addMessage(
+            "ACL CHECK: rcmUserService->rcmUserIsAllowed($resource, $privilege) = " .
+            json_encode(
+                $tester->rcmUserService->IsAllowed($resource, $privilege)
+            )
+        );
         /* *
-        $tester->addMessage("ACL CHECK: viewHelper->rcmUserIsAllowed($resource, $privilage) = ";
-        var_export($tester->rcmUserIsAllowed($resource, $privilage));
-        $tester->addMessage("nACL CHECK: controllerPlugin->rcmUserIsAllowed($resource, $privilage) = ";
-        var_export($tester->userController->rcmUserIsAllowed($resource, $privilage));
+        $tester->addMessage(
+            "ACL CHECK: viewHelper->rcmUserIsAllowed($resource, $privilege) = " .
+            var_export(
+                $tester->rcmUserIsAllowed($resource, $privilege)
+            )
+        );
+        $tester->addMessage(
+            "ACL CHECK: ".
+            "controllerPlugin->rcmUserIsAllowed($resource, $privilege) = " .
+            var_export(
+                $tester->userController->rcmUserIsAllowed($resource, $privilege)
+            )
+        );
         /* */
 
 
@@ -390,297 +719,6 @@ var_dump('mnmnmn',$user);
         );
 
         return $tester->getMessage();
-    }
-
-    /* ********************** */
-
-    public static function createTestUser()
-    {
-
-
-    }
-
-    public static function deleteTestUser()
-    {
-
-
-    }
-
-    /**
-     * parseParam
-     *
-     * @param      $params
-     * @param      $key
-     * @param null $default
-     *
-     * @return null
-     */
-    public static function parseParam($params, $key, $default = null)
-    {
-        if (isset($params[$key])) {
-
-            return $params[$key];
-        }
-
-        return $default;
-    }
-
-    /**
-     * @var ServiceLocatorInterface
-     */
-    protected $serviceLocator;
-
-    /**
-     * @var \RcmUser\Service\RcmUserService'
-     */
-    protected $rcmUserService;
-
-    /**
-     * @var \BjyAuthorize\Service\Authorize
-     */
-    protected $bjyAuthService;
-
-    /**
-     * @var string
-     */
-    protected $message = '';
-
-    public $testId = '';
-
-    /**
-     * __construct
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function __construct(ServiceLocatorInterface $serviceLocator)
-    {
-
-        $this->setServiceLocator($serviceLocator);
-
-        $this->rcmUserService = $this->getServiceLocator()
-            ->get('RcmUser\Service\RcmUserService');
-
-        $this->bjyAuthService = $this->getServiceLocator()
-            ->get('BjyAuthorize\Service\Authorize');
-    }
-
-    /**
-     * setServiceLocator
-     *
-     * @param ServiceLocatorInterface $serviceLocator serviceLocator
-     *
-     * @return void
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * getServiceLocator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-
-    /**
-     * testReadUser
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function testReadUser(User $user)
-    {
-        /* READ */
-        $result = $this->rcmUserService->readUser($user);
-
-        $this->addMessage("** READ **");
-
-        if (!$result->isSuccess()) {
-
-            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
-
-            return null;
-        }
-
-        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
-
-        return $result->getUser();
-        /* */
-    }
-
-    /**
-     * testCreateUser
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function testCreateUser(User $user)
-    {
-        /* CREATE */
-        $result = $this->rcmUserService->createUser($user);
-
-        $this->addMessage("** CREATE **");
-
-        if (!$result->isSuccess()) {
-
-            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
-
-            return null;
-        }
-
-        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
-
-        return $result->getUser();
-        /* */
-    }
-
-    /**
-     * testUpdateUser
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function testUpdateUser(User $user)
-    {
-        /* CREATE */
-        $result = $this->rcmUserService->updateUser($user);
-
-        $this->addMessage("** UPDATE **");
-
-        if (!$result->isSuccess()) {
-
-            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
-
-            return null;
-        }
-
-        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
-
-        return $result->getUser();
-        /* */
-    }
-
-    /**
-     * testDeleteUser
-     *
-     * @param User $user
-     *
-     * @return bool
-     */
-    public function testDeleteUser(User $user)
-    {
-        /* CREATE */
-        $result = $this->rcmUserService->deleteUser($user);
-
-        $this->addMessage("DELETE");
-
-        if (!$result->isSuccess()) {
-
-            $this->addMessage(" ERROR: " . var_export($result->getMessages(), true));
-
-            return null;
-        }
-
-        $this->addMessage(" SUCCESS: " . var_export($result->getUser(), true));
-
-        return $result->getUser();
-        /* */
-    }
-
-    public function testValidateCredentials(User $user)
-    {
-
-        /* AUTH CHECK */
-        $authResult = $this->rcmUserService->validateCredentials($user);
-
-        if (!$authResult->isValid()) {
-
-            $this->addMessage(
-                " ERROR: " . var_export($authResult->getMessages(), true)
-            );
-
-            return null;
-        }
-
-        $this->addMessage(
-            " SUCCESS: " . var_export($authResult->getIdentity(), true)
-        );
-
-        return $authResult->getIdentity();
-        /* */
-    }
-
-    public function testAuthenticate(User $user)
-    {
-
-        /* AUTH CHECK */
-        $authResult = $this->rcmUserService->authenticate($user);
-
-        if (!$authResult->isValid()) {
-
-            $this->addMessage(
-                " ERROR: " . var_export($authResult->getMessages(), true)
-            );
-
-            return null;
-        }
-
-        $this->addMessage(
-            " SUCCESS: " . var_export($authResult->getIdentity(), true)
-        );
-
-        return $authResult->getIdentity();
-        /* */
-    }
-
-
-    /* ********************** */
-    /**
-     * addMessage
-     *
-     * @param string $message message
-     *
-     * @return void
-     */
-    public function addMessage($message)
-    {
-        $this->message .= "\n[" . $this->testId . "] - " . $message . "\n";
-    }
-
-    /**
-     * getMessage
-     *
-     * @param bool $clear
-     *
-     * @return string
-     */
-    public function getMessage($clear = true)
-    {
-        $message = $this->message;
-
-        if ($clear) {
-            $this->clearMessage();
-        }
-
-        return $message;
-    }
-
-    /**
-     * clearMessage
-     *
-     * @return void
-     */
-    public function clearMessage()
-    {
-        $this->message = '';
     }
 
 } 

@@ -57,7 +57,9 @@ class Adapter implements FactoryInterface
         $adapter = new UserAdapter();
         $adapter->setUserDataService($userDataService);
         $adapter->setEncryptor($encrypt);
-        $adapter->setObfuscatePassword($config->get('ObfuscatePasswordOnAuth', false));
+        $adapter->setObfuscatePassword(
+            $config->get('ObfuscatePasswordOnAuth', false)
+        );
 
         return $adapter;
     }

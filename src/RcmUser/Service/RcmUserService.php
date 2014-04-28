@@ -141,8 +141,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function setUserAuthorizeService(
         UserAuthorizeService $userAuthorizeService
-    )
-    {
+    ) {
         $this->userAuthorizeService = $userAuthorizeService;
     }
 
@@ -159,14 +158,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /** HELPERS ***************************************/
 
     /**
-     * getRegisteredUser
+     * getUser
      *
      * @param User $user user
      *
      * @return null|User
      */
-    public function getRegisteredUser(User $user)
+    public function getUser(User $user)
     {
+        // @todo - check all sources (db and session)?
         $result = $this->readUser($user);
 
         if ($result->isSuccess()) {
@@ -208,8 +208,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         }
 
         // @todo make sure this is a valid check for all cases
-        if ($user->getId() === $sessUser->getId()
-            || $user->getUsername() === $sessUser->getUsername()
+        if(!empty($user->getId())
+            && $user->getId() === $sessUser->getId()
+        ) {
+
+            return true;
+        }
+
+        if (!empty($user->getUsername())
+            && $user->getUsername() === $sessUser->getUsername()
         ) {
 
             return true;
@@ -285,8 +292,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    )
-    {
+    ) {
         return $this->getUserPropertyService()->getUserProperty(
             $user,
             $propertyNameSpace,
@@ -308,8 +314,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    )
-    {
+    ) {
         $user = $this->getIdentity();
 
         if (empty($user)) {
@@ -379,7 +384,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         return $this->getUserAuthService()->getIdentity($this->buildNewUser());
     }
 
-    //@todo implement guestIdentity - if getIdentity is empty return guest and save updates in session
+    //@todo implement guestIdentity
+    // - if getIdentity is empty return guest and save updates in session
     // on login we can sync the guest user or the session user as needed
 
     /* ACL HELPERS ********************************/
@@ -428,13 +434,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
         $result = $this->getUserDataService()->buildUser($user);
 
-        if($result->isSuccess() || $result->getUser() == null){
+        if ($result->isSuccess() || $result->getUser() == null) {
 
             return $result->getUser();
         } else {
 
             // this should not fail, if it does, something is really wrong
-            throw new RcmUserException('User could not be built or was not returned');
+            throw new RcmUserException(
+                'User could not be built or was not returned'
+            );
         }
     }
 

@@ -216,7 +216,10 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
         // $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
 
-        $responseUser->setProperty($this->getUserPropertyKey(), $this->getDefaultRoleIdentities());
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $this->getDefaultRoleIdentities()
+        );
 
         return new Result($responseUser);
     }

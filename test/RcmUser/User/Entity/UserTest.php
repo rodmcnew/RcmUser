@@ -17,19 +17,17 @@
 
 namespace RcmUserTest\User\Entity;
 
-require_once __DIR__ . '/../../../../../Rcm/test/Base/ZF2TestCase.php';
+require_once __DIR__ . '/../../ZF2TestCase.php';
 
-use RcmTest\Base\Zf2TestCase;
 use RcmUser\User\Entity\User;
 
 
-class UserTest extends Zf2TestCase //\PHPUnit_Framework_TestCase
+class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
         $this->addModule('RcmUser');
         parent::setUp();
-        //$this->instanceConfig = new DoctrineJsonInstanceConfig();
     }
 
     protected function getNewUser($prefix = 'A')
@@ -64,7 +62,7 @@ class UserTest extends Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $userC = $this->getNewUser('C');
         $userArrC = iterator_to_array($userC);
-        $userD = 'Some wrong user format';
+        //$userD = 'Some wrong user format';
 
         $userA->populate($userB);
 

@@ -48,7 +48,8 @@ class UserDataService extends EventProvider
      *
      * @return Result
      */
-    public function buildUser(User $requestUser){
+    public function buildUser(User $requestUser)
+    {
 
         /* + LOW_LEVEL_PREP */
         $responseUser = new User();

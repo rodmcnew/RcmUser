@@ -211,7 +211,7 @@ class UserAuthenticationService extends EventProvider
 
         $user = $results->last();
 
-        if(empty($user)){
+        if (empty($user)) {
 
             return $deflt;
         }
