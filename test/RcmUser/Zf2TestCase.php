@@ -16,7 +16,7 @@
  */
 namespace RcmUser;
 
-require_once __DIR__ . '/../../../Rcm/test/Base/ZF2TestCase.php';
+require_once dirname(__FILE__) . '/../Bootstrap.php';
 
 /**
  * Class Zf2TestCase
@@ -33,7 +33,7 @@ require_once __DIR__ . '/../../../Rcm/test/Base/ZF2TestCase.php';
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class Zf2TestCase extends \RcmTest\Base\Zf2TestCase
+class Zf2TestCase extends \PHPUnit_Framework_TestCase
 {
 
-} 
+}

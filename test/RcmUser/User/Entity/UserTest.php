@@ -15,7 +15,7 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUserTest\User\Entity;
+namespace RcmUser\Test\User\Entity;
 
 require_once __DIR__ . '/../../ZF2TestCase.php';
 
@@ -26,7 +26,6 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
-        $this->addModule('RcmUser');
         parent::setUp();
     }
 
@@ -43,10 +42,51 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         return $user;
     }
 
+    public function testSetGet()
+    {
+        $user = new User();
+
+        $value = 'id123';
+        $user->setId($value);
+        $this->assertEquals($value, $user->getId(), 'Setter or getter failed.');
+
+        $value = 'usernamexxx';
+        $user->setUsername($value);
+        $this->assertEquals($value, $user->getUsername(), 'Setter or getter failed.');
+
+        $value = 'passwordxxx';
+        $user->setPassword($value);
+        $this->assertEquals($value, $user->getPassword(), 'Setter or getter failed.');
+
+        $value = 'statexxx';
+        $user->setState($value);
+        $this->assertEquals($value, $user->getState(), 'Setter or getter failed.');
+
+        $pvalue = array('Y' => 'propertyYYY');
+        $value = 'propertyXXX';
+        $user->setProperties($pvalue);
+        $this->assertArrayHasKey('Y', $user->getProperties(), 'Setter or getter failed.');
+        $user->setProperty('X', $value);
+        $this->assertEquals($value, $user->getProperty('X'), 'Setter or getter failed.');
+        $this->assertArrayHasKey('Y', $user->getProperties(), 'Setter or getter failed.');
+    }
+
+    public function testIsEnabled(){
+
+        $user = new User();
+        $user->setState(User::STATE_DISABLED);
+
+        $this->assertFalse($user->isEnabled(), 'State check failed.');
+    }
+
     public function testArrayIterator()
     {
         $userA = $this->getNewUser('A');
+        $iter = $userA->getIterator();
         $userArr = iterator_to_array($userA);
+        $userArr2 = iterator_to_array($iter);
+
+        $this->assertTrue($userArr == $userArr2, 'Iterator failed work.');
 
         $this->assertTrue(is_array($userArr), 'Iterator failed work.');
 

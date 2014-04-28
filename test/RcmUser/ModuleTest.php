@@ -5,9 +5,9 @@ namespace RcmUser;
 
 require_once __DIR__ . '/../../Module.php';
 
-use RcmInstanceConfig\Module;
+use RcmUser\Test;
 
-class ModuleTest extends \PHPUnit_Framework_TestCase
+class ModuleTest extends Zf2TestCase
 {
     /** @var  \RcmInstanceConfig\Module */
     protected $module;

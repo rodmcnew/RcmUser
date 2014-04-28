@@ -15,7 +15,7 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUserTest\Service;
+namespace RcmUser\Test\Service;
 
 
 require_once __DIR__ . '/../ZF2TestCase.php';
@@ -25,7 +25,6 @@ use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Config\Config;
 use RcmUser\Service\RcmUserService;
 use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
 use RcmUser\User\Service\UserPropertyService;
 use RcmUser\Zf2TestCase;
@@ -34,10 +33,17 @@ use Zend\Di\ServiceLocator;
 class TestRcmUserService extends Zf2TestCase
 {
     public $rcmUserService;
+    public $userDataService;
+    public $userPropertyService;
+    public $userAuthService;
+    public $userAuthorizeService;
+
+
 
     public function setUp()
     {
-        $this->addModule('RcmUser');
+        $this->buildRcmUserService();
+
         parent::setUp();
     }
 
@@ -66,11 +72,11 @@ class TestRcmUserService extends Zf2TestCase
 
     public function buildRcmUserService()
     {
-
         $config = new Config();
         $serviceLocator = new ServiceLocator();
         $user = $this->getNewUser();
-        $userResult = new Result($user);
+        $userResult = new \RcmUser\User\Result($user);
+        $authResult = new \Zend\Authentication\Result(\Zend\Authentication\Result::SUCCESS, $user);
 
         /*
         $userDataService = new UserDataService();
@@ -79,82 +85,136 @@ class TestRcmUserService extends Zf2TestCase
         $userAuthorizeService = new UserAuthorizeService($config, $serviceLocator);
         */
 
-        $userDataService = $this->getMockBuilder(
+        $this->userDataService = $this->getMockBuilder(
             '\RcmUser\User\Service\UserDataService'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $userDataService->expects($this->any())
+        $this->userDataService->expects($this->any())
             ->method('buildUser')
             ->will($this->returnValue($userResult));
-        $userDataService->expects($this->any())
+        $this->userDataService->expects($this->any())
             ->method('readUser')
             ->will($this->returnValue($userResult));
-        $userDataService->expects($this->any())
+        $this->userDataService->expects($this->any())
             ->method('createUser')
             ->will($this->returnValue($userResult));
-        $userDataService->expects($this->any())
+        $this->userDataService->expects($this->any())
             ->method('updateUser')
             ->will($this->returnValue($userResult));
-        $userDataService->expects($this->any())
+        $this->userDataService->expects($this->any())
             ->method('deleteUser')
             ->will($this->returnValue($userResult));
 
         /////
-        $userPropertyService = $this->getMockBuilder(
+        $this->userPropertyService = $this->getMockBuilder(
             '\RcmUser\User\Service\UserPropertyService'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $userPropertyService->expects($this->any())
+        $this->userPropertyService->expects($this->any())
             ->method('getUserProperty')
             ->will($this->returnValue(array('some', 'user', 'property')));
 
         /////
-        $userAuthService = $this->getMockBuilder(
+        $this->userAuthService = $this->getMockBuilder(
             '\RcmUser\Authentication\Service\UserAuthenticationService'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $userAuthService->expects($this->any())
+        $this->userAuthService->expects($this->any())
+            ->method('getIdentity')
+            ->will($this->returnValue($user));
+        $this->userAuthService->expects($this->any())
+            ->method('validateCredentials')
+            ->will($this->returnValue($authResult));
+        $this->userAuthService->expects($this->any())
+            ->method('authenticate')
+            ->will($this->returnValue($authResult));
+        $this->userAuthService->expects($this->any())
+            ->method('clearIdentity')
+            ->will($this->returnValue(true));
+        $this->userAuthService->expects($this->any())
             ->method('getIdentity')
             ->will($this->returnValue($user));
 
         /////
-        $userAuthorizeService = $this->getMockBuilder(
+        $this->userAuthorizeService = $this->getMockBuilder(
             '\RcmUser\Acl\Service\UserAuthorizeService'
         )
             ->disableOriginalConstructor()
             ->getMock();
+        $this->userAuthorizeService->expects($this->any())
+            ->method('isAllowed')
+            ->will($this->returnValue(true));
+
 
         $this->rcmUserService = new RcmUserService();
-        $this->rcmUserService->setUserDataService($userDataService);
-        $this->rcmUserService->setUserPropertyService($userPropertyService);
-        $this->rcmUserService->setUserAuthService($userAuthService);
-        $this->rcmUserService->setUserAuthorizeService($userAuthorizeService);
+        $this->rcmUserService->setUserDataService($this->userDataService);
+        $this->rcmUserService->setUserPropertyService($this->userPropertyService);
+        $this->rcmUserService->setUserAuthService($this->userAuthService);
+        $this->rcmUserService->setUserAuthorizeService($this->userAuthorizeService);
 
+    }
 
-        /*
-        $mockObject = $this->getMockBuilder('\Aws\S3\S3Client');
-        $mockObject->disableOriginalConstructor();
-        $mockS3Client = $mockObject->getMock();
+    public function testSetGetUserDataService()
+    {
+        $rcmUserService = new RcmUserService();
 
-        $mockObject = $this
-            ->getMockBuilder('\Guzzle\Service\Builder\ServiceBuilder')
-            ->disableOriginalConstructor();
+        $rcmUserService->setUserDataService($this->userDataService);
 
-        $mockAwsFactory = $mockObject->getMock();
-        $mockAwsFactory->expects($this->any())
-            ->method('get')
-            ->will($this->returnValue($mockS3Client));
+        $service = $rcmUserService->getUserDataService();
 
-        $sm = new ServiceManager();
-        $sm->setService('config', $config);
-        $sm->setService('aws', $mockAwsFactory);
+        $this->assertInstanceOf(
+            '\RcmUser\User\Service\UserDataService',
+            $service,
+            'Getter or setter failed.'
+        );
+    }
 
-        $factory = new S3FileStorageFactory();
-        $object = $factory->createService($sm);
-        */
+    public function testSetGetUserPropertyService()
+    {
+        $rcmUserService = new RcmUserService();
+
+        $rcmUserService->setUserPropertyService($this->userPropertyService);
+
+        $service = $rcmUserService->getUserPropertyService();
+
+        $this->assertInstanceOf(
+            '\RcmUser\User\Service\UserPropertyService',
+            $service,
+            'Getter or setter failed.'
+        );
+    }
+
+    public function testSetGetUserAuthService()
+    {
+        $rcmUserService = new RcmUserService();
+
+        $rcmUserService->setUserAuthService($this->userAuthService);
+
+        $service = $rcmUserService->getUserAuthService();
+
+        $this->assertInstanceOf(
+            '\RcmUser\Authentication\Service\UserAuthenticationService',
+            $service,
+            'Getter or setter failed.'
+        );
+    }
+
+    public function testSetGetUserAuthorizeService()
+    {
+        $rcmUserService = new RcmUserService();
+
+        $rcmUserService->setUserAuthorizeService($this->userAuthorizeService);
+
+        $service = $rcmUserService->getUserAuthorizeService();
+
+        $this->assertInstanceOf(
+            '\RcmUser\Acl\Service\UserAuthorizeService',
+            $service,
+            'Getter or setter failed.'
+        );
     }
 
     public function testGetUser()
@@ -253,41 +313,66 @@ class TestRcmUserService extends Zf2TestCase
     public function testGetCurrentUserProperty()
     {
 
+        $result = $this->getRcmUserService()->getCurrentUserProperty('somePropertName');
+
+        $this->assertTrue(is_array($result), 'Did not return our test array.');
+
+        $this->assertContains('some', $result, 'Did not return our test array value.');
     }
 
     public function testValidateCredentials()
     {
+        $user = $this->getNewUser();
 
+        $result = $this->getRcmUserService()->validateCredentials($user);
+
+        $this->assertInstanceOf('\Zend\Authentication\Result', $result, 'Did not return instance of Result.');
     }
 
     public function testAuthenticate()
     {
+        $user = $this->getNewUser();
 
+        $result = $this->getRcmUserService()->authenticate($user);
+
+        $this->assertInstanceOf('\Zend\Authentication\Result', $result, 'Did not return instance of Result.');
     }
 
     public function testClearIdentity()
     {
+        $result = $this->getRcmUserService()->clearIdentity('somePropertName');
 
+        $this->assertTrue($result, 'Did not return true.');
     }
 
     public function testGetIdentity()
     {
+        $result = $this->getRcmUserService()->getIdentity();
 
+        $this->assertInstanceOf('\RcmUser\User\Entity\User', $result, 'Did not return instance of Result.');
     }
 
     public function testIsAllowed()
     {
+        $result = $this->getRcmUserService()->isAllowed('someResource');
 
+        $this->assertTrue($result, 'Did not return true.');
     }
 
     public function testBuildNewUser()
     {
+        $result = $this->getRcmUserService()->buildNewUser();
 
+        $this->assertInstanceOf('\RcmUser\User\Entity\User', $result, 'Did not return instance of Result.');
     }
 
     public function testBuildUser()
     {
+        $user = $this->getNewUser();
 
+        $result = $this->getRcmUserService()->buildUser($user);
+
+        $this->assertInstanceOf('\RcmUser\User\Entity\User', $result, 'Did not return instance of Result.');
     }
 
 
