@@ -74,8 +74,6 @@ class UserAuthorizeService
      */
     public function isAllowed($resource, $privilege = null, $user = null)
     {
-        $this->loaded && $this->loaded->__invoke();
-
         if (!empty($user)) {
 
             // @todo implement this if possible.

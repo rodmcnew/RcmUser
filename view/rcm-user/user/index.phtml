@@ -2,21 +2,22 @@
 ?>
 <pre>
 <?php
-/* Implementation test */
+/* Implementation test *
 require_once(dirname(__FILE__) . '../../../../test/ImplementationTest/Tester.php');
-/*
+
 try {
 
     $params =array();
-    $params['user'] = new \RcmUser\User\Entity\User();
-    $params['user']->setUsername('7');
-    $params['user']->setPassword('Netsteps');
 
-    $params['userPlainTextPassword'] = 'Netsteps';
+    //$params['user'] = new \RcmUser\User\Entity\User();
+    //$params['user']->setUsername('7');
+    //$params['user']->setPassword('123123123');
+    //
+    //$params['userPlainTextPassword'] = '123123123';
 
-    //echo \RcmUser\ImplementationTest\Tester::testAll($userController->getServiceLocator());
+    echo \RcmUser\ImplementationTest\Tester::testAll($userController->getServiceLocator());
 
-    echo \RcmUser\ImplementationTest\Tester::testCase2($userController->getServiceLocator(), $params);
+    //echo \RcmUser\ImplementationTest\Tester::testCase2($userController->getServiceLocator(), $params);
 
 } catch (\Exception $e){
 
