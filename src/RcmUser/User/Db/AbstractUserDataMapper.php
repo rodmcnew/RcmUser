@@ -99,7 +99,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
+     * setDefaultUserState
+     *
      * @param string $defaultUserState defaultUserState
+     *
+     * @return void
      */
     public function setDefaultUserState($defaultUserState)
     {
@@ -107,6 +111,8 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     }
 
     /**
+     * getDefaultUserState
+     *
      * @return string
      */
     public function getDefaultUserState()
@@ -198,7 +204,7 @@ class AbstractUserDataMapper implements UserDataMapperInterface
     /**
      * canUpdate
      *
-     * @param User  $user user
+     * @param User $user user
      *
      * @return bool
      */

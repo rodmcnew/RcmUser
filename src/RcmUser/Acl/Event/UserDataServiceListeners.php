@@ -39,9 +39,17 @@ use RcmUser\User\Result;
  */
 class UserDataServiceListeners extends AbstractUserDataServiceListeners
 {
+    /**
+     * @var int
+     */
     protected $priority = 1;
+    /**
+     * @var array
+     */
     protected $listenerMethods
         = array(
+            'onBuildUser' => 'buildUser',
+
             'onBeforeCreateUser' => 'beforeCreateUser',
             //'onCreateUser' => 'createUser',
             //'onCreateUserFail' => 'createUserFail',
@@ -90,8 +98,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function setUserRolesDataMapper(
         UserRolesDataMapperInterface $userRolesDataMapper
-    )
-    {
+    ) {
         $this->userRolesDataMapper = $userRolesDataMapper;
     }
 
@@ -114,8 +121,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function setDefaultAuthenticatedRoleIdentities(
         $defaultAuthenticatedRoleIdentities
-    )
-    {
+    ) {
         $this->defaultAuthenticatedRoleIdentities
             = $defaultAuthenticatedRoleIdentities;
     }
@@ -177,7 +183,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
     /**
      * onBeforeCreateUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return \RcmUser\User\Result
      */
@@ -198,11 +204,30 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
         return new Result($responseUser);
     }
 
+    /**
+     * onBuildUser
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
+    public function onBuildUser($e)
+    {
+        // $requestUser = $e->getParam('requestUser');
+        $responseUser = $e->getParam('responseUser');
+
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $this->getDefaultRoleIdentities()
+        );
+
+        return new Result($responseUser);
+    }
 
     /**
      * onCreateUserSuccess
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return \RcmUser\User\Result
      */
@@ -214,9 +239,14 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
 
             $responseUser = $result->getUser();
 
-            $currentRoles = $responseUser->getProperty($this->getUserPropertyKey(), null);
+            $defaultRoleIdentities = $this->getDefaultRoleIdentities();
 
-            if ($currentRoles === null) {
+            $currentRoles = $responseUser->getProperty(
+                $this->getUserPropertyKey(),
+                $defaultRoleIdentities
+            );
+
+            if ($currentRoles == $defaultRoleIdentities) {
 
                 $responseUser->setProperty(
                     $this->getUserPropertyKey(),
@@ -225,7 +255,9 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
             }
 
             $aclResult = $this->getUserRolesDataMapper()->create(
-                $responseUser, $responseUser->getProperty($this->getUserPropertyKey())
+                $responseUser, $responseUser->getProperty(
+                    $this->getUserPropertyKey()
+                )
             );
 
             if (!$aclResult->isSuccess()) {
@@ -233,7 +265,10 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
                 return $aclResult;
             }
 
-            $responseUser->setProperty($this->getUserPropertyKey(), $aclResult->getData());
+            $responseUser->setProperty(
+                $this->getUserPropertyKey(),
+                $aclResult->getData()
+            );
 
             return new Result($responseUser, Result::CODE_SUCCESS);
         }
@@ -244,7 +279,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
     /**
      * onReadUserSuccess
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
      */
@@ -282,7 +317,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
     /**
      * onBeforeUpdateUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return \RcmUser\User\Result
      */
@@ -304,6 +339,13 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
         return new Result($responseUser);
     }
 
+    /**
+     * onUpdateUserSuccess
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Db\Result|Result
+     */
     public function onUpdateUserSuccess($e)
     {
         $result = $e->getParam('result');
@@ -312,7 +354,10 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
 
             $responseUser = $result->getUser();
 
-            $currentRoles = $responseUser->getProperty($this->getUserPropertyKey(), null);
+            $currentRoles = $responseUser->getProperty(
+                $this->getUserPropertyKey(),
+                null
+            );
 
             if ($currentRoles === null) {
 
@@ -323,7 +368,10 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
             }
 
             $aclResult = $this->getUserRolesDataMapper()->update(
-                $responseUser, $responseUser->getProperty($this->getUserPropertyKey(), array())
+                $responseUser, $responseUser->getProperty(
+                    $this->getUserPropertyKey(),
+                    array()
+                )
             );
 
             if (!$aclResult->isSuccess()) {
@@ -331,7 +379,10 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
                 return $aclResult;
             }
 
-            $responseUser->setProperty($this->getUserPropertyKey(), $aclResult->getData());
+            $responseUser->setProperty(
+                $this->getUserPropertyKey(),
+                $aclResult->getData()
+            );
 
             return new Result($responseUser, Result::CODE_SUCCESS);
         }
@@ -339,6 +390,13 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
         return $result;
     }
 
+    /**
+     * onDeleteUserSuccess
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Db\Result|Result
+     */
     public function onDeleteUserSuccess($e)
     {
         $result = $e->getParam('result');

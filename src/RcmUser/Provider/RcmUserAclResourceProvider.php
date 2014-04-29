@@ -42,8 +42,8 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
      * @var array
      */
     protected $rcmResources = array(
-            'user.management' => array(),
-            'acl.management' => array(),
+            'user-management' => array(),
+            'acl-management' => array(),
         );
 
     /**

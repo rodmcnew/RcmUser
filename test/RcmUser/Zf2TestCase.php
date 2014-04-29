@@ -1,52 +1,39 @@
 <?php
 /**
- * UserController.php
+ * Zf2TestCase.php
  *
- * UserController
+ * Zf2TestCase
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\Controller
+ * @package   RcmUser
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
  * @version   GIT: <git_id>
  * @link      https://github.com/reliv
  */
+namespace RcmUser;
 
-namespace RcmUser\Controller;
-
-use Zend\Mvc\Controller\AbstractActionController;
+require_once dirname(__FILE__) . '/../Bootstrap.php';
 
 /**
- * UserController
+ * Class Zf2TestCase
  *
- * UserController
+ * Zf2TestCase
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\Controller
+ * @package   RcmUser
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserController extends AbstractActionController
+class Zf2TestCase extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * indexAction
-     *
-     * @return array
-     */
-    public function indexAction()
-    {
-        $test = array(
-            'userController' => $this,
-        );
 
-        return $test;
-    }
 }

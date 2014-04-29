@@ -53,9 +53,13 @@ class DoctrineUserDataMapper implements FactoryInterface
         $udv = $serviceLocator->get('RcmUser\User\Data\UserValidator');
 
         $service = new \RcmUser\User\Db\DoctrineUserDataMapper();
-        $service->setDefaultUserState($cfg->get('DefaultUserState', User::STATE_DISABLED));
+        $service->setDefaultUserState(
+            $cfg->get('DefaultUserState', User::STATE_DISABLED)
+        );
         $service->setEntityManager($em);
-        $service->setEntityClass('RcmUser\User\Entity\DoctrineUser');
+        $service->setEntityClass(
+            'RcmUser\User\Entity\DoctrineUser'
+        );
         $service->setUserDataPreparer($udp);
         $service->setUserValidator($udv);
 

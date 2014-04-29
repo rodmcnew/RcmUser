@@ -93,7 +93,9 @@ return array(
             ),
         ),
 
-        'Auth\Config' => array(),
+        'Auth\Config' => array(
+            'ObfuscatePasswordOnAuth' => true,
+        ),
 
         'Acl\Config' => array(
 
@@ -197,7 +199,7 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\UserDataMapper
+             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
@@ -212,7 +214,7 @@ return array(
              *  RcmUser\User\Data\DbUserDataPreparer
              *  RcmUser\Authentication\Adapter\UserAdapter
              *
-             * Used for encrypting passwords by default.
+             * Used for encrypting/hashing passwords by default.
              * May not be required depending
              * on the DbUserDataPreparer and UserAdapter that is being used.
              */
@@ -220,7 +222,7 @@ return array(
             /*
              * UserDataPreparer (requires Encryptor)
              * Required for:
-             *  RcmUser\User\UserDataMapper
+             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Used by default to prepare data for DB storage.
              * By default, encrypts passwords and creates id (UUID)
@@ -368,31 +370,6 @@ return array(
                 'RcmUser\Acl\Service\Factory\BjyRuleProvider',
             'RcmUser\Acl\Provider\BjyResourceProvider' =>
                 'RcmUser\Acl\Service\Factory\BjyResourceProvider',
-
-            /*
-             * @override - This module requires specific functionality for isAllowed
-             *
-             * The UserAuthorizeService extends BjyAuthorize\Service\Authorize
-             * and overrides the isAllowed method
-             * This allows use to parse our dot notation for nested resources
-             * which is used when a missing resource can inherit.
-             *
-             * To do this we need to provide the resource and its parent.
-             * We accomplish this by passing 'PAGES.PAGE_X'.
-             * Our isAllowed override allows the checking of 'PAGE_X' first and
-             * if it is not found, we check 'PAGES'.
-             *
-             * Example:
-             *  If a resource called 'PAGES'
-             *  And we want to check if the user has access
-             * to a child of 'PAGES' named 'PAGE_X'.
-             *  And we know at the time of the ACL check
-             * that 'PAGE_X' might not be defined.
-             *  If 'PAGE_X' is not defined, then we inherit from from 'PAGES'
-             *
-             */
-            'BjyAuthorize\Service\Authorize' =>
-                'RcmUser\Acl\Service\Factory\UserAuthorizeService',
 
             /* ************************************** */
             /* CORE ********************************* */

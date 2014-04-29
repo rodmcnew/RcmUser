@@ -140,27 +140,34 @@ class UserValidator implements UserValidatorInterface
     /**
      * validateUpdateUser
      *
-     * @param User $requestUser   requestUser
+     * @param User $requestUser  requestUser
      * @param User $responseUser responseUser
-     * @param User $existingUser  existingUser
+     * @param User $existingUser existingUser
      *
      * @return Result
      */
-    public function validateUpdateUser(User $requestUser, User $responseUser, User $existingUser)
-    {
+    public function validateUpdateUser(
+        User $requestUser,
+        User $responseUser,
+        User $existingUser
+    ) {
         $inputFilter = $this->getUserInputFilter();
         $factory = $this->getUserInputFilterFactory();
 
         $inputs = $this->getUserInputFilterConfig();
 
-        if ($requestUser->getUsername() !== $existingUser->getUsername() && isset($inputs['username'])) {
+        if ($requestUser->getUsername() !== $existingUser->getUsername()
+            && isset($inputs['username'])
+        ) {
 
             $inputFilter->add(
                 $factory->createInput($inputs['username']), 'username'
             );
         }
 
-        if ($requestUser->getPassword() !== $existingUser->getPassword() && isset($inputs['password'])) {
+        if ($requestUser->getPassword() !== $existingUser->getPassword()
+            && isset($inputs['password'])
+        ) {
 
             $inputFilter->add(
                 $factory->createInput($inputs['password']), 'password'
@@ -173,13 +180,15 @@ class UserValidator implements UserValidatorInterface
     /**
      * validateCreateUser
      *
-     * @param User $requestUser   requestUser
+     * @param User $requestUser  requestUser
      * @param User $responseUser responseUser
      *
      * @return Result
      */
-    public function validateCreateUser(User $requestUser, User $responseUser)
-    {
+    public function validateCreateUser(
+        User $requestUser,
+        User $responseUser
+    ) {
         $inputFilter = $this->getUserInputFilter();
         $factory = $this->getUserInputFilterFactory();
 
@@ -197,7 +206,7 @@ class UserValidator implements UserValidatorInterface
      * validateUser
      *
      * @param User        $responseUser responseUser
-     * @param InputFilter $inputFilter    inputFilter
+     * @param InputFilter $inputFilter  inputFilter
      *
      * @return Result
      */

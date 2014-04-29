@@ -41,21 +41,28 @@ interface UserDataPreparerInterface
     /**
      * prepareUserCreate
      *
-     * @param User $requestUser      requestUser
+     * @param User $requestUser  requestUser
      * @param User $userToCreate userToCreate
      *
      * @return Result
      */
-    public function prepareUserCreate(User $requestUser, User $userToCreate);
+    public function prepareUserCreate(
+        User $requestUser,
+        User $userToCreate
+    );
 
     /**
      * prepareUserUpdate
      *
-     * @param User $requestUser   requestUser
+     * @param User $requestUser  requestUser
      * @param User $responseUser responseUser
-     * @param User $existingUser  existingUser
+     * @param User $existingUser existingUser
      *
      * @return Result
      */
-    public function prepareUserUpdate(User $requestUser, User $responseUser, User $existingUser);
+    public function prepareUserUpdate(
+        User $requestUser,
+        User $responseUser,
+        User $existingUser
+    );
 } 
