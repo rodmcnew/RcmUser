@@ -85,12 +85,13 @@ class UserAuthorizeService
             );
         }
 
-        // check once before parsing
+        /* @todo might check once before parsing
         $result = $this->authorize->isAllowed($resource, $privilege);
 
         if($result){
             return $result;
         }
+        */
 
         $resources = $this->parseResource($resource);
 

@@ -102,7 +102,7 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $userC = $this->getNewUser('C');
         $userArrC = iterator_to_array($userC);
-        //$userD = 'Some wrong user format';
+        $userD = 'Some wrong user format';
 
         $userA->populate($userB);
 
@@ -111,6 +111,16 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $userA->populate($userArrC);
 
         $this->assertEquals($userA, $userC, 'Populate from array not successful');
+
+        /* @todo test this
+        try{
+            $userA->populate($userD);
+            //$this->fail("Expected exception not thrown");
+        }catch(Exception $e){
+            //$this->assertEquals("Exception Code",$e->getMessage());
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+        }
+         */
 
     }
 

@@ -26,7 +26,7 @@ require_once __DIR__ . '/../../ZF2TestCase.php';
 class UserAuthorizeServiceTest extends Zf2TestCase {
 
     public $userAuthorizeService;
-    public $serviceLocator;
+    public $authorize;
 
     public function getUserAuthorizeService()
     {
@@ -40,29 +40,27 @@ class UserAuthorizeServiceTest extends Zf2TestCase {
 
     public function buildUserAuthorizeService()
     {
-        $config = array();
-
-        $this->serviceLocator = $this->getMockBuilder(
-            '\Zend\ServiceManager\ServiceLocatorInterface'
+        $this->authorize = $this->getMockBuilder(
+            '\BjyAuthorize\Service\Authorize'
         )
             ->disableOriginalConstructor()
             ->getMock();
+        $this->authorize->expects($this->any())
+            ->method('isAllowed')
+            ->will($this->returnValue(true));
 
-        $this->acl = $this->getMockBuilder(
-            '\Zend\Permissions\Acl\Acl'
-        )
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->userAuthorizeService = new UserAuthorizeService($config, $this->serviceLocator);
+        $this->userAuthorizeService = new UserAuthorizeService();
+        $this->userAuthorizeService->setAuthorize($this->authorize);
     }
 
     public function testIsAllowed()
     {
         // @todo This will be addressed on small refactor
-        //$resource = "some.resource";
+        $resource = "some.resource";
 
-        //$result = $this->getUserAuthorizeService()->isAllowed($resource);
+        $result = $this->getUserAuthorizeService()->isAllowed($resource);
+
+        $this->assertTrue($result, 'True not returned.');
     }
 
     public function testParseResource()
