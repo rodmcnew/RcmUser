@@ -371,7 +371,6 @@ return array(
             'RcmUser\Acl\Provider\BjyResourceProvider' =>
                 'RcmUser\Acl\Service\Factory\BjyResourceProvider',
 
-
             /* ************************************** */
             /* CORE ********************************* */
             /* ************************************** */
