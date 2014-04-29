@@ -75,6 +75,15 @@ class User implements UserInterface, \JsonSerializable
     protected $properties = array();
 
     /**
+     * __construct
+     *
+     * @param null $id id
+     */
+    public function __construct($id = null)
+    {
+        $this->setId($id);
+    }
+    /**
      * setId
      *
      * @param mixed $id id

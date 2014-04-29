@@ -25,7 +25,7 @@ use Zend\EventManager\EventManager;
 
 require_once __DIR__ . '/../../ZF2TestCase.php';
 
-class TestUserDataService extends Zf2TestCase
+class UserDataServiceTest extends Zf2TestCase
 {
 
     public $userDataService;

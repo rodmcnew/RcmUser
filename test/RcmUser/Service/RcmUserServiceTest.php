@@ -17,9 +17,6 @@
 
 namespace RcmUser\Test\Service;
 
-
-require_once __DIR__ . '/../ZF2TestCase.php';
-
 use RcmUser\Acl\Service\UserAuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Config\Config;
@@ -30,7 +27,10 @@ use RcmUser\User\Service\UserPropertyService;
 use RcmUser\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
-class TestRcmUserService extends Zf2TestCase
+
+require_once __DIR__ . '/../ZF2TestCase.php';
+
+class RcmUserServiceTest extends Zf2TestCase
 {
     public $rcmUserService;
     public $userDataService;
@@ -72,8 +72,11 @@ class TestRcmUserService extends Zf2TestCase
 
     public function buildRcmUserService()
     {
+        /*
         $config = new Config();
         $serviceLocator = new ServiceLocator();
+        */
+
         $user = $this->getNewUser();
         $userResult = new \RcmUser\User\Result($user);
         $authResult = new \Zend\Authentication\Result(\Zend\Authentication\Result::SUCCESS, $user);
@@ -147,7 +150,6 @@ class TestRcmUserService extends Zf2TestCase
         $this->userAuthorizeService->expects($this->any())
             ->method('isAllowed')
             ->will($this->returnValue(true));
-
 
         $this->rcmUserService = new RcmUserService();
         $this->rcmUserService->setUserDataService($this->userDataService);

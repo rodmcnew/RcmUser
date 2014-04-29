@@ -24,7 +24,7 @@ use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../../ZF2TestCase.php';
 
-class TestUserPropertyService extends Zf2TestCase
+class UserPropertyServiceTest extends Zf2TestCase
 {
 
     public $userPropertyService;
