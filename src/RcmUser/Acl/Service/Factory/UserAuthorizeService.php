@@ -44,14 +44,14 @@ class UserAuthorizeService implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return mixed|\RcmUser\Acl\Service\UserAuthorizeService
+     * @return \RcmUser\Acl\Service\UserAuthorizeService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new \RcmUser\Acl\Service\UserAuthorizeService(
-            $serviceLocator->get('BjyAuthorize\Config'),
-            $serviceLocator
-        );
+        $service = new \RcmUser\Acl\Service\UserAuthorizeService();
+        $service->setAuthorize($serviceLocator->get('BjyAuthorize\Service\Authorize'));
+
+        return $service;
     }
 
 } 

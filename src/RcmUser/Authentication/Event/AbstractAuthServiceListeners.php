@@ -84,8 +84,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      */
     public function setAuthService(
         \Zend\Authentication\AuthenticationService $authService
-    )
-    {
+    ) {
         $this->authService = $authService;
     }
 
@@ -136,6 +135,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         }
     }
 
+    /**
+     * onValidateCredentials
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onValidateCredentials($e)
     {
         return new Result(
@@ -145,6 +151,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         );
     }
 
+    /**
+     * onValidateCredentialsSuccess
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onValidateCredentialsSuccess($e)
     {
         return new Result(
@@ -154,6 +167,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         );
     }
 
+    /**
+     * onValidateCredentialsFail
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onValidateCredentialsFail($e)
     {
         return new Result(
@@ -163,6 +183,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         );
     }
 
+    /**
+     * onAuthenticate
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onAuthenticate($e)
     {
         return new Result(
@@ -172,6 +199,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         );
     }
 
+    /**
+     * onAuthenticateSuccess
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onAuthenticateSuccess($e)
     {
         return new Result(
@@ -181,6 +215,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         );
     }
 
+    /**
+     * onAuthenticateFail
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onAuthenticateFail($e)
     {
         return new Result(
@@ -190,6 +231,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         );
     }
 
+    /**
+     * onClearIdentity
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onClearIdentity($e)
     {
         return new Result(
@@ -199,6 +247,13 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         );
     }
 
+    /**
+     * onGetIdentity
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onGetIdentity($e)
     {
         return new Result(

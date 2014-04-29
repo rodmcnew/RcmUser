@@ -37,8 +37,16 @@ use RcmUser\Exception\RcmUserReadOnlyException;
  */
 class ReadOnlyUser extends User
 {
+    /**
+     * @var bool
+     */
     protected $locked = false;
 
+    /**
+     * __construct
+     *
+     * @param User $user User used to initially populate the object
+     */
     public function __construct(User $user)
     {
         parent::populate($user);
@@ -161,7 +169,7 @@ class ReadOnlyUser extends User
      * @param array      $exclude list of object properties to ignore (not populate)
      *
      * @return mixed|void
-     * @throws \RcmUser\Exception\RcmUserException|\RcmUser\Exception\RcmUserReadOnlyException
+     * @throws \RcmUser\Exception\RcmUserException|RcmUserReadOnlyException
      */
     public function populate($data, $exclude = array())
     {

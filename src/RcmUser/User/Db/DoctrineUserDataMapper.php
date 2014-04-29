@@ -101,7 +101,7 @@ class DoctrineUserDataMapper
     /**
      * fetchById
      *
-     * @param mixed $id
+     * @param mixed $id id
      *
      * @return Result
      */
@@ -137,7 +137,7 @@ class DoctrineUserDataMapper
     /**
      * fetchByUsername
      *
-     * @param string $username
+     * @param string $username username
      *
      * @return Result
      */
@@ -174,8 +174,8 @@ class DoctrineUserDataMapper
     /**
      * create
      *
-     * @param User $requestUser
-     * @param User $responseUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
      *
      * @return \RcmUser\User\Result
      */
@@ -244,8 +244,8 @@ class DoctrineUserDataMapper
     /**
      * read
      *
-     * @param User $requestUser
-     * @param User $responseUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
      *
      * @return mixed|Result
      */
@@ -289,9 +289,9 @@ class DoctrineUserDataMapper
     /**
      * update
      *
-     * @param User $requestUser
-     * @param User $responseUser
-     * @param User $existingUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
+     * @param User $existingUser existingUser
      *
      * @return \RcmUser\User|Result
      */
@@ -367,8 +367,8 @@ class DoctrineUserDataMapper
     /**
      * delete
      *
-     * @param User $requestUser
-     * @param User $responseUser
+     * @param User $requestUser  requestUser
+     * @param User $responseUser responseUser
      *
      * @return mixed|Result
      */
@@ -422,6 +422,13 @@ class DoctrineUserDataMapper
         return $user;
     }
 
+    /**
+     * buildDeletedUsername
+     *
+     * @param User $user user
+     *
+     * @return string|JSON
+     */
     public function buildDeletedUsername(User $user)
     {
         $usernameArr = array(
@@ -433,22 +440,29 @@ class DoctrineUserDataMapper
         return json_encode($usernameArr);
     }
 
+    /**
+     * parseDeletedUsername
+     *
+     * @param User $user user
+     *
+     * @return null|string
+     */
     public function parseDeletedUsername(User $user)
     {
-        try{
+        try {
 
             $usernameArr = json_decode($user->getUsername(), true);
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
 
             return null;
         }
 
-        if(count($usernameArr) !== 3){
+        if (count($usernameArr) !== 3) {
 
             return null;
         }
 
-        if($usernameArr[1] !== $user->getId()){
+        if ($usernameArr[1] !== $user->getId()) {
 
             return null;
         }

@@ -50,6 +50,8 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     protected $priority = -1;
     protected $listenerMethods
         = array(
+            'onBuildUser' => 'buildUser',
+
             'onBeforeCreateUser' => 'beforeCreateUser',
             'onCreateUser' => 'createUser',
             'onCreateUserFail' => 'createUserFail',
@@ -108,11 +110,26 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             }
         }
     }
+    /**
+     * onBuildUser
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
+    public function onBuildUser($e)
+    {
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Listener ('.__METHOD__.') not defined.'
+        );
+    }
 
     /**
      * onBeforeCreate
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -128,7 +145,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onCreate
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -144,7 +161,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onCreateUserFail
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -160,7 +177,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onCreateUserSuccess
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -176,7 +193,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onBeforeReadUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -192,7 +209,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onReadUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -208,7 +225,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onReadUserFail
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -224,7 +241,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onReadUserSuccess
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -240,7 +257,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onBeforeUpdateUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -256,7 +273,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onUpdateUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -272,7 +289,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onUpdateUserFail
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -288,7 +305,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onUpdateUserSuccess
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -304,7 +321,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onBeforeDeleteUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -320,7 +337,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onDeleteUser
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -336,7 +353,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onDeleteUserFail
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */
@@ -352,7 +369,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * onDeleteUserSuccess
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return Result
      */

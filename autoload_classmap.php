@@ -103,6 +103,6 @@ return array(
   'RcmUser\User\Service\Factory\ValidatorEventListeners'             => __DIR__ . '/src/RcmUser/User/Service/Factory/ValidatorEventListeners.php',
   'RcmUser\User\Service\UserDataService'                             => __DIR__ . '/src/RcmUser/User/Service/UserDataService.php',
   'RcmUser\User\Service\UserPropertyService'                         => __DIR__ . '/src/RcmUser/User/Service/UserPropertyService.php',
-  'RcmUserTest\Framework\TestCase'                                   => __DIR__ . '/tests/RcmUser/Framework/TestCase.php',
-  'RcmUserTest\SampleTest'                                           => __DIR__ . '/tests/RcmUser/SampleTest.php',
+  'RcmUserTest\Framework\TestCase'                                   => __DIR__ . '/test/RcmUser/Framework/TestCase.php',
+  'RcmUserTest\SampleTest'                                           => __DIR__ . '/test/RcmUser/SampleTest.php',
 );

@@ -66,6 +66,13 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
         );
 
 
+    /**
+     * onValidateCredentials
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onValidateCredentials($e)
     {
         $user = $e->getParam('user');
@@ -78,6 +85,13 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
         return $result;
     }
 
+    /**
+     * onAuthenticate
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
     public function onAuthenticate($e)
     {
         $user = $e->getParam('user');
@@ -90,6 +104,13 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
         return $result;
     }
 
+    /**
+     * onClearIdentity
+     *
+     * @param Event $e e
+     *
+     * @return bool
+     */
     public function onClearIdentity($e)
     {
         $authService = $this->getAuthService();
@@ -102,19 +123,22 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
         return true;
     }
 
+    /**
+     * onGetIdentity
+     *
+     * @param Event $e e
+     *
+     * @return User|null
+     */
     public function onGetIdentity($e)
     {
-        $user = $e->getParam('user');
-
         $authService = $this->getAuthService();
 
-        $currentUser = $authService->getIdentity();
+        if ($authService->hasIdentity()) {
 
-        if (!empty($currentUser)) {
-
-            $user->populate($currentUser);
+            return  $authService->getIdentity();
         }
 
-        return $user;
+        return null;
     }
 } 

@@ -125,8 +125,8 @@ class DoctrineUserRoleDataMapper
     /**
      * create
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param User  $user      user
+     * @param array $userRoles userRoles
      *
      * @return Result
      */
