@@ -2,7 +2,7 @@
  /**
  * UserAuthorizeServiceTest.php
  *
- * LongDescHere
+ * TEST
  *
  * PHP version 5
  *

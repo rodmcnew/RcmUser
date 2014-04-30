@@ -2,7 +2,7 @@
  /**
  * AclRoleTest.php
  *
- * LongDescHere
+ * TEST
  *
  * PHP version 5
  *
@@ -23,6 +23,21 @@ use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class AclRoleTest
+ *
+ * TEST
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\Acl\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class AclRoleTest extends Zf2TestCase
 {
 

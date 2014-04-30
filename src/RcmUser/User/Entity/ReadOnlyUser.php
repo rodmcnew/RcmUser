@@ -49,7 +49,7 @@ class ReadOnlyUser extends User
      */
     public function __construct(User $user)
     {
-        parent::populate($user);
+        $this->populate($user);
         $this->locked = true;
     }
 
@@ -154,11 +154,6 @@ class ReadOnlyUser extends User
      */
     public function setProperty($key, $val)
     {
-        if (!$this->locked) {
-
-            return parent::setProperty($key, $val);
-        }
-
         throw new RcmUserReadOnlyException('Object is READ ONLY');
     }
 
@@ -192,13 +187,6 @@ class ReadOnlyUser extends User
      */
     public function merge(User $user)
     {
-        if (!$this->locked) {
-
-            return parent::merge($user);
-        }
-
         throw new RcmUserReadOnlyException('Object is READ ONLY');
     }
-
-
 }

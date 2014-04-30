@@ -2,7 +2,7 @@
 /**
  * UserTest.php
  *
- * LongDescHere
+ * TEST
  *
  * PHP version 5
  *
@@ -17,9 +17,9 @@
 
 namespace RcmUser\Test\User\Entity;
 
-require_once __DIR__ . '/../../../Zf2TestCase.php';
-
 use RcmUser\User\Entity\User;
+
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 /**
  * Class UserTest
