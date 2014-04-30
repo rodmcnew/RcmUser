@@ -78,8 +78,6 @@ return array(
   'RcmUser\User\Entity\UserInterface'                                         => __DIR__ . '/src/RcmUser/User/Entity/UserInterface.php',
   'RcmUser\User\Entity\UserRole'                                              => __DIR__ . '/src/RcmUser/User/Entity/UserRole.php',
   'RcmUser\User\Entity\UserRoleInterface'                                     => __DIR__ . '/src/RcmUser/User/Entity/UserRoleInterface.php',
-  'RcmUser\User\Entity\UserRoles'                                             => __DIR__ . '/src/RcmUser/User/Entity/UserRoles.php',
-  'RcmUser\User\Entity\UserRolesInterface'                                    => __DIR__ . '/src/RcmUser/User/Entity/UserRolesInterface.php',
   'RcmUser\User\Event\AbstractUserDataServiceListeners'                       => __DIR__ . '/src/RcmUser/User/Event/AbstractUserDataServiceListeners.php',
   'RcmUser\User\Event\UserDataServiceListeners'                               => __DIR__ . '/src/RcmUser/User/Event/UserDataServiceListeners.php',
   'RcmUser\User\InputFilter\UserInputFilter'                                  => __DIR__ . '/src/RcmUser/User/InputFilter/UserInputFilter.php',
