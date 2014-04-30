@@ -44,7 +44,7 @@ class UserRoleTest extends Zf2TestCase
     /**
      * testSetGet
      *
-     * @covers RcmUser\User\Entity\UserRole
+     * @covers \RcmUser\User\Entity\UserRole
      *
      * @return void
      */
@@ -68,7 +68,7 @@ class UserRoleTest extends Zf2TestCase
     /**
      * testPopulate
      *
-     * @covers RcmUser\User\Entity\UserRole::populate
+     * @covers \RcmUser\User\Entity\UserRole::populate
      *
      * @return void
      */

@@ -29,7 +29,7 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * buildReadOnlyUser
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::
      *
      * @return ReadOnlyUser
      */
@@ -47,8 +47,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testConstruct
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::__construct
-     * @covers RcmUser\User\Entity\ReadOnlyUser::populate
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::__construct
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::populate
      *
      * @return void
      */
@@ -66,7 +66,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testSetId
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::setID
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setID
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void
@@ -80,7 +81,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testSetUsername
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::setUsername
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setUsername
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void
@@ -94,7 +96,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testSetPassword
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::setPassword
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setPassword
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void
@@ -108,7 +111,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testSetState
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::setState
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setState
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void
@@ -122,7 +126,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testSetProperties
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::setProperties
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setProperties
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void
@@ -136,7 +141,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testSetProperty
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::setProperty
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setProperty
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void
@@ -150,7 +156,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testPopulate
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::populate
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::populate
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void
@@ -165,7 +172,8 @@ class ReadOnlyUserTest extends Zf2TestCase
     /**
      * testPopulate
      *
-     * @covers RcmUser\User\Entity\ReadOnlyUser::merge
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::merge
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
      * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
      *
      * @return void

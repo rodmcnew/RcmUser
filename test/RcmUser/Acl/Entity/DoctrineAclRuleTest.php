@@ -42,7 +42,7 @@ class DoctrineAclRuleTest extends Zf2TestCase
     /**
      * testSetGet
      *
-     * @covers RcmUser\Acl\Entity\DoctrineAclRule
+     * @covers \RcmUser\Acl\Entity\DoctrineAclRule
      *
      * @return void
      */

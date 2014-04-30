@@ -37,7 +37,7 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
     /**
      * testGetAll
      *
-     * @covers RcmUser\Provider\RcmUserAclResourceProvider::getAll
+     * @covers \RcmUser\Provider\RcmUserAclResourceProvider::getAll
      *
      * @return void
      */
@@ -51,7 +51,7 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
     /**
      * testGetAvailableAtRuntime
      *
-     * @covers RcmUser\Provider\RcmUserAclResourceProvider::getAvailableAtRuntime
+     * @covers \RcmUser\Provider\RcmUserAclResourceProvider::getAvailableAtRuntime
      *
      * @return void
      */
