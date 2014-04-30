@@ -17,11 +17,18 @@
 
 namespace RcmUser\Test\User\Entity;
 
-require_once __DIR__ . '/../../ZF2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\User\Entity\User;
 
-
+/**
+ * Class UserTest
+ *
+ * TEST
+ *
+ * PHP version 5
+ *
+ */
 class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
     public function setUp()
@@ -29,6 +36,13 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         parent::setUp();
     }
 
+    /**
+     * getNewUser
+     *
+     * @param string $prefix
+     *
+     * @return User
+     */
     protected function getNewUser($prefix = 'A')
     {
         $user = new User();
@@ -42,6 +56,13 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         return $user;
     }
 
+    /**
+     * testSetGet
+     *
+     * @covers \RcmUser\User\Entity\User
+     *
+     * @return void
+     */
     public function testSetGet()
     {
         $user = new User();
@@ -69,8 +90,16 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $user->setProperty('X', $value);
         $this->assertEquals($value, $user->getProperty('X'), 'Setter or getter failed.');
         $this->assertArrayHasKey('Y', $user->getProperties(), 'Setter or getter failed.');
+        $this->assertTrue($user->getProperty('nope', 'not_found') === 'not_found', 'Setter or getter failed.');
     }
 
+    /**
+     * testIsEnabled
+     *
+     * @covers \RcmUser\User\Entity\User::isEnabled
+     *
+     * @return void
+     */
     public function testIsEnabled(){
 
         $user = new User();
@@ -79,6 +108,13 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $this->assertFalse($user->isEnabled(), 'State check failed.');
     }
 
+    /**
+     * testArrayIterator
+     *
+     * @covers \RcmUser\User\Entity\User::getIterator
+     *
+     * @return void
+     */
     public function testArrayIterator()
     {
         $userA = $this->getNewUser('A');
@@ -95,6 +131,14 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * testPopulate
+     *
+     * @covers \RcmUser\User\Entity\User::populate
+     * @covers \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
     public function testPopulate()
     {
         $userA = $this->getNewUser('A');
@@ -112,18 +156,27 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $this->assertEquals($userA, $userC, 'Populate from array not successful');
 
-        /* @todo test this
+
         try{
             $userA->populate($userD);
-            //$this->fail("Expected exception not thrown");
-        }catch(Exception $e){
+
+        }catch(\RcmUser\Exception\RcmUserException $e){
             //$this->assertEquals("Exception Code",$e->getMessage());
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            return;
         }
-         */
+
+        $this->fail("Expected exception not thrown");
 
     }
 
+    /**
+     * testMerge
+     *
+     * @covers \RcmUser\User\Entity\User::merge
+     *
+     * @return void
+     */
     public function testMerge()
     {
         $userA = new User();
@@ -146,6 +199,13 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $this->assertEquals($userA->getId(), $userC->getId(), 'Merge to single property not successful');
     }
 
+    /**
+     * testJsonSerialize
+     *
+     * @covers \RcmUser\User\Entity\User::jsonSerialize
+     *
+     * @return void
+     */
     public function testJsonSerialize()
     {
         $userA = $this->getNewUser('A');

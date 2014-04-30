@@ -18,7 +18,6 @@
 namespace RcmUser\Authentication\Event;
 
 
-use RcmUser\Event\AbstractListener;
 use Zend\Authentication\Result;
 
 /**

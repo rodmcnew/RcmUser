@@ -23,8 +23,17 @@ use RcmUser\User\Service\UserDataService;
 use RcmUser\Zf2TestCase;
 use Zend\EventManager\EventManager;
 
-require_once __DIR__ . '/../../ZF2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class UserDataServiceTest
+ *
+ * TEST
+ *
+ * PHP version 5
+ *
+ * @covers \RcmUser\User\Service\UserDataService
+ */
 class UserDataServiceTest extends Zf2TestCase
 {
 

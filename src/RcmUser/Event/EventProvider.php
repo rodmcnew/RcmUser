@@ -32,8 +32,8 @@ use Zend\EventManager\EventManager;
  * @category  Reliv
  * @package   RcmUser\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
+ * @copyright Copyright (c) 2013, ZF-Commons Contributors
+ * @license   License.txt
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
@@ -54,19 +54,7 @@ abstract class EventProvider implements EventManagerAwareInterface
     public function setEventManager(EventManagerInterface $events)
     {
         $identifiers = array(__CLASS__, get_called_class());
-        if (isset($this->eventIdentifier)) {
-            if ((is_string($this->eventIdentifier))
-                || (is_array($this->eventIdentifier))
-                || ($this->eventIdentifier instanceof Traversable)
-            ) {
-                $identifiers = array_unique(
-                    array_merge($identifiers, (array)$this->eventIdentifier)
-                );
-            } elseif (is_object($this->eventIdentifier)) {
-                $identifiers[] = $this->eventIdentifier;
-            }
 
-        }
         $events->setIdentifiers($identifiers);
         $this->events = $events;
 

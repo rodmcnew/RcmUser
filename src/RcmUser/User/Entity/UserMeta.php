@@ -21,7 +21,7 @@ namespace RcmUser\User\Entity;
 /**
  * Class UserMeta
  *
- * UserMeta
+ * UserMeta @future - not in use
  *
  * PHP version 5
  *

@@ -287,7 +287,6 @@ return array(
              * By default this module uses the default Adapter and Storage
              * to do authentication
              * This may be configure to use custom AuthenticationService as required
-             * This may be configure to use custom AuthenticationService as required
              */
             'RcmUser\Authentication\AuthenticationService' =>
                 'RcmUser\Authentication\Service\Factory\AuthenticationService',

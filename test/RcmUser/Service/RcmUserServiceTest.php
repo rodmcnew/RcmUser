@@ -28,8 +28,17 @@ use RcmUser\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
 
-require_once __DIR__ . '/../ZF2TestCase.php';
+require_once __DIR__ . '/../../Zf2TestCase.php';
 
+/**
+ * Class RcmUserServiceTest
+ *
+ * TEST
+ *
+ * PHP version 5
+ *
+ * @covers \RcmUser\Service\RcmUserService
+ */
 class RcmUserServiceTest extends Zf2TestCase
 {
     public $rcmUserService;

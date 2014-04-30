@@ -158,7 +158,7 @@ class Result
     public function getMessage($key = self::DEFAULT_KEY, $deflt = null)
     {
 
-        if (array_key_exists($this->messages, $key)) {
+        if (array_key_exists($key, $this->messages)) {
 
             return $this->messages[$key];
         }

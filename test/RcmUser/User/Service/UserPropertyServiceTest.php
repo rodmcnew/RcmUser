@@ -22,8 +22,17 @@ use RcmUser\User\Entity\User;
 use RcmUser\User\Service\UserPropertyService;
 use RcmUser\Zf2TestCase;
 
-require_once __DIR__ . '/../../ZF2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class UserPropertyServiceTest
+ *
+ * TEST
+ *
+ * PHP version 5
+ *
+ * @covers \RcmUser\User\Service\UserPropertyService
+ */
 class UserPropertyServiceTest extends Zf2TestCase
 {
 

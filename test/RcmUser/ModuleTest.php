@@ -1,11 +1,14 @@
 <?php
 
 
-namespace RcmUser;
+namespace RcmUser\Test;
 
-require_once __DIR__ . '/../../Module.php';
+require_once __DIR__ . '/../Zf2TestCase.php';
 
+use RcmUser\Module;
 use RcmUser\Test;
+use RcmUser\Zf2TestCase;
+
 
 class ModuleTest extends Zf2TestCase
 {

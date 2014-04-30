@@ -17,6 +17,7 @@
 
 namespace RcmUser\Acl\Entity;
 
+use RcmUser\Exception\RcmUserException;
 use Zend\Permissions\Acl\Role\RoleInterface;
 
 

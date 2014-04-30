@@ -22,8 +22,17 @@ use RcmUser\User\Entity\User;
 use RcmUser\Zf2TestCase;
 use Zend\Authentication\Result;
 
-require_once __DIR__ . '/../../ZF2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class UserAuthenticationServiceTest
+ *
+ * TEST
+ *
+ * PHP version 5
+ *
+ * @covers \RcmUser\Authentication\Service\UserAuthenticationService
+ */
 class UserAuthenticationServiceTest extends Zf2TestCase
 {
 

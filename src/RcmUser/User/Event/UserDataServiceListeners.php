@@ -18,10 +18,7 @@
 namespace RcmUser\User\Event;
 
 
-use RcmUser\Event\AbstractListener;
-use RcmUser\User\Data\UserValidatorInterface;
 use RcmUser\User\Db\UserDataMapperInterface;
-use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 
 /**

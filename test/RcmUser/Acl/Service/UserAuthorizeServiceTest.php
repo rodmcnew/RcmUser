@@ -21,8 +21,17 @@ use RcmUser\Acl\Service\UserAuthorizeService;
 use RcmUser\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
-require_once __DIR__ . '/../../ZF2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class UserAuthorizeServiceTest
+ *
+ * TEST
+ *
+ * PHP version 5
+ *
+ * @covers \RcmUser\Acl\Service\UserAuthorizeService
+ */
 class UserAuthorizeServiceTest extends Zf2TestCase {
 
     public $userAuthorizeService;
