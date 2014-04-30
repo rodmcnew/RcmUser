@@ -1,0 +1,136 @@
+<?php
+/**
+ * UserInterface.php
+ *
+ * UserInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
+ */
+
+namespace RcmUser\User\Entity;
+
+/**
+ * Interface UserInterface
+ *
+ * UserInterface
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+interface UserInterface extends \IteratorAggregate
+{
+
+    /**
+     * setId
+     *
+     * @param mixed $id id
+     *
+     * @return void
+     */
+    public function setId($id);
+
+    /**
+     * getId
+     *
+     * @return mixed
+     */
+    public function getId();
+
+    /**
+     * setPassword
+     *
+     * @param string $password password
+     *
+     * @return void
+     */
+    public function setPassword($password);
+
+    /**
+     * getPassword
+     *
+     * @return string
+     */
+    public function getPassword();
+
+    /**
+     * setUsername
+     *
+     * @param string $username username
+     *
+     * @return void
+     */
+    public function setUsername($username);
+
+    /**
+     * getUsername
+     *
+     * @return string
+     */
+    public function getUsername();
+
+    /**
+     * setProperties
+     *
+     * @param array $properties properties
+     *
+     * @return void
+     */
+    public function setProperties($properties);
+
+    /**
+     * getProperties
+     *
+     * @return array
+     */
+    public function getProperties();
+
+    /**
+     * setState
+     *
+     * @param string $state state
+     *
+     * @return mixed
+     */
+    public function setState($state);
+
+    /**
+     * getState
+     *
+     * @return string
+     */
+    public function getState();
+
+    /**
+     * populate
+     *
+     * @param User|array $data    data as User or array
+     * @param array      $exclude list of object properties to ignore (not populate)
+     *
+     * @return mixed|void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function populate($data, $exclude = array());
+
+    /**
+     * getIterator
+     *
+     * @return \Traversable
+     */
+    public function getIterator();
+
+}
