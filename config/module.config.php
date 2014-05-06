@@ -111,6 +111,8 @@ return array(
             'DefaultRoleIdentities' => array('guest'),
             'DefaultAuthenticatedRoleIdentities' => array('user'),
 
+            'SuperAdminRole' => 'admin',
+
             /*
              * ResourceProviders
              * Used in:
@@ -422,13 +424,14 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'RcmUser\Controller\User' => 'RcmUser\Controller\UserController',
+            'RcmUser\Controller\AdminAclController' => 'RcmUser\Controller\AdminAclController',
         ),
     ),
 
     'router' => array(
         'routes' => array(
             'RcmUser' => array(
-
+                'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
                     'route' => '/rcmuser[/:action]',
@@ -440,33 +443,48 @@ return array(
                         'action' => 'index',
                     ),
                 ),
-                /*
-                'type'    => 'Literal',
+
+                'type' => 'Literal',
                 'options' => array(
-                    'route'    => '/rcm-user',
+                    'route' => '/admin/rcm-user-acl',
                     'defaults' => array(
                         //'__NAMESPACE__' => 'RcmUser\Controller',
-                        'controller'    => 'RcmUser\Controller\User',
-                        'action'        => 'index',
+                        'controller' => 'RcmUser\Controller\AdminAclController',
+                        'action' => 'index',
                     ),
                 ),
+                /*
                 'may_terminate' => true,
                 'child_routes' => array(
                     'default' => array(
-                        'type'    => 'Segment',
+                        'type' => 'Segment',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
+                            'route' => '/[:controller[/:action]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ),
-                            'defaults' => array(
-                            ),
+                            'defaults' => array(),
                         ),
                     ),
                 ),
                 */
             ),
+            'RcmUserAdminAcl' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcm-user-acl[/:terminal]',
+                    'constraints' => array(
+                        'terminal' => '[0-1]',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminAclController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+
         ),
     ),
 

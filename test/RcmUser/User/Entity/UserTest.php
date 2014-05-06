@@ -180,7 +180,7 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
     public function testMerge()
     {
         $userA = new User();
-        $userB = $this->getNewUser('A');
+        $userB = $this->getNewUser('B');
         $userC = $this->getNewUser('C');
 
         $userA->merge($userB);

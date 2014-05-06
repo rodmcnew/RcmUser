@@ -94,6 +94,26 @@ class AclResourceService
     }
 
     /**
+     * getRootPrivilege
+     *
+     * @return array
+     */
+    public function getRootPrivilege()
+    {
+        return $this->rootPrivilege;
+    }
+
+    /**
+     * getRootResource
+     *
+     * @return string
+     */
+    public function getRootResource()
+    {
+        return $this->rootResource;
+    }
+
+    /**
      * setResourceProviders
      *
      * @param array $resourceProviders resourceProviders

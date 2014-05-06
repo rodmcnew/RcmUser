@@ -17,7 +17,6 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
-use RcmUser\Acl\Service\AclResourceService;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

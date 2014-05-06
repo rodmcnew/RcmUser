@@ -384,7 +384,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         return $this->getUserAuthService()->getIdentity($this->buildNewUser());
     }
 
-    //@todo implement guestIdentity
+    //@todo implement guestIdentity and hasIdentity
     // - if getIdentity is empty return guest and save updates in session
     // on login we can sync the guest user or the session user as needed
 
