@@ -17,6 +17,7 @@
 
 namespace RcmUser\Service\Factory;
 
+use RcmUser\Acl\Entity\AclResource;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -47,7 +48,19 @@ class RcmUserAclResourceProvider implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = new \RcmUser\Provider\RcmUserAclResourceProvider();
+        $rcmResources = array();
+        $rcmResources['user-administration']
+            = new AclResource(
+            'user-administration',
+            'Allows access to RCM User admin screen for editing user data.'
+        );
+        $rcmResources['role-administration']
+            = new AclResource(
+            'role-administration',
+            'Allows access to RCM User admin screen for editing roles and access.'
+        );
+
+        $service = new \RcmUser\Provider\RcmUserAclResourceProvider($rcmResources);
 
         return $service;
     }

@@ -17,6 +17,10 @@
 
 namespace RcmUser\Acl\Service;
 
+use RcmUser\Acl\Db\AclRoleDataMapperInterface;
+use RcmUser\Acl\Db\AclRuleDataMapperInterface;
+use RcmUser\Config\Config;
+
 
 /**
  * AclDataService
@@ -35,10 +39,134 @@ namespace RcmUser\Acl\Service;
  */
 class AclDataService
 {
+    /**
+     * @var Config
+     */
+    protected $config;
 
-    // ROLES
+    /**
+     * @var AclRoleDataMapperInterface
+     */
+    protected $aclRoleDataMapper;
 
+    /**
+     * @var AclRuleDataMapperInterface
+     */
+    protected $aclRuleDataMapper;
 
-    // RULES
+    /**
+     * setConfig
+     *
+     * @param Config $config
+     *
+     * @return void
+     */
+    public function setConfig(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * getConfig
+     *
+     * @return Config
+     */
+    public function getConfig()
+    {
+        return $this->config;
+    }
+
+    /**
+     * setAclRoleDataMapper
+     *
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper
+     *
+     * @return void
+     */
+    public function setAclRoleDataMapper(
+        AclRoleDataMapperInterface $aclRoleDataMapper
+    )
+    {
+        $this->aclRoleDataMapper = $aclRoleDataMapper;
+    }
+
+    /**
+     * getAclRoleDataMapper
+     *
+     * @return AclRoleDataMapperInterface
+     */
+    public function getAclRoleDataMapper()
+    {
+        return $this->aclRoleDataMapper;
+    }
+
+    /**
+     * setAclRuleDataMapper
+     *
+     * @param AclRuleDataMapperInterface $aclRuleDataMapper
+     *
+     * @return void
+     */
+    public function setAclRuleDataMapper(
+        AclRuleDataMapperInterface $aclRuleDataMapper
+    )
+    {
+        $this->aclRuleDataMapper = $aclRuleDataMapper;
+    }
+
+    /**
+     * getAclRuleDataMapper
+     *
+     * @return AclRuleDataMapperInterface
+     */
+    public function getAclRuleDataMapper()
+    {
+        return $this->aclRuleDataMapper;
+    }
+
+    /* ROLES ******************** */
+
+    /**
+     * getDefaultRoleIdentities
+     *
+     * @return null
+     */
+    public function getDefaultRoleIdentities()
+    {
+        return $this->config->get('DefaultRoleIdentities', array());
+    }
+
+    /**
+     * getDefaultAuthenticatedRoleIdentities
+     *
+     * @return null
+     */
+    public function getDefaultAuthenticatedRoleIdentities()
+    {
+        return $this->config->get('DefaultAuthenticatedRoleIdentities', array());
+    }
+
+    public function getSuperAdminRole()
+    {
+        return $this->config->get('SuperAdminRole', null);
+    }
+
+    /**
+     * fetchAllRoles
+     *
+     * @return \RcmUser\Acl\Db\Result
+     */
+    public function fetchAllRoles()
+    {
+
+        return $this->aclRoleDataMapper->fetchAll();
+    }
+
+    /* RULES ******************** */
+
+    public function fetchByResource($resource)
+    {
+        return $this->aclRuleDataMapper->fetchByResource($resource);
+    }
 
 } 

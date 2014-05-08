@@ -39,12 +39,38 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
 {
 
     /**
+     * default resources  - rcm user needs these,
+     * however descriptions can be added on construct in the factory
+     *
      * @var array
      */
-    protected $rcmResources = array(
-            'user-management' => array(),
-            'acl-management' => array(),
+    protected $rcmResources
+        = array(
+            'user-administration' => array(),
+            'role-administration' => array(),
         );
+
+    /**
+     * __construct
+     *
+     * @param $rcmResources
+     */
+    public function __construct($rcmResources = null)
+    {
+        if (is_array($rcmResources)) {
+            $this->rcmResources = $rcmResources;
+        }
+    }
+
+    /**
+     * getRcmResources
+     *
+     * @return array
+     */
+    public function getRcmResources()
+    {
+        return $this->rcmResources;
+    }
 
     /**
      * getAll

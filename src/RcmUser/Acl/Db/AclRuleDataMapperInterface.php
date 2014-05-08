@@ -75,6 +75,15 @@ interface AclRuleDataMapperInterface
     public function fetchByRule($rule);
 
     /**
+     * fetchByResource
+     *
+     * @param string $resource resource
+     *
+     * @return mixed
+     */
+    public function fetchByResource($resource);
+
+    /**
      * create
      *
      * @param AclRule $aclRule acl rule

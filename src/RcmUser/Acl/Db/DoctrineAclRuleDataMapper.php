@@ -91,13 +91,12 @@ class DoctrineAclRuleDataMapper
     /**
      * fetchByRule
      *
-     * @param string $rule the rule
+     * @param AclRule|string $rule
      *
-     * @return Result
+     * @return Result|Result
      */
     public function fetchByRule($rule = AclRule::RULE_ALLOW)
     {
-
         $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findBy(array('rule' => $rule));
 
@@ -113,6 +112,19 @@ class DoctrineAclRuleDataMapper
         if (empty($rules)) {
 
             return new Result(null, Result::CODE_FAIL, 'Rules could not be found.');
+        }
+
+        return new Result($rules);
+    }
+
+    public function fetchByResource($resource)
+    {
+        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
+            ->findBy(array('resource' => $resource));
+
+        if (empty($rules)) {
+
+            return new Result(null, Result::CODE_FAIL, 'Rules could not be found by resource.');
         }
 
         return new Result($rules);

@@ -18,6 +18,7 @@
 namespace RcmUser\Controller;
 
 use RcmUser\User\Entity\User;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
@@ -46,10 +47,6 @@ class AdminAclController extends AbstractActionController
      */
     public function indexAction()
     {
-        $viewArr = array(
-            'errorMessage' => null,
-        );
-
         /* + TEST +++++++++++++++++++++++++ */
         echo "<pre>";
         $rcmUserService = $this->getServiceLocator()->get(
@@ -65,48 +62,111 @@ class AdminAclController extends AbstractActionController
         );
         $bauthorize = $userAuthorizeService->getAuthorize();
         $acl = $bauthorize->getAcl();
-
-        $resources = $aclResourceService->getRuntimeResources();
         $resources = $acl->getResources();
-
-        $rootResource = $aclResourceService->getRootResource();
-        $rootPrivileges = $aclResourceService->getRootPrivilege();
-
-        var_export($resources);
-
-
+        var_dump($resources);
 
         $user = new User();
         $user->setUsername('adminTest');
         $user->setPassword('123123123');
-        $user->setState('enabled');
+        //$user->setState('enabled');
 
         //$rcmUserService->createUser($user);
+        //$rcmUserService->clearIdentity();
         $rcmUserService->authenticate($user);
         //$rcmUserService->clearIdentity();
         //var_dump($rcmUserService->getIdentity());
-        //var_dump($this->rcmUserIsAllowed('acl-management'));
+        var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('role-administration', 'read'));
         echo "</pre>";
         /* - TEST ------------------------ */
 
-        if (!$this->rcmUserIsAllowed('acl-management')) {
+        if (!$this->rcmUserIsAllowed('role-administration')) {
 
-            $this->getResponse()->setStatusCode(401);
+            $response = $this->getResponse();
+            $response->setStatusCode(Response::STATUS_CODE_401);
+            $response->setContent($response->renderStatusLine());
 
-            return $this->getResponse();
+            return $response;
         }
+
+        $viewArr = array();
+
+        $aclResourceService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\Service\AclResourceService'
+        );
+
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        $resources = $aclResourceService->getRuntimeResources();
+        var_dump($resources);
+        $rootResource = $aclResourceService->getRootResource();
+        $rootPrivileges = $aclResourceService->getRootPrivilege();
+        $roles = $aclDataService->fetchAllRoles();
+
+        $viewArr['resources'] = $this->getResourceArray(
+            $resources,
+            $rootResource,
+            $rootPrivileges
+        );
+        $viewArr['rootResource'] = $rootResource;
+        $viewArr['rootPrivileges'] = $rootPrivileges;
+        // @todo get level
+        $viewArr['roles'] = $roles->getData();
+
+        var_dump($viewArr['resources']);
 
         return $this->buildView($viewArr);
     }
 
-    protected function getResourceArray($resources, $rootResource, $rootPrivileges)
-    {
+    /**
+     * getResourceArray - recursive call to get resources for view friendly array
+     *
+     * @param       $resources
+     * @param       $rootResource
+     * @param       $rootPrivileges
+     * @param array $parsedResources
+     * @param int   $level
+     *
+     * @return array
+     */
+    protected function getResourceArray(
+        $resources,
+        $rootResource,
+        $rootPrivileges,
+        $parsedResources = array(),
+        $level = 0
+    ) {
+        foreach ($resources as $key => $val) {
 
+            if (!in_array($val, $rootPrivileges)) {
+
+                $parsedResources[$key] = array(
+                    'level' => $level,
+                    'rules' => $this->getServiceLocator()
+                            ->get('RcmUser\Acl\AclDataService')
+                            ->fetchByResource($key)->getData(),
+                );
+            }
+
+            if (is_array($val) && !empty($val)) {
+
+                $nextLevel = $level + 1;
+                $parsedResources = $this->getResourceArray(
+                    $val,
+                    $rootResource,
+                    $rootPrivileges,
+                    $parsedResources,
+                    $nextLevel
+                );
+            }
+        }
+
+        return $parsedResources;
     }
 
     protected function buildView($viewArr = array())
     {
-
         $view = new ViewModel($viewArr);
 
         return $view;

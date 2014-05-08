@@ -201,4 +201,14 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
 
         return new \ArrayIterator(get_object_vars($this));
     }
+
+    /**
+     * __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getRoleIdentity();
+    }
 } 

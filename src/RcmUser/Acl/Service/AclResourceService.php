@@ -148,6 +148,8 @@ class AclResourceService
                 $this->resources[$this->rootResource][$providerName]
                     = $provider->getAll();
             }
+
+            $this->isCached = true;
         }
 
         return $this->resources;
@@ -160,7 +162,12 @@ class AclResourceService
      */
     public function getRuntimeResources()
     {
-        //@todo Implement this
-        return $this->getResources();
+        foreach ($this->getResourceProviders() as $providerName => $provider) {
+
+            $this->resources[$this->rootResource][$providerName]
+                = $provider->getAvailableAtRuntime();
+        }
+
+        return $this->resources;
     }
 } 

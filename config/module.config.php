@@ -111,6 +111,12 @@ return array(
             'DefaultRoleIdentities' => array('guest'),
             'DefaultAuthenticatedRoleIdentities' => array('user'),
 
+            /*
+             * SuperAdminRole
+             *
+             * If this is set, this role will get full permissions always
+             * Basically over-rides standard permission handling
+             */
             'SuperAdminRole' => 'admin',
 
             /*
@@ -131,7 +137,7 @@ return array(
                  * RcmUserAccess
                  * This module inject some of this module's resources.
                  */
-                'RcmUserAccess' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                'rcmuser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
             ),
         ),
     ),
@@ -348,6 +354,16 @@ return array(
              */
             'RcmUser\Acl\AclRuleDataMapper' =>
                 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
+
+            /*
+             * AclDataService
+             * Required for accessing mappers
+             * This is designed to expose a simple facade
+             * for use in displaying and updating ACL data
+             * in views
+             */
+            'RcmUser\Acl\AclDataService' =>
+                'RcmUser\Acl\Service\Factory\AclDataService',
 
             /*
              * UserDataServiceListeners
