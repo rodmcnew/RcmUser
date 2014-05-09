@@ -62,8 +62,9 @@ class AdminAclController extends AbstractActionController
         );
         $bauthorize = $userAuthorizeService->getAuthorize();
         $acl = $bauthorize->getAcl();
-        $resources = $acl->getResources();
-        var_dump($resources);
+        var_dump($acl->getResources());
+        var_dump($acl->getRoles());
+        //var_dump($acl->getRules());
 
         $user = new User();
         $user->setUsername('adminTest');
@@ -71,15 +72,15 @@ class AdminAclController extends AbstractActionController
         //$user->setState('enabled');
 
         //$rcmUserService->createUser($user);
-        //$rcmUserService->clearIdentity();
+        $rcmUserService->clearIdentity();
         $rcmUserService->authenticate($user);
         //$rcmUserService->clearIdentity();
-        //var_dump($rcmUserService->getIdentity());
-        var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('role-administration', 'read'));
+        var_dump($rcmUserService->getIdentity());
+        var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
         echo "</pre>";
         /* - TEST ------------------------ */
 
-        if (!$this->rcmUserIsAllowed('role-administration')) {
+        if (!$this->rcmUserIsAllowed('rcmuser-acl-administration')) {
 
             $response = $this->getResponse();
             $response->setStatusCode(Response::STATUS_CODE_401);
@@ -98,71 +99,32 @@ class AdminAclController extends AbstractActionController
             'RcmUser\Acl\AclDataService'
         );
 
-        $resources = $aclResourceService->getRuntimeResources();
-        var_dump($resources);
-        $rootResource = $aclResourceService->getRootResource();
-        $rootPrivileges = $aclResourceService->getRootPrivilege();
-        $roles = $aclDataService->fetchAllRoles();
+        $rules = $aclDataService->fetchRulesAll()->getData();
+        var_dump($rules);
 
-        $viewArr['resources'] = $this->getResourceArray(
-            $resources,
-            $rootResource,
-            $rootPrivileges
-        );
-        $viewArr['rootResource'] = $rootResource;
-        $viewArr['rootPrivileges'] = $rootPrivileges;
+        $resources = $aclResourceService->getResources(true);
+        var_dump($resources);
+
+        $roles = $aclDataService->fetchAllRoles();
+        var_dump($roles);
+
+
+        //$viewArr['resources'] = $this->getResourceArray(
+        //    $resources,
+        //    $rootResource
+        //);
         // @todo get level
         $viewArr['roles'] = $roles->getData();
-
-        var_dump($viewArr['resources']);
 
         return $this->buildView($viewArr);
     }
 
     /**
      * getResourceArray - recursive call to get resources for view friendly array
-     *
-     * @param       $resources
-     * @param       $rootResource
-     * @param       $rootPrivileges
-     * @param array $parsedResources
-     * @param int   $level
-     *
      * @return array
      */
-    protected function getResourceArray(
-        $resources,
-        $rootResource,
-        $rootPrivileges,
-        $parsedResources = array(),
-        $level = 0
-    ) {
-        foreach ($resources as $key => $val) {
+    protected function getResourceArray() {
 
-            if (!in_array($val, $rootPrivileges)) {
-
-                $parsedResources[$key] = array(
-                    'level' => $level,
-                    'rules' => $this->getServiceLocator()
-                            ->get('RcmUser\Acl\AclDataService')
-                            ->fetchByResource($key)->getData(),
-                );
-            }
-
-            if (is_array($val) && !empty($val)) {
-
-                $nextLevel = $level + 1;
-                $parsedResources = $this->getResourceArray(
-                    $val,
-                    $rootResource,
-                    $rootPrivileges,
-                    $parsedResources,
-                    $nextLevel
-                );
-            }
-        }
-
-        return $parsedResources;
     }
 
     protected function buildView($viewArr = array())

@@ -55,15 +55,15 @@ class DoctrineAclRole extends BjyAclRole
      */
     protected $id;
     /**
-     * @var integer
-     * @ORM\Column(type="integer", nullable=false)
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
-    protected $parentId;
+    protected $parentRoleId;
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", unique=true, length=255, nullable=false)
      */
-    protected $roleIdentity;
+    protected $roleId;
     /**
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
@@ -72,10 +72,10 @@ class DoctrineAclRole extends BjyAclRole
 
     /**
      * @todo This can probably be made to work
-     * -- Needs to accept 0 value if this is in the root of the tree
+     * -- Needs to accept null value if this is in the root of the tree
      * -- needs to only nest the parent, not the whole parent tree
      * OneToOne(targetEntity="DoctrineAclRole")
-     * JoinColumn(name="parentId", referencedColumnName="id")
+     * JoinColumn(name="parentRoleId", referencedColumnName="roleId")
      **/
     protected $parentRole;
 
@@ -102,24 +102,24 @@ class DoctrineAclRole extends BjyAclRole
     }
 
     /**
-     * setParentId
+     * setParentRoleId
      *
-     * @param int $parentId parent id
+     * @param int $parentRoleId parent id
      *
      * @return void
      */
-    public function setParentId($parentId)
+    public function setParentRoleId($parentRoleId)
     {
-        $this->parentId = $parentId;
+        $this->parentRoleId = $parentRoleId;
     }
 
     /**
-     * getParentId
+     * getParentRoleId
      *
      * @return int
      */
-    public function getParentId()
+    public function getParentRoleId()
     {
-        return $this->parentId;
+        return $this->parentRoleId;
     }
 } 

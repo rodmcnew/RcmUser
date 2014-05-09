@@ -147,7 +147,7 @@ class BjyRuleProvider implements ProviderInterface
             if (isset($bjyRules[$ruleStr])) {
 
                 $bjyRules[$ruleStr][$key] = array();
-                $bjyRules[$ruleStr][$key][0] = $rule->getRole()->getRoleIdentity();
+                $bjyRules[$ruleStr][$key][0] = $rule->getRoleId();
                 $bjyRules[$ruleStr][$key][1] = $rule->getResource();
                 $priv = $rule->getPrivilege();
                 if (!empty($priv)) {

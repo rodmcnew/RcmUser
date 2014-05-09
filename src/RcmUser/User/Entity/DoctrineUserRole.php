@@ -49,12 +49,12 @@ class DoctrineUserRole extends UserRole
     protected $id;
     /**
      * @var string $userId
-     * @ORM\Column(type="integer",nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $userId;
     /**
      * @var string $roleId
-     * @ORM\Column(type="integer",nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $roleId;
 } 

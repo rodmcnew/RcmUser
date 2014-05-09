@@ -46,8 +46,8 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
      */
     protected $rcmResources
         = array(
-            'user-administration' => array(),
-            'role-administration' => array(),
+            'rcmuser-user-administration' => array(),
+            'rcmuser-acl-administration' => array(),
         );
 
     /**

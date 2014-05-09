@@ -18,6 +18,7 @@
 namespace RcmUser\Acl\Provider;
 
 use BjyAuthorize\Provider\Resource\ProviderInterface;
+use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Acl\Service\AclResourceService;
 
 /**
@@ -72,6 +73,23 @@ class BjyResourceProvider implements ProviderInterface
      */
     public function getResources()
     {
-        return $this->rcmUserResourceProvider->getResources();
+        // @todo prep the new version of resources
+        $resources = $this->rcmUserResourceProvider->getResources();
+        $bjyResources = array();
+
+        foreach($resources as $key => $resource){
+
+            /* @todo could add resources if they are not found */
+            if($resource->getParentResourceId()){
+                if(!isset($bjyResources[$resource->getParentResourceId()])){
+
+                    $bjyResources[$resource->getParentResourceId()] = new AclResource($resource->getParentResourceId());
+                }
+            }
+
+            $bjyResources[$resource->getResourceId()] = $resource->getPrivileges();
+        }
+
+        return $bjyResources;
     }
 }

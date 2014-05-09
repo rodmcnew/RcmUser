@@ -63,7 +63,7 @@ $headScript->appendScript($js);
 
                     <accordion-heading>
                         <div class="accordion-heading">
-                            <a href="#" tooltip-placement="right" tooltip="This is the user role."><?= $role->getRoleIdentity() ?></a>
+                            <a href="#" tooltip-placement="right" tooltip="This is the user role."><?= $role->getRoleId() ?></a>
                             <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen<?= $role->getId() ?>, 'glyphicon-chevron-right': !isopen<?= $role->getId() ?>}"></i>
                         </div>
                     </accordion-heading>

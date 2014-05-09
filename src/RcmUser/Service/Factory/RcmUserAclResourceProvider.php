@@ -49,16 +49,32 @@ class RcmUserAclResourceProvider implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $rcmResources = array();
-        $rcmResources['user-administration']
+
+        /* parent resource example */
+        $rcmResources['rcmuser']
             = new AclResource(
-            'user-administration',
-            'Allows access to RCM User admin screen for editing user data.'
+            'rcmuser'
         );
-        $rcmResources['role-administration']
+        $rcmResources['rcmuser']->setName('RCM User');
+        $rcmResources['rcmuser']->setDescription('All RCM user access.');
+
+        $rcmResources['rcmuser-user-administration']
             = new AclResource(
-            'role-administration',
-            'Allows access to RCM User admin screen for editing roles and access.'
+            'rcmuser-user-administration',
+            'rcmuser',
+            array('read', 'write')
         );
+        $rcmResources['rcmuser-user-administration']->setName('User Administration');
+        $rcmResources['rcmuser-user-administration']->setDescription('Allows the editing of user data.');
+
+        $rcmResources['rcmuser-acl-administration']
+            = new AclResource(
+            'rcmuser-acl-administration',
+            'rcmuser',
+            array()
+        );
+        $rcmResources['rcmuser-acl-administration']->setName('Role and Access Administration');
+        $rcmResources['rcmuser-acl-administration']->setDescription('Allows the editing of user rols data.');
 
         $service = new \RcmUser\Provider\RcmUserAclResourceProvider($rcmResources);
 

@@ -126,6 +126,24 @@ class AclDataService
 
     /* ROLES ******************** */
 
+    public function getAclData()
+    {
+        $result = $this->fetchAllRoles();
+
+        if(!$result->isSuccess()){
+
+            return $result;
+        }
+
+        $data = $result->getData();
+    }
+
+    public function getRoleAclData($roleId)
+    {
+
+
+    }
+
     /**
      * getDefaultRoleIdentities
      *
@@ -158,15 +176,29 @@ class AclDataService
      */
     public function fetchAllRoles()
     {
-
         return $this->aclRoleDataMapper->fetchAll();
     }
 
     /* RULES ******************** */
 
-    public function fetchByResource($resource)
+    /**
+     * fetchAllRoles
+     *
+     * @return \RcmUser\Acl\Db\Result
+     */
+    public function fetchRulesAll()
+    {
+        return $this->aclRuleDataMapper->fetchAll();
+    }
+
+    public function fetchRulesByResource($resource)
     {
         return $this->aclRuleDataMapper->fetchByResource($resource);
+    }
+
+    public function fetchRulesByRole($roleId)
+    {
+        return $this->aclRuleDataMapper->fetchByRole($roleId);
     }
 
 } 

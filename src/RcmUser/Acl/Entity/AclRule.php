@@ -58,7 +58,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * @var
      */
-    protected $role;
+    protected $roleId;
 
     /**
      * @var
@@ -115,25 +115,25 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * setRole
+     * setRoleId
      *
-     * @param AclRole $role role
+     * @param string $roleId roleId
      *
      * @return void
      */
-    public function setRole(AclRole $role)
+    public function setRoleId($roleId)
     {
-        $this->role = $role;
+        $this->roleId = $roleId;
     }
 
     /**
-     * getRole
+     * getRoleId
      *
      * @return mixed
      */
-    public function getRole()
+    public function getRoleId()
     {
-        return $this->role;
+        return $this->roleId;
     }
 
     /**
@@ -167,7 +167,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     {
         $obj = new \stdClass();
         $obj->rule = $this->getRule();
-        $obj->role = $this->getrole();
+        $obj->roleid = $this->getRoleId();
         $obj->resource = $this->getResource();
         $obj->privilege = $this->getPrivilege();
 

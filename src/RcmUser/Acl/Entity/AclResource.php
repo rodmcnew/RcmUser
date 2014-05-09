@@ -41,18 +41,118 @@ class AclResource extends GenericResource
     /**
      * @var string
      */
-    protected $description;
+    protected $parentResourceId = null;
 
     /**
-     * __construct
-     *
-     * @param string $resourceId  resourceId
-     * @param string $description description
+     * @var array
      */
-    public function __construct($resourceId, $description = '')
-    {
+    protected $privileges = array();
+
+    /**
+     * @var string
+     */
+    protected $name = '';
+
+    /**
+     * @var string
+     */
+    protected $description = '';
+
+    /**
+     * @param string $resourceId       resourceId
+     * @param null   $parentResourceId parentResourceId
+     * @param array  $privileges       privileges
+     */
+    public function __construct(
+        $resourceId,
+        $parentResourceId = null,
+        $privileges = array()
+    ) {
         parent::__construct($resourceId);
-        $this->setDescription($description);
+        $this->setParentResourceId($parentResourceId);
+        $this->setPrivileges($privileges);
+    }
+
+    /**
+     * setResourceId
+     *
+     * @param string $resourceId resourceId
+     *
+     * @return void
+     */
+    public function setResourceId($resourceId)
+    {
+        $this->resourceId = $resourceId;
+    }
+
+    /**
+     * setParentResourceId
+     *
+     * @param $parentResourceId
+     *
+     * @return void
+     */
+    public function setParentResourceId($parentResourceId)
+    {
+        $this->parentResourceId = $parentResourceId;
+    }
+
+    /**
+     * getParentResourceId
+     *
+     * @return string
+     */
+    public function getParentResourceId()
+    {
+        return $this->parentResourceId;
+    }
+
+    /**
+     * setPrivileges
+     *
+     * @param array $privileges privileges
+     *
+     * @return void
+     */
+    public function setPrivileges($privileges)
+    {
+        $this->privileges = $privileges;
+    }
+
+    /**
+     * getPrivileges
+     *
+     * @return array
+     */
+    public function getPrivileges()
+    {
+        return $this->privileges;
+    }
+
+    /**
+     * setName
+     *
+     * @param string $name name
+     *
+     * @return void
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+    }
+
+    /**
+     * getName
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        if(empty($this->name)){
+            return $this->getResourceId();
+        }
+
+        return $this->name;
     }
 
     /**
@@ -68,10 +168,50 @@ class AclResource extends GenericResource
     }
 
     /**
+     * getDescription
+     *
      * @return string
      */
     public function getDescription()
     {
         return $this->description;
+    }
+
+    public function populate($data = array())
+    {
+        if (($data instanceof AclResource)) {
+
+            $this->setResourceId($data->getResourceId());
+            $this->setParentResourceId($data->getParentResourceId());
+            $this->setPrivileges($data->getPrivileges());
+            $this->setName($data->getName());
+            $this->setDescription($this->getDescription());
+
+            return;
+        }
+
+        if (is_array($data)) {
+            if (isset($data['resourceId'])) {
+                $this->setResourceId($data['resourceId']);
+            }
+            if (isset($data['parentResourceId'])) {
+                $this->setParentResourceId($data['parentResourceId']);
+            }
+            if (isset($data['privileges'])) {
+                $this->setPrivileges($data['privileges']);
+            }
+            if (isset($data['name'])) {
+                $this->setName($data['name']);
+            }
+            if (isset($data['description'])) {
+                $this->setDescription($data['description']);
+            }
+
+            return;
+        }
+
+        throw new RcmUserException(
+            'Resource data could not be populated, data format not supported'
+        );
     }
 } 

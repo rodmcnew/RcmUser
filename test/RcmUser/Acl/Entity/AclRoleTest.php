@@ -54,13 +54,13 @@ class AclRoleTest extends Zf2TestCase
         $role = 'testrole';
         $prole = 'parenttestrole';
         $desc = 'Descript';
-        $aclRole->setRoleIdentity($role);
-        $aclRole->setParentRole($prole);
+        $aclRole->setRoleId($role);
+        $aclRole->setParentRoleId($prole);
         $aclRole->setDescription($desc);
 
-        $this->assertTrue($aclRole->getRoleIdentity() === $role, 'Setter or getter failed.');
         $this->assertTrue($aclRole->getRoleId() === $role, 'Setter or getter failed.');
-        $this->assertTrue($aclRole->getParentRole() === $prole, 'Setter or getter failed.');
+        $this->assertTrue($aclRole->getRoleId() === $role, 'Setter or getter failed.');
+        $this->assertTrue($aclRole->getParentRoleId() === $prole, 'Setter or getter failed.');
         $this->assertTrue($aclRole->getParent() === $prole, 'Setter or getter failed.');
         $this->assertTrue($aclRole->getDescription() === $desc, 'Setter or getter failed.');
     }
@@ -76,24 +76,24 @@ class AclRoleTest extends Zf2TestCase
     {
         $aclRole = new AclRole();
         $aclRoleA = array(
-            'roleIdentity' => 'arrayRoleA',
-            'parentRole' => 'arrayRoleA',
+            'roleId' => 'arrayRoleA',
+            'parentRoleId' => 'arrayRoleA',
             'description' => 'arrayRoleA',
         );
         $aclRoleB = new AclRole();
-        $aclRoleB->setRoleIdentity('roleB');
-        $aclRoleB->setParentRole('roleB');
+        $aclRoleB->setRoleId('roleB');
+        $aclRoleB->setParentRoleId('roleB');
         $aclRoleB->setDescription('roleB');
 
         $aclRoleC = 'wrong format';
 
         $aclRole->populate($aclRoleA);
 
-        $this->assertTrue($aclRole->getRoleIdentity() === 'arrayRoleA', 'Setter or getter failed.');
+        $this->assertTrue($aclRole->getRoleId() === 'arrayRoleA', 'Setter or getter failed.');
 
         $aclRole->populate($aclRoleB);
 
-        $this->assertTrue($aclRole->getRoleIdentity() === 'roleB', 'Setter or getter failed.');
+        $this->assertTrue($aclRole->getRoleId() === 'roleB', 'Setter or getter failed.');
 
         try{
             $aclRole->populate($aclRoleC);
@@ -117,8 +117,8 @@ class AclRoleTest extends Zf2TestCase
     public function testJsonSerialize()
     {
         $aclRole = new AclRole();
-        $aclRole->setRoleIdentity('role');
-        $aclRole->setParentRole('role');
+        $aclRole->setRoleId('role');
+        $aclRole->setParentRoleId('role');
         $aclRole->setDescription('role');
 
         $aclRoleJson = json_encode($aclRole);
@@ -136,8 +136,8 @@ class AclRoleTest extends Zf2TestCase
     public function testArrayIterator()
     {
         $aclRole = new AclRole();
-        $aclRole->setRoleIdentity('role');
-        $aclRole->setParentRole('role');
+        $aclRole->setRoleId('role');
+        $aclRole->setParentRoleId('role');
         $aclRole->setDescription('role');
 
         $iter = $aclRole->getIterator();
@@ -149,7 +149,7 @@ class AclRoleTest extends Zf2TestCase
         $this->assertTrue(is_array($aclRoleArr), 'Iterator failed work.');
 
         $this->assertArrayHasKey(
-            'roleIdentity', $aclRoleArr, 'Iterator did not populate correctly.'
+            'roleId', $aclRoleArr, 'Iterator did not populate correctly.'
         );
     }
 }

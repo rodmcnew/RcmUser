@@ -51,13 +51,13 @@ class DoctrineAclRoleTest extends Zf2TestCase
         $aclRole = new DoctrineAclRole();
 
         $id = 123;
-        $parentId = 321;
+        $parentRoleId = 321;
 
         $aclRole->setId($id);
-        $aclRole->setParentId($parentId);
+        $aclRole->setParentRoleId($parentRoleId);
 
         $this->assertTrue(
-            $aclRole->getParentId() === $parentId,
+            $aclRole->getParentRoleId() === $parentRoleId,
             'Setter or getter failed.'
         );
         $this->assertTrue(

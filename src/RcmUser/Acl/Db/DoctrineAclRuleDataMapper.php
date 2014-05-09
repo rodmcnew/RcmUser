@@ -79,12 +79,21 @@ class DoctrineAclRuleDataMapper
     /**
      * fetchByRole
      *
-     * @param string $roleId the roleIdentity
+     * @param string $roleId the roleId
      *
      * @return Result
      */
     public function fetchByRole($roleId)
     {
+        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
+            ->findBy(array('roleId' => $roleId));
+
+        if (empty($rules)) {
+
+            return new Result(null, Result::CODE_FAIL, 'Rules could not be found by role Id.');
+        }
+
+        return new Result($rules);
     }
 
 
@@ -100,15 +109,6 @@ class DoctrineAclRuleDataMapper
         $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findBy(array('rule' => $rule));
 
-        /*
-        $query = $this->getEntityManager()->createQuery('
-            SELECT role FROM '.$this->getEntityClass().' rule
-            INDEX BY rule.rule'
-        );
-
-        $rules = $query->getResult();
-        */
-
         if (empty($rules)) {
 
             return new Result(null, Result::CODE_FAIL, 'Rules could not be found.');
@@ -117,10 +117,17 @@ class DoctrineAclRuleDataMapper
         return new Result($rules);
     }
 
-    public function fetchByResource($resource)
+    /**
+     * fetchByResource
+     *
+     * @param string $resourceId resourceId
+     *
+     * @return mixed|Result
+     */
+    public function fetchByResource($resourceId)
     {
         $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('resource' => $resource));
+            ->findBy(array('resource' => $resourceId));
 
         if (empty($rules)) {
 

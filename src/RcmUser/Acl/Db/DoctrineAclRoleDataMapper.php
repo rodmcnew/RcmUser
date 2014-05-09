@@ -19,7 +19,6 @@ namespace RcmUser\Acl\Db;
 
 
 use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\BjyAclRole;
 use RcmUser\Acl\Entity\DoctrineAclRole;
 use RcmUser\Db\DoctrineMapper;
 use RcmUser\Result;
@@ -98,23 +97,23 @@ class DoctrineAclRoleDataMapper
     }
 
     /**
-     * fetchByParentId
+     * fetchByParentRoleId
      *
-     * @param mixed $parentId the parent id
+     * @param mixed $parentRoleId the parent id
      *
      * @return array
      */
-    public function fetchByParentId($parentId)
+    public function fetchByParentRoleId($parentRoleId)
     {
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('parentId' => $parentId));
+            ->findBy(array('parentRoleId' => $parentRoleId));
 
         if (empty($roles)) {
 
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Roles could not be found by parentId.'
+                'Roles could not be found by parentRoleId.'
             );
         }
 
@@ -122,23 +121,23 @@ class DoctrineAclRoleDataMapper
     }
 
     /**
-     * fetchByRoleIdentity
+     * fetchByRoleId
      *
-     * @param string $roleIdentity the role identity string
+     * @param string $roleId the role identity string
      *
      * @return Role
      */
-    public function fetchByRoleIdentity($roleIdentity)
+    public function fetchByRoleId($roleId)
     {
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('roleIdentity' => $roleIdentity));
+            ->findBy(array('roleId' => $roleId));
 
         if (empty($roles)) {
 
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Roles could not be found by roleIdentity.'
+                'Roles could not be found by roleId.'
             );
         }
 
@@ -189,11 +188,11 @@ class DoctrineAclRoleDataMapper
             }
         }
 
-        $roleIdentity = $aclRole->getRoleIdentity();
+        $roleId = $aclRole->getRoleId();
 
-        if (!empty($roleIdentity)) {
+        if (!empty($roleId)) {
 
-            $result = $this->fetchByRoleIdentity($roleIdentity);
+            $result = $this->fetchByRoleId($roleId);
 
             return $result;
         }
@@ -268,19 +267,19 @@ class DoctrineAclRoleDataMapper
 
         foreach ($roles as $key => $role) {
 
-            $parentId = $role->getParentId();
+            $parentRoleId = $role->getParentRoleId();
 
-            if (isset($roles[$parentId])) {
+            if (isset($roles[$parentRoleId])) {
                 /*@todo We clone to limit nesting, is this ok?
                 $parent = new AclRole();
-                $parent->populate($roles[$parentId]);
+                $parent->populate($roles[$parentRoleId]);
 
                 $roles[$key]->setParentRole($parent);
                 */
 
                 // @todo this should take objects, not strings,
                 // BJY has issues with objects
-                $roles[$key]->setParentRole($roles[$parentId]->getRoleIdentity());
+                $roles[$key]->setParentRole($roles[$parentRoleId]->getRoleId());
             }
         }
 
@@ -298,11 +297,11 @@ class DoctrineAclRoleDataMapper
     public function createNamespaceId(AclRole $role, $aclRoles)
     {
 
-        $parentId = $role->getParentId();
-        $ns = $role->getRoleIdentity();
-        if (!empty($parentId)) {
+        $parentRoleId = $role->getParentRoleId();
+        $ns = $role->getRoleId();
+        if (!empty($parentRoleId)) {
 
-            $parent = $aclRoles[$parentId];
+            $parent = $aclRoles[$parentRoleId];
 
             $ns = $this->createNamespaceId($parent, $aclRoles, $ns) . '.' . $ns;
         }

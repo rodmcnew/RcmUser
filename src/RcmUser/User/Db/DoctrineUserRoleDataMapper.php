@@ -149,11 +149,11 @@ class DoctrineUserRoleDataMapper
             );
         }
 
-        foreach ($userRoles as $roleIdentity) {
+        foreach ($userRoles as $roleId) {
 
             // @todo data checks here
 
-            $aclRoleResult = $aclRoleDataMapper->fetchByRoleIdentity($roleIdentity);
+            $aclRoleResult = $aclRoleDataMapper->fetchByRoleId($roleId);
 
             if (!$aclRoleResult->isSuccess()) {
 
@@ -168,7 +168,7 @@ class DoctrineUserRoleDataMapper
                 // @todo handle this by either removing role or throwing error
             } else {
 
-                $userAclRoles[] = $aclRole->getRoleIdentity();
+                $userAclRoles[] = $aclRole->getRoleId();
             }
         }
 
@@ -198,10 +198,20 @@ class DoctrineUserRoleDataMapper
             );
         }
 
-        //
+        /*
         $userRoles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
         )->findBy(array('userId' => $userId));
+        */
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT userRole.roleId FROM ' . $this->getEntityClass() . ' userRole ' .
+            'WHERE userRole.userId = ?1'
+        );
+
+        $query->setParameter(1, $userId);
+
+        $userRoles = $query->getResult();
 
         if (empty($userRoles)) {
 
@@ -212,33 +222,12 @@ class DoctrineUserRoleDataMapper
             );
         }
 
-        $aclRoleDataMapper = $this->getAclRoleDataMapper();
-
         $userAclRoles = array();
 
         foreach ($userRoles as $userRole) {
 
-            // @todo data checks here
-
-            $aclRoleResult = $aclRoleDataMapper->fetchById($userRole->getRoleId());
-
-            if (!$aclRoleResult->isSuccess()) {
-
-                //@todo - error OR delete
-                continue;
-            }
-
-            $aclRole = $aclRoleResult->getData();
-
-            if (empty($aclRole)) {
-
-                // @todo handle this by either removing role or throwing error
-            } else {
-
-                $userAclRoles[] = $aclRole->getRoleIdentity();
-            }
+            $userAclRoles[] = $userRole['roleId'];
         }
-
 
         return new Result($userAclRoles);
     }

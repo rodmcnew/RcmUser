@@ -17,6 +17,8 @@
 
 namespace RcmUser\Acl\Service;
 
+use RcmUser\Acl\Entity\AclResource;
+
 
 /**
  * AclResourceService
@@ -37,20 +39,9 @@ class AclResourceService
 {
 
     /**
-     * @var string
+     * @var AclResource
      */
-    protected $rootResource = 'core';
-    /**
-     * @var array
-     */
-    protected $rootPrivilege
-        = array(
-            'read',
-            'update',
-            'create',
-            'delete',
-            'execute',
-        );
+    protected $rootResource = null;
 
     /**
      * @var array of resource provider factories
@@ -69,38 +60,14 @@ class AclResourceService
 
     /**
      * __construct
-     *
-     * @param array  $resources     resources
-     * @param string $rootResource  rootResource
-     * @param null   $rootPrivilege rootPrivilege
+     * @param array $resources
+     * @param null  $rootResource
      */
     public function __construct(
-        $resources = array(),
-        $rootResource = 'core',
-        $rootPrivilege = null
+        $rootResource,
+        $resources = array()
     ) {
-
         $this->rootResource = $rootResource;
-        if (is_array($rootPrivilege)) {
-
-            $this->rootPrivilege = $rootPrivilege;
-        }
-
-        $this->resources[$this->rootResource] = $this->rootPrivilege;
-
-        $this->resources[$this->rootResource] = array_merge(
-            $this->resources[$this->rootResource], $resources
-        );
-    }
-
-    /**
-     * getRootPrivilege
-     *
-     * @return array
-     */
-    public function getRootPrivilege()
-    {
-        return $this->rootPrivilege;
     }
 
     /**
@@ -138,34 +105,46 @@ class AclResourceService
     /**
      * getResources
      *
-     * @return array
-     */
-    public function getResources()
-    {
-        if (!$this->isCached) {
-            foreach ($this->getResourceProviders() as $providerName => $provider) {
-
-                $this->resources[$this->rootResource][$providerName]
-                    = $provider->getAll();
-            }
-
-            $this->isCached = true;
-        }
-
-        return $this->resources;
-    }
-
-    /**
-     * getRuntimeResources
+     * @param bool $refresh refresh
      *
      * @return array
      */
-    public function getRuntimeResources()
+    public function getResources($refresh = false)
     {
-        foreach ($this->getResourceProviders() as $providerName => $provider) {
 
-            $this->resources[$this->rootResource][$providerName]
-                = $provider->getAvailableAtRuntime();
+        if (!$this->isCached || $refresh) {
+
+            $this->resources[$this->rootResource->getResourceId()] = $this->rootResource;
+
+            foreach ($this->getResourceProviders() as $providerName => $provider) {
+
+                // easy way
+                // array_merge($this->resources, $provider->getAll());
+
+                $providerResources = $provider->getAll();
+
+                foreach($providerResources as $key => $val){
+
+                    // populate if config array
+                    if(is_array($val)){
+
+                        $res = new AclResource($val['resourceId']);
+                        $res->populate($val);
+                    } else {
+                        $res = $val;
+                    }
+
+                    if($res->getParentResourceId() == null){
+
+                        $res->setParentResourceId($this->rootResource->getResourceId());
+                    }
+
+                    $this->resources[$res->getResourceId()] = $res;
+                }
+
+            }
+
+            $this->isCached = true;
         }
 
         return $this->resources;
