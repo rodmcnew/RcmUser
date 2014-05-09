@@ -211,7 +211,7 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $userA = $this->getNewUser('A');
 
         $userAjson = json_encode($userA);
-        //var_dump($userAjson);
+
         $this->assertJson($userAjson, 'User not converted to JSON.');
     }
 }

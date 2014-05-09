@@ -46,13 +46,13 @@ interface AclRoleDataMapperInterface
     public function fetchAll();
 
     /**
-     * fetchById
+     * fetchByRoleId
      *
-     * @param int $id id
+     * @param string $roleId roleId
      *
-     * @return Result
+     * @return mixed
      */
-    public function fetchById($id);
+    public function fetchByRoleId($roleId);
 
     /**
      * fetchByParentRoleId
@@ -62,15 +62,6 @@ interface AclRoleDataMapperInterface
      * @return Result
      */
     public function fetchByParentRoleId($parentRoleId);
-
-    /**
-     * fetchByRoleId
-     *
-     * @param string $roleId roleId
-     *
-     * @return mixed
-     */
-    public function fetchByRoleId($roleId);
 
     /**
      * create

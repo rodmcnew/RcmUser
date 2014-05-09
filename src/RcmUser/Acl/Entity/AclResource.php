@@ -36,7 +36,7 @@ use Zend\Permissions\Acl\Resource\GenericResource;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AclResource extends GenericResource
+class AclResource extends GenericResource implements \JsonSerializable
 {
     /**
      * @var string
@@ -213,5 +213,22 @@ class AclResource extends GenericResource
         throw new RcmUserException(
             'Resource data could not be populated, data format not supported'
         );
+    }
+
+    /**
+     * jsonSerialize
+     *
+     * @return \stdClass
+     */
+    public function jsonSerialize()
+    {
+        $obj = new \stdClass();
+        $obj->resourceId = $this->getResourceId();
+        $obj->parentResourceId = $this->getParentResourceId();
+        $obj->privileges = $this->getPrivileges();
+        $obj->name = $this->getName();
+        $obj->description = $this->getDescription();
+
+        return $obj;
     }
 } 

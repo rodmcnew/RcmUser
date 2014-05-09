@@ -30,8 +30,6 @@ $headScript = $this->headScript();
 $headStyle->appendStyle($css); // NOT WORKING!!!!!
 $headScript->appendScript($js);
 
-
-
 ?>
 <style type="text/css">
 
@@ -49,36 +47,35 @@ $headScript->appendScript($js);
             <p class="lead">Set up the user roles and access to resources.</p>
         </div>
 
+        <div ng-controller="rcmuserAdminAclAppController">
+            <div ng-repeat="(roleNs, role) in roles">
+                {{roleNs}}: {{role}}
+            </div>
+            <pre>{{roles|json}}</pre>
+        </div>
+
         <div class="container-fluid">
+
+
 
             <accordion close-others="true">
 
-                <?php
-                /* <ROLE> */
-                foreach($roles as $role) {
-
-                ?>
                 <!-- + ROLE -->
-                <accordion-group is-open="isopen<?= $role->getId() ?>">
+                <accordion-group is-open="isopen.roleId">
 
                     <accordion-heading>
                         <div class="accordion-heading">
-                            <a href="#" tooltip-placement="right" tooltip="This is the user role."><?= $role->getRoleId() ?></a>
-                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen<?= $role->getId() ?>, 'glyphicon-chevron-right': !isopen<?= $role->getId() ?>}"></i>
+                            <a href="#" tooltip-placement="right" tooltip="This is the user role.">{{roleId}}</a>
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen.roleId, 'glyphicon-chevron-right': !isopen.roleId}"></i>
                         </div>
                     </accordion-heading>
 
                     <!-- + RESOURCE -->
-                    <?php
-                    /* <RESOURCE> */
-                    foreach($resources as $resource => $data) {
-
-                    ?>
                     <div class="container-fluid admin-acl-resource-section">
 
                         <div class="container-fluid admin-acl-resource-row">
                             <div class="admin-acl-resource-col">
-                                &#124;&#8212;<?= str_repeat("&#8212;", $data['level']) ?>&nbsp;<span><?= $resource ?></span>
+                                &#124;&#8212;{{levelRepeat('&#8212;', 5)}}&nbsp;<span>{{resource}}</span>
                             </div>
                         </div>
 
@@ -86,39 +83,21 @@ $headScript->appendScript($js);
 
                             <form class="form-inline" role="form">
 
-                                <?php
-                                /* <PRIVILEGE> */
-                                foreach($rootPrivileges as $privilege) {
-
-                                ?>
                                 <div class="form-group">
-                                    <label class="control-label" for="permission1"><?= $privilege ?></label>
+                                    <label class="control-label" for="permission1">{{privilege}}</label>
                                     <select class="form-control input-sm" id="permission1">
                                         <option value="inherit">inherit</option>
                                         <option value="allow">allow</option>
                                         <option value="deny">deny</option>
                                     </select>
                                 </div>
-                                <?php
-                                }
-                                /* </PRIVILEGE> */
-                                ?>
                             </form>
 
                         </div>
                     </div>
                     <!-- + RESOURCE -->
-                    <?php
-                    }
-                    /* </RESOURCE> */
-                    ?>
                 </accordion-group>
                 <!-- - ROLE -->
-                <?php
-                }
-                /* </ROLE> */
-                ?>
-
             </accordion>
         </div>
     </div>

@@ -48,15 +48,6 @@ interface AclRuleDataMapperInterface
     public function fetchAll();
 
     /**
-     * fetchById
-     *
-     * @param mixed $id id
-     *
-     * @return Result
-     */
-    public function fetchById($id);
-
-    /**
      * fetchByRole
      *
      * @param mixed $roleId role id

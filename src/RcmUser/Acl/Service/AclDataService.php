@@ -182,7 +182,7 @@ class AclDataService
     /* RULES ******************** */
 
     /**
-     * fetchAllRoles
+     * fetchRulesAll
      *
      * @return \RcmUser\Acl\Db\Result
      */
@@ -199,6 +199,32 @@ class AclDataService
     public function fetchRulesByRole($roleId)
     {
         return $this->aclRuleDataMapper->fetchByRole($roleId);
+    }
+
+    public function fetchRulesByRoles()
+    {
+        $result = $this->getRoles();
+        if(!$result->isSuccess()){
+
+            return $result;
+        }
+
+        $rules = array();
+        foreach($result->getData() as $roleId => $role){
+
+            $rules[$roleId] = array();
+            $rules[$roleId]['role'] = $role;
+            $rulesResult = $this->fetchRulesByRole($roleId);
+            if($rulesResult->isSuccess()){
+
+                $rules[$roleId]['rules'] = $rulesResult->getData();
+            } else {
+
+                $rules[$roleId]['rules'] = array();
+            }
+        }
+
+        return new Result($rules);
     }
 
 } 

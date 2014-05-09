@@ -100,26 +100,4 @@ class DoctrineAclRole extends BjyAclRole
     {
         return $this->id;
     }
-
-    /**
-     * setParentRoleId
-     *
-     * @param int $parentRoleId parent id
-     *
-     * @return void
-     */
-    public function setParentRoleId($parentRoleId)
-    {
-        $this->parentRoleId = $parentRoleId;
-    }
-
-    /**
-     * getParentRoleId
-     *
-     * @return int
-     */
-    public function getParentRoleId()
-    {
-        return $this->parentRoleId;
-    }
 } 

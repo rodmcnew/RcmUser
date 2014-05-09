@@ -74,7 +74,7 @@ class RcmUserAclResourceProvider implements FactoryInterface
             array()
         );
         $rcmResources['rcmuser-acl-administration']->setName('Role and Access Administration');
-        $rcmResources['rcmuser-acl-administration']->setDescription('Allows the editing of user rols data.');
+        $rcmResources['rcmuser-acl-administration']->setDescription('Allows the editing of user roles data.');
 
         $service = new \RcmUser\Provider\RcmUserAclResourceProvider($rcmResources);
 

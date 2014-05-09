@@ -100,7 +100,7 @@ class BjyRoleProvider implements ProviderInterface
         // so duplicate identity are not supported, even if they are a child
         // would be nice to support id or namespace
         // so the role user and user.blog.user would not cause a conflict
-        // @see var_dump($this->createNamespaceId($role, $aclRoles));
+        // @see var-dump($this->createNamespaceId($role, $aclRoles));
         $aclRoles = $results->getData();
 
         return $aclRoles;

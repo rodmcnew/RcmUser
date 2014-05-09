@@ -42,15 +42,21 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      * @var string
      */
     protected $roleId;
+
+    /**
+     * @var string
+     */
+    protected $parentRoleId = null;
+
+    /**
+     * @var AclRole
+     */
+    protected $parentRole = null;
+
     /**
      * @var string
      */
     protected $description;
-
-    /**
-     * @var null
-     */
-    protected $parentRoleId = null;
 
     /**
      * setRoleId
@@ -75,6 +81,65 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
+     * setParentRoleId
+     *
+     * @param string|null $parentRoleId parent role
+     *
+     * @return void
+     */
+    public function setParentRoleId($parentRoleId)
+    {
+        $this->parentRoleId = $parentRoleId;
+    }
+
+    /**
+     * getParentRoleId
+     *
+     * @return string|null
+     */
+    public function getParentRoleId()
+    {
+        return $this->parentRoleId;
+    }
+
+    /**
+     * setParentRole
+     *
+     * @param AclRole $parentRole parentRole
+     *
+     * @return void
+     */
+    public function setParentRole(AclRole $parentRole)
+    {
+        $this->parentRole = $parentRole;
+    }
+
+    /**
+     * getParentRole
+     *
+     * @return AclRole
+     */
+    public function getParentRole()
+    {
+        return $this->parentRole;
+    }
+
+    /**
+     * getParent
+     *
+     * @return null|string|AclRole
+     */
+    public function getParent()
+    {
+        if(empty($this->parentRole)){
+
+            return $this->getParentRoleId();
+        }
+
+        return $this->getParentRole();
+    }
+
+    /**
      * setDescription
      *
      * @param string $description description
@@ -94,38 +159,6 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * setParentRoleId
-     *
-     * @param string|null $parentRoleId parent role
-     *
-     * @return void
-     */
-    public function setParentRoleId($parentRoleId)
-    {
-        $this->parentRoleId = $parentRoleId;
-    }
-
-    /**
-     * getParentRoleId
-     *
-     * @return AclRole|null
-     */
-    public function getParentRoleId()
-    {
-        return $this->parentRoleId;
-    }
-
-    /**
-     * getParent
-     *
-     * @return null|AclRole
-     */
-    public function getParent()
-    {
-        return $this->getParentRoleId();
     }
 
     /**

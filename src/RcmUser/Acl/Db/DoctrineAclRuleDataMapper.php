@@ -66,17 +66,6 @@ class DoctrineAclRuleDataMapper
     }
 
     /**
-     * fetchById
-     *
-     * @param int $id the id
-     *
-     * @return Result
-     */
-    public function fetchById($id)
-    {
-    }
-
-    /**
      * fetchByRole
      *
      * @param string $roleId the roleId

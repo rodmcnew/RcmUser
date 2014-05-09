@@ -55,7 +55,7 @@ class DoctrineAclRoleDataMapper
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT role FROM ' . $this->getEntityClass() . ' role ' .
-            'INDEX BY role.id'
+            'INDEX BY role.roleId'
         );
 
         $roles = $query->getResult();
@@ -65,57 +65,7 @@ class DoctrineAclRoleDataMapper
             return new Result(null, Result::CODE_FAIL, 'Roles could not be found.');
         }
 
-        $roles = $this->prepareRoles($roles);
-
-        return new Result($roles);
-    }
-
-    /**
-     * fetchById
-     *
-     * @param int $id id
-     *
-     * @return Result|Result
-     */
-    public function fetchById($id)
-    {
-        $role = $this->getEntityManager()->find($this->getEntityClass(), $id);
-
-        if (empty($role)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'Role could not be found by id.'
-            );
-        }
-
-        // This is so we get a fresh user every time
-        $this->getEntityManager()->refresh($role);
-
-        return new Result($role);
-    }
-
-    /**
-     * fetchByParentRoleId
-     *
-     * @param mixed $parentRoleId the parent id
-     *
-     * @return array
-     */
-    public function fetchByParentRoleId($parentRoleId)
-    {
-        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('parentRoleId' => $parentRoleId));
-
-        if (empty($roles)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'Roles could not be found by parentRoleId.'
-            );
-        }
+        //$roles = $this->prepareRoles($roles);
 
         return new Result($roles);
     }
@@ -138,6 +88,30 @@ class DoctrineAclRoleDataMapper
                 null,
                 Result::CODE_FAIL,
                 'Roles could not be found by roleId.'
+            );
+        }
+
+        return new Result($roles);
+    }
+
+    /**
+     * fetchByParentRoleId
+     *
+     * @param mixed $parentRoleId the parent id
+     *
+     * @return array
+     */
+    public function fetchByParentRoleId($parentRoleId)
+    {
+        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
+            ->findBy(array('parentRoleId' => $parentRoleId));
+
+        if (empty($roles)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Roles could not be found by parentRoleId.'
             );
         }
 
@@ -263,23 +237,13 @@ class DoctrineAclRoleDataMapper
      */
     public function prepareRoles($roles)
     {
-
-
         foreach ($roles as $key => $role) {
 
             $parentRoleId = $role->getParentRoleId();
 
             if (isset($roles[$parentRoleId])) {
-                /*@todo We clone to limit nesting, is this ok?
-                $parent = new AclRole();
-                $parent->populate($roles[$parentRoleId]);
 
-                $roles[$key]->setParentRole($parent);
-                */
-
-                // @todo this should take objects, not strings,
-                // BJY has issues with objects
-                $roles[$key]->setParentRole($roles[$parentRoleId]->getRoleId());
+                $roles[$key]->setParentRole($roles[$parentRoleId]);
             }
         }
 

@@ -441,6 +441,8 @@ return array(
         'invokables' => array(
             'RcmUser\Controller\User' => 'RcmUser\Controller\UserController',
             'RcmUser\Controller\AdminAclController' => 'RcmUser\Controller\AdminAclController',
+            'RcmUser\Controller\AdminApiAclResourcesController' => 'RcmUser\Controller\AdminApiAclResourcesController',
+            'RcmUser\Controller\AdminApiAclRulesByRolesController' => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
         ),
     ),
 
@@ -490,7 +492,7 @@ return array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin/rcm-user-acl[/:terminal]',
+                    'route' => '/admin/rcm-user-acl',
                     'constraints' => array(
                         'terminal' => '[0-1]',
                     ),
@@ -500,13 +502,50 @@ return array(
                     ),
                 ),
             ),
-
+            'RcmUserAdminAcl' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcm-user/js[/:action]',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminJsController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclResources' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/admin/api/rcm-user-acl-resources[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminApiAclResourcesController',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclRulesByRoles' => array(
+                'type'    => 'Segment',
+                'options' => array(
+                    'route'    => '/admin/api/rcm-user-acl-rulesbyroles[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
+                    ),
+                ),
+            ),
         ),
     ),
 
     'view_manager' => array(
         'template_path_stack' => array(
             'RcmUser' => __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
 

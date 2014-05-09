@@ -20,7 +20,7 @@ CREATE TABLE rcm_user_user_role (
 
 -- ACL
 CREATE TABLE rcm_user_acl_role (
-	id INT AUTO_INCREMENT NOT NULL, 
+	id INT AUTO_INCREMENT NOT NULL,
 	parentRoleId VARCHAR(255) DEFAULT NULL,
 	roleId VARCHAR(255) NOT NULL,
 	description VARCHAR(255) DEFAULT NULL, 

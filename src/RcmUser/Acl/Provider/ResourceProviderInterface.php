@@ -35,7 +35,6 @@ namespace RcmUser\Acl\Provider;
  */
 interface ResourceProviderInterface
 {
-
     /**
      * Return a multi-dimensional array of resources and privileges
      * containing ALL possible resources
@@ -43,7 +42,6 @@ interface ResourceProviderInterface
      * @return array
      */
     public function getAll();
-
 
     /**
      * Return a multi-dimensional array of resources and privileges

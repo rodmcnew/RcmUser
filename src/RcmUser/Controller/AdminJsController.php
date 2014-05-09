@@ -1,6 +1,6 @@
 <?php
- /**
- * AdminAclRestController.php
+/**
+ * AdminJsController.php
  *
  * LongDescHere
  *
@@ -17,11 +17,11 @@
 
 namespace RcmUser\Controller;
 
-use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\Mvc\Controller\AbstractActionController;
 
 
 /**
- * Class AdminAclRestController
+ * Class AdminJsController
  *
  * LongDescHere
  *
@@ -35,8 +35,15 @@ use Zend\Mvc\Controller\AbstractRestfulController;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
-class AdminAclRestController extends AbstractRestfulController
+class AdminJsController extends AbstractActionController
 {
+    /**
+     * adminAclApp
+     *
+     * @return void
+     */
+    public function adminAclApp()
+    {
 
+    }
 } 

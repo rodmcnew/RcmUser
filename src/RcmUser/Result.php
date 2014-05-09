@@ -33,7 +33,7 @@ namespace RcmUser;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class Result
+class Result implements \JsonSerializable
 {
 
     /**
@@ -202,5 +202,20 @@ class Result
         }
 
         return false;
+    }
+
+    /**
+     * jsonSerialize
+     *
+     * @return \stdClass
+     */
+    public function jsonSerialize()
+    {
+        $obj = new \stdClass();
+        $obj->code = $this->getCode();
+        $obj->messages = $this->getMessages();
+        $obj->data = $this->getData();
+
+        return $obj;
     }
 } 

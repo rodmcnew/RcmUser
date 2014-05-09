@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Result;
 use RcmUser\User\Entity\User;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -62,8 +63,9 @@ class AdminAclController extends AbstractActionController
         );
         $bauthorize = $userAuthorizeService->getAuthorize();
         $acl = $bauthorize->getAcl();
-        var_dump($acl->getResources());
-        var_dump($acl->getRoles());
+        //var_dump($acl->getResources());
+        //var_dump($acl->getRoles());
+        //var_dump($acl->getRoleRegistry());
         //var_dump($acl->getRules());
 
         $user = new User();
@@ -75,8 +77,8 @@ class AdminAclController extends AbstractActionController
         $rcmUserService->clearIdentity();
         $rcmUserService->authenticate($user);
         //$rcmUserService->clearIdentity();
-        var_dump($rcmUserService->getIdentity());
-        var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
+        //var_dump($rcmUserService->getIdentity());
+        //var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
         echo "</pre>";
         /* - TEST ------------------------ */
 
@@ -95,38 +97,21 @@ class AdminAclController extends AbstractActionController
             'RcmUser\Acl\Service\AclResourceService'
         );
 
-        $aclDataService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\AclDataService'
-        );
+        $resources = $aclResourceService->getNamespacedResources('.',true);
 
-        $rules = $aclDataService->fetchRulesAll()->getData();
-        var_dump($rules);
-
-        $resources = $aclResourceService->getResources(true);
-        var_dump($resources);
-
-        $roles = $aclDataService->fetchAllRoles();
-        var_dump($roles);
-
-
-        //$viewArr['resources'] = $this->getResourceArray(
-        //    $resources,
-        //    $rootResource
-        //);
-        // @todo get level
-        $viewArr['roles'] = $roles->getData();
+        //var_dump($this->getRulesByRoles()->getData());
+        //var_dump($this->getResources());
 
         return $this->buildView($viewArr);
     }
 
     /**
-     * getResourceArray - recursive call to get resources for view friendly array
-     * @return array
+     * buildView
+     *
+     * @param array $viewArr viewArr
+     *
+     * @return ViewModel
      */
-    protected function getResourceArray() {
-
-    }
-
     protected function buildView($viewArr = array())
     {
         $view = new ViewModel($viewArr);

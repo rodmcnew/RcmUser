@@ -1,5 +1,18 @@
-var rcmuserAdminAclApp = angular.module('rcmuser.admin.acl.app', ['ui.bootstrap']);
+angular.module('rcmuser.admin.acl.app', ['ui.bootstrap'])
 
-rcmuserAdminAclApp.controller('GreetingController', ['$scope', function($scope) {
-    $scope.greeting = 'Hola!';
-}]);
+    .controller('rcmuserAdminAclAppController',
+        ['$scope', function ($scope) {
+
+            $scope.greeting = 'Hola!';
+
+            $scope.levelRepeat = function (s, n) {
+                var a = [];
+                while (a.length < n) {
+                    a.push(s);
+                }
+                return a.join('');
+            }
+
+            $scope.roles = null;
+        }]
+    );
