@@ -397,7 +397,25 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
         if($user->getId() !== $currentUser->getId()){
 
-            throw new RcmUserException('SetIdentity expects user to be get same identity as current.');
+            throw new RcmUserException('SetIdentity expects user to be get same identity as current, user authenticate to change users.');
+        }
+
+        return $this->getUserAuthService()->setIdentity($user);
+    }
+
+    /**
+     * refreshIdentity
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function refreshIdentity()
+    {
+        $user = $this->readUser($this->getIdentity());
+
+        if(empty($user->getId())){
+
+            throw new RcmUserException('RefreshIdentity expects user to be get same identity as current.');
         }
 
         return $this->getUserAuthService()->setIdentity($user);

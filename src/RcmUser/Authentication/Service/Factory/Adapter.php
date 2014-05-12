@@ -53,13 +53,9 @@ class Adapter implements FactoryInterface
             'RcmUser\User\Service\UserDataService'
         );
         $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
-        $config = $serviceLocator->get('RcmUser\Auth\Config');
         $adapter = new UserAdapter();
         $adapter->setUserDataService($userDataService);
         $adapter->setEncryptor($encrypt);
-        $adapter->setObfuscatePassword(
-            $config->get('ObfuscatePasswordOnAuth', false)
-        );
 
         return $adapter;
     }
