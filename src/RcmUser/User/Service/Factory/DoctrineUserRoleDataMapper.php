@@ -38,7 +38,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class DoctrineUserRoleDataMapper implements FactoryInterface
 {
-
     /**
      * createService
      *
@@ -48,13 +47,23 @@ class DoctrineUserRoleDataMapper implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
+
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $acldm = $serviceLocator->get('RcmUser\Acl\AclRoleDataMapper');
-        $dm = new \RcmUser\User\Db\DoctrineUserRoleDataMapper();
-        $dm->setEntityManager($em);
-        $dm->setEntityClass('RcmUser\User\Entity\DoctrineUserRole');
-        $dm->setAclRoleDataMapper($acldm);
+        $service = new \RcmUser\User\Db\DoctrineUserRoleDataMapper();
+        $service->setEntityManager($em);
+        $service->setEntityClass('RcmUser\User\Entity\DoctrineUserRole');
+        $service->setAclRoleDataMapper($acldm);
 
-        return $dm;
+        $service->setDefaultAuthenticatedRoleIdentities(
+            $cfg->get('DefaultAuthenticatedRoleIdentities', array())
+        );
+
+        $service->setDefaultRoleIdentities(
+            $cfg->get('DefaultRoleIdentities', array())
+        );
+
+        return $service;
     }
 }

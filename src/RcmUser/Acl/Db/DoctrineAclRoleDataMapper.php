@@ -80,7 +80,7 @@ class DoctrineAclRoleDataMapper
     public function fetchByRoleId($roleId)
     {
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('roleId' => $roleId));
+            ->findOneBy(array('roleId' => $roleId));
 
         if (empty($roles)) {
 

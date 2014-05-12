@@ -36,7 +36,7 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminJsController extends AbstractActionController
+class AdminCssController extends AbstractActionController
 {
     /**
      * adminAclApp
@@ -46,14 +46,14 @@ class AdminJsController extends AbstractActionController
     public function indexAction()
     {
         $js = file_get_contents(
-            __DIR__ . '/../../../view/js/rcmuser.admin.acl.app.js'
+            __DIR__ . '/../../../view/css/styles.css'
         );
 
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $response->getHeaders()->addHeaders(
             array(
-                'Content-Type' => 'application/javascript'
+                'Content-Type' => 'text/css'
             )
         );
         $response->setContent($js);

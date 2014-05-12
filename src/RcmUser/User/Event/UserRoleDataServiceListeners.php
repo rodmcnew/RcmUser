@@ -1,8 +1,8 @@
 <?php
 /**
- * UserDataServiceListeners.php
+ * UserRoleDataServiceListeners.php
  *
- * UserDataServiceListeners
+ * UserRoleDataServiceListeners
  *
  * PHP version 5
  *
@@ -15,17 +15,17 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUser\Acl\Event;
+namespace RcmUser\User\Event;
 
 
+use RcmUser\User\Db\UserRolesDataMapper;
 use RcmUser\User\Db\UserRolesDataMapperInterface;
-use RcmUser\User\Event\AbstractUserDataServiceListeners;
 use RcmUser\User\Result;
 
 /**
- * UserDataServiceListeners
+ * UserRoleDataServiceListeners
  *
- * UserDataServiceListeners
+ * UserRoleDataServiceListeners
  *
  * PHP version 5
  *
@@ -37,7 +37,7 @@ use RcmUser\User\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserDataServiceListeners extends AbstractUserDataServiceListeners
+class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 {
     /**
      * @var int
@@ -75,19 +75,6 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      * @var UserRolesDataMapperInterface
      */
     protected $userRolesDataMapper;
-    /**
-     * @var array
-     */
-    protected $defaultRoleIdentities = array();
-    /**
-     * @var array
-     */
-    protected $defaultAuthenticatedRoleIdentities = array();
-
-    /**
-     * @var string
-     */
-    protected $userPropertyKey = 'RcmUser\Acl\UserRoles';
 
     /**
      * setUserRolesDataMapper
@@ -113,39 +100,13 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
     }
 
     /**
-     * setDefaultAuthenticatedRoleIdentities
-     *
-     * @param array $defaultAuthenticatedRoleIdentities default auth identity strings
-     *
-     * @return void
-     */
-    public function setDefaultAuthenticatedRoleIdentities(
-        $defaultAuthenticatedRoleIdentities
-    ) {
-        $this->defaultAuthenticatedRoleIdentities
-            = $defaultAuthenticatedRoleIdentities;
-    }
-
-    /**
      * getDefaultAuthenticatedRoleIdentities
      *
      * @return array
      */
     public function getDefaultAuthenticatedRoleIdentities()
     {
-        return $this->defaultAuthenticatedRoleIdentities;
-    }
-
-    /**
-     * setDefaultRoleIdentities
-     *
-     * @param array $defaultRoleIdentities default roles identity strings
-     *
-     * @return void
-     */
-    public function setDefaultRoleIdentities($defaultRoleIdentities)
-    {
-        $this->defaultRoleIdentities = $defaultRoleIdentities;
+        return $this->getUserRolesDataMapper()->getDefaultAuthenticatedRoleIdentities();
     }
 
     /**
@@ -155,19 +116,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function getDefaultRoleIdentities()
     {
-        return $this->defaultRoleIdentities;
-    }
-
-    /**
-     * setUserPropertyKey
-     *
-     * @param string $userPropertyKey user property key
-     *
-     * @return void
-     */
-    public function setUserPropertyKey($userPropertyKey)
-    {
-        $this->userPropertyKey = $userPropertyKey;
+        return $this->getUserRolesDataMapper()->getDefaultRoleIdentities();
     }
 
     /**
@@ -177,7 +126,7 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function getUserPropertyKey()
     {
-        return $this->userPropertyKey;
+        return UserRolesDataMapper::PROPERTY_KEY;
     }
 
     /**

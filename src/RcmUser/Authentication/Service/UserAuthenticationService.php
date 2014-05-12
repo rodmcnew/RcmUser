@@ -187,8 +187,46 @@ class UserAuthenticationService extends EventProvider
             $this,
             array()
         );
+    }
 
-        return true;
+    /**
+     * hasIdentity
+     *
+     * @return bool
+     */
+    public function hasIdentity()
+    {
+        $results = $this->getEventManager()->trigger(
+            'hasIdentity',
+            $this,
+            array(),
+            function ($hasIdentity) {
+                return $hasIdentity;
+            }
+        );
+
+        $hasIdentity = $results->last();
+
+        return $hasIdentity;
+    }
+
+    /**
+     * setIdentity - used to refresh session user
+     *
+     * @param User $identity
+     *
+     * @return void
+     */
+    public function setIdentity(User $identity)
+    {
+        /*
+         * @event setIdentity
+         */
+        $this->getEventManager()->trigger(
+            'setIdentity',
+            $this,
+            array('identity' => $identity)
+        );
     }
 
     /**

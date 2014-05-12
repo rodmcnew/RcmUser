@@ -1,8 +1,8 @@
 <?php
 /**
- * DoctrineMapper
+ * DoctrineMapperInterface
  *
- * DoctrineMapper
+ * DoctrineMapperInterface
  *
  * PHP version 5
  *
@@ -20,9 +20,9 @@ namespace RcmUser\Db;
 use Doctrine\ORM\EntityManager;
 
 /**
- * DoctrineMapper
+ * DoctrineMapperInterface
  *
- * DoctrineMapper
+ * DoctrineMapperInterface
  *
  * PHP version 5
  *
@@ -34,18 +34,8 @@ use Doctrine\ORM\EntityManager;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineMapper implements DoctrineMapperInterface
+interface DoctrineMapperInterface
 {
-    /**
-     * @var EntityManager $entityManager
-     */
-    protected $entityManager;
-
-    /**
-     * @var
-     */
-    protected $entityClass;
-
     /**
      * setEntityManager
      *
@@ -53,21 +43,14 @@ class DoctrineMapper implements DoctrineMapperInterface
      *
      * @return void
      */
-    public function setEntityManager(EntityManager $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
+    public function setEntityManager(EntityManager $entityManager);
 
     /**
      * getEntityManager
      *
      * @return EntityManager
      */
-    public function getEntityManager()
-    {
-
-        return $this->entityManager;
-    }
+    public function getEntityManager();
 
     /**
      * setEntityClass
@@ -76,19 +59,13 @@ class DoctrineMapper implements DoctrineMapperInterface
      *
      * @return void
      */
-    public function setEntityClass($entityClass)
-    {
-        $this->entityClass = (string)$entityClass;
-    }
+    public function setEntityClass($entityClass);
 
     /**
      * getEntityClass
      *
      * @return string
      */
-    public function getEntityClass()
-    {
-        return $this->entityClass;
-    }
+    public function getEntityClass();
 
 } 

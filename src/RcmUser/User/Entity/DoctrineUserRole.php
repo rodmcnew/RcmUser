@@ -40,11 +40,11 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DoctrineUserRole extends UserRole
 {
-
     /**
      * @var integer $id
      * @ORM\Id
      * @ORM\Column(type="integer", unique=true, nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
     /**

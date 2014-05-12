@@ -70,7 +70,7 @@ return array(
   'RcmUser\User\Data\UserDataPreparerInterface'                               => __DIR__ . '/src/RcmUser/User/Data/UserDataPreparerInterface.php',
   'RcmUser\User\Data\UserValidator'                                           => __DIR__ . '/src/RcmUser/User/Data/UserValidator.php',
   'RcmUser\User\Data\UserValidatorInterface'                                  => __DIR__ . '/src/RcmUser/User/Data/UserValidatorInterface.php',
-  'RcmUser\User\Db\AbstractUserDataMapper'                                    => __DIR__ . '/src/RcmUser/User/Db/AbstractUserDataMapper.php',
+  'RcmUser\User\Db\UserDataMapper'                                            => __DIR__ . '/src/RcmUser/User/Db/UserDataMapper.php',
   'RcmUser\User\Db\DoctrineUserDataMapper'                                    => __DIR__ . '/src/RcmUser/User/Db/DoctrineUserDataMapper.php',
   'RcmUser\User\Db\DoctrineUserRoleDataMapper'                                => __DIR__ . '/src/RcmUser/User/Db/DoctrineUserRoleDataMapper.php',
   'RcmUser\User\Db\UserDataMapperInterface'                                   => __DIR__ . '/src/RcmUser/User/Db/UserDataMapperInterface.php',

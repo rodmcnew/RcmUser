@@ -38,7 +38,6 @@ use RcmUser\User\Entity\User;
  */
 interface UserRolesDataMapperInterface
 {
-
     /**
      * add
      *

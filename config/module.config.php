@@ -108,8 +108,8 @@ return array(
              * for a user on the user data events
              * in RcmUser\User\Service\UserDataService.
              */
-            'DefaultRoleIdentities' => array('guest'),
-            'DefaultAuthenticatedRoleIdentities' => array('user'),
+            'DefaultRoleIdentities' => array('guest' => 'guest'),
+            'DefaultAuthenticatedRoleIdentities' => array('user' => 'user'),
 
             /*
              * SuperAdminRole
@@ -207,7 +207,7 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
@@ -230,7 +230,7 @@ return array(
             /*
              * UserDataPreparer (requires Encryptor)
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Used by default to prepare data for DB storage.
              * By default, encrypts passwords and creates id (UUID)
@@ -251,6 +251,13 @@ return array(
              */
             'RcmUser\User\UserDataServiceListeners' =>
                 'RcmUser\User\Service\Factory\UserDataServiceListeners',
+
+            /*
+             * UserRoleDataServiceListeners
+             * Required for (User Property populating):
+             */
+            'RcmUser\User\UserRoleDataServiceListeners' =>
+                'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
 
             /* ************************************** */
             /* AUTH ********************************* */
@@ -366,13 +373,6 @@ return array(
                 'RcmUser\Acl\Service\Factory\AclDataService',
 
             /*
-             * UserDataServiceListeners
-             * Required for (User Property populating):
-             */
-            'RcmUser\Acl\UserDataServiceListeners' =>
-                'RcmUser\Acl\Service\Factory\UserDataServiceListeners',
-
-            /*
              * BJY-Authorize providers
              * - This module depends on bjyauthorize for ACL logic
              * Required for BjyAuthorize:
@@ -443,6 +443,8 @@ return array(
             'RcmUser\Controller\AdminAclController' => 'RcmUser\Controller\AdminAclController',
             'RcmUser\Controller\AdminApiAclResourcesController' => 'RcmUser\Controller\AdminApiAclResourcesController',
             'RcmUser\Controller\AdminApiAclRulesByRolesController' => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
+            'RcmUser\Controller\AdminJsController' => 'RcmUser\Controller\AdminJsController',
+            'RcmUser\Controller\AdminCssController' => 'RcmUser\Controller\AdminCssController',
         ),
     ),
 
@@ -462,15 +464,6 @@ return array(
                     ),
                 ),
 
-                'type' => 'Literal',
-                'options' => array(
-                    'route' => '/admin/rcm-user-acl',
-                    'defaults' => array(
-                        //'__NAMESPACE__' => 'RcmUser\Controller',
-                        'controller' => 'RcmUser\Controller\AdminAclController',
-                        'action' => 'index',
-                    ),
-                ),
                 /*
                 'may_terminate' => true,
                 'child_routes' => array(
@@ -488,6 +481,7 @@ return array(
                 ),
                 */
             ),
+
             'RcmUserAdminAcl' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -502,21 +496,32 @@ return array(
                     ),
                 ),
             ),
-            'RcmUserAdminAcl' => array(
+            'RcmUserAdminJs' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin/rcm-user/js[/:action]',
+                    'route' => '/admin/rcm-user/js/admin.js',
                     'defaults' => array(
                         'controller' => 'RcmUser\Controller\AdminJsController',
                         'action' => 'index',
                     ),
                 ),
             ),
-            'RcmUserAdminApiAclResources' => array(
-                'type'    => 'Segment',
+            'RcmUserAdminCss' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
                 'options' => array(
-                    'route'    => '/admin/api/rcm-user-acl-resources[/:id]',
+                    'route' => '/admin/rcm-user/css/admin.css',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminCssController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclResources' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcm-user-acl-resources[/:id]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                     ),
@@ -526,9 +531,9 @@ return array(
                 ),
             ),
             'RcmUserAdminApiAclRulesByRoles' => array(
-                'type'    => 'Segment',
+                'type' => 'Segment',
                 'options' => array(
-                    'route'    => '/admin/api/rcm-user-acl-rulesbyroles[/:id]',
+                    'route' => '/admin/api/rcm-user-acl-rulesbyroles[/:id]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                     ),

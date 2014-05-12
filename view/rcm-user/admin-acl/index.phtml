@@ -6,7 +6,7 @@
 $this->rcmIncludeAngularJs(
     array(
         'js' => array(
-            'angular-ui/bootstrap/ui-bootstrap-tpls-0.10.0.min.js'
+            'angular-ui/bootstrap-0.11.0/ui-bootstrap-tpls-0.11.0.min.js'
         )
     )
 );
@@ -22,22 +22,14 @@ $this->rcmIncludeTwitterBootstrap(
 /*
  * END SERVICE
  */
-$css = file_get_contents(__DIR__ . '/../../css/styles.css');
-$js = file_get_contents(__DIR__ . '/../../js/rcmuser.admin.acl.app.js');
-$headStyle = $this->headStyle();
-$headScript = $this->headScript();
 
-$headStyle->appendStyle($css); // NOT WORKING!!!!!
-$headScript->appendScript($js);
+$this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
+$this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 
 ?>
-<style type="text/css">
 
-    <?= $css ?>
 
-</style>
-
-<div class="rcmuser" ng-app="rcmuser.admin.acl.app">
+<div class="rcmuser" ng-app="rcmuserAdminAclApp">
     <div class="container-fluid admin-acl">
 
         <div class="container-fluid">
@@ -47,16 +39,14 @@ $headScript->appendScript($js);
             <p class="lead">Set up the user roles and access to resources.</p>
         </div>
 
-        <div ng-controller="rcmuserAdminAclAppController">
+        <div ng-controller="RolesCtrl">
             <div ng-repeat="(roleNs, role) in roles">
                 {{roleNs}}: {{role}}
             </div>
             <pre>{{roles|json}}</pre>
         </div>
 
-        <div class="container-fluid">
-
-
+        <div class="container-fluid" xxng-controller="AccordionCtrl">
 
             <accordion close-others="true">
 
