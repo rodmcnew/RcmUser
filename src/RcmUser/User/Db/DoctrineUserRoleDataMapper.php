@@ -172,7 +172,6 @@ class DoctrineUserRoleDataMapper
                 continue;
             }
 
-            var_dump($aclRole);
             $userRole = new DoctrineUserRole();
             $userRole->setUserId($userId);
             $userRole->setRoleId($aclRole->getRoleId());
@@ -247,10 +246,63 @@ class DoctrineUserRoleDataMapper
      */
     public function update(User $user, $roles = array())
     {
-        // @todo - write me
-        //throw new \Exception('Update User Roles not yet available.');
+
         var_dump("\n***Update User Roles not yet available. Update not done***\n");
         return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
+
+        $result = $this->read($user);
+
+        if($result->isSuccess()){
+
+            $curRoles = $result->getData();
+        } else {
+
+            $curRoles = array();
+        }
+
+        $availableRoles = $this->getAclRoleDataMapper()->fetchAll();
+
+        if($result->isSuccess()){
+
+            $availableRoles = $result->getData();
+        } else {
+
+            throw new RcmUserException('No roles are available to assign.');
+            //$availableRoles = array();
+        }
+
+        $userAclRoles = array();
+
+        foreach($availableRoles as $key => $role){
+
+            if(in_array($curRoles, $key) && !in_array($roles, $key)){
+                // @todo delete role
+                unset($curRoles[$key]);
+            }
+            if(in_array($roles, $key) && !in_array($curRoles, $key)){
+                // @todo add role
+                $userAclRoles[$key] = $roles[$key];
+                unset($roles[$key]);
+            }
+        }
+
+        // make sure roles are valid
+        // $roles should be empty, anything left was unavailable
+        if(!empty($roles)){
+            // remove the rest
+            foreach($roles as $key => $role){
+                // @todo delete role
+            }
+        }
+
+        if(!empty($curRoles)){
+            // remove the rest
+            foreach($roles as $key => $role){
+                // @todo delete role
+            }
+        }
+
+        return new Result($userAclRoles);
     }
 
     /**
