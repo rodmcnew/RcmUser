@@ -1,8 +1,8 @@
 <?php
 /**
- * UserDataServiceListeners.php
+ * UserRoleDataServiceListeners.php
  *
- * UserDataServiceListeners
+ * UserRoleDataServiceListeners
  *
  * PHP version 5
  *
@@ -15,19 +15,15 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUser\Acl\Service\Factory;
+namespace RcmUser\User\Service\Factory;
 
-use RcmUser\Acl\Event\CreateUserPostListener;
-use RcmUser\Acl\Event\DeleteUserPostListener;
-use RcmUser\Acl\Event\ReadUserPostListener;
-use RcmUser\Acl\Event\UpdateUserPostListener;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * UserDataServiceListeners
+ * UserRoleDataServiceListeners
  *
- * UserDataServiceListeners Factory
+ * UserRoleDataServiceListeners Factory
  *
  * PHP version 5
  *
@@ -39,7 +35,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserDataServiceListeners implements FactoryInterface
+class UserRoleDataServiceListeners implements FactoryInterface
 {
 
     /**
@@ -51,19 +47,8 @@ class UserDataServiceListeners implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
-
-        // ACL
         $service
-            = new \RcmUser\Acl\Event\UserDataServiceListeners();
-
-        $service->setDefaultAuthenticatedRoleIdentities(
-            $cfg->get('DefaultAuthenticatedRoleIdentities', array())
-        );
-
-        $service->setDefaultRoleIdentities(
-            $cfg->get('DefaultRoleIdentities', array())
-        );
+            = new \RcmUser\User\Event\UserRoleDataServiceListeners();
 
         $service->setUserRolesDataMapper(
             $serviceLocator->get('RcmUser\User\UserRolesDataMapper')

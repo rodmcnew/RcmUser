@@ -17,6 +17,7 @@
 
 namespace RcmUser\Service\Factory;
 
+use RcmUser\Acl\Entity\AclResource;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -47,7 +48,35 @@ class RcmUserAclResourceProvider implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = new \RcmUser\Provider\RcmUserAclResourceProvider();
+        $rcmResources = array();
+
+        /* parent resource example */
+        $rcmResources['rcmuser']
+            = new AclResource(
+            'rcmuser'
+        );
+        $rcmResources['rcmuser']->setName('RCM User');
+        $rcmResources['rcmuser']->setDescription('All RCM user access.');
+
+        $rcmResources['rcmuser-user-administration']
+            = new AclResource(
+            'rcmuser-user-administration',
+            'rcmuser',
+            array('read', 'write')
+        );
+        $rcmResources['rcmuser-user-administration']->setName('User Administration');
+        $rcmResources['rcmuser-user-administration']->setDescription('Allows the editing of user data.');
+
+        $rcmResources['rcmuser-acl-administration']
+            = new AclResource(
+            'rcmuser-acl-administration',
+            'rcmuser',
+            array()
+        );
+        $rcmResources['rcmuser-acl-administration']->setName('Role and Access Administration');
+        $rcmResources['rcmuser-acl-administration']->setDescription('Allows the editing of user roles data.');
+
+        $service = new \RcmUser\Provider\RcmUserAclResourceProvider($rcmResources);
 
         return $service;
     }

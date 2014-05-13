@@ -16,6 +16,7 @@
  */
 namespace RcmUser\Acl\Service\Factory;
 
+use RcmUser\Acl\Entity\AclResource;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -55,8 +56,19 @@ class AclResourceService implements FactoryInterface
             $resourceProviders[$key] = $serviceLocator->get($factory);
         }
 
+        $rootPrivileges = array(
+            'read',
+            'update',
+            'create',
+            'delete',
+            'execute',
+        );
 
-        $service = new \RcmUser\Acl\Service\AclResourceService();
+        $rootResource = new AclResource('root', null, $rootPrivileges);
+        $rootResource->setName('root');
+        $rootResource->setDescription('This is the lowest level resource.  Access to this will allow access to all resources.');
+
+        $service = new \RcmUser\Acl\Service\AclResourceService($rootResource);
         $service->setResourceProviders($resourceProviders);
 
         return $service;

@@ -47,6 +47,13 @@ class UserAuthorizeService
     protected $authorize;
 
     /**
+     * @var string
+     */
+    protected $superAdminRole = null;
+
+    /**
+     * setAuthorize
+     *
      * @param mixed $authorize
      */
     public function setAuthorize($authorize)
@@ -55,11 +62,33 @@ class UserAuthorizeService
     }
 
     /**
+     * getAuthorize
+     *
      * @return mixed
      */
     public function getAuthorize()
     {
         return $this->authorize;
+    }
+
+    /**
+     * setSuperAdminRole
+     *
+     * @param string $superAdminRole
+     */
+    public function setSuperAdminRole($superAdminRole)
+    {
+        $this->superAdminRole = $superAdminRole;
+    }
+
+    /**
+     * getSuperAdminRole
+     *
+     * @return string
+     */
+    public function getSuperAdminRole()
+    {
+        return $this->superAdminRole;
     }
 
     /**
@@ -80,26 +109,36 @@ class UserAuthorizeService
             // NOTE: BJY is doing something here that may not allow
             // for direct checking of this.
             throw new \Exception(
-                'Checking ACL->isAllowed '.
+                'Checking ACL->isAllowed ' .
                 'on user object directly is not yet supported.'
             );
         }
 
-        /* @todo might check once before parsing
-        $result = $this->authorize->isAllowed($resource, $privilege);
-
-        if($result){
-            return $result;
-        }
+        /* Check super admin
+            we over-ride everything if user has super admin
+            @todo This check might also require the roll to be the highest in the list, may not be required, but should be verified
         */
+        $userRoles = $this->authorize->getIdentityProvider()->getIdentityRoles();
 
+        if(!empty($this->superAdminRole) && is_array($userRoles) && in_array($this->superAdminRole, $userRoles)){
+
+            return true;
+        }
+
+        /* @todo might check once before parsing
+         * $result = $this->authorize->isAllowed($resource, $privilege);
+         *
+         * if($result){
+         * return $result;
+         * }
+         */
         $resources = $this->parseResource($resource);
 
         foreach ($resources as $res) {
 
             $result = $this->authorize->isAllowed($res, $privilege);
 
-            if($result){
+            if ($result) {
                 return $result;
             }
         }

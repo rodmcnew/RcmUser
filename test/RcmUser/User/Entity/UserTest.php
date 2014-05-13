@@ -180,7 +180,7 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
     public function testMerge()
     {
         $userA = new User();
-        $userB = $this->getNewUser('A');
+        $userB = $this->getNewUser('B');
         $userC = $this->getNewUser('C');
 
         $userA->merge($userB);
@@ -211,7 +211,7 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $userA = $this->getNewUser('A');
 
         $userAjson = json_encode($userA);
-        //var_dump($userAjson);
+
         $this->assertJson($userAjson, 'User not converted to JSON.');
     }
 }

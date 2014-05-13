@@ -38,26 +38,25 @@ use RcmUser\User\Entity\User;
  */
 interface UserRolesDataMapperInterface
 {
-
     /**
      * add
      *
-     * @param User    $user user
-     * @param AclRole $role role
+     * @param User    $user      user
+     * @param AclRole $aclRoleId aclRoleId
      *
      * @return Result
      */
-    public function add(User $user, AclRole $role);
+    public function add(User $user, $aclRoleId);
 
     /**
      * remove
      *
-     * @param User    $user user
-     * @param AclRole $role role
+     * @param User    $user      user
+     * @param AclRole $aclRoleId aclRoleId
      *
      * @return Result
      */
-    public function remove(User $user, AclRole $role);
+    public function remove(User $user, $aclRoleId);
 
     /**
      * create

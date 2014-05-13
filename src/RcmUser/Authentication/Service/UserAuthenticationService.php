@@ -41,6 +41,35 @@ class UserAuthenticationService extends EventProvider
 {
 
     /**
+     * @var bool
+     * Force returned user to hide password,
+     * can cause issues is return object is meant to be saved.
+     */
+    protected $obfuscatePassword = true;
+
+    /**
+     * setObfuscatePassword
+     *
+     * @param bool $obfuscatePassword obfuscatePassword
+     *
+     * @return void
+     */
+    public function setObfuscatePassword($obfuscatePassword)
+    {
+        $this->obfuscatePassword = $obfuscatePassword;
+    }
+
+    /**
+     * getObfuscatePassword
+     *
+     * @return bool
+     */
+    public function getObfuscatePassword()
+    {
+        return $this->obfuscatePassword;
+    }
+
+    /**
      * validateCredentials
      *
      * @param User $user user
@@ -91,7 +120,10 @@ class UserAuthenticationService extends EventProvider
                 array('result' => $result)
             );
 
-            return $result;
+            return new Result(
+                Result::SUCCESS,
+                $this->prepareUser($result->getIdentity())
+            );
         }
 
         /*
@@ -157,7 +189,10 @@ class UserAuthenticationService extends EventProvider
                 array('result' => $result)
             );
 
-            return $result;
+            return new Result(
+                Result::SUCCESS,
+                $this->prepareUser($result->getIdentity())
+            );
         }
 
         /*
@@ -187,8 +222,46 @@ class UserAuthenticationService extends EventProvider
             $this,
             array()
         );
+    }
 
-        return true;
+    /**
+     * hasIdentity
+     *
+     * @return bool
+     */
+    public function hasIdentity()
+    {
+        $results = $this->getEventManager()->trigger(
+            'hasIdentity',
+            $this,
+            array(),
+            function ($hasIdentity) {
+                return $hasIdentity;
+            }
+        );
+
+        $hasIdentity = $results->last();
+
+        return $hasIdentity;
+    }
+
+    /**
+     * setIdentity - used to refresh session user
+     *
+     * @param User $identity
+     *
+     * @return void
+     */
+    public function setIdentity(User $identity)
+    {
+        /*
+         * @event setIdentity
+         */
+        $this->getEventManager()->trigger(
+            'setIdentity',
+            $this,
+            array('identity' => $identity)
+        );
     }
 
     /**
@@ -214,6 +287,16 @@ class UserAuthenticationService extends EventProvider
         if (empty($user)) {
 
             return $deflt;
+        }
+
+        return $this->prepareUser($user);
+    }
+
+    public function prepareUser(User $user){
+
+        if ($this->getObfuscatePassword()) {
+
+            $user->setPassword(User::PASSWORD_OBFUSCATE);
         }
 
         return $user;

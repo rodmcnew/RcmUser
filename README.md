@@ -290,7 +290,7 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
@@ -313,7 +313,7 @@ return array(
             /*
              * UserDataPreparer (requires Encryptor)
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Used by default to prepare data for DB storage.
              * By default, encrypts passwords and creates id (UUID)

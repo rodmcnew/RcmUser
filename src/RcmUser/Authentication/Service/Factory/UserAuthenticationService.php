@@ -47,12 +47,12 @@ class UserAuthenticationService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        //@todo - factory not required:
-        // $auth = $serviceLocator->get(
-        //    'RcmUser\Authentication\AuthenticationService'
-        //);
+        $config = $serviceLocator->get('RcmUser\Auth\Config');
 
         $service = new \RcmUser\Authentication\Service\UserAuthenticationService();
+        $service->setObfuscatePassword(
+            $config->get('ObfuscatePasswordOnAuth', false)
+        );
 
         return $service;
     }

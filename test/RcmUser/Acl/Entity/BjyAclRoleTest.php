@@ -55,16 +55,16 @@ class BjyAclRoleTest extends Zf2TestCase
         $proleA = 'parentA';
 
         $proleb = new AclRole();
-        $proleb->setParentRole('parentB');
+        $proleb->setParentRoleId('parentB');
 
-        $aclRole->setParentRole($proleA);
+        $aclRole->setParentRoleId($proleA);
         $this->assertTrue(
             $aclRole->getParent() === $proleA, 'Setter or getter failed.'
         );
 
-        $aclRole->setParentRole($proleb);
+        $aclRole->setParentRoleId($proleb);
         $this->assertTrue(
-            $aclRole->getParent() === $proleb->getRoleIdentity(),
+            $aclRole->getParent() === $proleb->getRoleId(),
             'Setter or getter failed.'
         );
     }

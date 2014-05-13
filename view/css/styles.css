@@ -1,0 +1,68 @@
+.rcmuser a.nostyle {
+    color: #000;
+    text-decoration: none;
+}
+
+.rcmuser a.nostyle:hover {
+    color: #000;
+    text-decoration: none;
+}
+
+.rcmuser a.nostyle:visited {
+    color: #000;
+    text-decoration: none;
+}
+
+.rcmuser a.nostyle:link {
+    color: #000;
+    text-decoration: none;
+}
+
+.rcmuser a.nostyle:active {
+    color: #000;
+    text-decoration: none;
+}
+
+.rcmuser .admin-acl {
+
+}
+
+.rcmuser .admin-acl .accordion-heading a,
+.rcmuser .admin-acl .accordion-heading a:link,
+.rcmuser .admin-acl .accordion-heading a:hover,
+.rcmuser .admin-acl .accordion-heading a:visited,
+.rcmuser .admin-acl .accordion-heading a:active {
+    border: 0;
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.rcmuser .admin-acl-resource-section {
+    border-left: .5em solid #999999;
+    padding-left: .5em;
+}
+.rcmuser .admin-acl-resource-section label {
+    display: block;
+    font-weight: bold;
+}
+
+.rcmuser .admin-acl-resource-row {
+    overflow: hidden;
+    padding: .7em 0 .7em 0;
+}
+
+.rcmuser .admin-acl-resource-col {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.rcmuser .admin-acl-permissions-row {
+    border-bottom: .1em solid #999999;
+    padding-left: 2em;;
+}
+
+.rcmuser .admin-acl-permissions-row .form-group {
+    padding: 0 0 .5em 2em;
+}

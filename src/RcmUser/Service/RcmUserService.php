@@ -374,6 +374,54 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
+     * hasIdentity
+     *
+     * @return bool
+     */
+    public function hasIdentity()
+    {
+        return $this->getUserAuthService()->hasIdentity();
+    }
+
+    /**
+     * setIdentity
+     *
+     * @param User $user user
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function setIdentity(User $user)
+    {
+        $currentUser = $this->getIdentity();
+
+        if($user->getId() !== $currentUser->getId()){
+
+            throw new RcmUserException('SetIdentity expects user to be get same identity as current, user authenticate to change users.');
+        }
+
+        return $this->getUserAuthService()->setIdentity($user);
+    }
+
+    /**
+     * refreshIdentity
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function refreshIdentity()
+    {
+        $user = $this->readUser($this->getIdentity());
+
+        if(empty($user->getId())){
+
+            throw new RcmUserException('RefreshIdentity expects user to be get same identity as current.');
+        }
+
+        return $this->getUserAuthService()->setIdentity($user);
+    }
+
+    /**
      * getIdentity
      *
      * @return User
@@ -384,7 +432,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         return $this->getUserAuthService()->getIdentity($this->buildNewUser());
     }
 
-    //@todo implement guestIdentity
+    //@todo implement guestIdentity and hasIdentity
     // - if getIdentity is empty return guest and save updates in session
     // on login we can sync the guest user or the session user as needed
 
@@ -431,7 +479,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function buildUser(User $user)
     {
-
         $result = $this->getUserDataService()->buildUser($user);
 
         if ($result->isSuccess() || $result->getUser() == null) {

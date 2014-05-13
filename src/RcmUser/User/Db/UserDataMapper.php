@@ -1,8 +1,8 @@
 <?php
 /**
- * AbstractUserDataMapper.php
+ * UserDataMapper.php
  *
- * AbstractUserDataMapper
+ * UserDataMapper
  *
  * PHP version 5
  *
@@ -23,9 +23,9 @@ use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
 /**
- * Class AbstractUserDataMapper
+ * Class UserDataMapper
  *
- * AbstractUserDataMapper
+ * UserDataMapper
  *
  * PHP version 5
  *
@@ -37,8 +37,11 @@ use RcmUser\User\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AbstractUserDataMapper implements UserDataMapperInterface
+class UserDataMapper implements UserDataMapperInterface
 {
+    const ID_FIELD = 'id';
+    const USERNAME_FIELD = 'username';
+
     /**
      * @var string
      */
@@ -126,10 +129,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
      * @param mixed $id id
      *
      * @return Result
+     * @throws RcmUserException
      */
     public function fetchById($id)
     {
-        return new Result(null, Result::CODE_FAIL, 'User cannot be found by id.');
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -138,14 +142,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
      * @param string $username username
      *
      * @return Result
+     * @throws RcmUserException
      */
     public function fetchByUsername($username)
     {
-        return new Result(
-            null,
-            Result::CODE_FAIL,
-            'User cannot be found by username.'
-        );
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -155,10 +156,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
      * @param User $responseUser responseUser
      *
      * @return Result
+     * @throws RcmUserException
      */
     public function create(User $requestUser, User $responseUser)
     {
-        return new Result(null, Result::CODE_FAIL, 'User cannot be created.');
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -168,10 +170,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
      * @param User $responseUser responseUser
      *
      * @return Result
+     * @throws RcmUserException
      */
     public function read(User $requestUser, User $responseUser)
     {
-        return new Result(null, Result::CODE_FAIL, 'User cannot be read.');
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -182,10 +185,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
      * @param User $existingUser existingUser
      *
      * @return mixed|Result
+     * @throws RcmUserException
      */
     public function update(User $requestUser, User $responseUser, User $existingUser)
     {
-        return new Result(null, Result::CODE_FAIL, 'User cannot be updated.');
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -195,10 +199,11 @@ class AbstractUserDataMapper implements UserDataMapperInterface
      * @param User $responseUser responseUser
      *
      * @return mixed|Result
+     * @throws RcmUserException
      */
     public function delete(User $requestUser, User $responseUser)
     {
-        return new Result(null, Result::CODE_FAIL, 'User cannot be deleted.');
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**

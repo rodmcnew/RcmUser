@@ -1,0 +1,89 @@
+<?php
+/*
+ * @todo This may be wrapped in a service so the application can determine dependencies
+ *
+ */
+$this->rcmIncludeAngularJs(
+    array(
+        'js' => array(
+            'angular-ui/bootstrap-0.11.0/ui-bootstrap-tpls-0.11.0.min.js'
+        )
+    )
+);
+
+$this->rcmIncludeTwitterBootstrap(
+    array(
+        'css' => array(
+            'css/bootstrap-theme.css',
+            //'css/bootstrap-theme.css.map',
+        )
+    )
+);
+/*
+ * END SERVICE
+ */
+
+$this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
+$this->headScript()->appendFile($this->url('RcmUserAdminJs'));
+
+?>
+<div ng-app="rcmuserAdminAclApp">
+<div class="rcmuser" ng-controller="rcmuserAdminAclRoles">
+    <div class="container-fluid admin-acl">
+
+        <div class="container-fluid">
+            <h1>Access
+                <small>Control user roles and access</small>
+            </h1>
+            <p class="lead">Set up the user roles and access to resources.</p>
+        </div>
+
+            <pre>{{roles|json}}</pre>
+
+        <div class="container-fluid">
+
+            <accordion close-others="oneAtATime">
+
+                <!-- + ROLE -->
+                <accordion-group is-open="isopen.roleId" heading="{{group.title}}" ng-repeat="role in roles">
+
+                    <accordion-heading>
+                        <div class="accordion-heading">
+                            <span tooltip-placement="right" tooltip="This is the user role.">{{roleId}}</span>
+                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen.roleId, 'glyphicon-chevron-right': !isopen.roleId}"></i>
+                        </div>
+                    </accordion-heading>
+
+                    <!-- + RESOURCE -->
+                    <div class="container-fluid admin-acl-resource-section">
+
+                        <div class="container-fluid admin-acl-resource-row">
+                            <div class="admin-acl-resource-col">
+                                &#124;&#8212;{{levelRepeat('&#8212;', 5)}}&nbsp;<span>{{resource}}</span>
+                            </div>
+                        </div>
+
+                        <div class="container admin-acl-permissions-row">
+
+                            <form class="form-inline" role="form">
+
+                                <div class="form-group">
+                                    <label class="control-label" for="permission1">{{privilege}}</label>
+                                    <select class="form-control input-sm" id="permission1">
+                                        <option value="inherit">inherit</option>
+                                        <option value="allow">allow</option>
+                                        <option value="deny">deny</option>
+                                    </select>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+                    <!-- + RESOURCE -->
+                </accordion-group>
+                <!-- - ROLE -->
+            </accordion>
+        </div>
+    </div>
+</div>
+</div>

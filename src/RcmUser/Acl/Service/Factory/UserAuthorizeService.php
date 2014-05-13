@@ -48,7 +48,10 @@ class UserAuthorizeService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
+
         $service = new \RcmUser\Acl\Service\UserAuthorizeService();
+        $service->setSuperAdminRole($cfg->get('SuperAdminRole'));
         $service->setAuthorize($serviceLocator->get('BjyAuthorize\Service\Authorize'));
 
         return $service;

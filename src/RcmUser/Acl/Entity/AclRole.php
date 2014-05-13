@@ -41,37 +41,102 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     /**
      * @var string
      */
-    protected $roleIdentity;
+    protected $roleId;
+
+    /**
+     * @var string
+     */
+    protected $parentRoleId = null;
+
+    /**
+     * @var AclRole
+     */
+    protected $parentRole = null;
+
     /**
      * @var string
      */
     protected $description;
 
     /**
-     * @var null
-     */
-    protected $parentRole = null;
-
-    /**
-     * setRoleIdentity
+     * setRoleId
      *
-     * @param string $roleIdentity role identity
+     * @param string $roleId role identity
      *
      * @return void
      */
-    public function setRoleIdentity($roleIdentity)
+    public function setRoleId($roleId)
     {
-        $this->roleIdentity = $roleIdentity;
+        $this->roleId = $roleId;
     }
 
     /**
-     * getRoleIdentity
+     * getRoleId
      *
      * @return string
      */
-    public function getRoleIdentity()
+    public function getRoleId()
     {
-        return $this->roleIdentity;
+        return $this->roleId;
+    }
+
+    /**
+     * setParentRoleId
+     *
+     * @param string|null $parentRoleId parent role
+     *
+     * @return void
+     */
+    public function setParentRoleId($parentRoleId)
+    {
+        $this->parentRoleId = $parentRoleId;
+    }
+
+    /**
+     * getParentRoleId
+     *
+     * @return string|null
+     */
+    public function getParentRoleId()
+    {
+        return $this->parentRoleId;
+    }
+
+    /**
+     * setParentRole
+     *
+     * @param AclRole $parentRole parentRole
+     *
+     * @return void
+     */
+    public function setParentRole(AclRole $parentRole)
+    {
+        $this->parentRole = $parentRole;
+    }
+
+    /**
+     * getParentRole
+     *
+     * @return AclRole
+     */
+    public function getParentRole()
+    {
+        return $this->parentRole;
+    }
+
+    /**
+     * getParent
+     *
+     * @return null|string|AclRole
+     */
+    public function getParent()
+    {
+        if(empty($this->parentRole)){
+
+            return $this->getParentRoleId();
+        }
+
+        return $this->getParentRole();
     }
 
     /**
@@ -97,48 +162,6 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * setParentRole
-     *
-     * @param AclRole|null $parentRole parent role
-     *
-     * @return void
-     */
-    public function setParentRole($parentRole)
-    {
-        $this->parentRole = $parentRole;
-    }
-
-    /**
-     * getParentRole
-     *
-     * @return AclRole|null
-     */
-    public function getParentRole()
-    {
-        return $this->parentRole;
-    }
-
-    /**
-     * getParent
-     *
-     * @return null|AclRole
-     */
-    public function getParent()
-    {
-        return $this->getParentRole();
-    }
-
-    /**
-     * getRoleId
-     *
-     * @return string
-     */
-    public function getRoleId()
-    {
-        return $this->getRoleIdentity();
-    }
-
-    /**
      * populate
      *
      * @param array|AclRole $data data to populate with
@@ -150,22 +173,22 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     {
         if (($data instanceof AclRole)) {
 
-            $this->setRoleIdentity($data->getRoleIdentity());
+            $this->setRoleId($data->getRoleId());
             $this->setDescription($data->getDescription());
-            $this->setParentRole($data->getParentRole());
+            $this->setParentRoleId($data->getParentRoleId());
 
             return;
         }
 
         if (is_array($data)) {
-            if (isset($data['roleIdentity'])) {
-                $this->setRoleIdentity($data['roleIdentity']);
+            if (isset($data['roleId'])) {
+                $this->setRoleId($data['roleId']);
             }
             if (isset($data['description'])) {
                 $this->setDescription($data['description']);
             }
-            if (isset($data['parentRole'])) {
-                $this->setRoleIdentity($data['parentRole']);
+            if (isset($data['parentRoleId'])) {
+                $this->setParentRoleId($data['parentRoleId']);
             }
 
             return;
@@ -184,9 +207,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     public function jsonSerialize()
     {
         $obj = new \stdClass();
-        $obj->roleIdentity = $this->getRoleIdentity();
+        $obj->roleId = $this->getRoleId();
         $obj->description = $this->getDescription();
-        $obj->parentRole = $this->getParentRole();
+        $obj->parentRoleId = $this->getParentRoleId();
 
         return $obj;
     }
@@ -200,5 +223,15 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     {
 
         return new \ArrayIterator(get_object_vars($this));
+    }
+
+    /**
+     * __toString
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->getRoleId();
     }
 } 
