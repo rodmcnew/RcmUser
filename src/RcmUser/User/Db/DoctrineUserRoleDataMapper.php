@@ -21,12 +21,11 @@ namespace RcmUser\User\Db;
 use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Db\DoctrineMapper;
 use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Exception\RcmUserException;
+use RcmUser\Result;
 use RcmUser\User\Entity\DoctrineUserRole;
 use RcmUser\User\Entity\User;
-use RcmUser\Result;
 
 /**
  * Class DoctrineUserRoleDataMapper
@@ -116,7 +115,8 @@ class DoctrineUserRoleDataMapper
      */
     public function setAclRoleDataMapper(
         AclRoleDataMapperInterface $aclRoleDataMapper
-    ) {
+    )
+    {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
@@ -128,6 +128,77 @@ class DoctrineUserRoleDataMapper
     public function getAclRoleDataMapper()
     {
         return $this->aclRoleDataMapper;
+    }
+
+    /**
+     * add
+     *
+     * @param User    $user      user
+     * @param AclRole $aclRoleId aclRoleId
+     *
+     * @return Result
+     */
+    public function add(User $user, $aclRoleId)
+    {
+        $userId = $user->getId();
+
+        if (empty($userId)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User id required to add user role.'
+            );
+        }
+
+        $userRole = new DoctrineUserRole();
+        $userRole->setUserId($userId);
+        $userRole->setRoleId($aclRoleId);
+
+        $this->getEntityManager()->persist($userRole);
+        $this->getEntityManager()->flush();
+
+        return new Result($userRole);
+    }
+
+    /**
+     * remove
+     *
+     * @param User    $user      user
+     * @param AclRole $aclRoleId aclRoleId
+     *
+     * @return Result
+     */
+    public function remove(User $user, $aclRoleId)
+    {
+        $userId = $user->getId();
+
+        if (empty($userId)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User id required to add user role.'
+            );
+        }
+
+        $userRoles = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )->findBy(
+                array(
+                    'userId' => $userId,
+                    'roleId' => $aclRoleId,
+                )
+            );
+
+        foreach($userRoles as $userRole){
+
+            $this->getEntityManager()->remove($userRole);
+        }
+
+        $this->getEntityManager()->flush();
+
+        return new Result();
     }
 
     /**
@@ -154,9 +225,10 @@ class DoctrineUserRoleDataMapper
 
         $currentRolesResult = $this->read($user);
 
-        if($currentRolesResult->isSuccess()){
+        if ($currentRolesResult->isSuccess()) {
 
-            throw new RcmUserException('Roles already exist for user: ' . $user->getId());
+            throw new RcmUserException('Roles already exist for user: '
+            . $user->getId());
         }
 
         foreach ($userRoles as $key => $roleId) {
@@ -242,17 +314,14 @@ class DoctrineUserRoleDataMapper
      * @param User  $user  user
      * @param array $roles roles
      *
-     * @return Result
+     * @return Result|Result
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function update(User $user, $roles = array())
     {
-
-        var_dump("\n***Update User Roles not yet available. Update not done***\n");
-        return new Result(null, Result::CODE_FAIL, 'Update not yet available.');
-
         $result = $this->read($user);
 
-        if($result->isSuccess()){
+        if ($result->isSuccess()) {
 
             $curRoles = $result->getData();
         } else {
@@ -260,45 +329,47 @@ class DoctrineUserRoleDataMapper
             $curRoles = array();
         }
 
-        $availableRoles = $this->getAclRoleDataMapper()->fetchAll();
+        $result = $this->getAclRoleDataMapper()->fetchAll();
 
-        if($result->isSuccess()){
+        if ($result->isSuccess()) {
 
             $availableRoles = $result->getData();
         } else {
 
             throw new RcmUserException('No roles are available to assign.');
-            //$availableRoles = array();
         }
 
         $userAclRoles = array();
 
-        foreach($availableRoles as $key => $role){
+        foreach ($availableRoles as $key => $aclRole) {
 
-            if(in_array($curRoles, $key) && !in_array($roles, $key)){
-                // @todo delete role
+            $roleId = $aclRole->getRoleId();
+
+            if (in_array($roleId, $curRoles) && !in_array($roleId, $roles)) {
+                $this->remove($user, $roleId);
                 unset($curRoles[$key]);
             }
-            if(in_array($roles, $key) && !in_array($curRoles, $key)){
-                // @todo add role
-                $userAclRoles[$key] = $roles[$key];
+            if (in_array($roleId, $roles) && !in_array($roleId, $curRoles)) {
+
+                $this->add($user, $roleId);
+                $userAclRoles[$roleId] = $roleId;
                 unset($roles[$key]);
             }
         }
 
         // make sure roles are valid
         // $roles should be empty, anything left was unavailable
-        if(!empty($roles)){
+        if (!empty($roles)) {
             // remove the rest
-            foreach($roles as $key => $role){
-                // @todo delete role
+            foreach ($roles as $key => $roleId) {
+                $this->remove($user, $roleId);
             }
         }
 
-        if(!empty($curRoles)){
+        if (!empty($curRoles)) {
             // remove the rest
-            foreach($roles as $key => $role){
-                // @todo delete role
+            foreach ($roles as $key => $roleId) {
+                $this->remove($user, $roleId);
             }
         }
 
@@ -308,17 +379,17 @@ class DoctrineUserRoleDataMapper
     /**
      * delete
      *
-     * @param User $user user
+     * @param User  $user  user
+     * @param array $roles roles
      *
      * @return Result
      */
-    public function delete(User $user)
+    public function delete(User $user, $roles = array())
     {
-        // @todo - write me
-        //throw new \Exception('Delete User Roles not yet available.');
-        var_dump("\n***Delete User Roles not yet available. Delete not done***\n");
-        return new Result(null, Result::CODE_FAIL, 'Delete not yet available.');
+        foreach ($roles as $key => $roleId) {
+            $this->remove($user, $roleId);
+        }
+
+        return new Result();
     }
-
-
 } 

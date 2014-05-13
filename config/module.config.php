@@ -108,8 +108,8 @@ return array(
              * for a user on the user data events
              * in RcmUser\User\Service\UserDataService.
              */
-            'DefaultRoleIdentities' => array('guest' => 'guest'),
-            'DefaultAuthenticatedRoleIdentities' => array('user' => 'user'),
+            'DefaultRoleIdentities' => array('guest'),
+            'DefaultAuthenticatedRoleIdentities' => array('user'),
 
             /*
              * SuperAdminRole
@@ -486,7 +486,7 @@ return array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin/rcm-user-acl',
+                    'route' => '/admin/rcmuser-acl',
                     'constraints' => array(
                         'terminal' => '[0-1]',
                     ),
@@ -500,7 +500,7 @@ return array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin/rcm-user/js/admin.js',
+                    'route' => '/admin/rcmuser/js/admin.js',
                     'defaults' => array(
                         'controller' => 'RcmUser\Controller\AdminJsController',
                         'action' => 'index',
@@ -511,7 +511,7 @@ return array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin/rcm-user/css/admin.css',
+                    'route' => '/admin/rcmuser/css/admin.css',
                     'defaults' => array(
                         'controller' => 'RcmUser\Controller\AdminCssController',
                         'action' => 'index',
@@ -521,7 +521,7 @@ return array(
             'RcmUserAdminApiAclResources' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcm-user-acl-resources[/:id]',
+                    'route' => '/admin/api/rcmuser-acl-resources[/:id]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                     ),
@@ -533,7 +533,7 @@ return array(
             'RcmUserAdminApiAclRulesByRoles' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcm-user-acl-rulesbyroles[/:id]',
+                    'route' => '/admin/api/rcmuser-acl-rulesbyroles[/:id]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                     ),

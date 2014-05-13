@@ -18,9 +18,10 @@
 namespace RcmUser\Acl\Db;
 
 
+use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\DoctrineAclRole;
-use RcmUser\Db\DoctrineMapper;
+use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Result;
 
 /**
@@ -39,9 +40,64 @@ use RcmUser\Result;
  * @link      https://github.com/reliv
  */
 class DoctrineAclRoleDataMapper
-    extends DoctrineMapper
-    implements AclRoleDataMapperInterface
+    extends AclRoleDataMapper
+    implements AclRoleDataMapperInterface, DoctrineMapperInterface
 {
+    /**
+     * @var EntityManager $entityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var
+     */
+    protected $entityClass;
+
+    /**
+     * setEntityManager
+     *
+     * @param EntityManager $entityManager entityManager
+     *
+     * @return void
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * getEntityManager
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+
+        return $this->entityManager;
+    }
+
+    /**
+     * setEntityClass
+     *
+     * @param string $entityClass entityClass namespace
+     *
+     * @return void
+     */
+    public function setEntityClass($entityClass)
+    {
+        $this->entityClass = (string)$entityClass;
+    }
+
+    /**
+     * getEntityClass
+     *
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
+
     /**
      * fetchAll
      *
@@ -183,10 +239,15 @@ class DoctrineAclRoleDataMapper
      */
     public function update(AclRole $aclRole)
     {
+        $aclRole = $this->getValidInstance($aclRole);
+
+        $this->getEntityManager()->merge($aclRole);
+        $this->getEntityManager()->flush();
+
+        // @todo validate action
         return new Result(
             null,
-            Result::CODE_FAIL,
-            'Acl Role update NOT YET AVAILABLE.'
+            Result::CODE_SUCCESS
         );
     }
 
@@ -199,10 +260,15 @@ class DoctrineAclRoleDataMapper
      */
     public function delete(AclRole $aclRole)
     {
+        $aclRole = $this->getValidInstance($aclRole);
+
+        $this->getEntityManager()->remove($aclRole);
+        $this->getEntityManager()->flush();
+
+        // @todo validate action
         return new Result(
             null,
-            Result::CODE_FAIL,
-            'Acl Role delete NOT YET AVAILABLE.'
+            Result::CODE_SUCCESS
         );
     }
 
@@ -215,7 +281,6 @@ class DoctrineAclRoleDataMapper
      */
     public function getValidInstance(AclRole $aclRole)
     {
-
         if (!($aclRole instanceof AclRole)) {
 
             $doctrineAclRole = new DoctrineAclRole();
@@ -260,7 +325,6 @@ class DoctrineAclRoleDataMapper
      */
     public function createNamespaceId(AclRole $role, $aclRoles)
     {
-
         $parentRoleId = $role->getParentRoleId();
         $ns = $role->getRoleId();
         if (!empty($parentRoleId)) {

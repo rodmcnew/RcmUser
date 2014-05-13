@@ -18,9 +18,9 @@
 namespace RcmUser\Acl\Db;
 
 
+use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Db\DoctrineMapper;
-use Doctrine\ORM\QueryBuilder;
+use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Result;
 
 /**
@@ -39,9 +39,62 @@ use RcmUser\Result;
  * @link      https://github.com/reliv
  */
 class DoctrineAclRuleDataMapper
-    extends DoctrineMapper
-    implements AclRuleDataMapperInterface
+    extends AclRuleDataMapper
+    implements AclRuleDataMapperInterface, DoctrineMapperInterface
 {
+    /**
+     * @var EntityManager $entityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var
+     */
+    protected $entityClass;
+
+    /**
+     * setEntityManager
+     *
+     * @param EntityManager $entityManager entityManager
+     *
+     * @return void
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * getEntityManager
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * setEntityClass
+     *
+     * @param string $entityClass entityClass namespace
+     *
+     * @return void
+     */
+    public function setEntityClass($entityClass)
+    {
+        $this->entityClass = (string)$entityClass;
+    }
+
+    /**
+     * getEntityClass
+     *
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
 
     /**
      * fetchAll
@@ -84,7 +137,6 @@ class DoctrineAclRuleDataMapper
 
         return new Result($rules);
     }
-
 
     /**
      * fetchByRule
@@ -135,6 +187,8 @@ class DoctrineAclRuleDataMapper
      */
     public function create(AclRule $aclRule)
     {
+        // todo write me
+        parent::create($aclRule);
     }
 
     /**
@@ -146,6 +200,8 @@ class DoctrineAclRuleDataMapper
      */
     public function read(AclRule $aclRule)
     {
+        // todo write me
+        parent::read($aclRule);
     }
 
     /**
@@ -157,6 +213,8 @@ class DoctrineAclRuleDataMapper
      */
     public function update(AclRule $aclRule)
     {
+        // todo write me
+        parent::update($aclRule);
     }
 
     /**
@@ -168,5 +226,7 @@ class DoctrineAclRuleDataMapper
      */
     public function delete(AclRule $aclRule)
     {
+        // todo write me
+        parent::delete($aclRule);
     }
 } 

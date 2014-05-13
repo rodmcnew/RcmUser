@@ -354,7 +354,13 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
             $responseUser = $result->getUser();
 
-            $aclResult = $this->getUserRolesDataMapper()->delete($responseUser);
+            $aclResult = $this->getUserRolesDataMapper()->delete(
+                $responseUser,
+                $responseUser->getProperty(
+                    $this->getUserPropertyKey(),
+                    array()
+                )
+            );
 
             if (!$aclResult->isSuccess()) {
 

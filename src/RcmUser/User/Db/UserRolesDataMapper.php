@@ -91,13 +91,13 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * add
      *
-     * @param User    $user user
-     * @param AclRole $role role
+     * @param User    $user      user
+     * @param AclRole $aclRoleId aclRoleId
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function add(User $user, AclRole $role)
+    public function add(User $user, $aclRoleId)
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
@@ -105,13 +105,13 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * remove
      *
-     * @param User    $user user
-     * @param AclRole $role role
+     * @param User    $user      user
+     * @param AclRole $aclRoleId aclRoleId
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function remove(User $user, AclRole $role)
+    public function remove(User $user, $aclRoleId)
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
