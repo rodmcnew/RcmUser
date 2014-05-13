@@ -28,57 +28,71 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 
 ?>
 <div ng-app="rcmuserAdminAclApp">
-<div class="rcmuser" ng-controller="rcmuserAdminAclRoles">
-    <div class="container-fluid admin-acl">
+    <div class="rcmuser" ng-controller="rcmuserAdminAclRoles">
+        <div class="container-fluid admin-acl">
 
-        <div class="container-fluid">
-            <h1>Access
-                <small>Control user roles and access</small>
-            </h1>
-            <p class="lead">Set up the user roles and access to resources.</p>
-        </div>
+            <div class="container-fluid">
+                <h1>Access
+                    <small>Control user roles and access</small>
+                </h1>
+                <p class="lead">Set up the user roles and access to resources.</p>
+            </div>
 
-            <pre>{roles|json}</pre>
+            <div class="container-fluid">
 
-        <div class="container-fluid">
+                <accordion close-others="oneAtATime">
 
-            <accordion close-others="oneAtATime">
-
-                <!-- + ROLE -->
-                <accordion-group is-open="isopen.roleId" heading="{{role.roleId}}" ng-repeat="roleData in roles">
+                    <!-- + ROLE -->
+                    <accordion-group is-open="isopen.roleId" heading="{{role.roleId}}" ng-repeat="roleData in roles">
 
 
-                    <accordion-heading>
-                        <div class="accordion-heading">
-                            <span tooltip-placement="right" tooltip="This is a user role.">{{roleData.role.roleId}}</span>
-                            <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen.roleId, 'glyphicon-chevron-right': !isopen.roleId}"></i>
-                        </div>
-                    </accordion-heading>
+                        <accordion-heading>
+                            <div class="accordion-heading">
+                                <span class="title" tooltip-placement="right" tooltip="This is a user role.">{{roleData.role.roleId}}</span>
+                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen.roleId, 'glyphicon-chevron-right': !isopen.roleId}"></i>
+                            </div>
+                        </accordion-heading>
 
-                    <!-- + RESOURCE -->
-                    <div class="container-fluid admin-acl-resource-section" ng-repeat="ruleData in roleData.rules">
+                        <!-- + RESOURCE -->
+                        <div class="container-fluid admin-acl-resource-section" ng-repeat="ruleData in roleData.rules">
 
-                        <div class="container-fluid admin-acl-resource-row">
-                            <div class="admin-acl-resource-col">
-                                <div>Resource: {{resources[ruleData.resource].resource.resourceId}}</div>
-                                <div>NameSpace: {{resources[ruleData.resource].resourceNs}}</div>
-                                <div>{{resources[ruleData.resource].resource.description}}</div>
+                            <div class="container-fluid">
+                                <div class="row">
+                                    <div class="col-md-10">
+                                        <div>
+                                            <span class="rule">{{ruleData.rule}}</span>
+                                        </div>
+                                        <div>Access to
+                                            <span class="resource-name" tooltip-placement="right" tooltip-append-to-body="true" tooltip-title="{{resources[ruleData.resource].resource.resourceId}}" tooltip-html-unsafe="{{resources[ruleData.resource].resource.description}}<br/><br/>Resource: {{resources[ruleData.resource].resource.resourceId}}<br/>NameSpace: {{resources[ruleData.resource].resourceNs}}">{{resources[ruleData.resource].resource.name}}</span>
+                                        </div>
+                                        <div>For privilege <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span></div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <button type="button" class="btn btn-warning btn-xs">
+                                            <i class="glyphicon glyphicon glyphicon-minus"></i> remove
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="container admin-acl-permissions-row">
-                            Rule: {{ruleData.rule}} Privilege: {{(ruleData.privilege || '*')}} <button type="button"><i class="glyphicon glyphicon glyphicon-minus"> remove rule</i></button>
+                        <div class="container-fluid admin-acl-resource-footer">
+                            <div class="row">
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary btn-xs">
+                                        <i class="glyphicon glyphicon glyphicon-plus"></i> add
+                                    </button>
+                                </div>
+                                <div class="col-md-10">
+                                </div>
+                            </div>
                         </div>
-                    </div>
-
-                    <div>
-                        <button type="button"><i class="glyphicon glyphicon glyphicon-plus"> add rule</i></button>
-                    </div>
-                    <!-- + RESOURCE -->
-                </accordion-group>
-                <!-- - ROLE -->
-            </accordion>
+                        <!-- + RESOURCE -->
+                    </accordion-group>
+                    <!-- - ROLE -->
+                </accordion>
+            </div>
         </div>
     </div>
-</div>
 </div>

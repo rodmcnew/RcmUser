@@ -69,8 +69,7 @@ class AclResourceService
     public function __construct(
         $rootResource,
         $resources = array()
-    )
-    {
+    ) {
         $this->rootResource = $rootResource;
     }
 
@@ -157,6 +156,12 @@ class AclResourceService
                             $this->rootResource->getResourceId()
                         );
                     }
+
+                    // @todo - might implement duplicate check
+                    //if(isset($this->resources[$res->getResourceId()])){
+
+                    //    throw new RcmUserException('Resource id is invalid, resource id ' . $res->getResourceId() . ' already exists.');
+                    //}
 
                     $this->resources[$res->getResourceId()] = $res;
                 }

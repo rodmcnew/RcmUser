@@ -27,11 +27,42 @@
 
 }
 
-.rcmuser .admin-acl .accordion-heading a,
-.rcmuser .admin-acl .accordion-heading a:link,
-.rcmuser .admin-acl .accordion-heading a:hover,
-.rcmuser .admin-acl .accordion-heading a:visited,
-.rcmuser .admin-acl .accordion-heading a:active {
+.rcmuser .admin-acl .rule {
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.rcmuser .admin-acl .resource-name {
+    color: #000;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.rcmuser .admin-acl .resource-privilege{
+    color: #000;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.tooltip-inner {
+    max-width: 400px;
+    text-align: left;
+}
+
+.rcmuser .admin-acl .panel-title a,
+.rcmuser .admin-acl .panel-title a:link,
+.rcmuser .admin-acl .panel-title a:hover,
+.rcmuser .admin-acl .panel-title a:visited,
+.rcmuser .admin-acl .panel-title a:active {
+    border: 0;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.rcmuser .admin-acl .accordion-heading .title {
     border: 0;
     color: #000;
     font-size: 1.3em;
@@ -40,29 +71,12 @@
 }
 
 .rcmuser .admin-acl-resource-section {
-    border-left: .5em solid #999999;
-    padding-left: .5em;
-}
-.rcmuser .admin-acl-resource-section label {
-    display: block;
-    font-weight: bold;
-}
-
-.rcmuser .admin-acl-resource-row {
-    overflow: hidden;
-    padding: .7em 0 .7em 0;
-}
-
-.rcmuser .admin-acl-resource-col {
-    font-size: 1.2em;
-    font-weight: bold;
-}
-
-.rcmuser .admin-acl-permissions-row {
     border-bottom: .1em solid #999999;
-    padding-left: 2em;;
+    border-left: .3em solid #999999;
+    border-top: .1em solid #999999;
+    padding: .5em 0em .5em 0em;
 }
 
-.rcmuser .admin-acl-permissions-row .form-group {
-    padding: 0 0 .5em 2em;
+.rcmuser .admin-acl-resource-footer{
+    padding: .5em 0em .5em 0em;
 }
