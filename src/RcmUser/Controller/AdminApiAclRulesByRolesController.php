@@ -46,6 +46,29 @@ class AdminApiAclRulesByRolesController extends AbstractRestfulController {
             'RcmUser\Acl\AclDataService'
         );
 
-        return new JsonModel($aclDataService->fetchAllRoles()->getData());
+        $result = $aclDataService->fetchAllRoles();
+
+        $response = array();
+
+        if($result->isSuccess()){
+
+            $roles = $result->getData();
+            foreach($roles as $key => $role){
+
+                $roleId = $role->getRoleId();
+                $response[$roleId] = array();
+                $response[$roleId]['role'] = $role;
+                $result = $aclDataService->fetchRulesByRole($role->getRoleId());
+                if($result->isSuccess()){
+
+                    $response[$roleId]['rules'] = $result->getData();
+                } else {
+
+                    $response[$roleId]['rules'] = array();
+                }
+            }
+        }
+
+        return new JsonModel($response);
     }
 } 

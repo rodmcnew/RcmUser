@@ -1,24 +1,23 @@
 'use strict';
 
 var rcmuserAdminAclApp = angular.module('rcmuserAdminAclApp', ['ui.bootstrap']);
-rcmuserAdminAclApp.controller('RolesCtrl',
-        ['$scope', function ($scope) {
+var rcmuserAdminAclRoles = function ($scope) {
 
-            $scope.greeting = 'Hola!';
+    $scope.oneAtATime = true;
 
-            $scope.levelRepeat = function (s, n) {
-                var a = [];
-                while (a.length < n) {
-                    a.push(s);
-                }
-                return a.join('');
-            }
+    $scope.levelRepeat = function (s, n) {
+        var a = [];
+        while (a.length < n) {
+            a.push(s);
+        }
+        return a.join('');
+    }
 
-            $scope.roles = {'wer':'wer'};
-        }]
-    );
+    $scope.roles = {"guest":{"role":{"roleId":"guest","description":null,"parentRoleId":null},"rules":[]},"user":{"role":{"roleId":"user","description":null,"parentRoleId":"guest"},"rules":[]},"manager":{"role":{"roleId":"manager","description":null,"parentRoleId":"user"},"rules":[{"rule":"allow","roleid":"manager","resource":"rcmuser-acl-administration","privilege":""}]},"admin":{"role":{"roleId":"admin","description":null,"parentRoleId":"manager"},"rules":[{"rule":"allow","roleid":"admin","resource":"root","privilege":""}]},"customer":{"role":{"roleId":"customer","description":"RCM","parentRoleId":"user"},"rules":[]}};
 
-var AccordionCtrl = function ($scope) {
+};
+
+function AccordionDemoCtrl($scope) {
     $scope.oneAtATime = true;
 
     $scope.groups = [
@@ -43,4 +42,4 @@ var AccordionCtrl = function ($scope) {
         isFirstOpen: true,
         isFirstDisabled: false
     };
-};
+}

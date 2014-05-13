@@ -27,9 +27,8 @@ $this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
 $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 
 ?>
-
-
-<div class="rcmuser" ng-app="rcmuserAdminAclApp">
+<div ng-app="rcmuserAdminAclApp">
+<div class="rcmuser" ng-controller="rcmuserAdminAclRoles">
     <div class="container-fluid admin-acl">
 
         <div class="container-fluid">
@@ -39,23 +38,18 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
             <p class="lead">Set up the user roles and access to resources.</p>
         </div>
 
-        <div ng-controller="RolesCtrl">
-            <div ng-repeat="(roleNs, role) in roles">
-                {{roleNs}}: {{role}}
-            </div>
             <pre>{{roles|json}}</pre>
-        </div>
 
-        <div class="container-fluid" xxng-controller="AccordionCtrl">
+        <div class="container-fluid">
 
-            <accordion close-others="true">
+            <accordion close-others="oneAtATime">
 
                 <!-- + ROLE -->
-                <accordion-group is-open="isopen.roleId">
+                <accordion-group is-open="isopen.roleId" heading="{{group.title}}" ng-repeat="role in roles">
 
                     <accordion-heading>
                         <div class="accordion-heading">
-                            <a href="#" tooltip-placement="right" tooltip="This is the user role.">{{roleId}}</a>
+                            <span tooltip-placement="right" tooltip="This is the user role.">{{roleId}}</span>
                             <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen.roleId, 'glyphicon-chevron-right': !isopen.roleId}"></i>
                         </div>
                     </accordion-heading>
@@ -91,4 +85,5 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
             </accordion>
         </div>
     </div>
+</div>
 </div>
