@@ -167,7 +167,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     {
         $obj = new \stdClass();
         $obj->rule = $this->getRule();
-        $obj->roleid = $this->getRoleId();
+        $obj->roleId = $this->getRoleId();
         $obj->resource = $this->getResource();
         $obj->privilege = $this->getPrivilege();
 

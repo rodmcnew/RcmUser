@@ -75,10 +75,10 @@ class AdminAclController extends AbstractActionController
 
         //$rcmUserService->createUser($user);
         $rcmUserService->clearIdentity();
-        $rcmUserService->authenticate($user);
+        var_dump($rcmUserService->authenticate($user));
         //$rcmUserService->clearIdentity();
-        //var_dump($rcmUserService->getIdentity());
-        //var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
+        var_dump($rcmUserService->getIdentity());
+        var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
         echo "</pre>";
         /* - TEST ------------------------ */
 

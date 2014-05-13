@@ -6,7 +6,7 @@
 $this->rcmIncludeAngularJs(
     array(
         'js' => array(
-            'angular-ui/bootstrap-0.11.0/ui-bootstrap-tpls-0.11.0.min.js'
+            'angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js'
         )
     )
 );
@@ -38,46 +38,41 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
             <p class="lead">Set up the user roles and access to resources.</p>
         </div>
 
-            <pre>{{roles|json}}</pre>
+            <pre>{roles|json}</pre>
 
         <div class="container-fluid">
 
             <accordion close-others="oneAtATime">
 
                 <!-- + ROLE -->
-                <accordion-group is-open="isopen.roleId" heading="{{group.title}}" ng-repeat="role in roles">
+                <accordion-group is-open="isopen.roleId" heading="{{role.roleId}}" ng-repeat="roleData in roles">
+
 
                     <accordion-heading>
                         <div class="accordion-heading">
-                            <span tooltip-placement="right" tooltip="This is the user role.">{{roleId}}</span>
+                            <span tooltip-placement="right" tooltip="This is a user role.">{{roleData.role.roleId}}</span>
                             <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen.roleId, 'glyphicon-chevron-right': !isopen.roleId}"></i>
                         </div>
                     </accordion-heading>
 
                     <!-- + RESOURCE -->
-                    <div class="container-fluid admin-acl-resource-section">
+                    <div class="container-fluid admin-acl-resource-section" ng-repeat="ruleData in roleData.rules">
 
                         <div class="container-fluid admin-acl-resource-row">
                             <div class="admin-acl-resource-col">
-                                &#124;&#8212;{{levelRepeat('&#8212;', 5)}}&nbsp;<span>{{resource}}</span>
+                                <div>Resource: {{resources[ruleData.resource].resource.resourceId}}</div>
+                                <div>NameSpace: {{resources[ruleData.resource].resourceNs}}</div>
+                                <div>{{resources[ruleData.resource].resource.description}}</div>
                             </div>
                         </div>
 
                         <div class="container admin-acl-permissions-row">
-
-                            <form class="form-inline" role="form">
-
-                                <div class="form-group">
-                                    <label class="control-label" for="permission1">{{privilege}}</label>
-                                    <select class="form-control input-sm" id="permission1">
-                                        <option value="inherit">inherit</option>
-                                        <option value="allow">allow</option>
-                                        <option value="deny">deny</option>
-                                    </select>
-                                </div>
-                            </form>
-
+                            Rule: {{ruleData.rule}} Privilege: {{(ruleData.privilege || '*')}} <button type="button"><i class="glyphicon glyphicon glyphicon-minus"> remove rule</i></button>
                         </div>
+                    </div>
+
+                    <div>
+                        <button type="button"><i class="glyphicon glyphicon glyphicon-plus"> add rule</i></button>
                     </div>
                     <!-- + RESOURCE -->
                 </accordion-group>

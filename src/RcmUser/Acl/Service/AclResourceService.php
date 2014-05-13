@@ -183,7 +183,10 @@ class AclResourceService
 
         foreach ($resources as $res) {
 
-            $aclResources[$this->createNamespaceId($res, $resources)] = $res;
+            $resourceId = $res->getResourceId();
+            $aclResources[$resourceId] = array();
+            $aclResources[$resourceId]['resource'] = $res;
+            $aclResources[$resourceId]['resourceNs'] = $this->createNamespaceId($res, $resources);
         }
 
         return $aclResources;
