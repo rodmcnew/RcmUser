@@ -1,8 +1,8 @@
 <?php
 /**
- * AdminApiAclRulesByRolesController.php
+ * AdminApiAclRuleController.php
  *
- * AdminApiAclRulesByRolesController
+ * AdminApiAclRuleController
  *
  * PHP version 5
  *
@@ -17,14 +17,12 @@
 
 namespace RcmUser\Controller;
 
-use Zend\Http\Response;
 use Zend\View\Model\JsonModel;
 
-
 /**
- * Class AdminApiAclRulesByRolesController
+ * Class AdminApiAclRuleController
  *
- * AdminApiAclRulesByRolesController
+ * AdminApiAclRuleController
  *
  * PHP version 5
  *
@@ -36,36 +34,41 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminApiAclRulesByRolesController extends AbstractAdminApiController
+
+class AdminApiAclRuleController extends AbstractAdminApiController
 {
 
     /**
-     * getList
+     * get
      *
-     * @return mixed|\Zend\Stdlib\ResponseInterface|JsonModel
+     * @param mixed $id
+     *
+     * @return mixed|JsonModel
      */
-    public function getList()
+    public function get($id)
     {
         // ACCESS CHECK
         if (!$this->isAllowed('rcmuser-acl-administration')) {
             return $this->getNotAllowedResponse();
         }
 
-        $aclDataService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\AclDataService'
-        );
+        return new JsonModel(array('get'.$id));
+    }
 
-        $result = $aclDataService->fetchRulesByRoles();
-
-        if (!$result->isSuccess()) {
-
-            $response = $this->getResponse();
-            $response->setStatusCode(Response::STATUS_CODE_500);
-            $response->setContent(json_encode($result));
-
-            return $response;
+    /**
+     * delete
+     *
+     * @param mixed $id
+     *
+     * @return mixed|JsonModel
+     */
+    public function delete($id)
+    {
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-acl-administration')) {
+            return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel($result->getData());
+        return new JsonModel(array('delete ID: '.urldecode($id)));
     }
 } 

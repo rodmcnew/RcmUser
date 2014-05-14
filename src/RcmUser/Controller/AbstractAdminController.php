@@ -1,8 +1,8 @@
 <?php
-/**
- * AdminCssController.php
+ /**
+ * AbstractAdminController.php
  *
- * AdminCssController
+ * LongDescHere
  *
  * PHP version 5
  *
@@ -17,14 +17,13 @@
 
 namespace RcmUser\Controller;
 
-use Zend\Http\Response;
-use Zend\View\Model\ViewModel;
+use Zend\Mvc\Controller\AbstractActionController;
 
 
 /**
- * Class AdminCssController
+ * Class AbstractAdminController
  *
- * AdminCssController
+ * LongDescHere
  *
  * PHP version 5
  *
@@ -36,28 +35,32 @@ use Zend\View\Model\ViewModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminCssController extends AbstractAdminController
-{
+
+class AbstractAdminController extends AbstractActionController {
+
     /**
-     * adminAclApp
+     * isAllowed
      *
-     * @return void
+     * @param string $resource resource
+     *
+     * @return mixed
      */
-    public function indexAction()
+    public function isAllowed($resource = 'rcmuser')
     {
-        $viewModel = new ViewModel();
+        return $this->rcmUserIsAllowed($resource);
+    }
 
-        $viewModel->setTemplate('css/styles.css');
-        $viewModel->setTerminal(true);
-
+    /**
+     * getNotAllowedResponse
+     *
+     * @return mixed
+     */
+    public function getNotAllowedResponse()
+    {
         $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_200);
-        $response->getHeaders()->addHeaders(
-            array(
-                'Content-Type' => 'text/css'
-            )
-        );
+        $response->setStatusCode(Response::STATUS_CODE_401);
+        $response->setContent($response->renderStatusLine());
 
-        return $viewModel;
+        return $response;
     }
 } 

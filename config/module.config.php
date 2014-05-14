@@ -445,6 +445,7 @@ return array(
             'RcmUser\Controller\AdminApiAclRulesByRolesController' => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
             'RcmUser\Controller\AdminJsController' => 'RcmUser\Controller\AdminJsController',
             'RcmUser\Controller\AdminCssController' => 'RcmUser\Controller\AdminCssController',
+            'RcmUser\Controller\AdminApiAclRuleController' => 'RcmUser\Controller\AdminApiAclRuleController',
         ),
     ),
 
@@ -522,6 +523,18 @@ return array(
                     ),
                     'defaults' => array(
                         'controller' => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclRule' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-acl-rule[/:id]',
+                    //'constraints' => array(
+                        //'id' => '[a-zA-Z0-9_-]+',
+                    //),
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminApiAclRuleController',
                     ),
                 ),
             ),

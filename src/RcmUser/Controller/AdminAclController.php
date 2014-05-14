@@ -17,10 +17,8 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Result;
 use RcmUser\User\Entity\User;
 use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 
@@ -39,7 +37,7 @@ use Zend\View\Model\ViewModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminAclController extends AbstractActionController
+class AdminAclController extends AbstractAdminController
 {
     /**
      * indexAction
@@ -75,20 +73,16 @@ class AdminAclController extends AbstractActionController
 
         //$rcmUserService->createUser($user);
         $rcmUserService->clearIdentity();
-        //$rcmUserService->authenticate($user);
+        $rcmUserService->authenticate($user);
         //$rcmUserService->clearIdentity();
         //var_dump($rcmUserService->getIdentity());
         //var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
         echo "</pre>";
         /* - TEST ------------------------ */
 
-        if (!$this->rcmUserIsAllowed('rcmuser-acl-administration')) {
-
-            $response = $this->getResponse();
-            $response->setStatusCode(Response::STATUS_CODE_401);
-            $response->setContent($response->renderStatusLine());
-
-            return $response;
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-acl-administration')) {
+            return $this->getNotAllowedResponse();
         }
 
         $viewArr = array();
@@ -97,7 +91,7 @@ class AdminAclController extends AbstractActionController
             'RcmUser\Acl\Service\AclResourceService'
         );
 
-        $resources = $aclResourceService->getNamespacedResources('.',true);
+        $resources = $aclResourceService->getNamespacedResources('.', true);
 
         //var_dump($this->getRulesByRoles()->getData());
         //var_dump($this->getResources());

@@ -33,24 +33,28 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
         <div class="container-fluid admin-acl">
 
             <script type="text/ng-template" id="removeRule.html">
-                <div class="rcmuser admin-acl">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Are you sure you want to delete: </h3>
-                    </div>
-                    <div class="modal-body admin-acl-resource-section">
-                        <div>
-                            <span class="rule">{{ruleData.rule}}</span>
+                <div class="rcmuser">
+                    <div class="admin-acl">
+                        <div class="modal-header">
+                            <h3 class="modal-title">Are you sure you want to delete: </h3>
                         </div>
-                        <div>Access to
-                            <span class="resource-name" tooltip-placement="right" tooltip-append-to-body="true" tooltip-title="{{resourceData.resource.resourceId}}" tooltip-html-unsafe="{{resourceData.resource.description}}<br/><br/>Resource: {{resourceData.resource.resourceId}}<br/>NameSpace: {{resourceData.resourceNs}}">{{resourceData.resource.name}}</span>
+                        <div class="modal-body">
+
+                                <div>
+                                    <span class="rule">{{ruleData.rule}}</span>
+                                </div>
+                                <div>Access to
+                                    <span class="resource-name" tooltip-placement="right" tooltip-append-to-body="true" tooltip-title="{{resourceData.resource.resourceId}}" tooltip-html-unsafe="{{resourceData.resource.description}}<br/><br/>Resource: {{resourceData.resource.resourceId}}<br/>NameSpace: {{resourceData.resourceNs}}">{{resourceData.resource.name}}</span>
+                                </div>
+                                <div>For privilege
+                                    <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span>
+                                </div>
+
                         </div>
-                        <div>For privilege
-                            <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary btn-xs" ng-click="removeRule()">Remove</button>
+                            <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary btn-xs" ng-click="removeRule()">Remove</button>
-                        <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
                     </div>
                 </div>
             </script>

@@ -2,17 +2,17 @@
 
 angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
 
-    .controller('rcmuserAdminAclRoles', ['$scope', '$modal', function ($scope, $modal) {
+    .controller('rcmuserAdminAclRoles', ['$scope', '$modal', '$http', function ($scope, $modal, $http) {
 
         var self = this;
 
         $scope.oneAtATime = true;
+        $scope.alerts = [];
+
         $scope.resources = JSON.parse('<?php echo json_encode($resources); ?>');
         var resourceCount = $scope.resources.length
 
         $scope.roles = JSON.parse('<?php echo json_encode($roles); ?>');
-
-        $scope.selectedRuleData = null;
 
         $scope.levelRepeat = function (s, n) {
             var a = [];
@@ -33,7 +33,9 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
                     $scope.resourceData = resourceData;
 
                     $scope.removeRule = function () {
-                        removeRuleModal.close($scope.ruleData);
+
+                        removeRule($scope.ruleData);
+                        removeRuleModal.close();
                     };
 
                     $scope.cancel = function () {
@@ -49,66 +51,40 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
             });
         }
 
+        ///
+        var addRule = function (ruleData) {
 
-
-
-
-        /////////
-        $scope.onRemoveRuleAction = function ($ruleData) {
-
-            // pop dialog
+            $http.put(
+                "<?php echo $this->url('RcmUserAdminApiAclRule', array()); ?>",
+                ruleData
+            );
         }
 
-        $scope.removeRule = function () {
+        var removeRule = function (ruleData, onSuccess, onFail) {
+
+            console.log('removeRule: '+JSON.stringify(ruleData));
+
+            $http.delete(
+                    "<?php echo $this->url('RcmUserAdminApiAclRule', array()); ?>/"+JSON.stringify(ruleData)
+                )
+                .success(
+                function (data, status) {
+                    console.log('Success: '+status+" "+data);
+                }
+            )
+                .error(
+                function (data, status) {
+                    console.log('Error: '+status+" "+data);
+                }
+            )
+        }
+
+        var addRole = function () {
 
         }
 
-        $scope.onAddRuleAction = function ($ruleData) {
-
-            // pop dialog
-        }
-
-
-        $scope.addRule = function ($ruleData) {
+        var removeRole = function () {
 
         }
 
-    }])
-
-    .directive('removeRuleModel', ['$scope', function ($scope) {
-
-        return {
-            restrict: 'A',
-            //template : '',
-            templateUrl: 'resources/module.tpl',
-            link: function (scope, element, attrs, ngModel) {
-
-                console.log("bizResourcesInclude");
-                scope.resourcesDataAlerts = new Alerts(scope);
-                scope.resourcesDataAlerts.displayTime = 0;
-                scope.error = false;
-
-                resourcesDataService.onExecuteStart = function () {
-
-                    scope.resourcesDataAlerts.clearAll();
-                    scope.error = false;
-                };
-
-                resourcesDataService.onSuccess = function () {
-
-                    scope.resourcesDataAlerts.clearAll();
-                    scope.error = false;
-                };
-
-                resourcesDataService.onFail = function (exception) {
-
-                    console.log('resourcesDataService.onFail');
-                    scope.resourcesDataAlerts.thrwNew(exception, 'error');
-                    scope.error = true;
-                };
-
-                scope.resourcesDataService = resourcesDataService;
-            }
-        };
-    }
-    ]);
+    }]);
