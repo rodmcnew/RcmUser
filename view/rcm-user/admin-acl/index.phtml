@@ -77,6 +77,10 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                             </div>
                         </div>
 
+                        <div ng-hide="roleData.rules.length">
+                            <span class="no-rules">No rules created, no access granted.</span>
+                        </div>
+
                         <div class="container-fluid admin-acl-resource-footer">
                             <div class="row">
                                 <div class="col-md-2">
