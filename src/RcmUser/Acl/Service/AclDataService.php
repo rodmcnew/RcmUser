@@ -20,6 +20,7 @@ namespace RcmUser\Acl\Service;
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Config\Config;
+use RcmUser\Result;
 
 
 /**
@@ -203,15 +204,18 @@ class AclDataService
 
     public function fetchRulesByRoles()
     {
-        $result = $this->getRoles();
+        $result = $this->fetchAllRoles();
+
         if(!$result->isSuccess()){
 
             return $result;
         }
 
         $rules = array();
-        foreach($result->getData() as $roleId => $role){
 
+        foreach($result->getData() as $key => $role){
+
+            $roleId = $role->getRoleId();
             $rules[$roleId] = array();
             $rules[$roleId]['role'] = $role;
             $rulesResult = $this->fetchRulesByRole($roleId);

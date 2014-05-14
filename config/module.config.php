@@ -551,5 +551,25 @@ return array(
         ),
     ),
 
-
+    /*
+     * Allows doctrine to generate tables as needed
+     * Not required unless using doctrine entities
+     */
+    'doctrine' => array(
+        'driver' => array(
+            'RcmUser' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/RcmUser/Acl/Entity',
+                    __DIR__ . '/../src/RcmUser/User/Entity',
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'RcmUser' => 'RcmUser'
+                )
+            )
+        )
+    ),
 );

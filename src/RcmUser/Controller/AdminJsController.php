@@ -19,6 +19,7 @@ namespace RcmUser\Controller;
 
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 
 /**
@@ -45,9 +46,32 @@ class AdminJsController extends AbstractActionController
      */
     public function indexAction()
     {
-        $js = file_get_contents(
-            __DIR__ . '/../../../view/js/rcmuser.admin.acl.app.js'
+        if (!$this->rcmUserIsAllowed('rcmuser-acl-administration')) {
+
+            $response = $this->getResponse();
+            $response->setStatusCode(Response::STATUS_CODE_401);
+            $response->setContent($response->renderStatusLine());
+
+            return $response;
+        }
+
+        $aclResourceService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\Service\AclResourceService'
         );
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        $resources = $aclResourceService->getNamespacedResources('.', true);
+
+        $roles = $aclDataService->fetchRulesByRoles();
+
+        $viewModel = new ViewModel(array(
+            'resources' => $resources,
+            'roles' => $roles->getData(),
+        ));
+        $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
+        $viewModel->setTerminal(true);
 
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
@@ -56,7 +80,7 @@ class AdminJsController extends AbstractActionController
                 'Content-Type' => 'application/javascript'
             )
         );
-        $response->setContent($js);
-        return $response;
+
+        return $viewModel;
     }
 } 

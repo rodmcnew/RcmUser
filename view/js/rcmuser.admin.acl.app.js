@@ -1,45 +1,114 @@
 'use strict';
 
-var rcmuserAdminAclApp = angular.module('rcmuserAdminAclApp', ['ui.bootstrap']);
-var rcmuserAdminAclRoles = function ($scope) {
+angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
 
-    $scope.oneAtATime = true;
+    .controller('rcmuserAdminAclRoles', ['$scope', '$modal', function ($scope, $modal) {
 
-    $scope.levelRepeat = function (s, n) {
-        var a = [];
-        while (a.length < n) {
-            a.push(s);
+        var self = this;
+
+        $scope.oneAtATime = true;
+        $scope.resources = JSON.parse('<?php echo json_encode($resources); ?>');
+        var resourceCount = $scope.resources.length
+
+        $scope.roles = JSON.parse('<?php echo json_encode($roles); ?>');
+
+        $scope.selectedRuleData = null;
+
+        $scope.levelRepeat = function (s, n) {
+            var a = [];
+            while (a.length < n) {
+                a.push(s);
+            }
+            return a.join('');
+        };
+
+        $scope.openRemove = function (size, ruleData, resourceData) {
+
+            var removeRuleModal = $modal.open({
+
+                templateUrl: 'removeRule.html',
+                controller: function ($scope, $modalInstance) {
+
+                    $scope.ruleData = ruleData;
+                    $scope.resourceData = resourceData;
+
+                    $scope.removeRule = function () {
+                        removeRuleModal.close($scope.ruleData);
+                    };
+
+                    $scope.cancel = function () {
+                        removeRuleModal.dismiss('cancel');
+                    };
+                },
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
         }
-        return a.join('');
+
+
+
+
+
+        /////////
+        $scope.onRemoveRuleAction = function ($ruleData) {
+
+            // pop dialog
+        }
+
+        $scope.removeRule = function () {
+
+        }
+
+        $scope.onAddRuleAction = function ($ruleData) {
+
+            // pop dialog
+        }
+
+
+        $scope.addRule = function ($ruleData) {
+
+        }
+
+    }])
+
+    .directive('removeRuleModel', ['$scope', function ($scope) {
+
+        return {
+            restrict: 'A',
+            //template : '',
+            templateUrl: 'resources/module.tpl',
+            link: function (scope, element, attrs, ngModel) {
+
+                console.log("bizResourcesInclude");
+                scope.resourcesDataAlerts = new Alerts(scope);
+                scope.resourcesDataAlerts.displayTime = 0;
+                scope.error = false;
+
+                resourcesDataService.onExecuteStart = function () {
+
+                    scope.resourcesDataAlerts.clearAll();
+                    scope.error = false;
+                };
+
+                resourcesDataService.onSuccess = function () {
+
+                    scope.resourcesDataAlerts.clearAll();
+                    scope.error = false;
+                };
+
+                resourcesDataService.onFail = function (exception) {
+
+                    console.log('resourcesDataService.onFail');
+                    scope.resourcesDataAlerts.thrwNew(exception, 'error');
+                    scope.error = true;
+                };
+
+                scope.resourcesDataService = resourcesDataService;
+            }
+        };
     }
-
-    $scope.roles = {"guest":{"role":{"roleId":"guest","description":null,"parentRoleId":null},"rules":[]},"user":{"role":{"roleId":"user","description":null,"parentRoleId":"guest"},"rules":[]},"manager":{"role":{"roleId":"manager","description":null,"parentRoleId":"user"},"rules":[{"rule":"allow","roleid":"manager","resource":"rcmuser-acl-administration","privilege":""}]},"admin":{"role":{"roleId":"admin","description":null,"parentRoleId":"manager"},"rules":[{"rule":"allow","roleid":"admin","resource":"root","privilege":""}]},"customer":{"role":{"roleId":"customer","description":"RCM","parentRoleId":"user"},"rules":[]}};
-
-};
-
-function AccordionDemoCtrl($scope) {
-    $scope.oneAtATime = true;
-
-    $scope.groups = [
-        {
-            title: 'Dynamic Group Header - 1',
-            content: 'Dynamic Group Body - 1'
-        },
-        {
-            title: 'Dynamic Group Header - 2',
-            content: 'Dynamic Group Body - 2'
-        }
-    ];
-
-    $scope.items = ['Item 1', 'Item 2', 'Item 3'];
-
-    $scope.addItem = function () {
-        var newItemNo = $scope.items.length + 1;
-        $scope.items.push('Item ' + newItemNo);
-    };
-
-    $scope.status = {
-        isFirstOpen: true,
-        isFirstDisabled: false
-    };
-}
+    ]);
