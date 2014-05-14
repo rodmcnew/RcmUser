@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * AdminApiAclResourcesController.php
  *
  * LongDescHere
@@ -18,6 +18,7 @@
 namespace RcmUser\Controller;
 
 use RcmUser\Result;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
@@ -37,10 +38,30 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
+class AdminApiAclResourcesController extends AbstractRestfulController
+{
 
-class AdminApiAclResourcesController extends AbstractRestfulController {
+    /**
+     * getList
+     *
+     * @return mixed|JsonModel
+     */
+    public function getList()
+    {
 
-    public function getList(){
+        if (!$this->rcmUserIsAllowed('rcmuser-acl-administration')) {
+
+            $response = $this->getResponse();
+            $response->setStatusCode(Response::STATUS_CODE_401);
+            $result = new Result(
+                null,
+                Result::CODE_FAIL,
+                $response->renderStatusLine()
+            );
+            $response->setContent(json_encode($result));
+
+            return $response;
+        }
 
         $aclResourceService = $this->getServiceLocator()->get(
             'RcmUser\Acl\Service\AclResourceService'

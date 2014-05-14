@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * AdminApiAclRulesByRolesController.php
  *
  * AdminApiAclRulesByRolesController
@@ -18,6 +18,7 @@
 namespace RcmUser\Controller;
 
 use RcmUser\Result;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 
@@ -37,38 +38,45 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
+class AdminApiAclRulesByRolesController extends AbstractRestfulController
+{
 
-class AdminApiAclRulesByRolesController extends AbstractRestfulController {
+    /**
+     * getList
+     *
+     * @return mixed|\Zend\Stdlib\ResponseInterface|JsonModel
+     */
+    public function getList()
+    {
+        if (!$this->rcmUserIsAllowed('rcmuser-acl-administration')) {
 
-    public function getList(){
+            $response = $this->getResponse();
+            $response->setStatusCode(Response::STATUS_CODE_401);
+            $result = new Result(
+                null,
+                Result::CODE_FAIL,
+                $response->renderStatusLine()
+            );
+            $response->setContent(json_encode($result));
+
+            return $response;
+        }
 
         $aclDataService = $this->getServiceLocator()->get(
             'RcmUser\Acl\AclDataService'
         );
 
-        $result = $aclDataService->fetchAllRoles();
+        $result = $aclDataService->fetchRulesByRoles();
 
-        $response = array();
+        if (!$result->isSuccess()) {
 
-        if($result->isSuccess()){
+            $response = $this->getResponse();
+            $response->setStatusCode(Response::STATUS_CODE_500);
+            $response->setContent(json_encode($result));
 
-            $roles = $result->getData();
-            foreach($roles as $key => $role){
-
-                $roleId = $role->getRoleId();
-                $response[$roleId] = array();
-                $response[$roleId]['role'] = $role;
-                $result = $aclDataService->fetchRulesByRole($role->getRoleId());
-                if($result->isSuccess()){
-
-                    $response[$roleId]['rules'] = $result->getData();
-                } else {
-
-                    $response[$roleId]['rules'] = array();
-                }
-            }
+            return $response;
         }
 
-        return new JsonModel($response);
+        return new JsonModel($result->getData());
     }
 } 

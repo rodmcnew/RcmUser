@@ -1,23 +1,19 @@
-.rcmuser a.nostyle {
-    color: #000;
-    text-decoration: none;
+/* + bootstrap */
+.tooltip-inner {
+    max-width: 400px;
+    text-align: left;
 }
 
-.rcmuser a.nostyle:hover {
-    color: #000;
-    text-decoration: none;
+.rcmuser .alert .glyphicon {
+    font-size: 1.5em;
+    padding-right: 1em;
 }
+/* - bootstrap */
 
-.rcmuser a.nostyle:visited {
-    color: #000;
-    text-decoration: none;
-}
-
-.rcmuser a.nostyle:link {
-    color: #000;
-    text-decoration: none;
-}
-
+.rcmuser a.nostyle,
+.rcmuser a.nostyle:hover,
+.rcmuser a.nostyle:visited,
+.rcmuser a.nostyle:link ,
 .rcmuser a.nostyle:active {
     color: #000;
     text-decoration: none;
@@ -44,11 +40,6 @@
     font-size: 1em;
     font-weight: bold;
     text-transform: capitalize;
-}
-
-.tooltip-inner {
-    max-width: 400px;
-    text-align: left;
 }
 
 .rcmuser .admin-acl .panel-title a,

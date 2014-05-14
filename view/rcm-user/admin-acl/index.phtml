@@ -29,7 +29,31 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 ?>
 <div ng-app="rcmuserAdminAclApp">
     <div class="rcmuser" ng-controller="rcmuserAdminAclRoles">
+
         <div class="container-fluid admin-acl">
+
+            <script type="text/ng-template" id="removeRule.html">
+                <div class="rcmuser admin-acl">
+                    <div class="modal-header">
+                        <h3 class="modal-title">Are you sure you want to delete: </h3>
+                    </div>
+                    <div class="modal-body admin-acl-resource-section">
+                        <div>
+                            <span class="rule">{{ruleData.rule}}</span>
+                        </div>
+                        <div>Access to
+                            <span class="resource-name" tooltip-placement="right" tooltip-append-to-body="true" tooltip-title="{{resourceData.resource.resourceId}}" tooltip-html-unsafe="{{resourceData.resource.description}}<br/><br/>Resource: {{resourceData.resource.resourceId}}<br/>NameSpace: {{resourceData.resourceNs}}">{{resourceData.resource.name}}</span>
+                        </div>
+                        <div>For privilege
+                            <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn-primary btn-xs" ng-click="removeRule()">Remove</button>
+                        <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+                    </div>
+                </div>
+            </script>
 
             <div class="container-fluid">
                 <h1>Access
@@ -43,13 +67,13 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                 <accordion close-others="oneAtATime">
 
                     <!-- + ROLE -->
-                    <accordion-group is-open="isopen.roleId" heading="{{role.roleId}}" ng-repeat="roleData in roles">
+                    <accordion-group is-open="isopen" heading="{{role.roleId}}" ng-repeat="roleData in roles">
 
 
                         <accordion-heading>
                             <div class="accordion-heading">
                                 <span class="title" tooltip-placement="right" tooltip="This is a user role.">{{roleData.role.roleId}}</span>
-                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen.roleId, 'glyphicon-chevron-right': !isopen.roleId}"></i>
+                                <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
                             </div>
                         </accordion-heading>
 
@@ -58,19 +82,21 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 
                             <div class="container-fluid">
                                 <div class="row">
-                                    <div class="col-md-10">
+                                    <div class="col-sm-10">
                                         <div>
                                             <span class="rule">{{ruleData.rule}}</span>
                                         </div>
                                         <div>Access to
                                             <span class="resource-name" tooltip-placement="right" tooltip-append-to-body="true" tooltip-title="{{resources[ruleData.resource].resource.resourceId}}" tooltip-html-unsafe="{{resources[ruleData.resource].resource.description}}<br/><br/>Resource: {{resources[ruleData.resource].resource.resourceId}}<br/>NameSpace: {{resources[ruleData.resource].resourceNs}}">{{resources[ruleData.resource].resource.name}}</span>
                                         </div>
-                                        <div>For privilege <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span></div>
+                                        <div>For privilege
+                                            <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span>
+                                        </div>
                                     </div>
 
-                                    <div class="col-md-2">
-                                        <button type="button" class="btn btn-warning btn-xs">
-                                            <i class="glyphicon glyphicon glyphicon-minus"></i> remove
+                                    <div class="col-sm-2">
+                                        <button type="button" class="btn btn-warning btn-xs" ng-click="openRemove('sm', ruleData, resources[ruleData.resource])">
+                                            <i class="glyphicon glyphicon-minus"></i> remove
                                         </button>
                                     </div>
                                 </div>
@@ -78,17 +104,19 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                         </div>
 
                         <div ng-hide="roleData.rules.length">
-                            <span class="no-rules">No rules created, no access granted.</span>
+                            <div class="alert alert-warning">
+                                <i class="glyphicon glyphicon-warning-sign"></i><span class="no-rules">No rules created, no access granted.</span>
+                            </div>
                         </div>
 
                         <div class="container-fluid admin-acl-resource-footer">
                             <div class="row">
-                                <div class="col-md-2">
+                                <div class="col-sm-2">
                                     <button type="button" class="btn btn-primary btn-xs">
-                                        <i class="glyphicon glyphicon glyphicon-plus"></i> add
+                                        <i class="glyphicon glyphicon-plus"></i> add
                                     </button>
                                 </div>
-                                <div class="col-md-10">
+                                <div class="col-sm-10">
                                 </div>
                             </div>
                         </div>

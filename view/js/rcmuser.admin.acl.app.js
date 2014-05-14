@@ -1,68 +1,114 @@
 'use strict';
 
-var rcmuserAdminAclApp = angular.module('rcmuserAdminAclApp', ['ui.bootstrap']);
-var rcmuserAdminAclRoles = function ($scope) {
+angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
 
-    $scope.oneAtATime = true;
+    .controller('rcmuserAdminAclRoles', ['$scope', '$modal', function ($scope, $modal) {
 
-    $scope.levelRepeat = function (s, n) {
-        var a = [];
-        while (a.length < n) {
-            a.push(s);
-        }
-        return a.join('');
-    }
+        var self = this;
 
-    $scope.resources = {"root":{"resource":{"resourceId":"root","parentResourceId":null,"privileges":["read","update","create","delete","execute"],"name":"root","description":"This is the lowest level resource.  Access to this will allow access to all resources."},"resourceNs":"root"},"rcmuser":{"resource":{"resourceId":"rcmuser","parentResourceId":"root","privileges":[],"name":"RCM User","description":"All RCM user access."},"resourceNs":"root.rcmuser"},"rcmuser-user-administration":{"resource":{"resourceId":"rcmuser-user-administration","parentResourceId":"rcmuser","privileges":["read","write"],"name":"User Administration","description":"Allows the editing of user data."},"resourceNs":"root.rcmuser.rcmuser-user-administration"},"rcmuser-acl-administration":{"resource":{"resourceId":"rcmuser-acl-administration","parentResourceId":"rcmuser","privileges":[],"name":"Role and Access Administration","description":"Allows the editing of user roles data."},"resourceNs":"root.rcmuser.rcmuser-acl-administration"}}
+        $scope.oneAtATime = true;
+        $scope.resources = JSON.parse('<?php echo json_encode($resources); ?>');
+        var resourceCount = $scope.resources.length
 
-    var resourceCount = $scope.resources.length;
-    $scope.roles = {"guest":{"role":{"roleId":"guest","description":null,"parentRoleId":null},"rules":[]},"user":{"role":{"roleId":"user","description":null,"parentRoleId":"guest"},"rules":[]},"manager":{"role":{"roleId":"manager","description":null,"parentRoleId":"user"},"rules":[{"rule":"allow","roleid":"manager","resource":"rcmuser-acl-administration","privilege":""}]},"admin":{"role":{"roleId":"admin","description":null,"parentRoleId":"manager"},"rules":[{"rule":"allow","roleid":"admin","resource":"root","privilege":""}]},"customer":{"role":{"roleId":"customer","description":"RCM","parentRoleId":"user"},"rules":[]}};
+        $scope.roles = JSON.parse('<?php echo json_encode($roles); ?>');
 
-    $scope.getResourceNs = function(resourceId){
+        $scope.selectedRuleData = null;
 
-        console.log(resourceId);
-
-        var result = 'NOPE';
-
-        angular.forEach($scope.resources, function(resource, key) {
-
-            console.log(resource + ' ' + key);
-
-            if ($scope.resources[key].resourceId == resourceId) {
-
-                console.log('FOUND: ' + key);
-                result = key;
-                return key;
+        $scope.levelRepeat = function (s, n) {
+            var a = [];
+            while (a.length < n) {
+                a.push(s);
             }
-        });
+            return a.join('');
+        };
 
-        return result;
-    }
-};
+        $scope.openRemove = function (size, ruleData, resourceData) {
 
-function AccordionDemoCtrl($scope) {
-    $scope.oneAtATime = true;
+            var removeRuleModal = $modal.open({
 
-    $scope.groups = [
-        {
-            title: 'Dynamic Group Header - 1',
-            content: 'Dynamic Group Body - 1'
-        },
-        {
-            title: 'Dynamic Group Header - 2',
-            content: 'Dynamic Group Body - 2'
+                templateUrl: 'removeRule.html',
+                controller: function ($scope, $modalInstance) {
+
+                    $scope.ruleData = ruleData;
+                    $scope.resourceData = resourceData;
+
+                    $scope.removeRule = function () {
+                        removeRuleModal.close($scope.ruleData);
+                    };
+
+                    $scope.cancel = function () {
+                        removeRuleModal.dismiss('cancel');
+                    };
+                },
+                size: size,
+                resolve: {
+                    items: function () {
+                        return $scope.items;
+                    }
+                }
+            });
         }
-    ];
 
-    $scope.items = ['Item 1', 'Item 2', 'Item 3'];
 
-    $scope.addItem = function () {
-        var newItemNo = $scope.items.length + 1;
-        $scope.items.push('Item ' + newItemNo);
-    };
 
-    $scope.status = {
-        isFirstOpen: true,
-        isFirstDisabled: false
-    };
-}
+
+
+        /////////
+        $scope.onRemoveRuleAction = function ($ruleData) {
+
+            // pop dialog
+        }
+
+        $scope.removeRule = function () {
+
+        }
+
+        $scope.onAddRuleAction = function ($ruleData) {
+
+            // pop dialog
+        }
+
+
+        $scope.addRule = function ($ruleData) {
+
+        }
+
+    }])
+
+    .directive('removeRuleModel', ['$scope', function ($scope) {
+
+        return {
+            restrict: 'A',
+            //template : '',
+            templateUrl: 'resources/module.tpl',
+            link: function (scope, element, attrs, ngModel) {
+
+                console.log("bizResourcesInclude");
+                scope.resourcesDataAlerts = new Alerts(scope);
+                scope.resourcesDataAlerts.displayTime = 0;
+                scope.error = false;
+
+                resourcesDataService.onExecuteStart = function () {
+
+                    scope.resourcesDataAlerts.clearAll();
+                    scope.error = false;
+                };
+
+                resourcesDataService.onSuccess = function () {
+
+                    scope.resourcesDataAlerts.clearAll();
+                    scope.error = false;
+                };
+
+                resourcesDataService.onFail = function (exception) {
+
+                    console.log('resourcesDataService.onFail');
+                    scope.resourcesDataAlerts.thrwNew(exception, 'error');
+                    scope.error = true;
+                };
+
+                scope.resourcesDataService = resourcesDataService;
+            }
+        };
+    }
+    ]);
