@@ -14,15 +14,43 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
 
         $scope.roles = JSON.parse('<?php echo json_encode($roles); ?>');
 
-        $scope.levelRepeat = function (s, n) {
+        $scope.superAdminRole = '<?php echo $superAdminRole; ?>';
+
+        $scope.levelRepeat = function (repeatStr, namespace) {
+            var n = (namespace.split(".").length - 1);
             var a = [];
             while (a.length < n) {
-                a.push(s);
+                a.push(repeatStr);
             }
             return a.join('');
         };
 
-        $scope.openRemove = function (size, ruleData, resourceData) {
+        $scope.openAddRule = function (size, roleData, resources) {
+
+            var addRuleModal = $modal.open({
+
+                templateUrl: 'addRule.html',
+                controller: function ($scope, $modalInstance) {
+
+                    $scope.roleData = roleData;
+                    $scope.resources = resources;
+                    $scope.ruleData = {'test': 'test'}
+
+                    $scope.addRule = function () {
+
+                        addRule($scope.ruleData);
+                        addRuleModal.close();
+                    };
+
+                    $scope.cancel = function () {
+                        addRuleModal.dismiss('cancel');
+                    };
+                },
+                size: size
+            });
+        }
+
+        $scope.openRemoveRule = function (size, ruleData, resourceData) {
 
             var removeRuleModal = $modal.open({
 
@@ -51,12 +79,46 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
             });
         }
 
+        $scope.openAddRole = function (size, resources) {
+
+            var addRuleModal = $modal.open({
+
+                templateUrl: 'addRole.html',
+                controller: function ($scope, $modalInstance) {
+
+                    $scope.roleData = {'tet': 'tetet'};
+                    $scope.resources = resources;
+
+                    $scope.addRole = function () {
+
+                        addRole($scope.roleData);
+                        addRuleModal.close();
+                    };
+
+                    $scope.cancel = function () {
+                        addRuleModal.dismiss('cancel');
+                    };
+                },
+                size: size
+            });
+        }
+
         ///
         var addRule = function (ruleData) {
 
-            $http.put(
+            $http.post(
                 "<?php echo $this->url('RcmUserAdminApiAclRule', array()); ?>",
                 ruleData
+            )
+                .success(
+                function (data, status) {
+                    console.log('Success: '+status+" "+data);
+                }
+            )
+                .error(
+                function (data, status) {
+                    console.log('Error: '+status+" "+data);
+                }
             );
         }
 
@@ -76,11 +138,12 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
                 function (data, status) {
                     console.log('Error: '+status+" "+data);
                 }
-            )
-        }
+            );
+        };
 
-        var addRole = function () {
+        var addRole = function (roleData) {
 
+            console.log('addRole: '+JSON.stringify(roleData));
         }
 
         var removeRole = function () {

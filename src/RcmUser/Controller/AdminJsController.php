@@ -57,13 +57,16 @@ class AdminJsController extends AbstractAdminController
             'RcmUser\Acl\AclDataService'
         );
 
-        $resources = $aclResourceService->getNamespacedResources('.', true);
+        $resources = $aclResourceService->getResourcesWithNamespaced('.', true);
 
-        $roles = $aclDataService->fetchRulesByRoles();
+        $roles = $aclDataService->getRulesByRoles();
+
+        $superAdminRole = $aclDataService->getSuperAdminRole();
 
         $viewModel = new ViewModel(array(
             'resources' => $resources,
-            'roles' => $roles->getData(),
+            'roles' => $roles,
+            'superAdminRole' => $superAdminRole,
         ));
         $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
         $viewModel->setTerminal(true);

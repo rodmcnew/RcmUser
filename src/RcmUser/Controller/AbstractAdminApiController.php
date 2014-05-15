@@ -41,13 +41,14 @@ class AbstractAdminApiController extends AbstractRestfulController
     /**
      * isAllowed
      *
-     * @param string $resource resource
+     * @param string $resource
+     * @param string $privilege
      *
      * @return mixed
      */
-    public function isAllowed($resource = 'rcmuser')
+    public function isAllowed($resource = 'rcmuser', $privilege = null)
     {
-        return $this->rcmUserIsAllowed($resource);
+        return $this->rcmUserIsAllowed($resource, $privilege);
     }
 
     /**

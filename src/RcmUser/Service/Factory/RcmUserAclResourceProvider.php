@@ -58,6 +58,7 @@ class RcmUserAclResourceProvider implements FactoryInterface
         $rcmResources['rcmuser']->setName('RCM User');
         $rcmResources['rcmuser']->setDescription('All RCM user access.');
 
+        //
         $rcmResources['rcmuser-user-administration']
             = new AclResource(
             'rcmuser-user-administration',
@@ -67,6 +68,7 @@ class RcmUserAclResourceProvider implements FactoryInterface
         $rcmResources['rcmuser-user-administration']->setName('User Administration');
         $rcmResources['rcmuser-user-administration']->setDescription('Allows the editing of user data.');
 
+        //
         $rcmResources['rcmuser-acl-administration']
             = new AclResource(
             'rcmuser-acl-administration',

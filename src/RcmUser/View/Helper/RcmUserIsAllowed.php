@@ -39,18 +39,25 @@ class RcmUserIsAllowed extends AbstractHelper
 {
 
     /**
-     * @var \RcmUser\Acl\Service\UserAuthorizeService
+     * @var UserAuthorizeService $userAuthorizeService
      */
     protected $userAuthorizeService;
 
     /**
+     * @var UserAuthenticationService $userAuthService
+     */
+    protected $userAuthService;
+
+    /**
      * __construct
      *
-     * @param UserAuthorizeService $userAuthorizeService userAuthorizeService
+     * @param UserAuthorizeService      $userAuthorizeService userAuthorizeService
+     * @param UserAuthenticationService $userAuthService      userAuthService
      */
-    public function __construct(UserAuthorizeService $userAuthorizeService)
+    public function __construct(UserAuthorizeService $userAuthorizeService, UserAuthenticationService $userAuthService)
     {
         $this->userAuthorizeService = $userAuthorizeService;
+        $this->userAuthService = $userAuthService;
     }
 
     /**
@@ -58,12 +65,13 @@ class RcmUserIsAllowed extends AbstractHelper
      *
      * @param string $resource  resource
      * @param string $privilege privilege
-     * @param User   $user      user
      *
      * @return bool
      */
-    public function __invoke($resource, $privilege = null, $user = null)
+    public function __invoke($resource, $privilege = null)
     {
+        $user = $this->userAuthService->getIdentity();
+
         return $this->userAuthorizeService->isAllowed($resource, $privilege, $user);
     }
 }

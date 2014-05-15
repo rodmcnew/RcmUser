@@ -19,6 +19,7 @@ namespace RcmUser\Acl\Service;
 
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Db\AclRuleDataMapperInterface;
+use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Config\Config;
 use RcmUser\Result;
 
@@ -165,6 +166,11 @@ class AclDataService
         return $this->config->get('DefaultAuthenticatedRoleIdentities', array());
     }
 
+    /**
+     * getSuperAdminRole
+     *
+     * @return string|null
+     */
     public function getSuperAdminRole()
     {
         return $this->config->get('SuperAdminRole', null);
@@ -180,6 +186,88 @@ class AclDataService
         return $this->aclRoleDataMapper->fetchAll();
     }
 
+    /**
+     * getResourcesWithNamespaced
+     *
+     * @param string $nsChar  nsChar
+     * @param bool   $refresh $refresh
+     *
+     * @return array
+     */
+    public function getRolesWithNamespaced($nsChar = '.', $refresh = false)
+    {
+        $aclRoles = array();
+        $roles = $this->getNamespacedRoles($nsChar, $refresh);
+
+        foreach ($roles as $ns => $role) {
+
+            $id = $role->getRoleId();
+            $aclRoles[$id] = array();
+            $aclRoles[$id]['role'] = $role;
+            $aclRoles[$id]['roleNs'] = $ns;
+        }
+
+        return $aclRoles;
+    }
+
+    /**
+     * getNamespacedRoles
+     *
+     * @param string $nsChar
+     *
+     * @return array
+     */
+    public function getNamespacedRoles($nsChar = '.')
+    {
+        $aclRoles = array();
+        $result = $this->fetchAllRoles();
+
+        if(!$result->isSuccess()){
+
+            return array();
+        }
+
+        $roles = $result->getData();
+
+        foreach ($roles as $role) {
+
+            $ns = $this->createRoleNamespaceId(
+                $role,
+                $roles,
+                $nsChar
+            );
+
+            $aclRoles[$ns] = $role;
+        }
+
+        ksort($aclRoles);
+
+        return $aclRoles;
+    }
+
+    /**
+     * createRoleNamespaceId
+     *
+     * @param AclRole $aclRole
+     * @param         $aclRoles
+     * @param string  $nsChar
+     *
+     * @return string
+     */
+    public function createRoleNamespaceId(AclRole $aclRole, $aclRoles, $nsChar = '.')
+    {
+        $parentId = $aclRole->getParentRoleId();
+        $ns = $aclRole->getRoleId();
+        if (!empty($parentId)) {
+
+            $parent = $aclRoles[$parentId];
+
+            $ns = $this->createRoleNamespaceId($parent, $aclRoles, $nsChar) . $nsChar . $ns;
+        }
+
+        return $ns;
+    }
+
     /* RULES ******************** */
 
     /**
@@ -192,43 +280,59 @@ class AclDataService
         return $this->aclRuleDataMapper->fetchAll();
     }
 
+    /**
+     * fetchRulesByResource
+     *
+     * @param $resource
+     *
+     * @return mixed
+     */
     public function fetchRulesByResource($resource)
     {
         return $this->aclRuleDataMapper->fetchByResource($resource);
     }
 
+    /**
+     * fetchRulesByRole
+     *
+     * @param $roleId
+     *
+     * @return \RcmUser\Acl\Db\Result
+     */
     public function fetchRulesByRole($roleId)
     {
         return $this->aclRuleDataMapper->fetchByRole($roleId);
     }
 
-    public function fetchRulesByRoles()
+    /**
+     * getRulesByRoles
+     *
+     * @param string $nsChar
+     *
+     * @return array
+     */
+    public function getRulesByRoles($nsChar = '.')
     {
-        $result = $this->fetchAllRoles();
+        $aclRoles = array();
+        $roles = $this->getNamespacedRoles($nsChar);
 
-        if(!$result->isSuccess()){
+        foreach ($roles as $ns => $role) {
 
-            return $result;
-        }
-
-        $rules = array();
-
-        foreach($result->getData() as $key => $role){
-
-            $roleId = $role->getRoleId();
-            $rules[$roleId] = array();
-            $rules[$roleId]['role'] = $role;
-            $rulesResult = $this->fetchRulesByRole($roleId);
+            $id = $role->getRoleId();
+            $aclRoles[$ns] = array();
+            $aclRoles[$ns]['role'] = $role;
+            $aclRoles[$ns]['roleNs'] = $ns;
+            $rulesResult = $this->fetchRulesByRole($id);
             if($rulesResult->isSuccess()){
 
-                $rules[$roleId]['rules'] = $rulesResult->getData();
+                $aclRoles[$ns]['rules'] = $rulesResult->getData();
             } else {
 
-                $rules[$roleId]['rules'] = array();
+                $aclRoles[$ns]['rules'] = array();
             }
         }
 
-        return new Result($rules);
+        return $aclRoles;
     }
 
 } 

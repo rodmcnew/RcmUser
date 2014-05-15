@@ -56,6 +56,23 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     }
 
     /**
+     * create
+     *
+     * @param mixed $data
+     *
+     * @return mixed|JsonModel
+     */
+    public function create($data)
+    {
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-acl-administration')) {
+            return $this->getNotAllowedResponse();
+        }
+
+        return new JsonModel(array('post', json_encode($data)));
+    }
+
+    /**
      * delete
      *
      * @param mixed $id

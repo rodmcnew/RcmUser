@@ -54,17 +54,23 @@ class AdminAclController extends AbstractAdminController
         $aclResourceService = $this->getServiceLocator()->get(
             'RcmUser\Acl\Service\AclResourceService'
         );
-        $userAuthorizeService = $rcmUserService->getUserAuthorizeService();
+        /**
+         * @var \RcmUser\Acl\Service\AuthorizeService $userAuthorizeService
+         */
+        //$userAuthorizeService = $rcmUserService->getUserAuthorizeService();
 
-        $aclResourceService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\Service\AclResourceService'
-        );
-        $bauthorize = $userAuthorizeService->getAuthorize();
-        $acl = $bauthorize->getAcl();
+        //var_dump($userAuthorizeService->getRules());
+        //$acl = $userAuthorizeService->getAcl();
         //var_dump($acl->getResources());
         //var_dump($acl->getRoles());
         //var_dump($acl->getRoleRegistry());
         //var_dump($acl->getRules());
+
+        //$bauthorize = $userAuthorizeService->getAuthorize();
+        //var_dump($bauthorize->getIdentity());
+        //$acl = $bauthorize->getAcl();
+
+
 
         $user = new User();
         $user->setUsername('adminTest');
@@ -86,15 +92,6 @@ class AdminAclController extends AbstractAdminController
         }
 
         $viewArr = array();
-
-        $aclResourceService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\Service\AclResourceService'
-        );
-
-        $resources = $aclResourceService->getNamespacedResources('.', true);
-
-        //var_dump($this->getRulesByRoles()->getData());
-        //var_dump($this->getResources());
 
         return $this->buildView($viewArr);
     }

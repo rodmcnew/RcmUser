@@ -40,7 +40,7 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
 
     /**
      * default resources  - rcm user needs these,
-     * however descriptions can be added on construct in the factory
+     * however descriptions added on construct in the factory
      *
      * @var array
      */
@@ -81,7 +81,6 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
      */
     public function getAll()
     {
-
         return $this->rcmResources;
     }
 
@@ -93,7 +92,6 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
      */
     public function getAvailableAtRuntime()
     {
-
         return $this->getAll();
     }
 } 

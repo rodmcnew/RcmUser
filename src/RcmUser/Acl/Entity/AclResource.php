@@ -38,10 +38,16 @@ use Zend\Permissions\Acl\Resource\GenericResource;
  */
 class AclResource extends GenericResource implements \JsonSerializable
 {
+
     /**
      * @var string
      */
     protected $parentResourceId = null;
+
+    /**
+     * @var string
+     */
+    protected $parentResource = null;
 
     /**
      * @var array
@@ -68,7 +74,7 @@ class AclResource extends GenericResource implements \JsonSerializable
         $parentResourceId = null,
         $privileges = array()
     ) {
-        parent::__construct($resourceId);
+        $this->setResourceId($resourceId);
         $this->setParentResourceId($parentResourceId);
         $this->setPrivileges($privileges);
     }
@@ -79,21 +85,33 @@ class AclResource extends GenericResource implements \JsonSerializable
      * @param string $resourceId resourceId
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function setResourceId($resourceId)
     {
+        if(!$this->isValidResourceId($resourceId)){
+
+            throw new RcmUserException("Resource resourceId ({$resourceId}) is invalid.");
+        }
+
         $this->resourceId = $resourceId;
     }
 
     /**
      * setParentResourceId
      *
-     * @param $parentResourceId
+     * @param string $parentResourceId parentResourceId
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function setParentResourceId($parentResourceId)
     {
+        if(!$this->isValidResourceId($parentResourceId)){
+
+            throw new RcmUserException("Resource parentResourceId ({$parentResourceId}) is invalid.");
+        }
+
         $this->parentResourceId = $parentResourceId;
     }
 
@@ -106,6 +124,35 @@ class AclResource extends GenericResource implements \JsonSerializable
     {
         return $this->parentResourceId;
     }
+
+    /**
+     * setParentResource
+     *
+     * @param AclResource $parentResource
+     *
+     * @return void
+     */
+    public function setParentResource(AclResource $parentResource)
+    {
+        $this->parentResource = $parentResource;
+    }
+
+    /**
+     * getParentResource
+     *
+     * @return string|AclResource
+     */
+    public function getParentResource()
+    {
+        if(empty($this->parentResource)){
+
+            return $this->getParentResourceId();
+        }
+
+        return $this->parentResource;
+    }
+
+
 
     /**
      * setPrivileges
@@ -177,6 +224,29 @@ class AclResource extends GenericResource implements \JsonSerializable
         return $this->description;
     }
 
+    /**
+     * isValidResourceId
+     *
+     * @param $resourceId resourceId
+     * @return bool
+     */
+    public function isValidResourceId($resourceId)
+    {
+        if (preg_match('/[^a-z_\-0-9]/i', $resourceId)){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * populate
+     *
+     * @param array $data
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
     public function populate($data = array())
     {
         if (($data instanceof AclResource)) {

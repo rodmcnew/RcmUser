@@ -30,7 +30,7 @@ use RcmUser\User\Service\UserPropertyService;
 /**
  * Class RcmUserService
  *
- * RcmUserService
+ * RcmUserService facade
  *
  * PHP version 5
  *
@@ -443,12 +443,29 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @param string|AclResource $resource  resource
      * @param null               $privilege privilege
-     * @param null               $user      user
      *
      * @return bool
      */
-    public function isAllowed($resource, $privilege = null, $user = null)
+    public function isAllowed($resource, $privilege = null)
     {
+
+        $user = $this->getIdentity();
+
+        return $this->isUserAllowed($resource, $privilege, $user);
+
+    }
+
+    /**
+     * isUserAllowed
+     *
+     * @param string|AclResource $resource
+     * @param null               $privilege
+     * @param User               $user
+     *
+     * @return mixed
+     */
+    public function isUserAllowed($resource, $privilege = null, $user){
+
         return $this->getUserAuthorizeService()->isAllowed(
             $resource,
             $privilege,

@@ -341,7 +341,7 @@ return array(
              * Exposes the ACL isAllowed method
              */
             'RcmUser\Acl\Service\UserAuthorizeService' =>
-                'RcmUser\Acl\Service\Factory\UserAuthorizeService',
+                'RcmUser\Acl\Service\Factory\AuthorizeService',
             /*
              * AclRoleDataMapper
              * Required for:
