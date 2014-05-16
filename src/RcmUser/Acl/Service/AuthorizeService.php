@@ -42,7 +42,7 @@ use Zend\Permissions\Acl\Acl;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AuthorizeService extends UserAuthorizeService
+class AuthorizeService
 {
     /**
      * @var string RESOURCE_DELIMITER

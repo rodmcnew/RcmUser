@@ -16,7 +16,7 @@
  */
 namespace RcmUser\Controller\Plugin;
 
-use RcmUser\Acl\Service\UserAuthorizeService;
+use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
@@ -40,9 +40,9 @@ class RcmUserIsAllowed extends AbstractPlugin
 {
 
     /**
-     * @var UserAuthorizeService $userAuthorizeService
+     * @var AuthorizeService $authorizeService
      */
-    protected $userAuthorizeService;
+    protected $authorizeService;
 
     /**
      * @var UserAuthenticationService $userAuthService
@@ -52,12 +52,12 @@ class RcmUserIsAllowed extends AbstractPlugin
     /**
      * __construct
      *
-     * @param UserAuthorizeService      $userAuthorizeService userAuthorizeService
-     * @param UserAuthenticationService $userAuthService      userAuthService
+     * @param AuthorizeService          $authorizeService authorizeService
+     * @param UserAuthenticationService $userAuthService  userAuthService
      */
-    public function __construct(UserAuthorizeService $userAuthorizeService, UserAuthenticationService $userAuthService)
+    public function __construct(AuthorizeService $authorizeService, UserAuthenticationService $userAuthService)
     {
-        $this->userAuthorizeService = $userAuthorizeService;
+        $this->authorizeService = $authorizeService;
         $this->userAuthService = $userAuthService;
     }
 
@@ -66,7 +66,6 @@ class RcmUserIsAllowed extends AbstractPlugin
      *
      * @param string $resource  resource
      * @param string $privilege privilege
-     * @param User   $user      user
      *
      * @return bool
      */
@@ -74,6 +73,6 @@ class RcmUserIsAllowed extends AbstractPlugin
     {
         $user = $this->userAuthService->getIdentity();
 
-        return $this->userAuthorizeService->isAllowed($resource, $privilege, $user);
+        return $this->authorizeService->isAllowed($resource, $privilege, $user);
     }
 }

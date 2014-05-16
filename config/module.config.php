@@ -42,9 +42,9 @@ return array(
             /*
              * InputFilter
              * Used in:
-             *  RcmUser\User\Data\UserValidator
+             *  RcmUser\User\Db\UserDataMapper
              *
-             * If validator is used, this input filter will be applied
+             * This input filter will be applied
              * to the User object on create and save.
              */
             'InputFilter' => array(
@@ -193,7 +193,7 @@ return array(
             /*
              * UserRolesDataMapper
              * Required for (ACL user property):
-             *  RcmUser\Acl\Service\Factory\EventListeners
+             *  RcmUser\User\Event\UserRoleDataServiceListeners
              *
              * This is a DataMapper adapter that is used
              * to abstract the data storage method.
@@ -228,7 +228,7 @@ return array(
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
             /*
-             * UserDataPreparer (requires Encryptor)
+             * UserDataPreparer
              * Required for:
              *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
@@ -254,7 +254,7 @@ return array(
 
             /*
              * UserRoleDataServiceListeners
-             * Required for (User Property populating):
+             * Required for (User Acl Property populating):
              */
             'RcmUser\User\UserRoleDataServiceListeners' =>
                 'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
@@ -332,7 +332,7 @@ return array(
                 'RcmUser\Acl\Service\Factory\AclResourceService',
 
             /*
-             * UserAuthorizeService (ACL)
+             * AuthorizeService (ACL)
              * Used by:
              *  RcmUserService
              *  ControllerPluginRcmUserIsAllowed
@@ -340,7 +340,7 @@ return array(
              *
              * Exposes the ACL isAllowed method
              */
-            'RcmUser\Acl\Service\UserAuthorizeService' =>
+            'RcmUser\Acl\Service\AuthorizeService' =>
                 'RcmUser\Acl\Service\Factory\AuthorizeService',
             /*
              * AclRoleDataMapper
@@ -372,22 +372,6 @@ return array(
             'RcmUser\Acl\AclDataService' =>
                 'RcmUser\Acl\Service\Factory\AclDataService',
 
-            /*
-             * BJY-Authorize providers
-             * - This module depends on bjyauthorize for ACL logic
-             * Required for BjyAuthorize:
-             *
-             * This module builds the required providers for bjyauthorize
-             */
-            'RcmUser\Acl\Provider\BjyIdentityProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
-            'RcmUser\Acl\Provider\BjyRoleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRoleProvider',
-            'RcmUser\Acl\Provider\BjyRuleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRuleProvider',
-            'RcmUser\Acl\Provider\BjyResourceProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyResourceProvider',
-
             /* ************************************** */
             /* CORE ********************************* */
             /* ************************************** */
@@ -397,7 +381,7 @@ return array(
              *  UserDataService
              *  UserPropertyService
              *  UserAuthenticationService
-             *  UserAuthorizeService
+             *  AuthorizeService
              */
             'RcmUser\Service\RcmUserService' =>
                 'RcmUser\Service\Factory\RcmUserService',
@@ -418,10 +402,33 @@ return array(
     ),
 
     /*
+     * Allows doctrine to generate tables as needed
+     * Only required if using doctrine entities and mappers
+     * And you want doctrine utilities to work correctly
+     */
+    'doctrine' => array(
+        'driver' => array(
+            'RcmUser' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/RcmUser/Acl/Entity',
+                    __DIR__ . '/../src/RcmUser/User/Entity',
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'RcmUser' => 'RcmUser'
+                )
+            )
+        )
+    ),
+
+    /*
+     * @deprecated
      * bjyauthorize configuration
      *
      * This module inject providers to bjyauthorize
-     */
     'bjyauthorize' => array(
         'default_role' => 'guest',
         'authenticated_role' => 'user',
@@ -436,6 +443,25 @@ return array(
             'RcmUser\Acl\Provider\BjyRuleProvider' => array(),
         ),
     ),
+
+            /*
+             * @deprecated
+             * BJY-Authorize providers
+             * - This module depends on bjyauthorize for ACL logic
+             * Required for BjyAuthorize:
+             *
+             * This module builds the required providers for bjyauthorize
+
+            'RcmUser\Acl\Provider\BjyIdentityProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
+            'RcmUser\Acl\Provider\BjyRoleProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyRoleProvider',
+            'RcmUser\Acl\Provider\BjyRuleProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyRuleProvider',
+            'RcmUser\Acl\Provider\BjyResourceProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyResourceProvider',
+            *
+    */
 
     'controllers' => array(
         'invokables' => array(
@@ -531,7 +557,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/api/rcmuser-acl-rule[/:id]',
                     //'constraints' => array(
-                        //'id' => '[a-zA-Z0-9_-]+',
+                    //'id' => '[a-zA-Z0-9_-]+',
                     //),
                     'defaults' => array(
                         'controller' => 'RcmUser\Controller\AdminApiAclRuleController',
@@ -562,27 +588,5 @@ return array(
             'rcmUserIsAllowed' =>
                 'RcmUser\Service\Factory\ViewHelperRcmUserIsAllowed',
         ),
-    ),
-
-    /*
-     * Allows doctrine to generate tables as needed
-     * Not required unless using doctrine entities
-     */
-    'doctrine' => array(
-        'driver' => array(
-            'RcmUser' => array(
-                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                'cache' => 'array',
-                'paths' => array(
-                    __DIR__ . '/../src/RcmUser/Acl/Entity',
-                    __DIR__ . '/../src/RcmUser/User/Entity',
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
-                    'RcmUser' => 'RcmUser'
-                )
-            )
-        )
     ),
 );

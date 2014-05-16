@@ -55,18 +55,17 @@ class AdminAclController extends AbstractAdminController
             'RcmUser\Acl\Service\AclResourceService'
         );
         /**
-         * @var \RcmUser\Acl\Service\AuthorizeService $userAuthorizeService
+         * @var \RcmUser\Acl\Service\AuthorizeService $AuthorizeService
          */
-        //$userAuthorizeService = $rcmUserService->getUserAuthorizeService();
-
-        //var_dump($userAuthorizeService->getRules());
-        //$acl = $userAuthorizeService->getAcl();
+        //$rcmUserService->getUserAuthAuthorizeService()
+        //var_dump($userAuthorizAuthorizeService);
+        //$acl = $userAuthorizeSerAuthorizeService
         //var_dump($acl->getResources());
         //var_dump($acl->getRoles());
         //var_dump($acl->getRoleRegistry());
         //var_dump($acl->getRules());
 
-        //$bauthorize = $userAuthorizeService->getAuthorize();
+        //$bauthorize = $authorizeService->getAuthorize();
         //var_dump($bauthorize->getIdentity());
         //$acl = $bauthorize->getAcl();
 

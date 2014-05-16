@@ -1,6 +1,6 @@
 <?php
  /**
- * UserAuthorizeServiceTest.php
+ * AuthorizeServiceTest.php
  *
  * TEST
  *
@@ -17,40 +17,40 @@
 
 namespace RcmUser\Test\Acl\Service;
 
-use RcmUser\Acl\Service\UserAuthorizeService;
+use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 /**
- * Class UserAuthorizeServiceTest
+ * Class AuthorizeServiceTest
  *
  * TEST
  *
  * PHP version 5
  *
- * @covers \RcmUser\Acl\Service\UserAuthorizeService
+ * @covers \RcmUser\Acl\Service\AuthorizeService
  */
-class UserAuthorizeServiceTest extends Zf2TestCase {
+class AuthorizeServiceTest extends Zf2TestCase {
 
-    public $userAuthorizeService;
+    public $authorizeService;
     public $authorize;
 
-    public function getUserAuthorizeService()
+    public function getAuthorizeService()
     {
-        if(!isset($this->userAuthorizeService)){
+        if(!isset($this->authorizeService)){
 
-            $this->buildUserAuthorizeService();
+            $this->buildAuthorizeService();
         }
 
-        return $this->userAuthorizeService;
+        return $this->authorizeService;
     }
 
-    public function buildUserAuthorizeService()
+    public function buildAuthorizeService()
     {
         $this->authorize = $this->getMockBuilder(
-            '\BjyAuthorize\Service\Authorize'
+            'RcmUser\Acl\Service\AuthorizeService'
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -58,8 +58,8 @@ class UserAuthorizeServiceTest extends Zf2TestCase {
             ->method('isAllowed')
             ->will($this->returnValue(true));
 
-        $this->userAuthorizeService = new UserAuthorizeService();
-        $this->userAuthorizeService->setAuthorize($this->authorize);
+        $this->authorizeService = new AuthorizeService();
+        $this->authorizeService->setAuthorize($this->authorize);
     }
 
     public function testIsAllowed()
@@ -67,7 +67,7 @@ class UserAuthorizeServiceTest extends Zf2TestCase {
         // @todo This will be addressed on small refactor
         $resource = "some.resource";
 
-        $result = $this->getUserAuthorizeService()->isAllowed($resource);
+        $result = $this->getAuthorizeService()->isAllowed($resource);
 
         $this->assertTrue($result, 'True not returned.');
     }
@@ -76,7 +76,7 @@ class UserAuthorizeServiceTest extends Zf2TestCase {
     {
         $resource = "some.resource";
 
-        $result = $this->getUserAuthorizeService()->parseResource($resource);
+        $result = $this->getAuthorizeService()->parseResource($resource);
 
         $this->assertContains('some', $result, 'Resource string not parsed correctly');
     }

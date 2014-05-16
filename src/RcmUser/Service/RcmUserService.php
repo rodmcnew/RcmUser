@@ -17,7 +17,7 @@
 
 namespace RcmUser\Service;
 
-use RcmUser\Acl\Service\UserAuthorizeService;
+use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
@@ -62,9 +62,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /*
      * ACL
-     * @var UserAuthorizeService
+     * @var AuthorizeService
      */
-    protected $userAuthorizeService;
+    protected $authorizeService;
 
     /**
      * setUserDataService
@@ -133,26 +133,26 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * setUserAuthorizeService: ACL Service
+     * setAuthorizeService: ACL Service
      *
-     * @param UserAuthorizeService $userAuthorizeService userAuthorizeService
+     * @param AuthorizeService $authorizeService authorizeService
      *
      * @return void
      */
-    public function setUserAuthorizeService(
-        UserAuthorizeService $userAuthorizeService
+    public function setAuthorizeService(
+        AuthorizeService $authorizeService
     ) {
-        $this->userAuthorizeService = $userAuthorizeService;
+        $this->authorizeService = $authorizeService;
     }
 
     /**
-     * getUserAuthorizeService: ACL service
+     * getAuthorizeService: ACL service
      *
      * @return mixed
      */
-    public function getUserAuthorizeService()
+    public function getAuthorizeService()
     {
-        return $this->userAuthorizeService;
+        return $this->authorizeService;
     }
 
     /** HELPERS ***************************************/
@@ -466,7 +466,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function isUserAllowed($resource, $privilege = null, $user){
 
-        return $this->getUserAuthorizeService()->isAllowed(
+        return $this->getAuthorizeService()->isAllowed(
             $resource,
             $privilege,
             $user

@@ -17,7 +17,7 @@
 
 namespace RcmUser\View\Helper;
 
-use RcmUser\Acl\Service\UserAuthorizeService;
+use RcmUser\Acl\Service\AuthorizeService;
 use Zend\View\Helper\AbstractHelper;
 
 /**
@@ -39,9 +39,9 @@ class RcmUserIsAllowed extends AbstractHelper
 {
 
     /**
-     * @var UserAuthorizeService $userAuthorizeService
+     * @var AuthorizeService
      */
-    protected $userAuthorizeService;
+    protected $authorizeService;
 
     /**
      * @var UserAuthenticationService $userAuthService
@@ -51,12 +51,12 @@ class RcmUserIsAllowed extends AbstractHelper
     /**
      * __construct
      *
-     * @param UserAuthorizeService      $userAuthorizeService userAuthorizeService
+     * @param AuthorizeService          $authorizeService authorizeService
      * @param UserAuthenticationService $userAuthService      userAuthService
      */
-    public function __construct(UserAuthorizeService $userAuthorizeService, UserAuthenticationService $userAuthService)
+    public function __construct(AuthorizeService $authorizeService, UserAuthenticationService $userAuthService)
     {
-        $this->userAuthorizeService = $userAuthorizeService;
+        $this->authorizeService = $authorizeService;
         $this->userAuthService = $userAuthService;
     }
 
@@ -72,6 +72,6 @@ class RcmUserIsAllowed extends AbstractHelper
     {
         $user = $this->userAuthService->getIdentity();
 
-        return $this->userAuthorizeService->isAllowed($resource, $privilege, $user);
+        return $this->authorizeService->isAllowed($resource, $privilege, $user);
     }
 }

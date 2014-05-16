@@ -40,7 +40,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
  * @ORM\Entity
  * @ORM\Table(name="rcm_user_acl_role")
  */
-class DoctrineAclRole extends BjyAclRole
+class DoctrineAclRole extends AclRole
 {
 
     /**

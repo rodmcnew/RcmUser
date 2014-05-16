@@ -49,14 +49,14 @@ class ViewHelperRcmUserIsAllowed implements FactoryInterface
     public function createService(ServiceLocatorInterface $mgr)
     {
         $serviceLocator = $mgr->getServiceLocator();
-        $userAuthorizeService = $serviceLocator->get(
-            'RcmUser\Acl\Service\UserAuthorizeService'
+        $authorizeService = $serviceLocator->get(
+            'RcmUser\Acl\Service\AuthorizeService'
         );
-        $userAuthervice = $serviceLocator->get(
+        $userAuthService = $serviceLocator->get(
             'RcmUser\Authentication\Service\UserAuthenticationService'
         );
 
-        $service = new RcmUserIsAllowed($userAuthorizeService, $userAuthervice);
+        $service = new RcmUserIsAllowed($authorizeService, $userAuthService);
 
         return $service;
     }

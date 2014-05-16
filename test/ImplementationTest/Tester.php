@@ -392,16 +392,15 @@ class Tester implements ServiceLocatorAwareInterface
 
         /* ACL VALUES */
         $tester->addMessage(
-            "ACL Roles (from BJY): " .
-            var_export($tester->bjyAuthService->getAcl()->getRoles(), true)
+            "ACL Roles: " .
+            var_export($tester->authorizeService->getAcl()->getRoles(), true)
         );
         $tester->addMessage(
-            "ACL Resources (from BJY): " .
-            var_export($tester->bjyAuthService->getAcl()->getResources(), true)
+            "ACL Resources: " .
+            var_export($tester->authorizeService->getAcl()->getResources(), true)
         );
 
-        /* ACL CHECK */
-        /* BJY Check *
+        /* ACL CHECK *
         $tester->addMessage(
             "ACL CHECK: viewHelper->isAllowed($resource, $privilege) = ".
             var_export($this->isAllowed($resource, $privilege))
@@ -464,9 +463,9 @@ class Tester implements ServiceLocatorAwareInterface
      */
     protected $rcmUserService;
     /**
-     * @var \BjyAuthorize\Service\Authorize
+     * @var \RcmUser\Acl\Service\AuthorizeService
      */
-    protected $bjyAuthService;
+    protected $authorizeService;
 
     /* ********************** */
     /**
@@ -487,8 +486,8 @@ class Tester implements ServiceLocatorAwareInterface
         $this->rcmUserService = $this->getServiceLocator()
             ->get('RcmUser\Service\RcmUserService');
 
-        $this->bjyAuthService = $this->getServiceLocator()
-            ->get('BjyAuthorize\Service\Authorize');
+        $this->authorizeService = $this->getServiceLocator()
+            ->get('RcmUser\Acl\Service\AuthorizeService');
     }
 
     /**

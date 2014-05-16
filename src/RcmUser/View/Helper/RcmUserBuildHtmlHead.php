@@ -17,8 +17,10 @@
 
 namespace RcmUser\View\Helper;
 
+use Zend\View\Helper\AbstractHelper;
 
- /**
+
+/**
  * Class RcmUserBuildHtmlHead
  *
  * LongDescHere

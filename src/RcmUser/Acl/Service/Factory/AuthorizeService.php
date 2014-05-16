@@ -44,7 +44,7 @@ class AuthorizeService implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return \RcmUser\Acl\Service\UserAuthorizeService
+     * @return \RcmUser\Acl\Service\AuthorizeService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
