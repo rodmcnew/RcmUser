@@ -42,7 +42,7 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
      * default resources  - rcm user needs these,
      * however descriptions added on construct in the factory
      *
-     * @var array
+     * @var array $rcmResources
      */
     protected $rcmResources
         = array(
@@ -53,7 +53,7 @@ class RcmUserAclResourceProvider implements ResourceProviderInterface
     /**
      * __construct
      *
-     * @param $rcmResources
+     * @param array $rcmResources rcmResources
      */
     public function __construct($rcmResources = null)
     {

@@ -66,7 +66,10 @@ class AclResourceService implements FactoryInterface
 
         $rootResource = new AclResource('root', null, $rootPrivileges);
         $rootResource->setName('Root');
-        $rootResource->setDescription('This is the lowest level resource.  Access to this will allow access to all resources.');
+        $rootResource->setDescription(
+            'This is the lowest level resource.  ' .
+            'Access to this will allow access to all resources.'
+        );
 
         $service = new \RcmUser\Acl\Service\AclResourceService($rootResource);
         $service->setResourceProviders($resourceProviders);

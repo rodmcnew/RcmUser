@@ -1,13 +1,13 @@
 <?php
 /**
- * ViewHelperRcmUserHtmlHeadFactory.php
+ * ViewHelperRcmUserIsAllowed
  *
- * ViewHelperRcmUserHtmlHeadFactory
+ * ViewHelperRcmUserIsAllowed
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\view
+ * @package   RcmUser\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
@@ -15,29 +15,29 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUser\view;
+namespace RcmUser\View\Service\Factory;
 
+
+use RcmUser\View\Helper\RcmUserIsAllowed;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-
 /**
- * Class ViewHelperRcmUserHtmlHeadFactory
+ * ViewHelperRcmUserIsAllowed
  *
- * ViewHelperRcmUserHtmlHeadFactory
+ * ViewHelperRcmUserIsAllowed
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\view
+ * @package   RcmUser\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
-class ViewHelperRcmUserHtmlHeadFactory implements FactoryInterface
+class ViewHelperRcmUserIsAllowed implements FactoryInterface
 {
     /**
      * createService
@@ -47,14 +47,17 @@ class ViewHelperRcmUserHtmlHeadFactory implements FactoryInterface
      * @return mixed|RcmUserIsAllowed
      */
     public function createService(ServiceLocatorInterface $mgr)
-{
-    $serviceLocator = $mgr->getServiceLocator();
-    $rcmHtmlHeadService = $serviceLocator->get(
-        'RcmUser\View\Service\RcmHtmlHeadService'
-    );
+    {
+        $serviceLocator = $mgr->getServiceLocator();
+        $authorizeService = $serviceLocator->get(
+            'RcmUser\Acl\Service\AuthorizeService'
+        );
+        $userAuthService = $serviceLocator->get(
+            'RcmUser\Authentication\Service\UserAuthenticationService'
+        );
 
-    $service = new RcmUserBuildHtmlHead($rcmHtmlHeadService);
+        $service = new RcmUserIsAllowed($authorizeService, $userAuthService);
 
-    return $service;
-}
+        return $service;
+    }
 }

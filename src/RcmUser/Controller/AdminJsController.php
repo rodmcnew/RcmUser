@@ -63,11 +63,13 @@ class AdminJsController extends AbstractAdminController
 
         $superAdminRole = $aclDataService->getSuperAdminRole();
 
-        $viewModel = new ViewModel(array(
-            'resources' => $resources,
-            'roles' => $roles,
-            'superAdminRole' => $superAdminRole,
-        ));
+        $viewModel = new ViewModel(
+            array(
+                'resources' => $resources,
+                'roles' => $roles,
+                'superAdminRole' => $superAdminRole,
+            )
+        );
         $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
         $viewModel->setTerminal(true);
 

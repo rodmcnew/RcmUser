@@ -77,7 +77,7 @@ class AuthorizeService
     /**
      * setAclResourceService
      *
-     * @param $aclResourceService
+     * @param AclResourceService $aclResourceService aclResourceService
      *
      * @return void
      */
@@ -99,12 +99,13 @@ class AuthorizeService
     /**
      * setAclRoleDataMapper
      *
-     * @param AclRoleDataMapperInterface $aclRoleDataMapper
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
      *
      * @return void
      */
-    public function setAclRoleDataMapper(AclRoleDataMapperInterface $aclRoleDataMapper)
-    {
+    public function setAclRoleDataMapper(
+        AclRoleDataMapperInterface $aclRoleDataMapper
+    ) {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
@@ -121,12 +122,13 @@ class AuthorizeService
     /**
      * setAclRuleDataMapper
      *
-     * @param AclRuleDataMapperInterface $aclRuleDataMapper
+     * @param AclRuleDataMapperInterface $aclRuleDataMapper aclRuleDataMapper
      *
      * @return void
      */
-    public function setAclRuleDataMapper(AclRuleDataMapperInterface $aclRuleDataMapper)
-    {
+    public function setAclRuleDataMapper(
+        AclRuleDataMapperInterface $aclRuleDataMapper
+    ) {
         $this->aclRuleDataMapper = $aclRuleDataMapper;
     }
 
@@ -143,7 +145,7 @@ class AuthorizeService
     /**
      * setSuperAdminRole
      *
-     * @param $superAdminRole
+     * @param string $superAdminRole superAdminRole
      *
      * @return void
      */
@@ -320,7 +322,7 @@ class AuthorizeService
      */
     public function isAllowed($resource, $privilege = null, $user = null)
     {
-        if(!($user instanceof User)){
+        if (!($user instanceof User)) {
 
             return false;
         }

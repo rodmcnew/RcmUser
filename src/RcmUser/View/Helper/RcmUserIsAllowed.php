@@ -52,10 +52,12 @@ class RcmUserIsAllowed extends AbstractHelper
      * __construct
      *
      * @param AuthorizeService          $authorizeService authorizeService
-     * @param UserAuthenticationService $userAuthService      userAuthService
+     * @param UserAuthenticationService $userAuthService  userAuthService
      */
-    public function __construct(AuthorizeService $authorizeService, UserAuthenticationService $userAuthService)
-    {
+    public function __construct(
+        AuthorizeService $authorizeService,
+        UserAuthenticationService $userAuthService
+    ) {
         $this->authorizeService = $authorizeService;
         $this->userAuthService = $userAuthService;
     }

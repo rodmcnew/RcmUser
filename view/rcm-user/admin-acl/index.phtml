@@ -1,27 +1,6 @@
 <?php
-/*
- * @todo This may be wrapped in a service so the application can determine dependencies
- *
- */
-$this->rcmIncludeAngularJs(
-    array(
-        'js' => array(
-            'angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js'
-        )
-    )
-);
 
-$this->rcmIncludeTwitterBootstrap(
-    array(
-        'css' => array(
-            'css/bootstrap-theme.css',
-            //'css/bootstrap-theme.css.map',
-        )
-    )
-);
-/*
- * END SERVICE
- */
+$this->rcmUserBuildHtmlHead();
 
 $this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
 $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
@@ -170,10 +149,9 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
         <!-- + ROLE -->
         <accordion-group is-open="isopen" heading="{{role.roleId}}" ng-repeat="roleData in roles">
 
-
             <accordion-heading>
                 <div class="accordion-heading">
-                    <span class="roleId" tooltip-placement="right" tooltip="This is a user role.">{{levelRepeat(' .',roleData.roleNs)}} {{roleData.role.roleId}}</span>
+                    <span class="roleId" tooltip-placement="right" tooltip="This is a user role.">{{levelRepeat('&#8901;&#8901;',roleData.roleNs)}} {{roleData.role.roleId}}</span>
                     <!--<span class="" ng-show="roleData.role.parentRoleId">(Parent: {{roleData.role.parentRoleId}})</span>-->
                     <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
                 </div>

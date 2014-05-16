@@ -139,7 +139,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
     /**
      * onSetIdentity
      *
-     * @param $e
+     * @param Event $e e
      *
      * @return void|Result
      */

@@ -248,7 +248,7 @@ class UserAuthenticationService extends EventProvider
     /**
      * setIdentity - used to refresh session user
      *
-     * @param User $identity
+     * @param User $identity identity
      *
      * @return void
      */
@@ -292,7 +292,15 @@ class UserAuthenticationService extends EventProvider
         return $this->prepareUser($user);
     }
 
-    public function prepareUser(User $user){
+    /**
+     * prepareUser
+     *
+     * @param User $user user
+     *
+     * @return User
+     */
+    public function prepareUser(User $user)
+    {
 
         if ($this->getObfuscatePassword()) {
 

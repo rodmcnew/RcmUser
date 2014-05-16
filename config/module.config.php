@@ -465,13 +465,20 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            'RcmUser\Controller\User' => 'RcmUser\Controller\UserController',
-            'RcmUser\Controller\AdminAclController' => 'RcmUser\Controller\AdminAclController',
-            'RcmUser\Controller\AdminApiAclResourcesController' => 'RcmUser\Controller\AdminApiAclResourcesController',
-            'RcmUser\Controller\AdminApiAclRulesByRolesController' => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
-            'RcmUser\Controller\AdminJsController' => 'RcmUser\Controller\AdminJsController',
-            'RcmUser\Controller\AdminCssController' => 'RcmUser\Controller\AdminCssController',
-            'RcmUser\Controller\AdminApiAclRuleController' => 'RcmUser\Controller\AdminApiAclRuleController',
+            'RcmUser\Controller\User' =>
+                'RcmUser\Controller\UserController',
+            'RcmUser\Controller\AdminAclController' =>
+                'RcmUser\Controller\AdminAclController',
+            'RcmUser\Controller\AdminApiAclResourcesController' =>
+                'RcmUser\Controller\AdminApiAclResourcesController',
+            'RcmUser\Controller\AdminApiAclRulesByRolesController' =>
+                'RcmUser\Controller\AdminApiAclRulesByRolesController',
+            'RcmUser\Controller\AdminJsController' =>
+                'RcmUser\Controller\AdminJsController',
+            'RcmUser\Controller\AdminCssController' =>
+                'RcmUser\Controller\AdminCssController',
+            'RcmUser\Controller\AdminApiAclRuleController' =>
+                'RcmUser\Controller\AdminApiAclRuleController',
         ),
     ),
 
@@ -536,7 +543,8 @@ return array(
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminApiAclResourcesController',
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclResourcesController',
                     ),
                 ),
             ),
@@ -548,7 +556,8 @@ return array(
                         'id' => '[0-9]+',
                     ),
                     'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclRulesByRolesController',
                     ),
                 ),
             ),
@@ -560,7 +569,8 @@ return array(
                     //'id' => '[a-zA-Z0-9_-]+',
                     //),
                     'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminApiAclRuleController',
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclRuleController',
                     ),
                 ),
             ),
@@ -586,7 +596,9 @@ return array(
     'view_helpers' => array(
         'factories' => array(
             'rcmUserIsAllowed' =>
-                'RcmUser\Service\Factory\ViewHelperRcmUserIsAllowed',
+                'RcmUser\View\Service\Factory\ViewHelperRcmUserIsAllowed',
+            'rcmUserBuildHtmlHead' =>
+                'RcmUser\View\Service\Factory\ViewHelperRcmUserBuildHtmlHead',
         ),
     ),
 );

@@ -115,8 +115,7 @@ class DoctrineUserRoleDataMapper
      */
     public function setAclRoleDataMapper(
         AclRoleDataMapperInterface $aclRoleDataMapper
-    )
-    {
+    ) {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
@@ -185,13 +184,13 @@ class DoctrineUserRoleDataMapper
         $userRoles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
         )->findBy(
-                array(
-                    'userId' => $userId,
-                    'roleId' => $aclRoleId,
-                )
-            );
+            array(
+                'userId' => $userId,
+                'roleId' => $aclRoleId,
+            )
+        );
 
-        foreach($userRoles as $userRole){
+        foreach ($userRoles as $userRole) {
 
             $this->getEntityManager()->remove($userRole);
         }
@@ -227,8 +226,9 @@ class DoctrineUserRoleDataMapper
 
         if ($currentRolesResult->isSuccess()) {
 
-            throw new RcmUserException('Roles already exist for user: '
-            . $user->getId());
+            throw new RcmUserException(
+                'Roles already exist for user: ' . $user->getId()
+            );
         }
 
         foreach ($userRoles as $key => $roleId) {
@@ -282,7 +282,6 @@ class DoctrineUserRoleDataMapper
             'SELECT userRole.roleId FROM ' . $this->getEntityClass() . ' userRole ' .
             'INDEX BY userRole.roleId ' .
             'WHERE userRole.userId = ?1'
-
         );
 
         $query->setParameter(1, $userId);

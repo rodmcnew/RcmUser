@@ -68,7 +68,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setRoleId($roleId)
     {
-        if(!$this->isValidRoleId($roleId)){
+        if (!$this->isValidRoleId($roleId)) {
 
             throw new RcmUserException("Role roleId ({$roleId}) is invalid.");
         }
@@ -96,9 +96,11 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setParentRoleId($parentRoleId)
     {
-        if(!$this->isValidRoleId($parentRoleId)){
+        if (!$this->isValidRoleId($parentRoleId)) {
 
-            throw new RcmUserException("Role parentRoleId ({$parentRoleId}) is invalid.");
+            throw new RcmUserException(
+                "Role parentRoleId ({$parentRoleId}) is invalid."
+            );
         }
 
         $this->parentRoleId = $parentRoleId;
@@ -143,7 +145,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function getParent()
     {
-        if(empty($this->parentRole)){
+        if (empty($this->parentRole)) {
 
             return $this->getParentRoleId();
         }
@@ -182,7 +184,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function isValidRoleId($roleId)
     {
-        if (preg_match('/[^a-z_\-0-9]/i', $roleId)){
+        if (preg_match('/[^a-z_\-0-9]/i', $roleId)) {
             return false;
         }
 

@@ -40,7 +40,7 @@ class AuthenticationService extends \Zend\Authentication\AuthenticationService
     /**
      * setIdentity - User to refresh existing session
      *
-     * @param User $identity
+     * @param User $identity identity
      *
      * @return mixed|null
      */

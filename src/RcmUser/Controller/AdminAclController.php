@@ -70,7 +70,6 @@ class AdminAclController extends AbstractAdminController
         //$acl = $bauthorize->getAcl();
 
 
-
         $user = new User();
         $user->setUsername('adminTest');
         $user->setPassword('123123123');
@@ -81,7 +80,11 @@ class AdminAclController extends AbstractAdminController
         $rcmUserService->authenticate($user);
         //$rcmUserService->clearIdentity();
         //var_dump($rcmUserService->getIdentity());
-        //var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
+        //
+        //var_dump(
+        //    "Has ACCESS: ",
+        //    $this->rcmUserIsAllowed('rcmuser-acl-administration')
+        //);
         echo "</pre>";
         /* - TEST ------------------------ */
 

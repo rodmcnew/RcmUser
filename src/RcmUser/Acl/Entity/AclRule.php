@@ -167,7 +167,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * setAssertion
      *
-     * @param AssertionInterface/string $assertion
+     * @param AssertionInterface/string $assertion assertion
      *
      * @return void
      */

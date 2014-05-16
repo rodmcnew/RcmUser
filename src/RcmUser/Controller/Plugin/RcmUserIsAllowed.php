@@ -55,8 +55,10 @@ class RcmUserIsAllowed extends AbstractPlugin
      * @param AuthorizeService          $authorizeService authorizeService
      * @param UserAuthenticationService $userAuthService  userAuthService
      */
-    public function __construct(AuthorizeService $authorizeService, UserAuthenticationService $userAuthService)
-    {
+    public function __construct(
+        AuthorizeService $authorizeService,
+        UserAuthenticationService $userAuthService
+    ) {
         $this->authorizeService = $authorizeService;
         $this->userAuthService = $userAuthService;
     }

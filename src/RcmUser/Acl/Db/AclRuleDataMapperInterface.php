@@ -70,7 +70,7 @@ interface AclRuleDataMapperInterface
      *
      * @param string $resource resource
      *
-     * @return mixed
+     * @return Result
      */
     public function fetchByResource($resource);
 

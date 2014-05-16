@@ -48,7 +48,7 @@ class DoctrineAclRuleDataMapper
     protected $entityManager;
 
     /**
-     * @var
+     * @var string $entityClass
      */
     protected $entityClass;
 
@@ -132,7 +132,11 @@ class DoctrineAclRuleDataMapper
 
         if (empty($rules)) {
 
-            return new Result(null, Result::CODE_FAIL, 'Rules could not be found by role Id.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Rules could not be found by role Id.'
+            );
         }
 
         return new Result($rules);
@@ -141,7 +145,7 @@ class DoctrineAclRuleDataMapper
     /**
      * fetchByRule
      *
-     * @param AclRule|string $rule
+     * @param AclRule|string $rule rule
      *
      * @return Result|Result
      */
@@ -172,7 +176,11 @@ class DoctrineAclRuleDataMapper
 
         if (empty($rules)) {
 
-            return new Result(null, Result::CODE_FAIL, 'Rules could not be found by resource.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Rules could not be found by resource.'
+            );
         }
 
         return new Result($rules);

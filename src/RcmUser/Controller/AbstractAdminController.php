@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * AbstractAdminController.php
  *
  * LongDescHere
@@ -36,14 +36,14 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
-class AbstractAdminController extends AbstractActionController {
+class AbstractAdminController extends AbstractActionController
+{
 
     /**
      * isAllowed
      *
-     * @param string $resource
-     * @param string $privilege
+     * @param string $resource  resource
+     * @param string $privilege privilege
      *
      * @return mixed
      */

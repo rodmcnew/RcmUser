@@ -34,14 +34,13 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
 class AdminApiAclRuleController extends AbstractAdminApiController
 {
 
     /**
      * get
      *
-     * @param mixed $id
+     * @param string $id id
      *
      * @return mixed|JsonModel
      */
@@ -52,13 +51,13 @@ class AdminApiAclRuleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('get'.$id));
+        return new JsonModel(array('get' . $id));
     }
 
     /**
      * create
      *
-     * @param mixed $data
+     * @param mixed|AclRule $data data
      *
      * @return mixed|JsonModel
      */
@@ -75,7 +74,7 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     /**
      * delete
      *
-     * @param mixed $id
+     * @param string $id id
      *
      * @return mixed|JsonModel
      */
@@ -86,6 +85,6 @@ class AdminApiAclRuleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('delete ID: '.urldecode($id)));
+        return new JsonModel(array('delete ID: ' . urldecode($id)));
     }
 } 

@@ -208,7 +208,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         }
 
         // @todo make sure this is a valid check for all cases
-        if(!empty($user->getId())
+        if (!empty($user->getId())
             && $user->getId() === $sessUser->getId()
         ) {
 
@@ -395,9 +395,12 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
         $currentUser = $this->getIdentity();
 
-        if($user->getId() !== $currentUser->getId()){
+        if ($user->getId() !== $currentUser->getId()) {
 
-            throw new RcmUserException('SetIdentity expects user to be get same identity as current, user authenticate to change users.');
+            throw new RcmUserException(
+                'SetIdentity expects user to be get same identity as current, ' .
+                'user authenticate to change users.'
+            );
         }
 
         return $this->getUserAuthService()->setIdentity($user);
@@ -413,9 +416,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
         $user = $this->readUser($this->getIdentity());
 
-        if(empty($user->getId())){
+        if (empty($user->getId())) {
 
-            throw new RcmUserException('RefreshIdentity expects user to be get same identity as current.');
+            throw new RcmUserException(
+                'RefreshIdentity expects user to be get same identity as current.'
+            );
         }
 
         return $this->getUserAuthService()->setIdentity($user);
@@ -458,13 +463,18 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /**
      * isUserAllowed
      *
-     * @param string|AclResource $resource
-     * @param null               $privilege
-     * @param User               $user
+     * @param string|AclResource $resource  resource
+     * @param null               $privilege privilege
+     * @param User               $user      user
      *
      * @return mixed
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function isUserAllowed($resource, $privilege = null, $user){
+    public function isUserAllowed($resource, $privilege = null, $user = null)
+    {
+        if (!($user instanceof User)) {
+            throw new RcmUserException('Instance of User expected.');
+        }
 
         return $this->getAuthorizeService()->isAllowed(
             $resource,

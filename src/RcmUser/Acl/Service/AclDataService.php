@@ -42,7 +42,7 @@ use RcmUser\Result;
 class AclDataService
 {
     /**
-     * @var Config
+     * @var Config $config
      */
     protected $config;
 
@@ -59,7 +59,7 @@ class AclDataService
     /**
      * setConfig
      *
-     * @param Config $config
+     * @param Config $config config
      *
      * @return void
      */
@@ -81,14 +81,13 @@ class AclDataService
     /**
      * setAclRoleDataMapper
      *
-     * @param AclRoleDataMapperInterface $aclRoleDataMapper
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
      *
      * @return void
      */
     public function setAclRoleDataMapper(
         AclRoleDataMapperInterface $aclRoleDataMapper
-    )
-    {
+    ) {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
@@ -105,14 +104,13 @@ class AclDataService
     /**
      * setAclRuleDataMapper
      *
-     * @param AclRuleDataMapperInterface $aclRuleDataMapper
+     * @param AclRuleDataMapperInterface $aclRuleDataMapper aclRuleDataMapper
      *
      * @return void
      */
     public function setAclRuleDataMapper(
         AclRuleDataMapperInterface $aclRuleDataMapper
-    )
-    {
+    ) {
         $this->aclRuleDataMapper = $aclRuleDataMapper;
     }
 
@@ -128,11 +126,16 @@ class AclDataService
 
     /* ROLES ******************** */
 
+    /**
+     * getAclData
+     *
+     * @return \RcmUser\Acl\Db\Result
+     */
     public function getAclData()
     {
         $result = $this->fetchAllRoles();
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             return $result;
         }
@@ -140,6 +143,13 @@ class AclDataService
         $data = $result->getData();
     }
 
+    /**
+     * getRoleAclData
+     *
+     * @param string $roleId roleId
+     *
+     * @return void
+     */
     public function getRoleAclData($roleId)
     {
 
@@ -190,7 +200,7 @@ class AclDataService
      * getResourcesWithNamespaced
      *
      * @param string $nsChar  nsChar
-     * @param bool   $refresh $refresh
+     * @param bool   $refresh refresh
      *
      * @return array
      */
@@ -213,7 +223,7 @@ class AclDataService
     /**
      * getNamespacedRoles
      *
-     * @param string $nsChar
+     * @param string $nsChar nsChar
      *
      * @return array
      */
@@ -222,7 +232,7 @@ class AclDataService
         $aclRoles = array();
         $result = $this->fetchAllRoles();
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             return array();
         }
@@ -248,9 +258,9 @@ class AclDataService
     /**
      * createRoleNamespaceId
      *
-     * @param AclRole $aclRole
-     * @param         $aclRoles
-     * @param string  $nsChar
+     * @param AclRole $aclRole  aclRole
+     * @param array   $aclRoles aclRoles
+     * @param string  $nsChar   nsChar
      *
      * @return string
      */
@@ -262,7 +272,8 @@ class AclDataService
 
             $parent = $aclRoles[$parentId];
 
-            $ns = $this->createRoleNamespaceId($parent, $aclRoles, $nsChar) . $nsChar . $ns;
+            $ns = $this->createRoleNamespaceId($parent, $aclRoles, $nsChar) . $nsChar
+                . $ns;
         }
 
         return $ns;
@@ -273,7 +284,7 @@ class AclDataService
     /**
      * fetchRulesAll
      *
-     * @return \RcmUser\Acl\Db\Result
+     * @return \Result
      */
     public function fetchRulesAll()
     {
@@ -283,9 +294,9 @@ class AclDataService
     /**
      * fetchRulesByResource
      *
-     * @param $resource
+     * @param string $resource resource
      *
-     * @return mixed
+     * @return Result
      */
     public function fetchRulesByResource($resource)
     {
@@ -295,9 +306,9 @@ class AclDataService
     /**
      * fetchRulesByRole
      *
-     * @param $roleId
+     * @param string $roleId roleId
      *
-     * @return \RcmUser\Acl\Db\Result
+     * @return Result
      */
     public function fetchRulesByRole($roleId)
     {
@@ -307,7 +318,7 @@ class AclDataService
     /**
      * getRulesByRoles
      *
-     * @param string $nsChar
+     * @param string $nsChar nsChar
      *
      * @return array
      */
@@ -323,7 +334,7 @@ class AclDataService
             $aclRoles[$ns]['role'] = $role;
             $aclRoles[$ns]['roleNs'] = $ns;
             $rulesResult = $this->fetchRulesByRole($id);
-            if($rulesResult->isSuccess()){
+            if ($rulesResult->isSuccess()) {
 
                 $aclRoles[$ns]['rules'] = $rulesResult->getData();
             } else {

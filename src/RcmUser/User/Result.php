@@ -197,8 +197,9 @@ class Result
      */
     public function isSuccess()
     {
-
-        if ($this->getCode() >= self::CODE_SUCCESS && ($this->user instanceof User)) {
+        if ($this->getCode() >= self::CODE_SUCCESS
+            && ($this->user instanceof User)
+        ) {
 
             return true;
         }

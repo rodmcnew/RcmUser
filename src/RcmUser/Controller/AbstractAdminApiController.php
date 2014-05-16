@@ -35,14 +35,13 @@ use Zend\Mvc\Controller\AbstractRestfulController;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
 class AbstractAdminApiController extends AbstractRestfulController
 {
     /**
      * isAllowed
      *
-     * @param string $resource
-     * @param string $privilege
+     * @param string $resource  resource
+     * @param string $privilege privilege
      *
      * @return mixed
      */

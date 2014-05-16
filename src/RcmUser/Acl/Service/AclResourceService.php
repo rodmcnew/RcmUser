@@ -61,8 +61,8 @@ class AclResourceService
     /**
      * __construct
      *
-     * @param array $resources
-     * @param null  $rootResource
+     * @param AclResource|mixed $rootResource rootResource
+     * @param array             $resources    resources
      */
     public function __construct(
         $rootResource,
@@ -304,9 +304,9 @@ class AclResourceService
     /**
      * createNamespaceId
      *
-     * @param AclResource $aclResource
-     * @param array       $aclResources
-     * @param string      $nsChar
+     * @param AclResource $aclResource  aclResource
+     * @param array       $aclResources aclResources
+     * @param string      $nsChar       nsChar
      *
      * @return string
      */
@@ -322,10 +322,10 @@ class AclResourceService
             $parent = $aclResources[$parentId];
 
             $ns = $this->createNamespaceId(
-                    $parent,
-                    $aclResources,
-                    $nsChar
-                ) . $nsChar . $ns;
+                $parent,
+                $aclResources,
+                $nsChar
+            ) . $nsChar . $ns;
         }
 
         return $ns;
@@ -334,9 +334,9 @@ class AclResourceService
     /**
      * createNamespaceId
      *
-     * @param AclResource $aclResource
-     * @param array       $aclResources
-     * @param int         $level
+     * @param AclResource $aclResource  aclResource
+     * @param array       $aclResources aclResources
+     * @param int         $level        level
      *
      * @return string
      */
@@ -363,7 +363,7 @@ class AclResourceService
     /**
      * orderResources
      *
-     * @param $resources
+     * @param array $resources resources
      *
      * @return array
      */
@@ -387,8 +387,8 @@ class AclResourceService
     /**
      * getOrderNext
      *
-     * @param AclResource $aclResource
-     * @param             $aclResources
+     * @param AclResource $aclResource  aclResource
+     * @param array       $aclResources aclResources
      *
      * @return null
      */
@@ -401,6 +401,7 @@ class AclResourceService
         if (!empty($parentId)) {
 
             $parent = $aclResources[$parentId];
+
             return $this->orderNext(
                 $parent,
                 $aclResources
