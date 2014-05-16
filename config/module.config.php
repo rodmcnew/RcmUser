@@ -126,18 +126,29 @@ return array(
              *
              * This aggregates resources that may be injected by any module,
              * this module wraps the resources
-             * in a core resource with common privileges.
+             * in a root resource with common privileges.
              *
              * Format for each value of this array is:
-             * 'MyResourceName(Will be top level of resource)' =>
-             * 'MyResource/ResourceProvider(ResourceProviderInterface)',
+             *
+             * 'ProviderId(usually module namespace)' =>
+             * 'MyResource/ResourceProvider(ResourceProviderInterface)'
+             *
+             * OR
+             *
+             * ProviderId(usually module namespace)' => array(
+             *     'resourceId' => 'some-resource'
+             *     'parentResourceId' => null // Or a parent resourceId if needed
+             *     'privileges' => array('privilege1', 'privilege2', 'etc...'),
+             *     'name' => 'Human readable or translatable name',
+             *     'description' => 'Human readable or translatable description',
+             * )
              */
             'ResourceProviders' => array(
                 /*
                  * RcmUserAccess
                  * This module inject some of this module's resources.
                  */
-                'rcmuser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                'ssRcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
             ),
         ),
     ),
@@ -344,8 +355,7 @@ return array(
                 'RcmUser\Acl\Service\Factory\AuthorizeService',
             /*
              * AclRoleDataMapper
-             * Required for:
-             *  BjyRoleProvider
+             * Required
              * This data mapper adapter allows this module
              * to read roles from a data source
              * This may be configured to use a custom data mapper if required

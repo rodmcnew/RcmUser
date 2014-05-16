@@ -35,15 +35,15 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
     }
 
     /**
-     * testGetAll
+     * testGetResources
      *
      * @covers \RcmUser\Provider\RcmUserAclResourceProvider::getAll
      *
      * @return void
      */
-    public function testGetAll()
+    public function testGetResources()
     {
-        $resources = $this->getRcmUserAclResourceProvider()->getAll();
+        $resources = $this->getRcmUserAclResourceProvider()->getResources();
 
         $this->assertTrue(is_array($resources), 'Array of resources not returned.');
     }
