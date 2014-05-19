@@ -41,7 +41,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class AclResourceService
 {
-    const MAX_RESOURCE_NESTING = 5;
+    const MAX_RESOURCE_NESTING = 10;
     /**
      * @var
      */
@@ -143,10 +143,10 @@ class AclResourceService
      */
     public function getResource($providerId, $resourceId, $nestLevel = 0)
     {
-
         if ($nestLevel > self::MAX_RESOURCE_NESTING) {
 
-            throw new RcmUserException('Max resource nesting exceded, max nesting level is '
+            throw new RcmUserException(
+                'Max resource nesting exceded, max nesting level is '
                 . self::MAX_RESOURCE_NESTING);
         }
 

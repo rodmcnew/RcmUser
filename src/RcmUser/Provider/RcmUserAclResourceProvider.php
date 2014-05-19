@@ -104,7 +104,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     protected function buildResources()
     {
-
         /* parent resource */
         $this->resources['rcmuser'] = new AclResource(
             'rcmuser'
