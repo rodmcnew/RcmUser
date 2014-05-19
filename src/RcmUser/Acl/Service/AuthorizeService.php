@@ -214,6 +214,7 @@ class AuthorizeService
 
             return $result->getData();
         }
+        $rules = array();
 
         foreach($resources as $resourceId => $resource){
 
@@ -225,7 +226,7 @@ class AuthorizeService
                 continue;
             }
 
-            $rules[] = $result->getData();
+            $rules = array_merge($rules, $result->getData());
         }
 
         return $rules;
@@ -354,14 +355,14 @@ class AuthorizeService
     /**
      * isAllowed
      *
-     * @param string $resource   resource
+     * @param string $resourceId   resourceId
      * @param string $privilege  privilege
      * @param string $providerId providerId
      * @param User   $user       user
      *
      * @return bool
      */
-    public function isAllowed($resource, $privilege = null, $providerId = null,  $user = null)
+    public function isAllowed($resourceId, $privilege = null, $providerId = null,  $user = null)
     {
         if (!($user instanceof User)) {
 
@@ -381,10 +382,11 @@ class AuthorizeService
             return true;
         }
 
-        $resources = $this->parseResource($resource);
-        $acl = $this->getAcl();
+        $resources = $this->parseResource($resourceId);
 
         foreach ($resources as $res) {
+
+            $acl = $this->getAcl($providerId, $resourceId);
 
             foreach ($userRoles as $userRole) {
 

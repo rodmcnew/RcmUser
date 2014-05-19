@@ -17,6 +17,8 @@
 
 namespace RcmUser\Acl\Provider;
 
+use RcmUser\Exception\RcmUserException;
+
 
 /**
  * Interface ResourceProviderInterface
@@ -43,13 +45,10 @@ class ResourceProvider implements ResourceProviderInterface
     /**
      * __construct
      *
-     * @param string $providerId providerId
      * @param array  $resources  resources
      */
-    public function __construct($providerId, $resources)
+    public function __construct($resources)
     {
-        $this->providerId = (string) $providerId;
-
         if (is_array($resources)) {
             $this->resources = $resources;
         }
@@ -75,14 +74,15 @@ class ResourceProvider implements ResourceProviderInterface
      * @param $resourceId
      *
      * @return array
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function getResource($resourceId)
     {
-        if(isset($resources[$resourceId])){
+        if (isset($this->resources[$resourceId])) {
 
-        return $resources[$resourceId];
-    }
+            return $this->resources[$resourceId];
+        }
 
-        return null;
+        throw new RcmUserException('Resource Id (key) ' . $resourceId . ' not found in resources array.');
     }
 } 

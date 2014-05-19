@@ -54,8 +54,15 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
             'RcmUser\Acl\Service\AclResourceService'
         );
 
-        $resources = $aclResourceService->getResourcesWithNamespace('.', true);
+        try {
+
+            $resources = $aclResourceService->getResourcesWithNamespace('.', true);
+
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
 
         return new JsonModel($resources);
     }
-} 
+}

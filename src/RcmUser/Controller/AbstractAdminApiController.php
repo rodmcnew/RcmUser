@@ -69,4 +69,17 @@ class AbstractAdminApiController extends AbstractRestfulController
 
         return $response;
     }
+
+    public function getExceptionResponse(\Exception $e)
+    {
+        $result = new \stdClass();
+
+        $result->code = $e->getCode();
+        $result->message = $e->getMessage();
+        $result->trace = $e->getTrace();
+
+        $response = $this->getResponse();
+        $response->setContent(json_encode($result));
+        return $response;
+    }
 } 

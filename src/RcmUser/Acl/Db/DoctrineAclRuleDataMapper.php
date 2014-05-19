@@ -171,8 +171,18 @@ class DoctrineAclRuleDataMapper
      */
     public function fetchByResource($resourceId)
     {
-        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('resource' => $resourceId));
+        //$rules = $this->getEntityManager()->getRepository($this->getEntityClass())
+        //    ->findBy(array('resource' => $resourceId));
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
+            'INDEX BY rule.id ' .
+            'WHERE rule.resource = ?1'
+        );
+
+        $query->setParameter(1, $resourceId);
+
+        $rules = $query->getResult();
 
         if (empty($rules)) {
 
