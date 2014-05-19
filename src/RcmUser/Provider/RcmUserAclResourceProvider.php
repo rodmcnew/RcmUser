@@ -109,17 +109,22 @@ class RcmUserAclResourceProvider extends ResourceProvider
         return null;
     }
 
+    /**
+     * buildResources - build static resources
+     *
+     * @return void
+     */
     protected function buildResources()
     {
 
-        /* parent resource example */
+        /* parent resource */
         $this->rcmResources['rcmuser'] = new AclResource(
             'rcmuser'
         );
         $this->rcmResources['rcmuser']->setName('RCM User');
         $this->rcmResources['rcmuser']->setDescription('All RCM user access.');
 
-        //
+        /* user edit */
         $this->rcmResources['rcmuser-user-administration'] = new AclResource(
             'rcmuser-user-administration',
             'rcmuser',
@@ -130,7 +135,7 @@ class RcmUserAclResourceProvider extends ResourceProvider
         $this->rcmResources['rcmuser-user-administration']
             ->setDescription('Allows the editing of user data.');
 
-        //
+        /* access and roles */
         $this->rcmResources['rcmuser-acl-administration'] = new AclResource(
             'rcmuser-acl-administration',
             'rcmuser',
@@ -139,6 +144,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
         $this->rcmResources['rcmuser-acl-administration']
             ->setName('Role and Access Administration');
         $this->rcmResources['rcmuser-acl-administration']
-            ->setDescription('Allows the editing of user roles data.');
+            ->setDescription('Allows the editing of user access and role data.');
     }
 } 

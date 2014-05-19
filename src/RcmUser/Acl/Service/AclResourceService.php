@@ -101,8 +101,52 @@ class AclResourceService
     }
 
     /**
-     * getResources - Used by ACL - Runtime resources
-     * returns a list of runtime resources
+     * @future
+     * getResource - Get a resource and all of its parents
+     * getProviderResourcesByResourceId
+     *
+     * @param $providerId
+     * @param $resourceId
+     *
+     * @return array
+     */
+    public function getResource($providerId, $resourceId)
+    {
+        $providers = $this->getResourceProviders();
+        $resources = array();
+
+        if (!isset($providers[$providerId])) {
+
+            return array();
+        }
+
+        $resource = $this->buildValidResource(
+            $providers[$providerId]->getResource($resourceId)
+        );
+
+        $resources[$resource->getResourceId()] = $resource;
+
+        if ($resource->getParentResourceId()
+            == $this->getRootResource()->getResourceId()
+        ) {
+
+            return $resources;
+        } else {
+
+            $parentResources = $this->getResource(
+                $providerId,
+                $resource->getParentResourceId()
+            );
+
+            $resources = array_merge($parentResources, $resources);
+
+            return $resources;
+        }
+    }
+
+    /**
+     * getResources
+     * returns a list of registered resources
      *
      * @return array
      * @throws \RcmUser\Exception\RcmUserException
@@ -111,13 +155,15 @@ class AclResourceService
     {
         $providers = $this->getResourceProviders();
 
-        foreach ($providers as $providerName => $provider) {
+        foreach ($providers as $providerId => $provider) {
 
             $providerResources = $provider->getResources(); //
 
-            $this->resources = $this->prepareProviderResources(
+            $resources = $this->prepareProviderResources(
                 $providerResources
             );
+
+            $this->resources = array_merge($resources, $this->resources);
         }
 
         return $this->resources;
@@ -125,7 +171,7 @@ class AclResourceService
 
     /**
      * getAllResources - All resources
-     * returns a list of runtime resources
+     * returns a list of all resources
      * This is used to displays or utilities only, not
      *
      * @param bool $refresh refresh
@@ -143,9 +189,11 @@ class AclResourceService
 
                 $providerResources = $provider->getResources();
 
-                $this->resources = $this->prepareProviderResources(
+                $resources = $this->prepareProviderResources(
                     $providerResources
                 );
+
+                $this->resources = array_merge($resources, $this->resources);
             }
 
             $this->isCached = true;
@@ -220,8 +268,7 @@ class AclResourceService
         AclResource $aclResource,
         $aclResources,
         $nsChar = '.'
-    )
-    {
+    ) {
         $parentId = $aclResource->getParentResourceId();
         $ns = $aclResource->getResourceId();
         if (!empty($parentId)) {
@@ -322,11 +369,8 @@ class AclResourceService
         return $resource;
     }
 
-    /////// Dynamic Resources ////////////
-
     protected function addRootResource()
     {
-
         if (!isset($this->resources[$this->rootResource->getResourceId()])) {
 
             $this->resources[$this->rootResource->getResourceId()]
@@ -334,49 +378,4 @@ class AclResourceService
         }
     }
 
-    /**
-     * @future
-     * getResource - Get a resource and all of its parents
-     * getProviderResourcesByResourceId
-     *
-     * @param $providerId
-     * @param $resourceId
-     *
-     * @return array
-     */
-    public function getProviderResourcesByResourceId($providerId, $resourceId)
-    {
-        $providers = $this->getResourceProviders();
-        $resources = array();
-
-        if (!isset($providers[$providerId])) {
-
-            return array();
-        }
-
-        $resource = $this->buildValidResource(
-            $providers[$providerId]->getResource($resourceId)
-        );
-
-        $resources[$resource->getResourceId()] = $resource;
-
-        if ($resource->getParentResourceId()
-            == $this->getRootResource()->getResourceId()
-        ) {
-            return $resources;
-        } else {
-            $parentResources = $this->getProviderResourcesByResourceId(
-                $providerId,
-                $resource->getParentResourceId()
-            );
-            $resources = array_merge($resources, $parentResources);
-
-            return $resources;
-        }
-    }
-
-    public function addProviderResources()
-    {
-
-    }
 } 

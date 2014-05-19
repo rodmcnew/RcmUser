@@ -96,8 +96,8 @@ class ResourceProvider implements ResourceProviderInterface
     {
         if(isset($resources[$resourceId])){
 
-            return $resources[$resourceId];
-        }
+        return $resources[$resourceId];
+    }
 
         return null;
     }

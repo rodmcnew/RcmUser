@@ -148,7 +148,7 @@ return array(
                  * RcmUserAccess
                  * This module inject some of this module's resources.
                  */
-                'ssRcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                'RcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
             ),
         ),
     ),
