@@ -197,14 +197,14 @@ class AclDataService
     }
 
     /**
-     * getResourcesWithNamespaced
+     * getRolesWithNamespace
      *
      * @param string $nsChar  nsChar
      * @param bool   $refresh refresh
      *
      * @return array
      */
-    public function getRolesWithNamespaced($nsChar = '.', $refresh = false)
+    public function getRolesWithNamespace($nsChar = '.', $refresh = false)
     {
         $aclRoles = array();
         $roles = $this->getNamespacedRoles($nsChar, $refresh);

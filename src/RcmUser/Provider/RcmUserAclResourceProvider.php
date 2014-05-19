@@ -40,14 +40,9 @@ use RcmUser\Acl\Provider\ResourceProviderInterface;
 class RcmUserAclResourceProvider extends ResourceProvider
 {
     /**
-     * @var string PROVIDER_ID
+     * @var
      */
     const PROVIDER_ID = 'RcmUser\Acl';
-
-    /**
-     * @var string $providerId
-     */
-    protected $providerId = self::PROVIDER_ID;
 
     /**
      * default resources  - rcm user needs these,
@@ -66,16 +61,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
     }
 
     /**
-     * getProviderId
-     *
-     * @return string
-     */
-    public function getProviderId()
-    {
-        return $this->providerId;
-    }
-
-    /**
      * getResources
      * Return a multi-dimensional array of resources and privileges
      * containing ALL possible resources
@@ -84,29 +69,32 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     public function getResources()
     {
-        if(empty($this->rcmResources)){
+        if(empty($this->resources)){
 
             $this->buildResources();
         }
 
-        return $this->rcmResources;
+        return $this->resources;
     }
 
     /**
      * getResource
+     * Return the requested resource
+     * Can be used to return resources dynamically.
      *
      * @param $resourceId
      *
      * @return array
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function getResource($resourceId)
-    {
-        if(isset($resources[$resourceId])){
+    public function getResource($resourceId){
 
-            return $resources[$resourceId];
+        if(empty($this->resources)){
+
+            $this->buildResources();
         }
 
-        return null;
+        return parent::getResource($resourceId);
     }
 
     /**
@@ -116,34 +104,33 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     protected function buildResources()
     {
-
         /* parent resource */
-        $this->rcmResources['rcmuser'] = new AclResource(
+        $this->resources['rcmuser'] = new AclResource(
             'rcmuser'
         );
-        $this->rcmResources['rcmuser']->setName('RCM User');
-        $this->rcmResources['rcmuser']->setDescription('All RCM user access.');
+        $this->resources['rcmuser']->setName('RCM User');
+        $this->resources['rcmuser']->setDescription('All RCM user access.');
 
         /* user edit */
-        $this->rcmResources['rcmuser-user-administration'] = new AclResource(
+        $this->resources['rcmuser-user-administration'] = new AclResource(
             'rcmuser-user-administration',
             'rcmuser',
             array('read', 'write')
         );
-        $this->rcmResources['rcmuser-user-administration']
+        $this->resources['rcmuser-user-administration']
             ->setName('User Administration');
-        $this->rcmResources['rcmuser-user-administration']
+        $this->resources['rcmuser-user-administration']
             ->setDescription('Allows the editing of user data.');
 
         /* access and roles */
-        $this->rcmResources['rcmuser-acl-administration'] = new AclResource(
+        $this->resources['rcmuser-acl-administration'] = new AclResource(
             'rcmuser-acl-administration',
             'rcmuser',
             array()
         );
-        $this->rcmResources['rcmuser-acl-administration']
+        $this->resources['rcmuser-acl-administration']
             ->setName('Role and Access Administration');
-        $this->rcmResources['rcmuser-acl-administration']
+        $this->resources['rcmuser-acl-administration']
             ->setDescription('Allows the editing of user access and role data.');
     }
 } 

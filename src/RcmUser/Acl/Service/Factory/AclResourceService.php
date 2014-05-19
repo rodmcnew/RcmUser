@@ -51,15 +51,8 @@ class AclResourceService implements FactoryInterface
         $config = $serviceLocator->get('RcmUser\Acl\Config');
 
         $resourceProviders = $config->get('ResourceProviders', array());
-        $providers = array();
 
-        foreach ($resourceProviders as $providerId => $providerData) {
-
-            $provider = $this->buildValidProvider($serviceLocator, $providerId, $providerData);
-
-            $providers[$provider->getProviderId()] = $provider;
-        }
-
+        /* root resource */
         $rootPrivileges = array(
             'read',
             'update',
@@ -76,33 +69,9 @@ class AclResourceService implements FactoryInterface
         );
 
         $service = new \RcmUser\Acl\Service\AclResourceService($rootResource);
-        $service->setResourceProviders($providers);
+        $service->setResourceProviders($resourceProviders);
+        $service->setServiceLocator($serviceLocator);
 
         return $service;
-    }
-
-    protected function buildValidProvider($serviceLocator, $providerId, $providerData)
-    {
-        if(is_string($providerData)){
-
-            // assumes providerId is set in factory
-
-            return $serviceLocator->get($providerData);
-        }
-
-        if (is_array($providerData)) {
-
-            return new ResourceProvider($providerId, $providerData);
-        }
-
-        if ($providerData instanceof ResourceProviderInterface) {
-
-            return $providerData;
-        }
-
-        throw new RcmUserException(
-            'ResourceProvider is not valid: ' . var_export($providerData, true)
-        );
-
     }
 }

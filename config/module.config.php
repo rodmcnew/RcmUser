@@ -128,6 +128,11 @@ return array(
              * this module wraps the resources
              * in a root resource with common privileges.
              *
+             * IMPORTANT:
+             * - Parent resources must be first in the resource array
+             * - It is not possible to share parent or child resources
+             *   between different providers
+             *
              * Format for each value of this array is:
              *
              * 'ProviderId(usually module namespace)' =>
@@ -144,11 +149,44 @@ return array(
              * )
              */
             'ResourceProviders' => array(
+
                 /*
                  * RcmUserAccess
                  * This module inject some of this module's resources.
+                 * Also example of a Resource provider
                  */
+
                 'RcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                /* example of resource providers as array *
+                'RcmUser\TEST' => array(
+                    'TESTONE' => array(
+                        'resourceId' => 'TESTONE',
+                        'parentResourceId' => null,
+                        'privileges' => array(
+                            'read',
+                            'update',
+                            'create',
+                            'delete',
+                            'execute',
+                        ),
+                        'name' => 'Test resource one.',
+                        'description' => 'test resource one desc.',
+                    ),
+                    'TESTTWO' => array(
+                        'resourceId' => 'TESTTWO',
+                        'parentResourceId' => 'TESTONE',
+                        'privileges' => array(
+                            'read',
+                            'update',
+                            'create',
+                            'delete',
+                            'execute',
+                        ),
+                        'name' => 'Test resource two.',
+                        'description' => 'test resource two desc.',
+                    ),
+                ),
+                */
             ),
         ),
     ),

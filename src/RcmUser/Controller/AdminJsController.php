@@ -57,7 +57,7 @@ class AdminJsController extends AbstractAdminController
             'RcmUser\Acl\AclDataService'
         );
 
-        $resources = $aclResourceService->getResourcesWithNamespaced('.', true);
+        $resources = $aclResourceService->getResourcesWithNamespace('.', true);
 
         $roles = $aclDataService->getRulesByRoles();
 

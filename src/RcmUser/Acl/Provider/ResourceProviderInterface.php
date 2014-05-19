@@ -36,14 +36,6 @@ namespace RcmUser\Acl\Provider;
 interface ResourceProviderInterface
 {
     /**
-     * getProviderId - Provide a unique id for you provider (usually the Module name)
-     * Allows for finding resources for specific provider
-     *
-     * @return string
-     */
-    public function getProviderId();
-
-    /**
      * getResources
      * Return a multi-dimensional array of resources and privileges
      * containing ALL possible resources
