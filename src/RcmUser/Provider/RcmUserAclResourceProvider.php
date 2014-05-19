@@ -18,6 +18,8 @@
 namespace RcmUser\Provider;
 
 
+use RcmUser\Acl\Entity\AclResource;
+use RcmUser\Acl\Provider\ResourceProvider;
 use RcmUser\Acl\Provider\ResourceProviderInterface;
 
 /**
@@ -35,65 +37,113 @@ use RcmUser\Acl\Provider\ResourceProviderInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class RcmUserAclResourceProvider implements ResourceProviderInterface
+class RcmUserAclResourceProvider extends ResourceProvider
 {
+    /**
+     * @var string PROVIDER_ID
+     */
+    const PROVIDER_ID = 'RcmUser\Acl';
+
+    /**
+     * @var string $providerId
+     */
+    protected $providerId = self::PROVIDER_ID;
 
     /**
      * default resources  - rcm user needs these,
-     * however descriptions can be added on construct in the factory
+     * however descriptions added on construct in the factory
      *
-     * @var array
+     * @var array $rcmResources
      */
-    protected $rcmResources
-        = array(
-            'rcmuser-user-administration' => array(),
-            'rcmuser-acl-administration' => array(),
-        );
+    protected $resources = array();
 
     /**
      * __construct
      *
-     * @param $rcmResources
      */
-    public function __construct($rcmResources = null)
+    public function __construct()
     {
-        if (is_array($rcmResources)) {
-            $this->rcmResources = $rcmResources;
-        }
     }
 
     /**
-     * getRcmResources
+     * getProviderId
      *
-     * @return array
+     * @return string
      */
-    public function getRcmResources()
+    public function getProviderId()
     {
-        return $this->rcmResources;
+        return $this->providerId;
     }
 
     /**
-     * getAll
+     * getResources
      * Return a multi-dimensional array of resources and privileges
      * containing ALL possible resources
      *
      * @return array
      */
-    public function getAll()
+    public function getResources()
     {
+        if(empty($this->rcmResources)){
+
+            $this->buildResources();
+        }
 
         return $this->rcmResources;
     }
 
+    /**
+     * getResource
+     *
+     * @param $resourceId
+     *
+     * @return array
+     */
+    public function getResource($resourceId)
+    {
+        if(isset($resources[$resourceId])){
+
+            return $resources[$resourceId];
+        }
+
+        return null;
+    }
 
     /**
-     * getAvailableAtRuntime
+     * buildResources - build static resources
      *
-     * @return array|mixed
+     * @return void
      */
-    public function getAvailableAtRuntime()
+    protected function buildResources()
     {
 
-        return $this->getAll();
+        /* parent resource */
+        $this->rcmResources['rcmuser'] = new AclResource(
+            'rcmuser'
+        );
+        $this->rcmResources['rcmuser']->setName('RCM User');
+        $this->rcmResources['rcmuser']->setDescription('All RCM user access.');
+
+        /* user edit */
+        $this->rcmResources['rcmuser-user-administration'] = new AclResource(
+            'rcmuser-user-administration',
+            'rcmuser',
+            array('read', 'write')
+        );
+        $this->rcmResources['rcmuser-user-administration']
+            ->setName('User Administration');
+        $this->rcmResources['rcmuser-user-administration']
+            ->setDescription('Allows the editing of user data.');
+
+        /* access and roles */
+        $this->rcmResources['rcmuser-acl-administration'] = new AclResource(
+            'rcmuser-acl-administration',
+            'rcmuser',
+            array()
+        );
+        $this->rcmResources['rcmuser-acl-administration']
+            ->setName('Role and Access Administration');
+        $this->rcmResources['rcmuser-acl-administration']
+            ->setDescription('Allows the editing of user access and role data.');
     }
 } 

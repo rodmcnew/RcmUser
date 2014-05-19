@@ -106,7 +106,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function getDefaultAuthenticatedRoleIdentities()
     {
-        return $this->getUserRolesDataMapper()->getDefaultAuthenticatedRoleIdentities();
+        return $this->getUserRolesDataMapper()
+            ->getDefaultAuthenticatedRoleIdentities();
     }
 
     /**

@@ -19,6 +19,7 @@ namespace RcmUser\Authentication\Event;
 
 
 use RcmUser\Authentication\Service\AuthenticationService;
+use RcmUser\Exception\RcmUserException;
 use Zend\Authentication\Result;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
@@ -41,26 +42,26 @@ use Zend\EventManager\ListenerAggregateInterface;
 class AbstractAuthServiceListeners implements ListenerAggregateInterface
 {
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
+     * @var array $listeners
      */
     protected $listeners = array();
     /**
-     * @var string
+     * @var string $id
      */
     protected $id = 'RcmUser\Authentication\Service\UserAuthenticationService';
 
     /**
-     * @var int
+     * @var int $priority
      */
     protected $priority = 1;
 
     /**
-     * @var AuthenticationService
+     * @var AuthenticationService $authService
      */
     protected $authService;
 
     /**
-     * @var array
+     * @var array $listenerMethods
      */
     protected $listenerMethods
         = array(
@@ -239,11 +240,12 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      *
      * @param Event $e e
      *
-     * @return Result
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function onClearIdentity($e)
     {
-        return;
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
     }
 
     /**
@@ -251,11 +253,12 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      *
      * @param Event $e e
      *
-     * @return bool
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function onHasIdentity($e){
-
-        return false;
+    public function onHasIdentity($e)
+    {
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
     }
 
     /**
@@ -264,10 +267,11 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      * @param Event $e e
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function onSetIdentity($e){
-
-        return;
+    public function onSetIdentity($e)
+    {
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
     }
 
     /**

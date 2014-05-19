@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * RcmUserBuildHtmlHead.php
  *
  * LongDescHere
@@ -17,8 +17,10 @@
 
 namespace RcmUser\View\Helper;
 
+use Zend\View\Helper\AbstractHelper;
 
- /**
+
+/**
  * Class RcmUserBuildHtmlHead
  *
  * LongDescHere
@@ -33,48 +35,33 @@ namespace RcmUser\View\Helper;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
-class RcmUserBuildHtmlHead extends AbstractHelper {
-    
-    protected $rcmHtmlHeadService;
-
-    public function __construct(RcmHtmlHeadService $rcmHtmlHeadService){
-
-        $this->setRcmHtmlHeadService($rcmHtmlHeadService);
-    }
-
-    /**
-     * setRcmHtmlHeadService
-     *
-     * @param $rcmHtmlHeadService
-     *
-     * @return void
-     */
-    public function setRcmHtmlHeadService($rcmHtmlHeadService)
-    {
-        $this->rcmHtmlHeadService = $rcmHtmlHeadService;
-    }
-
-    /**
-     * getRcmHtmlHeadService
-     *
-     * @return mixed
-     */
-    public function getRcmHtmlHeadService()
-    {
-        return $this->rcmHtmlHeadService;
-    }
-
+class RcmUserBuildHtmlHead extends AbstractHelper
+{
     /**
      * __invoke
      *
-     * @param       $view    view
      * @param array $options options
      *
      * @return mixed
      */
-    public function __invoke($view, $options = array())
+    public function __invoke($options = array())
     {
-        return $this->getRcmHtmlHeadService()->build($view, $options);
+        $view = $this->getView();
+
+        $view->rcmIncludeAngularJs(
+            array(
+                'js' => array(
+                    'angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js'
+                )
+            )
+        );
+
+        $view->rcmIncludeTwitterBootstrap(
+            array(
+                'css' => array(
+                    'css/bootstrap-theme.css',
+                )
+            )
+        );
     }
 } 

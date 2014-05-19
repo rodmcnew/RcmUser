@@ -1,8 +1,8 @@
 <?php
 /**
- * BjyResourceProvider.php
+ * AuthorizeService.php
  *
- * BjyResourceProvider
+ * AuthorizeService
  *
  * PHP version 5
  *
@@ -17,13 +17,14 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
+
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * BjyResourceProvider
+ * AuthorizeService
  *
- * BjyResourceProvider Factory
+ * AuthorizeService Factory
  *
  * PHP version 5
  *
@@ -35,7 +36,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class BjyResourceProvider implements FactoryInterface
+class AuthorizeService implements FactoryInterface
 {
 
     /**
@@ -43,17 +44,28 @@ class BjyResourceProvider implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return mixed|\RcmUser\Acl\Provider\BjyResourceProvider
+     * @return \RcmUser\Acl\Service\AuthorizeService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $resourceProvider = $serviceLocator->get(
+        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
+        $aclResourceService = $serviceLocator->get(
             'RcmUser\Acl\Service\AclResourceService'
         );
+        $aclRoleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRoleDataMapper'
+        );
+        $aclRuleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRuleDataMapper'
+        );
 
-        $service = new \RcmUser\Acl\Provider\BjyResourceProvider();
-        $service->setRcmUserResourceProvider($resourceProvider);
+        $service = new \RcmUser\Acl\Service\AuthorizeService();
+        $service->setAclResourceService($aclResourceService);
+        $service->setAclRoleDataMapper($aclRoleDataMapper);
+        $service->setAclRuleDataMapper($aclRuleDataMapper);
+        $service->setSuperAdminRole($cfg->get('SuperAdminRole'));
 
         return $service;
     }
-}
+
+} 

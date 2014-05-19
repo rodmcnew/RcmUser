@@ -1,8 +1,8 @@
 <?php
 /**
- * ViewHelperRcmUserIsAllowed
+ * ViewHelperRcmUserBuildHtmlHead.php
  *
- * ViewHelperRcmUserIsAllowed
+ * ViewHelperRcmUserBuildHtmlHead
  *
  * PHP version 5
  *
@@ -15,45 +15,40 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUser\Service\Factory;
+namespace RcmUser\View\Service\Factory;
 
 
-use RcmUser\View\Helper\RcmUserIsAllowed;
+use RcmUser\View\Helper\RcmUserBuildHtmlHead;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * ViewHelperRcmUserIsAllowed
+ * Class ViewHelperRcmUserBuildHtmlHead
  *
- * ViewHelperRcmUserIsAllowed
+ * ViewHelperRcmUserBuildHtmlHead
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\Service\Factory
+ * @package   RcmUser\View\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class ViewHelperRcmUserIsAllowed implements FactoryInterface
+class ViewHelperRcmUserBuildHtmlHead implements FactoryInterface
 {
     /**
      * createService
      *
      * @param ServiceLocatorInterface $mgr mgr
      *
-     * @return mixed|RcmUserIsAllowed
+     * @return mixed|RcmUserBuildHtmlHead
      */
     public function createService(ServiceLocatorInterface $mgr)
     {
-        $serviceLocator = $mgr->getServiceLocator();
-        $userAuthorizeService = $serviceLocator->get(
-            'RcmUser\Acl\Service\UserAuthorizeService'
-        );
-
-        $service = new RcmUserIsAllowed($userAuthorizeService);
+        $service = new RcmUserBuildHtmlHead();
 
         return $service;
     }

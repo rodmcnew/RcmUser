@@ -23,6 +23,27 @@
 
 }
 
+.rcmuser .admin-acl .roleId{
+    border: 0;
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.rcmuser .admin-acl .ruleHeader {
+    padding: 0 0 .5em 0;
+}
+
+.rcmuser .admin-acl .ruleTitle{
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
 .rcmuser .admin-acl .rule {
     color: #000;
     font-size: 1.3em;
@@ -49,14 +70,6 @@
 .rcmuser .admin-acl .panel-title a:active {
     border: 0;
     color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.rcmuser .admin-acl .accordion-heading .title {
-    border: 0;
-    color: #000;
-    font-size: 1.3em;
     font-weight: bold;
     text-decoration: none;
 }

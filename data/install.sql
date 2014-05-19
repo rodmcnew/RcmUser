@@ -43,10 +43,11 @@ CREATE TABLE rcm_user_acl_rule (
 	roleId VARCHAR(255) NOT NULL,
 	rule VARCHAR(32) NOT NULL, -- allow or deny or ignore
 	resource VARCHAR(255) NOT NULL, -- some resource value
-	privilege VARCHAR(255) NOT NULL, -- some privilege value (created, read, update, delete, execute)
+	privilege VARCHAR(255) DEFAULT NULL, -- some privilege value (created, read, update, delete, execute)
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
+/*
 INSERT INTO `rcm_user_acl_rule`
 (`id`,
 `roleId`,
@@ -54,8 +55,8 @@ INSERT INTO `rcm_user_acl_rule`
 `resource`,
 `privilege`)
 VALUES
-(1, 'admin', 'allow', 'root', '');
-
+(1, 'admin', 'allow', 'root', NULL);
+/*
 /*
 CREATE TABLE rcm_user_user_metadata (
 	id INT AUTO_INCREMENT NOT NULL,

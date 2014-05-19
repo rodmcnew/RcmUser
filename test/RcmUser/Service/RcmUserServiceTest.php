@@ -17,7 +17,7 @@
 
 namespace RcmUser\Test\Service;
 
-use RcmUser\Acl\Service\UserAuthorizeService;
+use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Config\Config;
 use RcmUser\Service\RcmUserService;
@@ -45,7 +45,7 @@ class RcmUserServiceTest extends Zf2TestCase
     public $userDataService;
     public $userPropertyService;
     public $userAuthService;
-    public $userAuthorizeService;
+    public $authorizeService;
 
 
 
@@ -94,7 +94,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $userDataService = new UserDataService();
         $userPropertyService = new UserPropertyService();
         $userAuthService = new UserAuthenticationService();
-        $userAuthorizeService = new UserAuthorizeService($config, $serviceLocator);
+        $authorizeService = new AuthorizeService($config, $serviceLocator);
         */
 
         $this->userDataService = $this->getMockBuilder(
@@ -151,12 +151,12 @@ class RcmUserServiceTest extends Zf2TestCase
             ->will($this->returnValue($user));
 
         /////
-        $this->userAuthorizeService = $this->getMockBuilder(
-            '\RcmUser\Acl\Service\UserAuthorizeService'
+        $this->authorizeService = $this->getMockBuilder(
+            '\RcmUser\Acl\Service\AuthorizeService'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->userAuthorizeService->expects($this->any())
+        $this->authorizeService->expects($this->any())
             ->method('isAllowed')
             ->will($this->returnValue(true));
 
@@ -164,7 +164,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $this->rcmUserService->setUserDataService($this->userDataService);
         $this->rcmUserService->setUserPropertyService($this->userPropertyService);
         $this->rcmUserService->setUserAuthService($this->userAuthService);
-        $this->rcmUserService->setUserAuthorizeService($this->userAuthorizeService);
+        $this->rcmUserService->setAuthorizeService($this->authorizeService);
 
     }
 
@@ -213,16 +213,16 @@ class RcmUserServiceTest extends Zf2TestCase
         );
     }
 
-    public function testSetGetUserAuthorizeService()
+    public function testSetGetAuthorizeService()
     {
         $rcmUserService = new RcmUserService();
 
-        $rcmUserService->setUserAuthorizeService($this->userAuthorizeService);
+        $rcmUserService->setAuthorizeService($this->authorizeService);
 
-        $service = $rcmUserService->getUserAuthorizeService();
+        $service = $rcmUserService->getAuthorizeService();
 
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\UserAuthorizeService',
+            '\RcmUser\Acl\Service\AuthorizeService',
             $service,
             'Getter or setter failed.'
         );

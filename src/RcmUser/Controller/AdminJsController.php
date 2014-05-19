@@ -18,7 +18,6 @@
 namespace RcmUser\Controller;
 
 use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 
@@ -37,7 +36,7 @@ use Zend\View\Model\ViewModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminJsController extends AbstractActionController
+class AdminJsController extends AbstractAdminController
 {
     /**
      * adminAclApp
@@ -46,13 +45,9 @@ class AdminJsController extends AbstractActionController
      */
     public function indexAction()
     {
-        if (!$this->rcmUserIsAllowed('rcmuser-acl-administration')) {
-
-            $response = $this->getResponse();
-            $response->setStatusCode(Response::STATUS_CODE_401);
-            $response->setContent($response->renderStatusLine());
-
-            return $response;
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-acl-administration')) {
+            return $this->getNotAllowedResponse();
         }
 
         $aclResourceService = $this->getServiceLocator()->get(
@@ -62,14 +57,19 @@ class AdminJsController extends AbstractActionController
             'RcmUser\Acl\AclDataService'
         );
 
-        $resources = $aclResourceService->getNamespacedResources('.', true);
+        $resources = $aclResourceService->getResourcesWithNamespaced('.', true);
 
-        $roles = $aclDataService->fetchRulesByRoles();
+        $roles = $aclDataService->getRulesByRoles();
 
-        $viewModel = new ViewModel(array(
-            'resources' => $resources,
-            'roles' => $roles->getData(),
-        ));
+        $superAdminRole = $aclDataService->getSuperAdminRole();
+
+        $viewModel = new ViewModel(
+            array(
+                'resources' => $resources,
+                'roles' => $roles,
+                'superAdminRole' => $superAdminRole,
+            )
+        );
         $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
         $viewModel->setTerminal(true);
 

@@ -17,6 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
+use Zend\Permissions\Acl\Assertion\AssertionInterface;
+
 
 /**
  * AclRule
@@ -35,7 +37,6 @@ namespace RcmUser\Acl\Entity;
  */
 class AclRule implements \JsonSerializable, \IteratorAggregate
 {
-
     /**
      * string
      */
@@ -51,67 +52,50 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     const RULE_IGNORE = 'ignore';
 
     /**
-     * @var
+     * @var string
      */
-    protected $rule;
+    protected $rule = null;
 
     /**
-     * @var
+     * @var string
      */
-    protected $roleId;
+    protected $roleId = null;
 
     /**
-     * @var
+     * @var array/string
      */
-    protected $resource;
+    protected $resource = null;
 
     /**
-     * @var
+     * @var array/string
      */
-    protected $privilege;
+    protected $privilege = null;
 
     /**
-     * setPrivilege
+     * @var AssertionInterface/string $assertion
+     */
+    protected $assertion = null;
+
+    /**
+     * setRule
      *
-     * @param string $privilege privilege
-     *
-     * @return void
-     */
-    public function setPrivilege($privilege)
-    {
-        $this->privilege = $privilege;
-    }
-
-    /**
-     * getPrivilege
-     *
-     * @return string
-     */
-    public function getPrivilege()
-    {
-        return $this->privilege;
-    }
-
-    /**
-     * setResource
-     *
-     * @param string $resource resource
+     * @param string $rule rule
      *
      * @return void
      */
-    public function setResource($resource)
+    public function setRule($rule)
     {
-        $this->resource = $resource;
+        $this->rule = $rule;
     }
 
     /**
-     * getResource
+     * getRule
      *
-     * @return string
+     * @return mixed
      */
-    public function getResource()
+    public function getRule()
     {
-        return $this->resource;
+        return $this->rule;
     }
 
     /**
@@ -137,25 +121,69 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * setRule
+     * setResource
      *
-     * @param string $rule rule
+     * @param string $resource resource
      *
      * @return void
      */
-    public function setRule($rule)
+    public function setResource($resource)
     {
-        $this->rule = $rule;
+        $this->resource = $resource;
     }
 
     /**
-     * getRule
+     * getResource
      *
-     * @return mixed
+     * @return string
      */
-    public function getRule()
+    public function getResource()
     {
-        return $this->rule;
+        return $this->resource;
+    }
+
+    /**
+     * setPrivilege
+     *
+     * @param string $privilege privilege
+     *
+     * @return void
+     */
+    public function setPrivilege($privilege)
+    {
+        $this->privilege = $privilege;
+    }
+
+    /**
+     * getPrivilege
+     *
+     * @return string
+     */
+    public function getPrivilege()
+    {
+        return $this->privilege;
+    }
+
+    /**
+     * setAssertion
+     *
+     * @param AssertionInterface/string $assertion assertion
+     *
+     * @return void
+     */
+    public function setAssertion($assertion)
+    {
+        $this->assertion = $assertion;
+    }
+
+    /**
+     * getAssertion
+     *
+     * @return AssertionInterface/string
+     */
+    public function getAssertion()
+    {
+        return $this->assertion;
     }
 
     /**

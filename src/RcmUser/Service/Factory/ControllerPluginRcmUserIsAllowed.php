@@ -49,11 +49,14 @@ class ControllerPluginRcmUserIsAllowed implements FactoryInterface
     {
         $serviceLocator = $mgr->getServiceLocator();
 
-        $userAuthorizeService = $serviceLocator->get(
-            'RcmUser\Acl\Service\UserAuthorizeService'
+        $authorizeService = $serviceLocator->get(
+            'RcmUser\Acl\Service\AuthorizeService'
+        );
+        $userAuthService = $serviceLocator->get(
+            'RcmUser\Authentication\Service\UserAuthenticationService'
         );
 
-        $service = new RcmUserIsAllowed($userAuthorizeService);
+        $service = new RcmUserIsAllowed($authorizeService, $userAuthService);
 
         return $service;
     }

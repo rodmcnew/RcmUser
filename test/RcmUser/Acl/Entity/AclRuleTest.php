@@ -86,7 +86,7 @@ class AclRuleTest extends Zf2TestCase
         $privilege = 'someprivilege';
 
         $aclRule->setRule($rule);
-        $aclRule->setRole($role);
+        $aclRule->setRoleId($role);
         $aclRule->setResource($resource);
         $aclRule->setPrivilege($privilege);
 
@@ -111,7 +111,7 @@ class AclRuleTest extends Zf2TestCase
         $privilege = 'someprivilege';
 
         $aclRule->setRule($rule);
-        $aclRule->setRole($role);
+        $aclRule->setRoleId($role);
         $aclRule->setResource($resource);
         $aclRule->setPrivilege($privilege);
 

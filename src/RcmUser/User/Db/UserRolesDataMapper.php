@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * UserRolesDataMapper.php
  *
  * LongDescHere
@@ -37,7 +37,6 @@ use RcmUser\User\Entity\User;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
 class UserRolesDataMapper implements UserRolesDataMapperInterface
 {
     /**
@@ -55,7 +54,11 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     protected $defaultAuthenticatedRoleIdentities = array();
 
     /**
-     * @param array $defaultAuthenticatedRoleIdentities
+     * setDefaultAuthenticatedRoleIdentities
+     *
+     * @param array $defaultAuthenticatedRoleIdentities defaults
+     *
+     * @return void
      */
     public function setDefaultAuthenticatedRoleIdentities(
         $defaultAuthenticatedRoleIdentities
@@ -65,6 +68,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     }
 
     /**
+     * getDefaultAuthenticatedRoleIdentities
+     *
      * @return array
      */
     public function getDefaultAuthenticatedRoleIdentities()
@@ -73,7 +78,11 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     }
 
     /**
-     * @param array $defaultRoleIdentities
+     * setDefaultRoleIdentities
+     *
+     * @param array $defaultRoleIdentities defaultRoleIdentities
+     *
+     * @return void
      */
     public function setDefaultRoleIdentities($defaultRoleIdentities)
     {
@@ -81,6 +90,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     }
 
     /**
+     * getDefaultRoleIdentities
+     *
      * @return array
      */
     public function getDefaultRoleIdentities()

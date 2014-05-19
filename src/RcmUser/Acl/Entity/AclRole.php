@@ -56,7 +56,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     /**
      * @var string
      */
-    protected $description;
+    protected $description = '';
 
     /**
      * setRoleId
@@ -64,9 +64,15 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      * @param string $roleId role identity
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function setRoleId($roleId)
     {
+        if (!$this->isValidRoleId($roleId)) {
+
+            throw new RcmUserException("Role roleId ({$roleId}) is invalid.");
+        }
+
         $this->roleId = $roleId;
     }
 
@@ -86,9 +92,17 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      * @param string|null $parentRoleId parent role
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function setParentRoleId($parentRoleId)
     {
+        if (!$this->isValidRoleId($parentRoleId)) {
+
+            throw new RcmUserException(
+                "Role parentRoleId ({$parentRoleId}) is invalid."
+            );
+        }
+
         $this->parentRoleId = $parentRoleId;
     }
 
@@ -131,7 +145,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function getParent()
     {
-        if(empty($this->parentRole)){
+        if (empty($this->parentRole)) {
 
             return $this->getParentRoleId();
         }
@@ -159,6 +173,22 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     public function getDescription()
     {
         return $this->description;
+    }
+
+    /**
+     * isValidRoleId
+     *
+     * @param string $roleId roleId
+     *
+     * @return bool
+     */
+    public function isValidRoleId($roleId)
+    {
+        if (preg_match('/[^a-z_\-0-9]/i', $roleId)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

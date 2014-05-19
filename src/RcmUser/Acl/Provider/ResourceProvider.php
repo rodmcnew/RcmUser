@@ -33,15 +33,43 @@ namespace RcmUser\Acl\Provider;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-interface ResourceProviderInterface
+class ResourceProvider implements ResourceProviderInterface
 {
+    /**
+     * @var string $providerId
+     */
+    protected $providerId = null;
+
+    /**
+     * @var array $resources
+     */
+    protected $resources = array();
+
+    /**
+     * __construct
+     *
+     * @param string $providerId providerId
+     * @param array  $resources  resources
+     */
+    public function __construct($providerId, $resources)
+    {
+        $this->providerId = (string) $providerId;
+
+        if (is_array($resources)) {
+            $this->resources = $resources;
+        }
+    }
+
     /**
      * getProviderId - Provide a unique id for you provider (usually the Module name)
      * Allows for finding resources for specific provider
      *
      * @return string
      */
-    public function getProviderId();
+    public function getProviderId()
+    {
+        return $this->providerId;
+    }
 
     /**
      * getResources
@@ -50,7 +78,10 @@ interface ResourceProviderInterface
      *
      * @return array
      */
-    public function getResources();
+    public function getResources()
+    {
+        return $this->resources;
+    }
 
     /**
      * getResource
@@ -61,5 +92,13 @@ interface ResourceProviderInterface
      *
      * @return array
      */
-    public function getResource($resourceId);
+    public function getResource($resourceId)
+    {
+        if(isset($resources[$resourceId])){
+
+        return $resources[$resourceId];
+    }
+
+        return null;
+    }
 } 

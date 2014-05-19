@@ -1,8 +1,8 @@
 <?php
 /**
- * AdminJsController.php
+ * AdminCssController.php
  *
- * LongDescHere
+ * AdminCssController
  *
  * PHP version 5
  *
@@ -18,13 +18,13 @@
 namespace RcmUser\Controller;
 
 use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 
 /**
- * Class AdminJsController
+ * Class AdminCssController
  *
- * LongDescHere
+ * AdminCssController
  *
  * PHP version 5
  *
@@ -36,7 +36,7 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminCssController extends AbstractActionController
+class AdminCssController extends AbstractAdminController
 {
     /**
      * adminAclApp
@@ -45,9 +45,10 @@ class AdminCssController extends AbstractActionController
      */
     public function indexAction()
     {
-        $js = file_get_contents(
-            __DIR__ . '/../../../view/css/styles.css'
-        );
+        $viewModel = new ViewModel();
+
+        $viewModel->setTemplate('css/styles.css');
+        $viewModel->setTerminal(true);
 
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
@@ -56,7 +57,7 @@ class AdminCssController extends AbstractActionController
                 'Content-Type' => 'text/css'
             )
         );
-        $response->setContent($js);
-        return $response;
+
+        return $viewModel;
     }
 } 

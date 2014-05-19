@@ -17,10 +17,8 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Result;
 use RcmUser\User\Entity\User;
 use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
 
@@ -39,7 +37,7 @@ use Zend\View\Model\ViewModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminAclController extends AbstractActionController
+class AdminAclController extends AbstractAdminController
 {
     /**
      * indexAction
@@ -56,17 +54,21 @@ class AdminAclController extends AbstractActionController
         $aclResourceService = $this->getServiceLocator()->get(
             'RcmUser\Acl\Service\AclResourceService'
         );
-        $userAuthorizeService = $rcmUserService->getUserAuthorizeService();
-
-        $aclResourceService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\Service\AclResourceService'
-        );
-        $bauthorize = $userAuthorizeService->getAuthorize();
-        $acl = $bauthorize->getAcl();
+        /**
+         * @var \RcmUser\Acl\Service\AuthorizeService $AuthorizeService
+         */
+        //$rcmUserService->getUserAuthAuthorizeService()
+        //var_dump($userAuthorizAuthorizeService);
+        //$acl = $userAuthorizeSerAuthorizeService
         //var_dump($acl->getResources());
         //var_dump($acl->getRoles());
         //var_dump($acl->getRoleRegistry());
         //var_dump($acl->getRules());
+
+        //$bauthorize = $authorizeService->getAuthorize();
+        //var_dump($bauthorize->getIdentity());
+        //$acl = $bauthorize->getAcl();
+
 
         $user = new User();
         $user->setUsername('adminTest');
@@ -75,32 +77,23 @@ class AdminAclController extends AbstractActionController
 
         //$rcmUserService->createUser($user);
         $rcmUserService->clearIdentity();
-        //$rcmUserService->authenticate($user);
+        $rcmUserService->authenticate($user);
         //$rcmUserService->clearIdentity();
         //var_dump($rcmUserService->getIdentity());
-        //var_dump("Has ACCESS: ", $this->rcmUserIsAllowed('rcmuser-acl-administration'));
+        //
+        //var_dump(
+        //    "Has ACCESS: ",
+        //    $this->rcmUserIsAllowed('rcmuser-acl-administration')
+        //);
         echo "</pre>";
         /* - TEST ------------------------ */
 
-        if (!$this->rcmUserIsAllowed('rcmuser-acl-administration')) {
-
-            $response = $this->getResponse();
-            $response->setStatusCode(Response::STATUS_CODE_401);
-            $response->setContent($response->renderStatusLine());
-
-            return $response;
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-acl-administration')) {
+            return $this->getNotAllowedResponse();
         }
 
         $viewArr = array();
-
-        $aclResourceService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\Service\AclResourceService'
-        );
-
-        $resources = $aclResourceService->getNamespacedResources('.',true);
-
-        //var_dump($this->getRulesByRoles()->getData());
-        //var_dump($this->getResources());
 
         return $this->buildView($viewArr);
     }
