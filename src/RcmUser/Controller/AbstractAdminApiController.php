@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\Result;
 use Zend\Mvc\Controller\AbstractRestfulController;
 
@@ -47,7 +48,7 @@ class AbstractAdminApiController extends AbstractRestfulController
      */
     public function isAllowed($resource = 'rcmuser', $privilege = null)
     {
-        return $this->rcmUserIsAllowed($resource, $privilege);
+        return $this->rcmUserIsAllowed($resource, $privilege, RcmUserAclResourceProvider::PROVIDER_ID);
     }
 
     /**

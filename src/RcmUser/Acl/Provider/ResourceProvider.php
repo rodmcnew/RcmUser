@@ -36,11 +36,6 @@ namespace RcmUser\Acl\Provider;
 class ResourceProvider implements ResourceProviderInterface
 {
     /**
-     * @var string $providerId
-     */
-    protected $providerId = null;
-
-    /**
      * @var array $resources
      */
     protected $resources = array();
@@ -58,17 +53,6 @@ class ResourceProvider implements ResourceProviderInterface
         if (is_array($resources)) {
             $this->resources = $resources;
         }
-    }
-
-    /**
-     * getProviderId - Provide a unique id for you provider (usually the Module name)
-     * Allows for finding resources for specific provider
-     *
-     * @return string
-     */
-    public function getProviderId()
-    {
-        return $this->providerId;
     }
 
     /**

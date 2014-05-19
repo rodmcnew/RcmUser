@@ -197,37 +197,70 @@ class AuthorizeService
     /**
      * getRules
      *
+     * @param array $resources resources
+     *
      * @return array
      */
-    public function getRules()
+    public function getRules($resources = null)
     {
-        $result = $this->aclRuleDataMapper->fetchAll();
+        if(empty($resources)){
+            $result = $this->aclRuleDataMapper->fetchAll();
 
-        if (!$result->isSuccess()) {
+            if (!$result->isSuccess()) {
 
-            // @todo Throw error?
-            return array();
+                // @todo Throw error?
+                return array();
+            }
+
+            return $result->getData();
         }
 
-        return $result->getData();
+        foreach($resources as $resourceId => $resource){
+
+            $result = $this->aclRuleDataMapper->fetchByResource($resource->getResourceId());
+
+            if (!$result->isSuccess()) {
+
+                // @todo Throw error?
+                continue;
+            }
+
+            $rules[] = $result->getData();
+        }
+
+        return $rules;
     }
+
+
 
     /**
      * getResources
      *
+     * @param string $providerId
+     * @param string $resourceId
+     *
      * @return array
      */
-    public function getResources()
+    public function getResources($providerId = null, $resourceId = null)
     {
-        return $this->getAclResourceService()->getResources();
+        if(empty($providerId) || empty($resourceId)){
+
+            // get general list, not dynamic resources
+            return $this->getAclResourceService()->getResources();
+        }
+
+        return $this->getAclResourceService()->getResource($providerId, $resourceId);
     }
 
     /**
      * getAcl
      *
+     * @param null $providerId
+     * @param null $resourceId
+     *
      * @return Acl
      */
-    public function getAcl()
+    public function getAcl($providerId = null, $resourceId = null)
     {
 
         if (!isset($this->acl)) {
@@ -238,7 +271,7 @@ class AuthorizeService
         /* resources privileges
             we load the every time so they maybe updated dynamically
         */
-        $resources = $this->getResources();
+        $resources = $this->getResources($providerId, $resourceId);
 
         foreach ($resources as $resource) {
 
@@ -261,7 +294,15 @@ class AuthorizeService
         }
 
         // rules
-        $rules = $this->getRules();
+        if(empty($providerId) || empty($resourceId)){
+
+            // get all
+            $rules = $this->getRules();
+        } else {
+
+            // get only for resources
+            $rules = $this->getRules($resources);
+        }
 
         foreach ($rules as $rule) {
 
@@ -294,7 +335,6 @@ class AuthorizeService
      */
     public function buildAcl()
     {
-
         $this->acl = new Acl();
 
         // roles
@@ -314,13 +354,14 @@ class AuthorizeService
     /**
      * isAllowed
      *
-     * @param string $resource  resource
-     * @param string $privilege privilege
-     * @param User   $user      user
+     * @param string $resource   resource
+     * @param string $privilege  privilege
+     * @param string $providerId providerId
+     * @param User   $user       user
      *
      * @return bool
      */
-    public function isAllowed($resource, $privilege = null, $user = null)
+    public function isAllowed($resource, $privilege = null, $providerId = null,  $user = null)
     {
         if (!($user instanceof User)) {
 
@@ -344,7 +385,9 @@ class AuthorizeService
         $acl = $this->getAcl();
 
         foreach ($resources as $res) {
+
             foreach ($userRoles as $userRole) {
+
                 $result = $acl->isAllowed(
                     $userRole,
                     $res,

@@ -65,15 +65,16 @@ class RcmUserIsAllowed extends AbstractHelper
     /**
      * __invoke
      *
-     * @param string $resource  resource
-     * @param string $privilege privilege
+     * @param string $resource   resource
+     * @param string $privilege  privilege
+     * @param string $providerId providerId
      *
      * @return bool
      */
-    public function __invoke($resource, $privilege = null)
+    public function __invoke($resource, $privilege = null, $providerId = null)
     {
         $user = $this->userAuthService->getIdentity();
 
-        return $this->authorizeService->isAllowed($resource, $privilege, $user);
+        return $this->authorizeService->isAllowed($resource, $privilege, $providerId, $user);
     }
 }

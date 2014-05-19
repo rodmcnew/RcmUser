@@ -18,7 +18,9 @@
 namespace RcmUser\Acl\Service;
 
 use RcmUser\Acl\Entity\AclResource;
+use RcmUser\Acl\Provider\ResourceProviderInterface;
 use RcmUser\Exception\RcmUserException;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 
 /**
@@ -38,6 +40,10 @@ use RcmUser\Exception\RcmUserException;
  */
 class AclResourceService
 {
+    /**
+     * @var
+     */
+    protected $serviceLocator;
     /**
      * @var AclResource
      */
@@ -66,6 +72,28 @@ class AclResourceService
     public function __construct($rootResource)
     {
         $this->rootResource = $this->buildValidResource($rootResource);
+    }
+
+    /**
+     * setServiceLocator
+     *
+     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     *
+     * @return void
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+    }
+
+    /**
+     * getServiceLocator
+     *
+     * @return mixed
+     */
+    public function getServiceLocator()
+    {
+        return $this->serviceLocator;
     }
 
     /**
@@ -105,23 +133,27 @@ class AclResourceService
      * getResource - Get a resource and all of its parents
      * getProviderResourcesByResourceId
      *
-     * @param $providerId
-     * @param $resourceId
+     * @param string $providerId providerId
+     * @param string $resourceId resourceId
      *
      * @return array
      */
     public function getResource($providerId, $resourceId)
     {
-        $providers = $this->getResourceProviders();
         $resources = array();
 
-        if (!isset($providers[$providerId])) {
+        if (!isset($this->resourceProviders[$providerId])) {
 
             return array();
         }
 
+        $this->resourceProviders[$providerId] = $this->buildValidProvider(
+            $providerId,
+            $this->resourceProviders[$providerId]
+        );
+
         $resource = $this->buildValidResource(
-            $providers[$providerId]->getResource($resourceId)
+            $this->resourceProviders[$providerId]->getResource($resourceId)
         );
 
         $resources[$resource->getResourceId()] = $resource;
@@ -153,11 +185,15 @@ class AclResourceService
      */
     public function getResources()
     {
-        $providers = $this->getResourceProviders();
+        foreach ($this->resourceProviders as $providerId => $provider) {
 
-        foreach ($providers as $providerId => $provider) {
+            $this->resourceProviders[$providerId] = $this->buildValidProvider(
+                $providerId,
+                $provider
+            );
 
-            $providerResources = $provider->getResources(); //
+            $providerResources
+                = $this->resourceProviders[$providerId]->getResources();
 
             $resources = $this->prepareProviderResources(
                 $providerResources
@@ -172,7 +208,7 @@ class AclResourceService
     /**
      * getAllResources - All resources
      * returns a list of all resources
-     * This is used to displays or utilities only, not
+     * This is used to displays or utilities only, not for ACL checks
      *
      * @param bool $refresh refresh
      *
@@ -183,17 +219,28 @@ class AclResourceService
     {
         if (!$this->isCached || $refresh) {
 
-            $providers = $this->getResourceProviders();
+            foreach ($this->resourceProviders as $providerId => $provider) {
 
-            foreach ($providers as $provider) {
-
-                $providerResources = $provider->getResources();
-
-                $resources = $this->prepareProviderResources(
-                    $providerResources
+                $this->resourceProviders[$providerId] = $this->buildValidProvider(
+                    $providerId,
+                    $provider
                 );
 
-                $this->resources = array_merge($resources, $this->resources);
+                $providerResources
+                    = $this->resourceProviders[$providerId]->getResources();
+
+                foreach($providerResources as $resourceId => $resource){
+
+                    if(!isset($this->resources[$resourceId])){
+
+                        $resources = $this->getResource(
+                            $providerId,
+                            $resourceId
+                        );
+
+                        $this->resources = array_merge($resources, $this->resources);
+                    }
+                }
             }
 
             $this->isCached = true;
@@ -203,17 +250,17 @@ class AclResourceService
     }
 
     /**
-     * getResourcesWithNamespaced
+     * getResourcesWithNamespace
      *
      * @param string $nsChar  nsChar
      * @param bool   $refresh $refresh
      *
      * @return array
      */
-    public function getResourcesWithNamespaced($nsChar = '.', $refresh = false)
+    public function getResourcesWithNamespace($nsChar = '.', $getAll = true, $refresh = false)
     {
         $aclResources = array();
-        $resources = $this->getNamespacedResources($nsChar, $refresh);
+        $resources = $this->getNamespacedResources($nsChar, $getAll, $refresh);
 
         foreach ($resources as $ns => $res) {
 
@@ -234,10 +281,15 @@ class AclResourceService
      *
      * @return array
      */
-    public function getNamespacedResources($nsChar = '.', $refresh = false)
+    public function getNamespacedResources($nsChar = '.', $getAll = true, $refresh = false)
     {
         $aclResources = array();
-        $resources = $this->getAllResources($refresh);
+
+        if($getAll){
+            $resources = $this->getAllResources($refresh);
+        } else {
+            $resources = $this->getResources();
+        }
 
         foreach ($resources as $res) {
 
@@ -367,6 +419,29 @@ class AclResourceService
         }
 
         return $resource;
+    }
+
+    protected function buildValidProvider($providerId, $providerData)
+    {
+        if ($providerData instanceof ResourceProviderInterface) {
+
+            return $providerData;
+        }
+
+        if(is_string($providerData)){
+
+            // assumes providerId is set in factory
+            return $this->getServiceLocator()->get($providerData);
+        }
+
+        if (is_array($providerData)) {
+
+            return new ResourceProvider($providerId, $providerData);
+        }
+
+        throw new RcmUserException(
+            'ResourceProvider is not valid: ' . var_export($providerData, true)
+        );
     }
 
     protected function addRootResource()

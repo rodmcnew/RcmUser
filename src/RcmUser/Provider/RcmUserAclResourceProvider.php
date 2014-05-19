@@ -40,14 +40,9 @@ use RcmUser\Acl\Provider\ResourceProviderInterface;
 class RcmUserAclResourceProvider extends ResourceProvider
 {
     /**
-     * @var string PROVIDER_ID
+     * @var
      */
     const PROVIDER_ID = 'RcmUser\Acl';
-
-    /**
-     * @var string $providerId
-     */
-    protected $providerId = self::PROVIDER_ID;
 
     /**
      * default resources  - rcm user needs these,
@@ -63,16 +58,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     public function __construct()
     {
-    }
-
-    /**
-     * getProviderId
-     *
-     * @return string
-     */
-    public function getProviderId()
-    {
-        return $this->providerId;
     }
 
     /**

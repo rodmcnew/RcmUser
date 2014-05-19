@@ -38,7 +38,6 @@ use Zend\View\Model\JsonModel;
  */
 class AdminApiAclResourcesController extends AbstractAdminApiController
 {
-
     /**
      * getList
      *
@@ -55,7 +54,7 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
             'RcmUser\Acl\Service\AclResourceService'
         );
 
-        $resources = $aclResourceService->getResourcesWithNamespaced('.', true);
+        $resources = $aclResourceService->getResourcesWithNamespace('.', true);
 
         return new JsonModel($resources);
     }
