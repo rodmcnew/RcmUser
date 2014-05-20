@@ -55,9 +55,9 @@ class ResourceProvider implements ResourceProviderInterface
     }
 
     /**
-     * getResources
+     * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
-     * containing ALL possible resources
+     * containing ALL possible resources including run-time resources
      *
      * @return array
      */
@@ -69,12 +69,11 @@ class ResourceProvider implements ResourceProviderInterface
     /**
      * getResource
      * Return the requested resource
-     * Can be used to return resources dynamically.
+     * Can be used to return resources dynamically at run-time
      *
      * @param $resourceId
      *
      * @return array
-     * @throws \RcmUser\Exception\RcmUserException
      */
     public function getResource($resourceId)
     {
@@ -83,6 +82,6 @@ class ResourceProvider implements ResourceProviderInterface
             return $this->resources[$resourceId];
         }
 
-        throw new RcmUserException('Resource Id (key) ' . $resourceId . ' not found in resources array.');
+        return null;
     }
 } 

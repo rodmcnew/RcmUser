@@ -242,15 +242,9 @@ class AuthorizeService
      *
      * @return array
      */
-    public function getResources($providerId = null, $resourceId = null)
+    public function getResources($resourceId, $providerId = null)
     {
-        if(empty($providerId) || empty($resourceId)){
-
-            // get general list, not dynamic resources
-            return $this->getAclResourceService()->getResources();
-        }
-
-        return $this->getAclResourceService()->getResource($providerId, $resourceId);
+        return $this->getAclResourceService()->getResources($resourceId, $providerId);
     }
 
     /**
@@ -261,9 +255,8 @@ class AuthorizeService
      *
      * @return Acl
      */
-    public function getAcl($providerId = null, $resourceId = null)
+    public function getAcl($resourceId, $providerId = null)
     {
-
         if (!isset($this->acl)) {
 
             $this->buildAcl();
@@ -272,7 +265,7 @@ class AuthorizeService
         /* resources privileges
             we load the every time so they maybe updated dynamically
         */
-        $resources = $this->getResources($providerId, $resourceId);
+        $resources = $this->getResources($resourceId, $providerId);
 
         foreach ($resources as $resource) {
 
@@ -362,7 +355,7 @@ class AuthorizeService
      *
      * @return bool
      */
-    public function isAllowed($resourceId, $privilege = null, $providerId = null,  $user = null)
+    public function isAllowed($resourceId, $privilege = null, $providerId = null, $user = null)
     {
         if (!($user instanceof User)) {
 
@@ -386,7 +379,7 @@ class AuthorizeService
 
         foreach ($resources as $res) {
 
-            $acl = $this->getAcl($providerId, $resourceId);
+            $acl = $this->getAcl($resourceId, $providerId);
 
             foreach ($userRoles as $userRole) {
 

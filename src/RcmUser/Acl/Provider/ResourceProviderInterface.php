@@ -22,6 +22,10 @@ namespace RcmUser\Acl\Provider;
  * Interface ResourceProviderInterface
  *
  * ResourceProviderInterface Interface
+ * There are multiple methods exposed to allow for greater efficiency
+ * If implemented correctly, each method
+ * allows only what is required to be returned
+ *
  *
  * PHP version 5
  *
@@ -36,9 +40,9 @@ namespace RcmUser\Acl\Provider;
 interface ResourceProviderInterface
 {
     /**
-     * getResources
+     * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
-     * containing ALL possible resources
+     * containing ALL possible resources including run-time resources
      *
      * @return array
      */
@@ -47,7 +51,7 @@ interface ResourceProviderInterface
     /**
      * getResource
      * Return the requested resource
-     * Can be used to return resources dynamically.
+     * Used to return resources dynamically at run-time
      *
      * @param $resourceId
      *

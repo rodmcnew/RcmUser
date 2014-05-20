@@ -155,8 +155,8 @@ return array(
                  * This module inject some of this module's resources.
                  * Also example of a Resource provider
                  */
-
                 'RcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+
                 /* example of resource providers as array *
                 'RcmUser\TEST' => array(
                     'TESTONE' => array(
@@ -184,9 +184,9 @@ return array(
                         ),
                         'name' => 'Test resource two.',
                         'description' => 'test resource two desc.',
-                    ),
+                    )
                 ),
-                */
+                /* - example */
             ),
         ),
     ),

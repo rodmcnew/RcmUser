@@ -61,9 +61,9 @@ class RcmUserAclResourceProvider extends ResourceProvider
     }
 
     /**
-     * getResources
+     * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
-     * containing ALL possible resources
+     * containing ALL possible resources including run-time resources
      *
      * @return array
      */

@@ -448,7 +448,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @param string|AclResource $resource  resource
      * @param string             $privilege privilege
-     * @param string             $providerId providerId
+     * @param string             $providerId resource providerId
      *
      * @return bool
      */
@@ -465,8 +465,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      * isUserAllowed
      *
      * @param string|AclResource $resource  resource
-     * @param null               $privilege privilege
-     * @param string             $providerId providerId
+     * @param string             $privilege privilege
+     * @param string             $providerId resource providerId
      * @param User               $user      user
      *
      * @return mixed
