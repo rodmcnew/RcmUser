@@ -527,6 +527,8 @@ return array(
                 'RcmUser\Controller\AdminCssController',
             'RcmUser\Controller\AdminApiAclRuleController' =>
                 'RcmUser\Controller\AdminApiAclRuleController',
+            'RcmUser\Controller\AdminApiAclRoleController' =>
+                'RcmUser\Controller\AdminApiAclRoleController',
         ),
     ),
 
@@ -619,6 +621,19 @@ return array(
                     'defaults' => array(
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclRuleController',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclRole' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-acl-role[/:id]',
+                    'constraints' => array(
+                        'id' => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclRoleController',
                     ),
                 ),
             ),

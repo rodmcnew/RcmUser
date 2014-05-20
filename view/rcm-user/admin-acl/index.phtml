@@ -74,11 +74,44 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
     <div class="rcmuser">
         <div class="admin-acl">
             <div class="modal-header">
-                <h3 class="modal-title">Add role: </h3>
+                <h1>Add role: </h1>
             </div>
             <div class="modal-body">
+                <form name="addRoleForm" role="form">
+                    <div class="form-group">
+                        <label for="roleId">Role Id: </label>
+                        <input class="form-control" name="roleId" ng-model="roleData.roleId" required="true" type="text">
+                    </div>
+                    <div class="form-group">
+                        <label for="roleId">ParentRole: </label>
 
-                <form>
+                        <!--<select class="form-control" name="parentRoleId" ng-model="roleData.parentRoleId" ng-options="roleNs as role for (ns, role.role.roleId) in roles" ng-required="true">
+                            <option value="">-- choose parent role --</option>
+                        </select>-->
+
+                        <select class="form-control" name="parentRoleId" ng-model="roleData.parentRoleId" required="true">
+                            <option selected="selected" value="">-- choose parent role --</option>
+                            <option ng-repeat="roleObj in roles" value="{{roleObj.role.roleId}}">{{roleObj.role.roleId}}</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description: </label>
+                        <textarea
+                            class="form-control"
+                            name="description"
+                            ng-model="roleData.description"
+                            ng-required="true"
+                            ng-minlength="5"
+                            ng-maxlength="255"
+                            required="true"
+                            >
+                        </textarea>
+                    </div>
+
+                    <div class="error" ngXXhide="addRoleForm.$valid">
+                        <div>addRoleForm.$valid = {{addRoleForm.$valid}}</div><br>
+                        <div>addRoleForm.$error.required = {{!!addRoleForm.$error.required}}</div><br>
+                    </div>
 
                 </form>
 
@@ -220,7 +253,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 <div class="container-fluid admin-acl-role-footer">
     <div class="row">
         <div class="col-sm-2">
-            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRole('sm', resources)">
+            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRole('sm', roles)">
                 <i class="glyphicon glyphicon-plus"></i> add role
             </button>
         </div>

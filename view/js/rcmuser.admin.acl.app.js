@@ -79,15 +79,20 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
             });
         }
 
-        $scope.openAddRole = function (size, resources) {
+        $scope.openAddRole = function (size, roles) {
 
             var addRuleModal = $modal.open({
 
                 templateUrl: 'addRole.html',
                 controller: function ($scope, $modalInstance) {
 
-                    $scope.roleData = {'tet': 'tetet'};
-                    $scope.resources = resources;
+                    $scope.roles = roles;
+
+                    $scope.roleData = {
+                        roleId : 'NewRole',
+                        parentRoleId : '',
+                        description : ''
+                    };
 
                     $scope.addRole = function () {
 
