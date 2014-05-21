@@ -4,6 +4,10 @@
     text-align: left;
 }
 
+.modal-content .dropdown {
+
+}
+
 .rcmuser .alert .glyphicon {
     font-size: 1.5em;
     padding-right: 1em;
@@ -22,7 +26,12 @@
 .rcmuser .admin-acl {
 
 }
+
 .rcmuser .admin-acl label{
+    font-weight: bold;
+}
+
+.rcmuser .admin-acl .title{
     font-weight: bold;
 }
 
@@ -37,6 +46,12 @@
     font-weight: bold;
     text-decoration: none;
     text-transform: capitalize;
+}
+
+.rcmuser .admin-acl .roleHeader {
+    border-bottom: .1em solid #999999;
+    margin: 0 0 .5em 0;
+    padding: 0 0 .5em 0;
 }
 
 .rcmuser .admin-acl .ruleHeader {

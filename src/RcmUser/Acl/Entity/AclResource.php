@@ -38,6 +38,10 @@ use Zend\Permissions\Acl\Resource\GenericResource;
  */
 class AclResource extends GenericResource implements \JsonSerializable
 {
+    /**
+     * @var string $providerId The resource provider Id
+     */
+    protected $providerId = null;
 
     /**
      * @var string $parentResourceId
@@ -99,6 +103,28 @@ class AclResource extends GenericResource implements \JsonSerializable
         }
 
         $this->resourceId = $resourceId;
+    }
+
+    /**
+     * setProviderId
+     *
+     * @param string $providerId providerId
+     *
+     * @return void
+     */
+    public function setProviderId($providerId)
+    {
+        $this->providerId = $providerId;
+    }
+
+    /**
+     * getProviderId
+     *
+     * @return string
+     */
+    public function getProviderId()
+    {
+        return $this->providerId;
     }
 
     /**
@@ -258,6 +284,7 @@ class AclResource extends GenericResource implements \JsonSerializable
         if (($data instanceof AclResource)) {
 
             $this->setResourceId($data->getResourceId());
+            $this->setProviderId($data->getProviderId());
             $this->setParentResourceId($data->getParentResourceId());
             $this->setPrivileges($data->getPrivileges());
             $this->setName($data->getName());
@@ -269,6 +296,9 @@ class AclResource extends GenericResource implements \JsonSerializable
         if (is_array($data)) {
             if (isset($data['resourceId'])) {
                 $this->setResourceId($data['resourceId']);
+            }
+            if (isset($data['providerId'])) {
+                $this->setProviderId($data['providerId']);
             }
             if (isset($data['parentResourceId'])) {
                 $this->setParentResourceId($data['parentResourceId']);
@@ -300,6 +330,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     {
         $obj = new \stdClass();
         $obj->resourceId = $this->getResourceId();
+        $obj->providerId = $this->getProviderId();
         $obj->parentResourceId = $this->getParentResourceId();
         $obj->privileges = $this->getPrivileges();
         $obj->name = $this->getName();

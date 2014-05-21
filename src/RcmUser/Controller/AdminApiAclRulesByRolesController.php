@@ -55,17 +55,14 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
             'RcmUser\Acl\AclDataService'
         );
 
-        $result = $aclDataService->fetchRulesByRoles();
+        try {
 
-        if (!$result->isSuccess()) {
+            $aclRoles = $aclDataService->getRulesByRoles();
+        } catch (\Exception $e) {
 
-            $response = $this->getResponse();
-            $response->setStatusCode(Response::STATUS_CODE_500);
-            $response->setContent(json_encode($result));
-
-            return $response;
+            return $this->getExceptionResponse($e);
         }
 
-        return new JsonModel($result->getData());
+        return new JsonModel($aclRoles);
     }
 } 

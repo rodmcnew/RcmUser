@@ -20,6 +20,7 @@ namespace RcmUser\Acl\Service;
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Config\Config;
 use RcmUser\Result;
 
@@ -196,6 +197,11 @@ class AclDataService
         return $this->aclRoleDataMapper->fetchAll();
     }
 
+    public function fetchRoleByRoleId($roleId){
+
+        return $this->aclRoleDataMapper->fetchByRoleId($roleId);
+    }
+
     /**
      * getRolesWithNamespace
      *
@@ -313,6 +319,44 @@ class AclDataService
     public function fetchRulesByRole($roleId)
     {
         return $this->aclRuleDataMapper->fetchByRole($roleId);
+    }
+
+    /**
+     * createRule
+     *
+     * @param AclRule $aclRule aclRule
+     *
+     * @return Result
+     */
+    public function createRule(AclRule $aclRule)
+    {
+        $rule = $aclRule->getRule();
+        $roleId = $aclRule->getRoleId();
+        $resource = $aclRule->getResource();
+
+        // check required
+        if(empty($rule) || empty($roleId) || empty($resource)){
+
+            return new Result(null, Result::CODE_FAIL, "New rule requires: rule, roleId and resourceId.");
+        }
+
+        // check if is super admin
+        if($roleId == $this->getSuperAdminRole()){
+
+            return new Result(null, Result::CODE_FAIL, "Rules cannot be assigned to super admin.");
+        }
+
+        // check if role exists
+        $result = $this->fetchRoleByRoleId($roleId);
+
+        if(!$result->isSuccess()){
+
+            return new Result(null, Result::CODE_FAIL, "Rules cannot be assigned to role that does not exist.");
+        }
+
+        // @todo validate resource/privilege exists
+
+        return $this->aclRuleDataMapper->create($aclRule);
     }
 
     /**

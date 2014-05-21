@@ -38,6 +38,10 @@ use RcmUser\Exception\RcmUserException;
 class ResourceProvider implements ResourceProviderInterface
 {
     /**
+     * @var string $providerId
+     */
+    protected $providerId = null;
+    /**
      * @var array $resources
      */
     protected $resources = array();
@@ -53,6 +57,29 @@ class ResourceProvider implements ResourceProviderInterface
             $this->resources = $resources;
         }
     }
+
+    /**
+     * setProviderId
+     *
+     * @param string $providerId providerId
+     *
+     * @return void
+     */
+    public function setProviderId($providerId)
+    {
+        $this->providerId = $providerId;
+    }
+
+    /**
+     * getProviderId
+     *
+     * @return string
+     */
+    public function getProviderId()
+    {
+        return $this->providerId;
+    }
+
 
     /**
      * getResources (ALL resources)

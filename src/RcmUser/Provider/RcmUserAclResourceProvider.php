@@ -20,7 +20,6 @@ namespace RcmUser\Provider;
 
 use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Acl\Provider\ResourceProvider;
-use RcmUser\Acl\Provider\ResourceProviderInterface;
 
 /**
  * RcmUserAclResourceProvider
@@ -42,7 +41,7 @@ class RcmUserAclResourceProvider extends ResourceProvider
     /**
      * @var
      */
-    const PROVIDER_ID = 'RcmUser\Acl';
+    const PROVIDER_ID = 'RcmUser';
 
     /**
      * default resources  - rcm user needs these,

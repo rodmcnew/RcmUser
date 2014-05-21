@@ -17,6 +17,7 @@
 
 namespace RcmUser\Acl\Entity;
 
+use RcmUser\Exception\RcmUserException;
 use Zend\Permissions\Acl\Assertion\AssertionInterface;
 
 
@@ -82,9 +83,16 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      * @param string $rule rule
      *
      * @return void
+     * @throws RcmUserException
      */
     public function setRule($rule)
     {
+        if(!$this->isValidRule($rule)) {
+            throw new RcmUserException(
+                "Rule ({$rule}) is invalid."
+            );
+        }
+
         $this->rule = $rule;
     }
 
@@ -151,6 +159,10 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function setPrivilege($privilege)
     {
+        if(empty($privilege)){
+            $privilege = null;
+        }
+        
         $this->privilege = $privilege;
     }
 
@@ -184,6 +196,70 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     public function getAssertion()
     {
         return $this->assertion;
+    }
+
+    /**
+     * isValidRule
+     *
+     * @param $rule
+     *
+     * @return bool
+     */
+    public function isValidRule($rule){
+
+        if($rule == self::RULE_ALLOW
+            || $rule == self::RULE_DENY
+            || $rule == self::RULE_IGNORE
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * populate
+     *
+     * @param array|AclRule $data
+     *
+     * @return void
+     * @throws RcmUserException
+     */
+    public function populate($data = array())
+    {
+        if (($data instanceof AclRule)) {
+
+            $this->setRule($data->getRule());
+            $this->setRoleId($data->getRoleId());
+            $this->setResource($data->getResource());
+            $this->setPrivilege($data->getPrivilege());
+            $this->setAssertion($data->getAssertion());
+
+            return;
+        }
+
+        if (is_array($data)) {
+            if (isset($data['rule'])) {
+                $this->setRule($data['rule']);
+            }
+            if (isset($data['roleId'])) {
+                $this->setRoleId($data['roleId']);
+            }
+            if (isset($data['resource'])) {
+                $this->setResource($data['resource']);
+            }
+            if (isset($data['privilege'])) {
+                $this->setPrivilege($data['privilege']);
+            }
+            if (isset($data['assertion'])) {
+                $this->setAssertion($data['assertion']);
+            }
+            return;
+        }
+
+        throw new RcmUserException(
+            'Rule data could not be populated, data format not supported'
+        );
     }
 
     /**

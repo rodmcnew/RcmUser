@@ -281,7 +281,7 @@ class DoctrineAclRoleDataMapper
      */
     public function getValidInstance(AclRole $aclRole)
     {
-        if (!($aclRole instanceof AclRole)) {
+        if (!($aclRole instanceof DoctrineAclRole)) {
 
             $doctrineAclRole = new DoctrineAclRole();
             $doctrineAclRole->populate($aclRole);

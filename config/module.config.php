@@ -135,8 +135,8 @@ return array(
              *
              * Format for each value of this array is:
              *
-             * 'ProviderId(usually module namespace)' =>
-             * 'MyResource/ResourceProvider(ResourceProviderInterface)'
+             * 'ProviderId(module namespace without back-slashes)' =>
+             * 'MyResource/ResourceProvider(extents ResourceProvider)'
              *
              * OR
              *
@@ -155,10 +155,10 @@ return array(
                  * This module inject some of this module's resources.
                  * Also example of a Resource provider
                  */
-                'RcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
 
                 /* example of resource providers as array *
-                'RcmUser\TEST' => array(
+                'RcmUser.TEST' => array(
                     'TESTONE' => array(
                         'resourceId' => 'TESTONE',
                         'parentResourceId' => null,

@@ -19,6 +19,7 @@ namespace RcmUser\Acl\Db;
 
 
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Exception\RcmUserException;
 
 /**
  * class AclRuleDataMapper

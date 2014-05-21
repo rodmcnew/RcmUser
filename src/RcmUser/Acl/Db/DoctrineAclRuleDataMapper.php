@@ -20,6 +20,7 @@ namespace RcmUser\Acl\Db;
 
 use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Acl\Entity\DoctrineAclRule;
 use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Result;
 
@@ -205,8 +206,15 @@ class DoctrineAclRuleDataMapper
      */
     public function create(AclRule $aclRule)
     {
-        // todo write me
-        parent::create($aclRule);
+        $result = $this->getValidInstance($aclRule);
+
+        $aclRule = $result->getData();
+
+        // @todo if error, fail with null
+        $this->getEntityManager()->persist($aclRule);
+        $this->getEntityManager()->flush();
+
+        return new Result($aclRule);
     }
 
     /**
@@ -247,4 +255,19 @@ class DoctrineAclRuleDataMapper
         // todo write me
         parent::delete($aclRule);
     }
+
+
+    public function getValidInstance(AclRule $aclRule)
+    {
+        if (!($aclRule instanceof DoctrineAclRule)) {
+
+            $doctrineAclRole = new DoctrineAclRule();
+            $doctrineAclRole->populate($aclRule);
+
+            $aclRule = $doctrineAclRole;
+        }
+
+        return new Result($aclRule);
+    }
+
 } 

@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Acl\Entity\AclRule;
 use Zend\View\Model\JsonModel;
 
 /**
@@ -36,7 +37,6 @@ use Zend\View\Model\JsonModel;
  */
 class AdminApiAclRuleController extends AbstractAdminApiController
 {
-
     /**
      * get
      *
@@ -68,7 +68,22 @@ class AdminApiAclRuleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('post', json_encode($data)));
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+
+        try {
+
+            $aclRule = new AclRule();
+            $aclRule->populate($data);
+            $result = $aclDataService->createRule($aclRule);
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
     }
 
     /**

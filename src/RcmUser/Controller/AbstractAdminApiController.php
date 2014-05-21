@@ -70,13 +70,34 @@ class AbstractAdminApiController extends AbstractRestfulController
         return $response;
     }
 
+    /**
+     * getExceptionResponse
+     *
+     * @param \Exception $e e
+     *
+     * @return \Zend\Stdlib\ResponseInterface
+     */
     public function getExceptionResponse(\Exception $e)
     {
-        $result = new \stdClass();
+        $result = new Result(
+            null,
+            $e->getCode(),
+            $e->getMessage()
+        );
 
-        $result->code = $e->getCode();
-        $result->message = $e->getMessage();
-        $result->trace = $e->getTrace();
+        $response = $this->getResponse();
+        $response->setContent(json_encode($result));
+        return $response;
+    }
+
+    /**
+     * getJsonResponse
+     *
+     * @param $result
+     *
+     * @return \Zend\Stdlib\ResponseInterface
+     */
+    public function getJsonResponse($result){
 
         $response = $this->getResponse();
         $response->setContent(json_encode($result));
