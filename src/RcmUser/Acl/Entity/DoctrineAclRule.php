@@ -64,7 +64,7 @@ class DoctrineAclRule extends AclRule
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    protected $resource;
+    protected $resourceId;
 
     /**
      * @var string

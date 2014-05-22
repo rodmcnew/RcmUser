@@ -63,12 +63,12 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     protected $roleId = null;
 
     /**
-     * @var array/string
+     * @var string
      */
-    protected $resource = null;
+    protected $resourceId = null;
 
     /**
-     * @var array/string
+     * @var string
      */
     protected $privilege = null;
 
@@ -129,15 +129,15 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * setResource
+     * setResourceId
      *
-     * @param string $resource resource
+     * @param string $resourceId resourceId
      *
      * @return void
      */
-    public function setResource($resource)
+    public function setResourceId($resourceId)
     {
-        $this->resource = $resource;
+        $this->resourceId = $resourceId;
     }
 
     /**
@@ -145,9 +145,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      *
      * @return string
      */
-    public function getResource()
+    public function getResourceId()
     {
-        return $this->resource;
+        return $this->resourceId;
     }
 
     /**
@@ -162,7 +162,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
         if(empty($privilege)){
             $privilege = null;
         }
-        
+
         $this->privilege = $privilege;
     }
 
@@ -231,7 +231,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
 
             $this->setRule($data->getRule());
             $this->setRoleId($data->getRoleId());
-            $this->setResource($data->getResource());
+            $this->setResourceId($data->getResourceId());
             $this->setPrivilege($data->getPrivilege());
             $this->setAssertion($data->getAssertion());
 
@@ -245,8 +245,8 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
             if (isset($data['roleId'])) {
                 $this->setRoleId($data['roleId']);
             }
-            if (isset($data['resource'])) {
-                $this->setResource($data['resource']);
+            if (isset($data['resourceId'])) {
+                $this->setResourceId($data['resourceId']);
             }
             if (isset($data['privilege'])) {
                 $this->setPrivilege($data['privilege']);
@@ -272,7 +272,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
         $obj = new \stdClass();
         $obj->rule = $this->getRule();
         $obj->roleId = $this->getRoleId();
-        $obj->resource = $this->getResource();
+        $obj->resourceId = $this->getResourceId();
         $obj->privilege = $this->getPrivilege();
 
         return $obj;

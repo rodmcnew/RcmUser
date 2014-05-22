@@ -173,12 +173,12 @@ class DoctrineAclRuleDataMapper
     public function fetchByResource($resourceId)
     {
         //$rules = $this->getEntityManager()->getRepository($this->getEntityClass())
-        //    ->findBy(array('resource' => $resourceId));
+        //    ->findBy(array('resourceId' => $resourceId));
 
         $query = $this->getEntityManager()->createQuery(
             'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
             'INDEX BY rule.id ' .
-            'WHERE rule.resource = ?1'
+            'WHERE rule.resourceId = ?1'
         );
 
         $query->setParameter(1, $resourceId);
@@ -190,7 +190,7 @@ class DoctrineAclRuleDataMapper
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Rules could not be found by resource.'
+                'Rules could not be found by resource id.'
             );
         }
 
@@ -226,8 +226,55 @@ class DoctrineAclRuleDataMapper
      */
     public function read(AclRule $aclRule)
     {
-        // todo write me
-        parent::read($aclRule);
+        $rule = $aclRule->getRule();
+        $roleId = $aclRule->getRoleId();
+        $resourceId = $aclRule->getResourceId();
+        $privilege = $aclRule->getPrivilege();
+
+
+        // check required
+        if(empty($rule) || empty($roleId) || empty($resourceId)){
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Rule could not be found by rule, roleId and resourceId."
+            );
+        }
+
+        if($privilege === null){
+            $privQuery = 'AND rule.privilege is NULL';
+        } else {
+            $privQuery = 'AND rule.privilege = ?4';
+        }
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
+            'WHERE rule.rule = ?1 ' .
+            'AND rule.roleId = ?2 ' .
+            'AND rule.resourceId = ?3 ' .
+            $privQuery
+        );
+
+        $query->setParameter(1, $rule);
+        $query->setParameter(2, $roleId);
+        $query->setParameter(3, $resourceId);
+        if($privilege !== null){
+            $query->setParameter(4, $privilege);
+        }
+
+        $rules = $query->getResult();
+
+        if (empty($rules[0])) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Rules could not be found by data passed.'
+            );
+        }
+
+        return new Result($rules[0]);
     }
 
     /**
@@ -252,11 +299,28 @@ class DoctrineAclRuleDataMapper
      */
     public function delete(AclRule $aclRule)
     {
-        // todo write me
-        parent::delete($aclRule);
+        $result = $this->getValidInstance($aclRule);
+
+        $aclRule = $result->getData();
+
+        $this->getEntityManager()->remove($aclRule);
+        $this->getEntityManager()->flush();
+
+        // @todo validate action
+        return new Result(
+            null,
+            Result::CODE_SUCCESS
+        );
     }
 
 
+    /**
+     * getValidInstance
+     *
+     * @param AclRule $aclRule aclRule
+     *
+     * @return Result
+     */
     public function getValidInstance(AclRule $aclRule)
     {
         if (!($aclRule instanceof DoctrineAclRule)) {

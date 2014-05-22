@@ -68,11 +68,11 @@ interface AclRuleDataMapperInterface
     /**
      * fetchByResource
      *
-     * @param string $resource resource
+     * @param string $resourceId resourceId
      *
      * @return Result
      */
-    public function fetchByResource($resource);
+    public function fetchByResource($resourceId);
 
     /**
      * create

@@ -17,6 +17,9 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Result;
 use Zend\View\Model\JsonModel;
 
 /**
@@ -51,7 +54,7 @@ class AdminApiAclRoleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('get' . $id));
+        return $this->getJsonResponse(new Result(null, Result::CODE_FAIL, 'Method not yet available.'));
     }
 
     /**
@@ -68,7 +71,21 @@ class AdminApiAclRoleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('post', json_encode($data)));
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        try {
+
+            $aclRole = new AclRole();
+            $aclRole->populate($data);
+            $result = $aclDataService->createRole($aclRole);
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
     }
 
     /**
@@ -85,6 +102,21 @@ class AdminApiAclRoleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('delete ID: ' . urldecode($id)));
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        try {
+
+            $aclRole = new AclRole();
+            $aclRole->setRoleId($id);
+
+            $result = $aclDataService->deleteRole($aclRole);
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
     }
 } 

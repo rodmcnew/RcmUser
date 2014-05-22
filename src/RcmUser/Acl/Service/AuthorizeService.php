@@ -298,23 +298,23 @@ class AuthorizeService
             $rules = $this->getRules($resources);
         }
 
-        foreach ($rules as $rule) {
+        foreach ($rules as $aclRule) {
 
-            if ($rule->getRule() == AclRule::RULE_ALLOW) {
+            if ($aclRule->getRule() == AclRule::RULE_ALLOW) {
 
                 $this->acl->allow(
-                    $rule->getRoleId(),
-                    $rule->getResource(),
-                    $rule->getPrivilege(),
-                    $rule->getAssertion()
+                    $aclRule->getRoleId(),
+                    $aclRule->getResourceId(),
+                    $aclRule->getPrivilege(),
+                    $aclRule->getAssertion()
                 );
-            } elseif ($rule->getRule() == AclRule::RULE_DENY) {
+            } elseif ($aclRule->getRule() == AclRule::RULE_DENY) {
 
                 $this->acl->deny(
-                    $rule->getRoleId(),
-                    $rule->getResource(),
-                    $rule->getPrivilege(),
-                    $rule->getAssertion()
+                    $aclRule->getRoleId(),
+                    $aclRule->getResourceId(),
+                    $aclRule->getPrivilege(),
+                    $aclRule->getAssertion()
                 );
             }
         }

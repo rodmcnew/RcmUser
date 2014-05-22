@@ -72,7 +72,6 @@ class AdminApiAclRuleController extends AbstractAdminApiController
             'RcmUser\Acl\AclDataService'
         );
 
-
         try {
 
             $aclRule = new AclRule();
@@ -100,6 +99,22 @@ class AdminApiAclRuleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('delete ID: ' . urldecode($id)));
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        try {
+
+            $data = json_decode(urldecode($id), true);
+
+            $aclRule = new AclRule();
+            $aclRule->populate($data);
+            $result = $aclDataService->deleteRule($aclRule);
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
     }
 } 

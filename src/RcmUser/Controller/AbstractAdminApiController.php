@@ -20,6 +20,7 @@ namespace RcmUser\Controller;
 use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\Result;
 use Zend\Mvc\Controller\AbstractRestfulController;
+use Zend\View\Model\JsonModel;
 
 /**
  * Class AbstractAdminApiController
@@ -41,14 +42,16 @@ class AbstractAdminApiController extends AbstractRestfulController
     /**
      * isAllowed
      *
-     * @param string $resource  resource
-     * @param string $privilege privilege
+     * @param string $resourceId resourceId
+     * @param string $privilege  privilege
      *
      * @return mixed
      */
-    public function isAllowed($resource = 'rcmuser', $privilege = null)
+    public function isAllowed($resourceId = 'rcmuser', $privilege = null)
     {
-        return $this->rcmUserIsAllowed($resource, $privilege, RcmUserAclResourceProvider::PROVIDER_ID);
+        return $this->rcmUserIsAllowed(
+            $resourceId, $privilege, RcmUserAclResourceProvider::PROVIDER_ID
+        );
     }
 
     /**
@@ -82,11 +85,12 @@ class AbstractAdminApiController extends AbstractRestfulController
         $result = new Result(
             null,
             $e->getCode(),
-            $e->getMessage()
+            $e->getMessage()  . " | " .$e->getFile() . ":" . $e->getLine() . " | " . $e->getTraceAsString()
         );
 
         $response = $this->getResponse();
         $response->setContent(json_encode($result));
+
         return $response;
     }
 
@@ -97,10 +101,19 @@ class AbstractAdminApiController extends AbstractRestfulController
      *
      * @return \Zend\Stdlib\ResponseInterface
      */
-    public function getJsonResponse($result){
+    public function getJsonResponse($result)
+    {
+        $view = new JsonModel();
+        $view->setTerminal(true);
 
         $response = $this->getResponse();
+        $response->getHeaders()->addHeaders(
+            array(
+                'Content-Type' => 'application/json'
+            )
+        );
         $response->setContent(json_encode($result));
+
         return $response;
     }
 } 

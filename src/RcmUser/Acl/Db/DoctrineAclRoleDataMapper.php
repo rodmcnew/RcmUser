@@ -239,7 +239,9 @@ class DoctrineAclRoleDataMapper
      */
     public function update(AclRole $aclRole)
     {
-        $aclRole = $this->getValidInstance($aclRole);
+        $result = $this->getValidInstance($aclRole);
+
+        $aclRole = $result->getData();
 
         $this->getEntityManager()->merge($aclRole);
         $this->getEntityManager()->flush();
@@ -260,7 +262,9 @@ class DoctrineAclRoleDataMapper
      */
     public function delete(AclRole $aclRole)
     {
-        $aclRole = $this->getValidInstance($aclRole);
+        $result = $this->getValidInstance($aclRole);
+
+        $aclRole = $result->getData();
 
         $this->getEntityManager()->remove($aclRole);
         $this->getEntityManager()->flush();
