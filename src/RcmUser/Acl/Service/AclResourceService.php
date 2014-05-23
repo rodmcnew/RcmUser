@@ -19,6 +19,7 @@ namespace RcmUser\Acl\Service;
 
 use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Acl\Provider\ResourceProvider;
+use RcmUser\Acl\Provider\ResourceProviderInterface;
 use RcmUser\Exception\RcmUserException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -251,7 +252,7 @@ class AclResourceService
      * getResourceStack - build a resource stack for the
      * provided resource to the top parent
      *
-     * @param ResourceProvider $provider  provider
+     * @param ResourceProviderInterface $provider  provider
      * @param AclResource      $resource  resource
      * @param array            $resources resources
      * @param int              $nestLevel nestLevel
@@ -260,7 +261,9 @@ class AclResourceService
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function getResourceStack(
-        ResourceProvider $provider, AclResource $resource, &$resources = array(),
+        ResourceProviderInterface $provider,
+        AclResource $resource,
+        &$resources = array(),
         $nestLevel = 0
     )
     {
@@ -326,7 +329,7 @@ class AclResourceService
             return null;
         }
 
-        if (!($this->resourceProviders[$providerId] instanceof ResourceProvider)) {
+        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
                 $this->resourceProviders[$providerId],
                 $providerId
@@ -341,7 +344,7 @@ class AclResourceService
      *
      * @param string $resourceId resourceId
      *
-     * @return null|ResourceProvider
+     * @return null|ResourceProviderInterface
 
     public function getProviderByResourceId($resourceId)
      * {
@@ -571,12 +574,12 @@ class AclResourceService
      * @param mixed  $providerData providerData
      * @param string $providerId   providerId
      *
-     * @return ResourceProvider
+     * @return ResourceProviderInterface
      * @throws \RcmUser\Exception\RcmUserException
      */
     protected function buildValidProvider($providerData, $providerId)
     {
-        if ($providerData instanceof ResourceProvider) {
+        if ($providerData instanceof ResourceProviderInterface) {
 
             $provider = $providerData;
         } elseif (is_string($providerData)) {
