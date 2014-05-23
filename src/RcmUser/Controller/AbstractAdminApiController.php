@@ -19,6 +19,7 @@ namespace RcmUser\Controller;
 
 use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\Result;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractRestfulController;
 use Zend\View\Model\JsonModel;
 

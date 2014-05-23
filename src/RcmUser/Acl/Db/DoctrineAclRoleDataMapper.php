@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\DoctrineAclRole;
 use RcmUser\Db\DoctrineMapperInterface;
+use RcmUser\Exception\RcmUserException;
 use RcmUser\Result;
 
 /**
@@ -157,6 +158,19 @@ class DoctrineAclRoleDataMapper
         $result = $this->getValidInstance($aclRole);
 
         $aclRole = $result->getData();
+        
+        $result = $this->read($aclRole);
+
+        $existingAclRole = $result->getData();
+
+        if ($result->isSuccess() && !empty($existingAclRole)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Acl Role already exists: ' . var_export($aclRole, true)
+            );
+        }
 
         // @todo if error, fail with null
         $this->getEntityManager()->persist($aclRole);
@@ -211,6 +225,15 @@ class DoctrineAclRoleDataMapper
 
         $aclRole = $result->getData();
 
+        if (empty($aclRole)) {
+
+            return new Result(
+                null,
+                Result::CODE_SUCCESS,
+                'Role not found to update: ' . $aclRole->getRoleId()
+            );
+        }
+
         $this->getEntityManager()->merge($aclRole);
         $this->getEntityManager()->flush();
 
@@ -231,6 +254,7 @@ class DoctrineAclRoleDataMapper
      */
     public function delete(AclRole $aclRole)
     {
+        $aclRoleId = $aclRole->getRoleId();
         $result = $this->read($aclRole);
 
         if (!$result->isSuccess()) {
@@ -239,6 +263,15 @@ class DoctrineAclRoleDataMapper
         }
 
         $aclRole = $result->getData();
+
+        if (empty($aclRole)) {
+
+            return new Result(
+                null,
+                Result::CODE_SUCCESS,
+                'Role not found to update: ' . $aclRoleId
+            );
+        }
 
         $aclRoleId = $aclRole->getRoleId();
         $parentRoleId = $aclRole->getParentRoleId();
