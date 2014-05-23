@@ -113,7 +113,13 @@ class DoctrineAclRoleDataMapper
 
         $roles = $query->getResult();
 
-        return new Result($roles);
+        $result = new Result($roles);
+
+        if(empty($roles)){
+            $result->setMessage('No roles found,');
+        }
+
+        return $result;
     }
 
     /**
@@ -128,7 +134,13 @@ class DoctrineAclRoleDataMapper
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findOneBy(array('roleId' => $roleId));
 
-        return new Result($roles);
+        $result = new Result($roles);
+
+        if(empty($roles)){
+            $result->setMessage('No roles found,');
+        }
+
+        return $result;
     }
 
     /**
@@ -143,7 +155,13 @@ class DoctrineAclRoleDataMapper
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findBy(array('parentRoleId' => $parentRoleId));
 
-        return new Result($roles);
+        $result = new Result($roles);
+
+        if(empty($roles)){
+            $result->setMessage('No roles found,');
+        }
+
+        return $result;
     }
 
     /**
@@ -158,7 +176,7 @@ class DoctrineAclRoleDataMapper
         $result = $this->getValidInstance($aclRole);
 
         $aclRole = $result->getData();
-        
+
         $result = $this->read($aclRole);
 
         $existingAclRole = $result->getData();

@@ -182,6 +182,19 @@ class DoctrineAclRuleDataMapper
 
         $aclRule = $result->getData();
 
+        $result = $this->read($aclRule);
+
+        $existingAclRule = $result->getData();
+
+        if ($result->isSuccess() && !empty($existingAclRule)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Acl Role already exists: ' . var_export($aclRule, true)
+            );
+        }
+
         // @todo if error, fail with null
         $this->getEntityManager()->persist($aclRule);
         $this->getEntityManager()->flush();
@@ -203,7 +216,6 @@ class DoctrineAclRuleDataMapper
         $resourceId = $aclRule->getResourceId();
         $privilege = $aclRule->getPrivilege();
 
-
         // check required
         if (empty($rule) || empty($roleId) || empty($resourceId)) {
 
@@ -215,8 +227,10 @@ class DoctrineAclRuleDataMapper
         }
 
         if ($privilege === null) {
+
             $privQuery = 'AND rule.privilege is NULL';
         } else {
+
             $privQuery = 'AND rule.privilege = ?4';
         }
 
@@ -267,7 +281,12 @@ class DoctrineAclRuleDataMapper
      */
     public function delete(AclRule $aclRule)
     {
-        $result = $this->getValidInstance($aclRule);
+        $result = $this->read($aclRule);
+
+        if (!$result->isSuccess()) {
+
+            return $result;
+        }
 
         $aclRule = $result->getData();
 
