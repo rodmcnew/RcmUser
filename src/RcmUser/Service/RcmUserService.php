@@ -395,7 +395,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
         $currentUser = $this->getIdentity();
 
-        if ($user->getId() !== $currentUser->getId()) {
+        if (empty($currentUser) || $user->getId() !== $currentUser->getId()) {
 
             throw new RcmUserException(
                 'SetIdentity expects user to be get same identity as current, ' .
@@ -414,7 +414,14 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function refreshIdentity()
     {
-        $user = $this->readUser($this->getIdentity());
+        $currentUser = $this->getIdentity();
+
+        if(empty($currentUser)){
+
+            return null;
+        }
+
+        $user = $this->readUser($currentUser);
 
         if (empty($user->getId())) {
 
@@ -427,14 +434,29 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * getIdentity
+     * getIdentity - get logged in user
      *
      * @return User
      */
     public function getIdentity()
     {
+        return $this->getUserAuthService()->getIdentity();
+    }
 
+    /**
+     * getCurrentUser
+     * Get current logged in user or guest in no one is logged in
+     *
+     * @return mixed|null
+     */
+    public function getCurrentUser()
+    {
         return $this->getUserAuthService()->getIdentity($this->buildNewUser());
+    }
+
+    public function getTempUser()
+    {
+
     }
 
     //@todo implement guestIdentity and hasIdentity
@@ -454,11 +476,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function isAllowed($resourceId, $privilege = null, $providerId = null)
     {
-
         $user = $this->getIdentity();
 
         return $this->isUserAllowed($resourceId, $privilege, $providerId, $user);
-
     }
 
     /**
@@ -479,7 +499,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $user = null
     ) {
         if (!($user instanceof User)) {
-            throw new RcmUserException('Instance of User expected.');
+
+            return false;
         }
 
         return $this->getAuthorizeService()->isAllowed(

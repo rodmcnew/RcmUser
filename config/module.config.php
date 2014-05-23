@@ -119,6 +119,11 @@ return array(
              */
             'SuperAdminRole' => 'admin',
 
+            /**
+             * @todo work this out
+             */
+            'GuestRole' => 'guest',
+
             /*
              * ResourceProviders
              * Used in:
