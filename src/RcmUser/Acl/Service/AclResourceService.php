@@ -588,7 +588,10 @@ class AclResourceService
         } elseif (is_array($providerData)) {
 
             $provider = new ResourceProvider($providerData);
-        } else {
+        }
+
+        if (!($provider instanceof ResourceProviderInterface)) {
+
             throw new RcmUserException(
                 'ResourceProvider is not valid: ' . var_export($providerData, true)
             );
