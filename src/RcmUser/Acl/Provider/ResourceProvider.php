@@ -1,8 +1,8 @@
 <?php
 /**
- * ResourceProviderInterface.php
+ * ResourceProvider.php
  *
- * ResourceProviderInterface
+ * ResourceProvider
  *
  * PHP version 5
  *
@@ -17,13 +17,11 @@
 
 namespace RcmUser\Acl\Provider;
 
-use RcmUser\Exception\RcmUserException;
-
 
 /**
- * Interface ResourceProviderInterface
+ * class ResourceProvider
  *
- * ResourceProviderInterface Interface
+ * ResourceProvider
  *
  * PHP version 5
  *
@@ -35,7 +33,7 @@ use RcmUser\Exception\RcmUserException;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class ResourceProvider
+class ResourceProvider implements ResourceProviderInterface
 {
     /**
      * @var string $providerId
