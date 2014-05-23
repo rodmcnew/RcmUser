@@ -68,7 +68,7 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     public function getResources()
     {
-        if(empty($this->resources)){
+        if (empty($this->resources)) {
 
             $this->buildResources();
         }
@@ -81,14 +81,15 @@ class RcmUserAclResourceProvider extends ResourceProvider
      * Return the requested resource
      * Can be used to return resources dynamically.
      *
-     * @param $resourceId
+     * @param string $resourceId resourceId
      *
      * @return array
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function getResource($resourceId){
+    public function getResource($resourceId)
+    {
 
-        if(empty($this->resources)){
+        if (empty($this->resources)) {
 
             $this->buildResources();
         }

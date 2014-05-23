@@ -85,8 +85,13 @@ class AbstractAdminApiController extends AbstractRestfulController
         $result = new Result(
             null,
             $e->getCode(),
-            $e->getMessage()  . " | " .$e->getFile() . ":" . $e->getLine() . " | " . $e->getTraceAsString()
+            $e->getMessage()
         );
+        /*
+        . " | " .$e->getFile() .
+         ":" . $e->getLine() .
+         " | " . $e->getTraceAsString()
+        */
 
         $response = $this->getResponse();
         $response->setContent(json_encode($result));
@@ -97,7 +102,7 @@ class AbstractAdminApiController extends AbstractRestfulController
     /**
      * getJsonResponse
      *
-     * @param $result
+     * @param Result $result result
      *
      * @return \Zend\Stdlib\ResponseInterface
      */

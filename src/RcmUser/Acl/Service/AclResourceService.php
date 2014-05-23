@@ -138,7 +138,7 @@ class AclResourceService
     /**
      * setMaxResourceNesting
      *
-     * @param int $maxResourceNesting
+     * @param int $maxResourceNesting Max nesting levels for resources
      *
      * @return void
      */
@@ -160,8 +160,8 @@ class AclResourceService
     /**
      * getResources - Get a resource and all of its parents
      *
-     * @param $providerId
-     * @param $resourceId
+     * @param string $resourceId resourceId
+     * @param string $providerId providerId
      *
      * @return array
      */
@@ -252,10 +252,10 @@ class AclResourceService
      * getResourceStack - build a resource stack for the
      * provided resource to the top parent
      *
-     * @param ResourceProviderInterface $provider  provider
-     * @param AclResource      $resource  resource
-     * @param array            $resources resources
-     * @param int              $nestLevel nestLevel
+     * @param ResourceProviderInterface $provider   provider
+     * @param AclResource               $resource   resource
+     * @param array                     &$resources resources
+     * @param int                       $nestLevel  nestLevel
      *
      * @return array
      * @throws \RcmUser\Exception\RcmUserException
@@ -265,13 +265,13 @@ class AclResourceService
         AclResource $resource,
         &$resources = array(),
         $nestLevel = 0
-    )
-    {
+    ) {
         if ($nestLevel > $this->maxResourceNesting) {
 
             throw new RcmUserException(
                 'Max resource nesting exceded, max nesting level is '
-                . $this->maxResourceNesting);
+                . $this->maxResourceNesting
+            );
         }
 
         //$resources[$resource->getResourceId()] = $resource;
@@ -329,7 +329,8 @@ class AclResourceService
             return null;
         }
 
-        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)) {
+        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
+        ) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
                 $this->resourceProviders[$providerId],
                 $providerId
@@ -365,10 +366,10 @@ class AclResourceService
     /**
      * getResourcesWithNamespace
      *
-     * @param string $nsChar
-     * @param null   $providerId
-     * @param null   $resourceId
-     * @param bool   $refresh
+     * @param string $resourceId resourceId
+     * @param string $providerId providerId
+     * @param bool   $refresh    refresh
+     * @param string $nsChar     nsChar
      *
      * @return array
      */
@@ -377,8 +378,7 @@ class AclResourceService
         $providerId = null,
         $refresh = false,
         $nsChar = '.'
-    )
-    {
+    ) {
         $aclResources = array();
         $resources = $this->getNamespacedResources(
             $resourceId,
@@ -401,10 +401,10 @@ class AclResourceService
     /**
      * getNamespacedResources
      *
-     * @param string $nsChar
-     * @param null   $providerId
-     * @param null   $resourceId
-     * @param bool   $refresh
+     * @param string $resourceId resourceId
+     * @param string $providerId providerId
+     * @param bool   $refresh    refresh
+     * @param string $nsChar     nsChar
      *
      * @return array
      */
@@ -413,8 +413,7 @@ class AclResourceService
         $providerId = null,
         $refresh = false,
         $nsChar = '.'
-    )
-    {
+    ) {
         $aclResources = array();
 
         if (empty($resourceId)) {
@@ -455,8 +454,7 @@ class AclResourceService
         AclResource $aclResource,
         $aclResources,
         $nsChar = '.'
-    )
-    {
+    ) {
         $parentId = $aclResource->getParentResourceId();
         $ns = $aclResource->getResourceId();
         if (!empty($parentId) && isset($aclResources[$parentId])) {
@@ -464,10 +462,10 @@ class AclResourceService
             $parent = $aclResources[$parentId];
 
             $ns = $this->createNamespaceId(
-                    $parent,
-                    $aclResources,
-                    $nsChar
-                ) . $nsChar . $ns;
+                $parent,
+                $aclResources,
+                $nsChar
+            ) . $nsChar . $ns;
         }
 
         return $ns;
@@ -476,7 +474,7 @@ class AclResourceService
     /**
      * addRootResource
      *
-     * @param array $resources resources
+     * @param array &$resources resources
      *
      * @return array
      */
@@ -580,7 +578,7 @@ class AclResourceService
     protected function buildValidProvider($providerData, $providerId)
     {
         $provider = null;
-        
+
         if ($providerData instanceof ResourceProviderInterface) {
 
             $provider = $providerData;

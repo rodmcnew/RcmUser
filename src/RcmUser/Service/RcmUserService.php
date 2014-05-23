@@ -446,9 +446,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /**
      * isAllowed
      *
-     * @param string             $resourceId resourceId
-     * @param string             $privilege  privilege
-     * @param string             $providerId resource providerId
+     * @param string $resourceId resourceId
+     * @param string $privilege  privilege
+     * @param string $providerId resource providerId
      *
      * @return bool
      */
@@ -457,23 +457,27 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
         $user = $this->getIdentity();
 
-        return $this->isUserAllowed($resourceId , $privilege, $providerId, $user);
+        return $this->isUserAllowed($resourceId, $privilege, $providerId, $user);
 
     }
 
     /**
      * isUserAllowed
      *
-     * @param string             $resourceId resourceId
-     * @param string             $privilege  privilege
-     * @param string             $providerId resource providerId
-     * @param User               $user       user
+     * @param string $resourceId resourceId
+     * @param string $privilege  privilege
+     * @param string $providerId resource providerId
+     * @param User   $user       user
      *
      * @return mixed
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function isUserAllowed($resourceId, $privilege = null, $providerId = null, $user = null)
-    {
+    public function isUserAllowed(
+        $resourceId,
+        $privilege = null,
+        $providerId = null,
+        $user = null
+    ) {
         if (!($user instanceof User)) {
             throw new RcmUserException('Instance of User expected.');
         }

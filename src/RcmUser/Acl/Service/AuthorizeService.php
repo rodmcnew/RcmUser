@@ -203,7 +203,7 @@ class AuthorizeService
      */
     public function getRules($resources = null)
     {
-        if(empty($resources)){
+        if (empty($resources)) {
             $result = $this->aclRuleDataMapper->fetchAll();
 
             if (!$result->isSuccess()) {
@@ -216,9 +216,11 @@ class AuthorizeService
         }
         $rules = array();
 
-        foreach($resources as $resourceId => $resource){
+        foreach ($resources as $resourceId => $resource) {
 
-            $result = $this->aclRuleDataMapper->fetchByResource($resource->getResourceId());
+            $result = $this->aclRuleDataMapper->fetchByResource(
+                $resource->getResourceId()
+            );
 
             if (!$result->isSuccess()) {
 
@@ -233,25 +235,26 @@ class AuthorizeService
     }
 
 
-
     /**
      * getResources
      *
-     * @param string $providerId
-     * @param string $resourceId
+     * @param string $resourceId resourceId
+     * @param string $providerId providerId
      *
      * @return array
      */
     public function getResources($resourceId, $providerId = null)
     {
-        return $this->getAclResourceService()->getResources($resourceId, $providerId);
+        return $this->getAclResourceService()->getResources(
+            $resourceId, $providerId
+        );
     }
 
     /**
      * getAcl
      *
-     * @param null $providerId
-     * @param null $resourceId
+     * @param string $resourceId resourceId
+     * @param string $providerId providerId
      *
      * @return Acl
      */
@@ -288,7 +291,7 @@ class AuthorizeService
         }
 
         // rules
-        if(empty($providerId) || empty($resourceId)){
+        if (empty($providerId) || empty($resourceId)) {
 
             // get all
             $rules = $this->getRules();
@@ -348,15 +351,16 @@ class AuthorizeService
     /**
      * isAllowed
      *
-     * @param string $resourceId   resourceId
+     * @param string $resourceId resourceId
      * @param string $privilege  privilege
      * @param string $providerId providerId
      * @param User   $user       user
      *
      * @return bool
      */
-    public function isAllowed($resourceId, $privilege = null, $providerId = null, $user = null)
-    {
+    public function isAllowed(
+        $resourceId, $privilege = null, $providerId = null, $user = null
+    ) {
         if (!($user instanceof User)) {
 
             return false;

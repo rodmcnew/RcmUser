@@ -47,7 +47,7 @@ class ResourceProvider implements ResourceProviderInterface
     /**
      * __construct
      *
-     * @param array  $resources  resources
+     * @param array $resources resources
      */
     public function __construct($resources)
     {
@@ -96,7 +96,7 @@ class ResourceProvider implements ResourceProviderInterface
      * Return the requested resource
      * Can be used to return resources dynamically at run-time
      *
-     * @param $resourceId
+     * @param string $resourceId resourceId
      *
      * @return array
      */

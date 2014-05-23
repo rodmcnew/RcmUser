@@ -68,7 +68,7 @@ interface ResourceProviderInterface
      * Return the requested resource
      * Can be used to return resources dynamically at run-time
      *
-     * @param $resourceId
+     * @param string $resourceId $resourceId
      *
      * @return array
      */

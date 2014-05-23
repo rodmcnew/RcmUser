@@ -18,8 +18,7 @@
 namespace RcmUser\Acl\Entity;
 
 use RcmUser\Exception\RcmUserException;
-use Zend\Permissions\Acl\Assertion\AssertionInterface;
-
+//\Zend\Permissions\Acl\Assertion\AssertionInterface
 
 /**
  * AclRule
@@ -87,7 +86,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function setRule($rule)
     {
-        if(!$this->isValidRule($rule)) {
+        if (!$this->isValidRule($rule)) {
             throw new RcmUserException(
                 "Rule ({$rule}) is invalid."
             );
@@ -159,7 +158,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function setPrivilege($privilege)
     {
-        if(empty($privilege)){
+        if (empty($privilege)) {
             $privilege = null;
         }
 
@@ -179,7 +178,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * setAssertion
      *
-     * @param AssertionInterface/string $assertion assertion
+     * @param AssertionInterface\string $assertion assertion
      *
      * @return void
      */
@@ -201,13 +200,13 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * isValidRule
      *
-     * @param $rule
+     * @param string $rule rule
      *
      * @return bool
      */
-    public function isValidRule($rule){
-
-        if($rule == self::RULE_ALLOW
+    public function isValidRule($rule)
+    {
+        if ($rule == self::RULE_ALLOW
             || $rule == self::RULE_DENY
             || $rule == self::RULE_IGNORE
         ) {
@@ -220,7 +219,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * populate
      *
-     * @param array|AclRule $data
+     * @param array|AclRule $data data
      *
      * @return void
      * @throws RcmUserException
@@ -254,6 +253,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
             if (isset($data['assertion'])) {
                 $this->setAssertion($data['assertion']);
             }
+
             return;
         }
 

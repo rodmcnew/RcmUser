@@ -204,7 +204,7 @@ class DoctrineAclRoleDataMapper
     {
         $result = $this->read($aclRole);
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             return $result;
         }
@@ -233,7 +233,7 @@ class DoctrineAclRoleDataMapper
     {
         $result = $this->read($aclRole);
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             return $result;
         }
@@ -245,35 +245,37 @@ class DoctrineAclRoleDataMapper
 
         $result = $this->fetchByParentRoleId($aclRoleId);
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             $result->setMessage(
                 'Failed to find child roles for  ' .
                 $aclRole->getRoleId() . '.'
             );
+
             return $result;
         }
 
         $childRoles = $result->getData();
 
-        foreach($childRoles as $childRole){
+        foreach ($childRoles as $childRole) {
 
             $childRole->setParentRoleId($parentRoleId);
             $childResult = $this->update($childRole);
 
-            if(!$childResult->isSuccess()){
+            if (!$childResult->isSuccess()) {
 
                 $result->setCode(Result::CODE_FAIL);
                 $result->setMessage($childResult->getMessage());
             }
         }
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             $result->setMessage(
                 'Failed to update child roles for delete of ' .
                 $aclRole->getRoleId() . '.'
             );
+
             return $result;
         }
 

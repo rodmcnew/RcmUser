@@ -205,7 +205,7 @@ class DoctrineAclRuleDataMapper
 
 
         // check required
-        if(empty($rule) || empty($roleId) || empty($resourceId)){
+        if (empty($rule) || empty($roleId) || empty($resourceId)) {
 
             return new Result(
                 null,
@@ -214,7 +214,7 @@ class DoctrineAclRuleDataMapper
             );
         }
 
-        if($privilege === null){
+        if ($privilege === null) {
             $privQuery = 'AND rule.privilege is NULL';
         } else {
             $privQuery = 'AND rule.privilege = ?4';
@@ -231,7 +231,7 @@ class DoctrineAclRuleDataMapper
         $query->setParameter(1, $rule);
         $query->setParameter(2, $roleId);
         $query->setParameter(3, $resourceId);
-        if($privilege !== null){
+        if ($privilege !== null) {
             $query->setParameter(4, $privilege);
         }
 

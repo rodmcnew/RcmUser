@@ -75,6 +75,11 @@ class RcmUserIsAllowed extends AbstractHelper
     {
         $user = $this->userAuthService->getIdentity();
 
-        return $this->authorizeService->isAllowed($resourceId, $privilege, $providerId, $user);
+        return $this->authorizeService->isAllowed(
+            $resourceId,
+            $privilege,
+            $providerId,
+            $user
+        );
     }
 }

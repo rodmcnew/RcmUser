@@ -88,8 +88,7 @@ class AclDataService
      */
     public function setAclRoleDataMapper(
         AclRoleDataMapperInterface $aclRoleDataMapper
-    )
-    {
+    ) {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
@@ -112,8 +111,7 @@ class AclDataService
      */
     public function setAclRuleDataMapper(
         AclRuleDataMapperInterface $aclRuleDataMapper
-    )
-    {
+    ) {
         $this->aclRuleDataMapper = $aclRuleDataMapper;
     }
 
@@ -132,7 +130,7 @@ class AclDataService
     /**
      * getAclData
      *
-     * @return \RcmUser\Acl\Db\Result
+     * @return array
      */
     public function getAclData()
     {
@@ -192,7 +190,7 @@ class AclDataService
     /**
      * fetchAllRoles
      *
-     * @return \RcmUser\Acl\Db\Result
+     * @return Result
      */
     public function fetchAllRoles()
     {
@@ -202,7 +200,7 @@ class AclDataService
     /**
      * fetchRoleByRoleId
      *
-     * @param $roleId
+     * @param string $roleId roleId
      *
      * @return mixed
      */
@@ -229,7 +227,7 @@ class AclDataService
      *
      * @param AclRole $aclRole aclRole
      *
-     * @return \RcmUser\Acl\Db\Result
+     * @return Result
      */
     public function readRole(AclRole $aclRole)
     {
@@ -239,9 +237,9 @@ class AclDataService
     /**
      * deleteRole
      *
-     * @param AclRole $aclRole
+     * @param AclRole $aclRole aclRole
      *
-     * @return \RcmUser\Acl\Db\Result|Result
+     * @return Result
      */
     public function deleteRole(AclRole $aclRole)
     {
@@ -249,25 +247,27 @@ class AclDataService
 
         $result = $this->aclRoleDataMapper->delete($aclRole);
 
-        if(!$result->isSuccess()){
+        if (!$result->isSuccess()) {
 
             return $result;
         }
 
         $rulesResult = $this->fetchRulesByRole($roleId);
 
-        if(!$rulesResult->isSuccess()){
+        if (!$rulesResult->isSuccess()) {
 
-            $rulesResult->setMessage('Could not remove related rules for role: ' . $roleId);
+            $rulesResult->setMessage(
+                'Could not remove related rules for role: ' . $roleId
+            );
             return $rulesResult;
         }
 
         $aclRules = $rulesResult->getData();
 
-        foreach($aclRules as $aclRule){
+        foreach ($aclRules as $aclRule) {
 
             $ruleResult = $this->deleteRule($aclRule);
-            if(!$ruleResult->isSuccess()){
+            if (!$ruleResult->isSuccess()) {
 
                 $result->setCode(Result::CODE_FAIL);
                 $result->setMessage($ruleResult->getMessage());
@@ -353,8 +353,9 @@ class AclDataService
 
             $parent = $aclRoles[$parentId];
 
-            $ns = $this->createRoleNamespaceId($parent, $aclRoles, $nsChar) . $nsChar
-                . $ns;
+            $ns = $this->createRoleNamespaceId($parent, $aclRoles, $nsChar) .
+                $nsChar .
+                $ns;
         }
 
         return $ns;
@@ -412,13 +413,21 @@ class AclDataService
         // check required
         if (empty($rule) || empty($roleId) || empty($resource)) {
 
-            return new Result(null, Result::CODE_FAIL, "New rule requires: rule, roleId and resourceId.");
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "New rule requires: rule, roleId and resourceId."
+            );
         }
 
         // check if is super admin
         if ($roleId == $this->getSuperAdminRole()) {
 
-            return new Result(null, Result::CODE_FAIL, "Rules cannot be assigned to super admin.");
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Rules cannot be assigned to super admin."
+            );
         }
 
         // check if role exists
@@ -426,7 +435,11 @@ class AclDataService
 
         if (!$result->isSuccess()) {
 
-            return new Result(null, Result::CODE_FAIL, "Rules cannot be assigned to role that does not exist.");
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Rules cannot be assigned to role that does not exist."
+            );
         }
 
         // @todo validate resource/privilege exists
@@ -451,7 +464,11 @@ class AclDataService
         // check required
         if (empty($rule) || empty($roleId) || empty($resource)) {
 
-            return new Result(null, Result::CODE_FAIL, "Rule requires: rule, roleId and resourceId.");
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Rule requires: rule, roleId and resourceId."
+            );
         }
 
         // check if exists and get valid id
