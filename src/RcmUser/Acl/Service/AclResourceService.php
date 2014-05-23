@@ -579,6 +579,8 @@ class AclResourceService
      */
     protected function buildValidProvider($providerData, $providerId)
     {
+        $provider = null;
+        
         if ($providerData instanceof ResourceProviderInterface) {
 
             $provider = $providerData;
