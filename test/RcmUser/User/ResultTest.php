@@ -40,10 +40,9 @@ class ResultTest extends Zf2TestCase
 
         $result->setCode(Result::CODE_SUCCESS);
         $result->setUser($user);
-        $messages = array('m1' => 'message 1');
+        $messages = array('message 1');
         $result->setMessages($messages);
-        $result->setMessage('m2','message 2');
-        $result->setMessage(null,'DEFAULT_MESSAGE');
+        $result->setMessage('message 2');
 
         $this->assertTrue($result->getCode() === Result::CODE_SUCCESS, 'Data not returned.');
         $this->assertTrue($result->getUser() === $user, 'Data not returned.');
@@ -51,11 +50,9 @@ class ResultTest extends Zf2TestCase
         $returnedMessages = $result->getMessages();
         $this->assertTrue(is_array($returnedMessages), 'Messages should be array.');
 
-        $this->assertTrue($returnedMessages['m1'] === $messages['m1'], 'Message 1 not returned.');
+        $this->assertTrue($returnedMessages[0] === $messages[0], 'Message 1 not returned.');
 
-        $this->assertTrue($result->getMessage('m2') === 'message 2', 'Message 2 not returned.');
-
-        $this->assertTrue($result->getMessage() === 'DEFAULT_MESSAGE', 'Message default not returned.');
+        $this->assertTrue($result->getMessage(1) === 'message 2', 'Message 2 not returned.');
 
         $this->assertTrue($result->getMessage('nope', 'not_found') === 'not_found', 'Message unset default not returned.');
     }

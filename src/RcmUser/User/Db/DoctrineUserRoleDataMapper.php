@@ -288,15 +288,6 @@ class DoctrineUserRoleDataMapper
 
         $userRoles = $query->getResult();
 
-        if (empty($userRoles)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User roles cannot be found.'
-            );
-        }
-
         $userAclRoles = array();
 
         foreach ($userRoles as $userRole) {

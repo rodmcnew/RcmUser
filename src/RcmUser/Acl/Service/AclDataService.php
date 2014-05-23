@@ -217,12 +217,23 @@ class AclDataService
      *
      * @param AclRole $aclRole aclRole
      *
-     * @return \RcmUser\Acl\Db\Result
+     * @return Result
      */
     public function createRole(AclRole $aclRole)
     {
-
         return $this->aclRoleDataMapper->create($aclRole);
+    }
+
+    /**
+     * readRole
+     *
+     * @param AclRole $aclRole aclRole
+     *
+     * @return \RcmUser\Acl\Db\Result
+     */
+    public function readRole(AclRole $aclRole)
+    {
+        return $this->aclRoleDataMapper->read($aclRole);
     }
 
     /**
@@ -247,11 +258,11 @@ class AclDataService
 
         if(!$rulesResult->isSuccess()){
 
-            $rulesResult->setMessage(null, 'Could not remove related rules for role: ' . $roleId);
+            $rulesResult->setMessage('Could not remove related rules for role: ' . $roleId);
             return $rulesResult;
         }
 
-        $aclRules = $result->getData();
+        $aclRules = $rulesResult->getData();
 
         foreach($aclRules as $aclRule){
 

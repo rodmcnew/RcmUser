@@ -19,7 +19,6 @@ namespace RcmUser\Acl\Service;
 
 use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Acl\Provider\ResourceProvider;
-use RcmUser\Acl\Provider\ResourceProviderInterface;
 use RcmUser\Exception\RcmUserException;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

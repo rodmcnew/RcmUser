@@ -240,20 +240,19 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
             $responseUser = $result->getUser();
 
+            if (empty($responseUser->getId())) {
+
+                $roles = $this->getDefaultRoleIdentities();
+            } else {
+
+                $roles = $this->getDefaultAuthenticatedRoleIdentities();
+            }
+
             $readResult = $this->getUserRolesDataMapper()->read($responseUser);
 
             if ($readResult->isSuccess()) {
 
                 $roles = $readResult->getData();
-            } else {
-
-                if (empty($responseUser->getId())) {
-
-                    $roles = $this->getDefaultRoleIdentities();
-                } else {
-
-                    $roles = $this->getDefaultAuthenticatedRoleIdentities();
-                }
             }
 
             $responseUser->setProperty($this->getUserPropertyKey(), $roles);

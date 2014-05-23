@@ -49,12 +49,22 @@ class AdminApiAclRoleController extends AbstractAdminApiController
      */
     public function get($id)
     {
-        // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration')) {
-            return $this->getNotAllowedResponse();
+
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        try {
+
+            $aclRole = new AclRole();
+            $aclRole->setRoleId((string)$id);
+            $result = $aclDataService->readRole($aclRole);
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
         }
 
-        return $this->getJsonResponse(new Result(null, Result::CODE_FAIL, 'Method not yet available.'));
+        return $this->getJsonResponse($result);
     }
 
     /**
@@ -109,7 +119,7 @@ class AdminApiAclRoleController extends AbstractAdminApiController
         try {
 
             $aclRole = new AclRole();
-            $aclRole->setRoleId($id);
+            $aclRole->setRoleId((string)$id);
 
             $result = $aclDataService->deleteRole($aclRole);
         } catch (\Exception $e) {

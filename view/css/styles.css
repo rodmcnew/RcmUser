@@ -24,6 +24,9 @@
 .rcmuser .alert .alert-messages {
 
 }
+.rcmuser .btn-group-vertical button {
+    margin-bottom: .2em;
+}
 /* - bootstrap */
 
 /* loader */

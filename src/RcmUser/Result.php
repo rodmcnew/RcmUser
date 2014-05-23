@@ -37,18 +37,17 @@ class Result implements \JsonSerializable
 {
 
     /**
-     * int
+     * @var int CODE_SUCCESS
      */
     const CODE_SUCCESS = 1;
     /**
-     * int
+     * @var int CODE_FAIL
      */
     const CODE_FAIL = 0;
-
     /**
-     * string
+     * @var int DEFAULT_KEY
      */
-    const DEFAULT_KEY = '_default';
+    const DEFAULT_KEY = 0;
 
     /**
      * @var int
@@ -80,10 +79,11 @@ class Result implements \JsonSerializable
 
         if (!is_array($messages)) {
 
-            $messages = array(self::DEFAULT_KEY => (string)$messages);
-        }
+            $this->setMessage((string)$messages);
+        } else {
 
-        $this->setMessages($messages);
+            $this->setMessages($messages);
+        }
     }
 
     /**
@@ -133,37 +133,31 @@ class Result implements \JsonSerializable
     /**
      * setMessage
      *
-     * @param string $key   key
-     * @param mixed  $value value
+     * @param mixed $value value
      *
      * @return void
      */
-    public function setMessage($key = null, $value = null)
+    public function setMessage($value = null)
     {
-        if ($key === null) {
-            $this->messages[self::DEFAULT_KEY] = $value;
-        } else {
-            $this->messages[$key] = $value;
-        }
+        $this->messages[] = $value;
     }
 
     /**
      * getMessage
      *
-     * @param string $key   key
-     * @param mixed  $deflt deflt
+     * @param int  $key     key
+     * @param null $default default
      *
-     * @return mixed
+     * @return null|mixed
      */
-    public function getMessage($key = self::DEFAULT_KEY, $deflt = null)
+    public function getMessage($key = self::DEFAULT_KEY, $default = null)
     {
-
-        if (array_key_exists($key, $this->messages)) {
+        if (isset($this->messages[$key])) {
 
             return $this->messages[$key];
         }
 
-        return $deflt;
+        return $default;
     }
 
     /**
@@ -195,7 +189,6 @@ class Result implements \JsonSerializable
      */
     public function isSuccess()
     {
-
         if ($this->getCode() >= self::CODE_SUCCESS) {
 
             return true;

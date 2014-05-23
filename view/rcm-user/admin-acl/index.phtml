@@ -68,7 +68,6 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                             <option ng-repeat="priv in resources[ruleData.resourceId].resource.privileges" value="{{priv}}">{{priv}}</option>
                         </select>
                     </div>
-                    {{ruleData | json}}
                 </form>
 
             </div>
@@ -174,25 +173,23 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
     </div>
 </script>
 
+<!-- EDIT ROLE TEMPLATE -->
 <script type="text/ng-template" id="editRole.html">
     <div class="rcmuser">
         <div class="admin-acl">
             <div class="modal-header">
-                <h1>Edit role: </h1>
+                <h3 class="modal-title">Edit role: </h3>
             </div>
             <div class="modal-body">
-                <form name="addRoleForm" role="form">
+                <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+                <!-- @todo creat me
+                <form name="editRoleForm" role="form">
                     <div class="form-group">
                         <label for="roleId">Role Id: </label>
                         <input class="form-control" name="roleId" ng-model="roleData.roleId" required="true" type="text">
                     </div>
                     <div class="form-group">
                         <label for="roleId">Parent Role: </label>
-
-                        <!--<select class="form-control" name="parentRoleId" ng-model="roleData.parentRoleId" ng-options="roleNs as role for (ns, role.role.roleId) in roles" ng-required="true">
-                            <option value="">-- choose parent role --</option>
-                        </select>-->
-
                         <select class="form-control" name="parentRoleId" ng-model="roleData.parentRoleId" required="true">
                             <option selected="selected" value="">-- choose parent role --</option>
                             <option selected="selected" value="">*root*</option>
@@ -212,14 +209,17 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                             >
                         </textarea>
                     </div>
-
                 </form>
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary btn-xs" ng-click="addRole()">Add Role</button>
-                <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+                <div class="loading" ng-show="loading">LOADING...</div>
+                <div ng-hide="loading">
+                    <button class="btn btn-primary btn-xs" ng-disabled="loading" ng-click="editRole()">Save Role</button>
+                    <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+                </div>
             </div>
+            -->
         </div>
     </div>
 </script>
@@ -310,9 +310,14 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                             </div>
 
                             <div class="col-sm-3">
+                                <div class="btn-group-vertical">
+                                <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRule('sm', ruleData)">
+                                    <i class="glyphicon glyphicon-edit"></i> edit rule
+                                </button>
                                 <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])">
                                     <i class="glyphicon glyphicon-minus"></i> remove rule
                                 </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -320,7 +325,9 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 
                 <div ng-hide="roleData.rules.length">
                     <div class="alert alert-warning">
-                        <i class="glyphicon glyphicon-warning-sign"></i><span class="no-rules">No rules created, no access granted.</span>
+                        <i class="glyphicon glyphicon-warning-sign"></i>
+                        <span class="no-rules" ng-show="roleData.role.parentRoleId">No rules created, access rules inherited from {{roleData.role.parentRoleId}}.</span>
+                        <span class="no-rules" ng-hide="roleData.role.parentRoleId">No rules created.</span>
                     </div>
                 </div>
 

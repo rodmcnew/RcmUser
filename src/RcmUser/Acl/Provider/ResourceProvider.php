@@ -35,7 +35,7 @@ use RcmUser\Exception\RcmUserException;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class ResourceProvider implements ResourceProviderInterface
+class ResourceProvider
 {
     /**
      * @var string $providerId

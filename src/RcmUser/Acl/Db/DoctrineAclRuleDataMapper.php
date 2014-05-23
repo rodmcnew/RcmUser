@@ -111,11 +111,6 @@ class DoctrineAclRuleDataMapper
 
         $rules = $query->getResult();
 
-        if (empty($rules)) {
-
-            return new Result(null, Result::CODE_FAIL, 'Rules could not be found.');
-        }
-
         return new Result($rules);
     }
 
@@ -131,15 +126,6 @@ class DoctrineAclRuleDataMapper
         $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findBy(array('roleId' => $roleId));
 
-        if (empty($rules)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'Rules could not be found by role Id.'
-            );
-        }
-
         return new Result($rules);
     }
 
@@ -154,11 +140,6 @@ class DoctrineAclRuleDataMapper
     {
         $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findBy(array('rule' => $rule));
-
-        if (empty($rules)) {
-
-            return new Result(null, Result::CODE_FAIL, 'Rules could not be found.');
-        }
 
         return new Result($rules);
     }
@@ -184,15 +165,6 @@ class DoctrineAclRuleDataMapper
         $query->setParameter(1, $resourceId);
 
         $rules = $query->getResult();
-
-        if (empty($rules)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'Rules could not be found by resource id.'
-            );
-        }
 
         return new Result($rules);
     }
@@ -267,11 +239,7 @@ class DoctrineAclRuleDataMapper
 
         if (empty($rules[0])) {
 
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'Rules could not be found by data passed.'
-            );
+            return new Result(array());
         }
 
         return new Result($rules[0]);
