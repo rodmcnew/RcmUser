@@ -24,6 +24,7 @@ use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Db\UserRolesDataMapper;
 use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
 
 
@@ -191,7 +192,15 @@ class AuthorizeService
      */
     public function getUserRoles(User $user)
     {
-        return $user->getProperty(UserRolesDataMapper::PROPERTY_KEY, array());
+        /** @var $userRoleProperty UserRoleProperty */
+        $userRoleProperty = $user->getProperty(UserRolesDataMapper::PROPERTY_KEY);
+
+        if(!($userRoleProperty instanceof UserRoleProperty)){
+
+            return array();
+        }
+
+        return $userRoleProperty->getRoles();
     }
 
     /**
@@ -359,7 +368,10 @@ class AuthorizeService
      * @return bool
      */
     public function isAllowed(
-        $resourceId, $privilege = null, $providerId = null, $user = null
+        $resourceId,
+        $privilege = null,
+        $providerId = null,
+        $user = null
     ) {
         if (!($user instanceof User)) {
 

@@ -2,7 +2,7 @@
 /**
  * UserRoleProperty.php
  *
- * LongDescHere
+ * UserRoleProperty
  *
  * PHP version 5
  *
@@ -21,7 +21,7 @@ namespace RcmUser\User\Entity;
 /**
  * Class UserRoleProperty
  *
- * LongDescHere
+ * UserRoleProperty
  *
  * PHP version 5
  *
@@ -46,20 +46,9 @@ class UserRoleProperty
         $guestRoleId = null,
         $superAdminRoleId = null
     ) {
+        $this->roles = $roles;
         $this->guestRoleId = $guestRoleId;
         $this->superAdminRoleId = $superAdminRoleId;
-    }
-
-    /**
-     * setRoles
-     *
-     * @param $roles
-     *
-     * @return void
-     */
-    public function setRoles($roles)
-    {
-        $this->roles = $roles;
     }
 
     /**
@@ -73,46 +62,32 @@ class UserRoleProperty
     }
 
     /**
-     * setRoleId
+     * getRole
      *
-     * @param $roleId
-     *
-     * @return void
-     */
-    public function setRoleId($roleId)
-    {
-        if (!in_array($roleId, $this->roles)) {
-
-            $this->roles[] = $roleId;
-        }
-    }
-
-    /**
-     * getRoleId
-     *
-     * @param $roleId
+     * @param string $roleId  roleId
+     * @param mixed  $default default
      *
      * @return null
      */
-    public function getRoleId($roleId)
+    public function getRole($roleId, $default = null)
     {
         $key = array_search($roleId, $this->roles);
 
         if(!$key){
-            return null;
+            return $default;
         }
 
         return $this->roles[$key];
     }
 
     /**
-     * hasRoleId
+     * hasRole
      *
      * @param string $roleId role
      *
      * @return bool
      */
-    public function hasRoleId($roleId)
+    public function hasRole($roleId)
     {
         if ($this->getRole($roleId)) {
 
@@ -138,13 +113,13 @@ class UserRoleProperty
     }
 
     /**
-     * isGuest
+     * isSuperAdmin
      *
      * @return bool
      */
-    public function isSupperAdmin()
+    public function isSuperAdmin()
     {
-        if ($this->getRole($this->superAdminRoleId )) {
+        if ($this->getRole($this->superAdminRoleId)) {
 
             return true;
         }
