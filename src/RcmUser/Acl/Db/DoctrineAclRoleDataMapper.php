@@ -22,6 +22,7 @@ use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\DoctrineAclRole;
 use RcmUser\Db\DoctrineMapperInterface;
+use RcmUser\Exception\RcmUserException;
 use RcmUser\Result;
 
 /**
@@ -105,10 +106,6 @@ class DoctrineAclRoleDataMapper
      */
     public function fetchAll()
     {
-        //$roles = $this->getEntityManager()->getRepository(
-        //    $this->getEntityClass()
-        //)->findAll();
-
         $query = $this->getEntityManager()->createQuery(
             'SELECT role FROM ' . $this->getEntityClass() . ' role ' .
             'INDEX BY role.roleId'
@@ -116,14 +113,13 @@ class DoctrineAclRoleDataMapper
 
         $roles = $query->getResult();
 
-        if (empty($roles)) {
+        $result = new Result($roles);
 
-            return new Result(null, Result::CODE_FAIL, 'Roles could not be found.');
+        if(empty($roles)){
+            $result->setMessage('No roles found,');
         }
 
-        //$roles = $this->prepareRoles($roles);
-
-        return new Result($roles);
+        return $result;
     }
 
     /**
@@ -138,16 +134,13 @@ class DoctrineAclRoleDataMapper
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findOneBy(array('roleId' => $roleId));
 
-        if (empty($roles)) {
+        $result = new Result($roles);
 
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'Roles could not be found by roleId.'
-            );
+        if(empty($roles)){
+            $result->setMessage('No roles found,');
         }
 
-        return new Result($roles);
+        return $result;
     }
 
     /**
@@ -162,16 +155,13 @@ class DoctrineAclRoleDataMapper
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findBy(array('parentRoleId' => $parentRoleId));
 
-        if (empty($roles)) {
+        $result = new Result($roles);
 
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'Roles could not be found by parentRoleId.'
-            );
+        if(empty($roles)){
+            $result->setMessage('No roles found,');
         }
 
-        return new Result($roles);
+        return $result;
     }
 
     /**
@@ -186,6 +176,19 @@ class DoctrineAclRoleDataMapper
         $result = $this->getValidInstance($aclRole);
 
         $aclRole = $result->getData();
+
+        $result = $this->read($aclRole);
+
+        $existingAclRole = $result->getData();
+
+        if ($result->isSuccess() && !empty($existingAclRole)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Acl Role already exists: ' . var_export($aclRole, true)
+            );
+        }
 
         // @todo if error, fail with null
         $this->getEntityManager()->persist($aclRole);
@@ -206,18 +209,6 @@ class DoctrineAclRoleDataMapper
         $result = $this->getValidInstance($aclRole);
 
         $aclRole = $result->getData();
-        $id = $aclRole->getId();
-
-        if (!empty($id)) {
-
-            $result = $this->fetchById($id);
-
-            if ($result->isSuccess()) {
-
-                return $result;
-            }
-        }
-
         $roleId = $aclRole->getRoleId();
 
         if (!empty($roleId)) {
@@ -227,7 +218,11 @@ class DoctrineAclRoleDataMapper
             return $result;
         }
 
-        return new Result(null, Result::CODE_FAIL, 'Acl Role could not be read.');
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Acl Role could not be read.'
+        );
     }
 
     /**
@@ -239,7 +234,23 @@ class DoctrineAclRoleDataMapper
      */
     public function update(AclRole $aclRole)
     {
-        $aclRole = $this->getValidInstance($aclRole);
+        $result = $this->read($aclRole);
+
+        if (!$result->isSuccess()) {
+
+            return $result;
+        }
+
+        $aclRole = $result->getData();
+
+        if (empty($aclRole)) {
+
+            return new Result(
+                null,
+                Result::CODE_SUCCESS,
+                'Role not found to update: ' . $aclRole->getRoleId()
+            );
+        }
 
         $this->getEntityManager()->merge($aclRole);
         $this->getEntityManager()->flush();
@@ -247,7 +258,8 @@ class DoctrineAclRoleDataMapper
         // @todo validate action
         return new Result(
             null,
-            Result::CODE_SUCCESS
+            Result::CODE_SUCCESS,
+            'Successfully updated ' . $aclRole->getRoleId()
         );
     }
 
@@ -260,15 +272,73 @@ class DoctrineAclRoleDataMapper
      */
     public function delete(AclRole $aclRole)
     {
-        $aclRole = $this->getValidInstance($aclRole);
+        $aclRoleId = $aclRole->getRoleId();
+        $result = $this->read($aclRole);
+
+        if (!$result->isSuccess()) {
+
+            return $result;
+        }
+
+        $aclRole = $result->getData();
+
+        if (empty($aclRole)) {
+
+            return new Result(
+                null,
+                Result::CODE_SUCCESS,
+                'Role not found to update: ' . $aclRoleId
+            );
+        }
+
+        $aclRoleId = $aclRole->getRoleId();
+        $parentRoleId = $aclRole->getParentRoleId();
+
+        $result = $this->fetchByParentRoleId($aclRoleId);
+
+        if (!$result->isSuccess()) {
+
+            $result->setMessage(
+                'Failed to find child roles for  ' .
+                $aclRole->getRoleId() . '.'
+            );
+
+            return $result;
+        }
+
+        $childRoles = $result->getData();
+
+        foreach ($childRoles as $childRole) {
+
+            $childRole->setParentRoleId($parentRoleId);
+            $childResult = $this->update($childRole);
+
+            if (!$childResult->isSuccess()) {
+
+                $result->setCode(Result::CODE_FAIL);
+                $result->setMessage($childResult->getMessage());
+            }
+        }
+
+        if (!$result->isSuccess()) {
+
+            $result->setMessage(
+                'Failed to update child roles for delete of ' .
+                $aclRole->getRoleId() . '.'
+            );
+
+            return $result;
+        }
 
         $this->getEntityManager()->remove($aclRole);
         $this->getEntityManager()->flush();
 
-        // @todo validate action
+        // @todo validate action results
+
         return new Result(
             null,
-            Result::CODE_SUCCESS
+            Result::CODE_SUCCESS,
+            'Successfully deleted ' . $aclRoleId
         );
     }
 
@@ -281,7 +351,7 @@ class DoctrineAclRoleDataMapper
      */
     public function getValidInstance(AclRole $aclRole)
     {
-        if (!($aclRole instanceof AclRole)) {
+        if (!($aclRole instanceof DoctrineAclRole)) {
 
             $doctrineAclRole = new DoctrineAclRole();
             $doctrineAclRole->populate($aclRole);

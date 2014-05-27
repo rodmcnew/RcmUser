@@ -73,6 +73,10 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
             throw new RcmUserException("Role roleId ({$roleId}) is invalid.");
         }
 
+        if (empty($roleId)) {
+            throw new RcmUserException("Role roleId cannot be set empty.");
+        }
+
         $this->roleId = $roleId;
     }
 
@@ -101,6 +105,10 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
             throw new RcmUserException(
                 "Role parentRoleId ({$parentRoleId}) is invalid."
             );
+        }
+
+        if (empty($parentRoleId)) {
+            $parentRoleId = null;
         }
 
         $this->parentRoleId = $parentRoleId;

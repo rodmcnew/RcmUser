@@ -228,9 +228,9 @@ class UserValidator implements UserValidatorInterface
                 'User input not valid'
             );
 
-            foreach ($inputFilter->getInvalidInput() as $key => $error) {
+            foreach ($inputFilter->getInvalidInput() as $error) {
 
-                $result->setMessage($key, $error->getMessages());
+                $result->setMessage($error->getMessages());
             }
 
             return $result;

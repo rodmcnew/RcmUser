@@ -17,8 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
-use Zend\Permissions\Acl\Assertion\AssertionInterface;
-
+use RcmUser\Exception\RcmUserException;
+//\Zend\Permissions\Acl\Assertion\AssertionInterface
 
 /**
  * AclRule
@@ -62,12 +62,12 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     protected $roleId = null;
 
     /**
-     * @var array/string
+     * @var string
      */
-    protected $resource = null;
+    protected $resourceId = null;
 
     /**
-     * @var array/string
+     * @var string
      */
     protected $privilege = null;
 
@@ -82,9 +82,16 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      * @param string $rule rule
      *
      * @return void
+     * @throws RcmUserException
      */
     public function setRule($rule)
     {
+        if (!$this->isValidRule($rule)) {
+            throw new RcmUserException(
+                "Rule ({$rule}) is invalid."
+            );
+        }
+
         $this->rule = $rule;
     }
 
@@ -121,15 +128,15 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * setResource
+     * setResourceId
      *
-     * @param string $resource resource
+     * @param string $resourceId resourceId
      *
      * @return void
      */
-    public function setResource($resource)
+    public function setResourceId($resourceId)
     {
-        $this->resource = $resource;
+        $this->resourceId = $resourceId;
     }
 
     /**
@@ -137,9 +144,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      *
      * @return string
      */
-    public function getResource()
+    public function getResourceId()
     {
-        return $this->resource;
+        return $this->resourceId;
     }
 
     /**
@@ -151,6 +158,10 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function setPrivilege($privilege)
     {
+        if (empty($privilege)) {
+            $privilege = null;
+        }
+
         $this->privilege = $privilege;
     }
 
@@ -167,7 +178,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * setAssertion
      *
-     * @param AssertionInterface/string $assertion assertion
+     * @param AssertionInterface\string $assertion assertion
      *
      * @return void
      */
@@ -187,6 +198,71 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
+     * isValidRule
+     *
+     * @param string $rule rule
+     *
+     * @return bool
+     */
+    public function isValidRule($rule)
+    {
+        if ($rule == self::RULE_ALLOW
+            || $rule == self::RULE_DENY
+            || $rule == self::RULE_IGNORE
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * populate
+     *
+     * @param array|AclRule $data data
+     *
+     * @return void
+     * @throws RcmUserException
+     */
+    public function populate($data = array())
+    {
+        if (($data instanceof AclRule)) {
+
+            $this->setRule($data->getRule());
+            $this->setRoleId($data->getRoleId());
+            $this->setResourceId($data->getResourceId());
+            $this->setPrivilege($data->getPrivilege());
+            $this->setAssertion($data->getAssertion());
+
+            return;
+        }
+
+        if (is_array($data)) {
+            if (isset($data['rule'])) {
+                $this->setRule($data['rule']);
+            }
+            if (isset($data['roleId'])) {
+                $this->setRoleId($data['roleId']);
+            }
+            if (isset($data['resourceId'])) {
+                $this->setResourceId($data['resourceId']);
+            }
+            if (isset($data['privilege'])) {
+                $this->setPrivilege($data['privilege']);
+            }
+            if (isset($data['assertion'])) {
+                $this->setAssertion($data['assertion']);
+            }
+
+            return;
+        }
+
+        throw new RcmUserException(
+            'Rule data could not be populated, data format not supported'
+        );
+    }
+
+    /**
      * jsonSerialize
      *
      * @return \stdClass
@@ -196,7 +272,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
         $obj = new \stdClass();
         $obj->rule = $this->getRule();
         $obj->roleId = $this->getRoleId();
-        $obj->resource = $this->getResource();
+        $obj->resourceId = $this->getResourceId();
         $obj->privilege = $this->getPrivilege();
 
         return $obj;

@@ -54,6 +54,16 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     protected $defaultAuthenticatedRoleIdentities = array();
 
     /**
+     * @var string
+     */
+    protected $guestRoleId = null;
+
+    /**
+     * @var string
+     */
+    protected $superAdminRoleId = null;
+
+    /**
      * setDefaultAuthenticatedRoleIdentities
      *
      * @param array $defaultAuthenticatedRoleIdentities defaults
@@ -97,6 +107,50 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     public function getDefaultRoleIdentities()
     {
         return $this->defaultRoleIdentities;
+    }
+
+    /**
+     * setGuestRoleId
+     *
+     * @param string $guestRoleId guestRoleId
+     *
+     * @return void
+     */
+    public function setGuestRoleId($guestRoleId)
+    {
+        $this->guestRoleId = $guestRoleId;
+    }
+
+    /**
+     * getGuestRoleId
+     *
+     * @return string
+     */
+    public function getGuestRoleId()
+    {
+        return $this->guestRoleId;
+    }
+
+    /**
+     * setSuperAdminRoleId
+     *
+     * @param string $superAdminRoleId superAdminRoleId
+     *
+     * @return void
+     */
+    public function setSuperAdminRoleId($superAdminRoleId)
+    {
+        $this->superAdminRoleId = $superAdminRoleId;
+    }
+
+    /**
+     * getSuperAdminRoleId
+     *
+     * @return string
+     */
+    public function getSuperAdminRoleId()
+    {
+        return $this->superAdminRoleId;
     }
 
     /**

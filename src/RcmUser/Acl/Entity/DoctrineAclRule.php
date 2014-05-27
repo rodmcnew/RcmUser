@@ -44,6 +44,7 @@ class DoctrineAclRule extends AclRule
      * @var integer
      * @ORM\id
      * @ORM\Column(type="integer", unique=true, nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
@@ -63,7 +64,7 @@ class DoctrineAclRule extends AclRule
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    protected $resource;
+    protected $resourceId;
 
     /**
      * @var string

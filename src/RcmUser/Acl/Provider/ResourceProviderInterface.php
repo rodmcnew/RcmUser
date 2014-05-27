@@ -17,6 +17,8 @@
 
 namespace RcmUser\Acl\Provider;
 
+use RcmUser\Exception\RcmUserException;
+
 
 /**
  * Interface ResourceProviderInterface
@@ -36,9 +38,26 @@ namespace RcmUser\Acl\Provider;
 interface ResourceProviderInterface
 {
     /**
-     * getResources
+     * setProviderId
+     *
+     * @param string $providerId providerId
+     *
+     * @return void
+     */
+    public function setProviderId($providerId);
+
+    /**
+     * getProviderId
+     *
+     * @return string
+     */
+    public function getProviderId();
+
+
+    /**
+     * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
-     * containing ALL possible resources
+     * containing ALL possible resources including run-time resources
      *
      * @return array
      */
@@ -47,9 +66,9 @@ interface ResourceProviderInterface
     /**
      * getResource
      * Return the requested resource
-     * Can be used to return resources dynamically.
+     * Can be used to return resources dynamically at run-time
      *
-     * @param $resourceId
+     * @param string $resourceId $resourceId
      *
      * @return array
      */
