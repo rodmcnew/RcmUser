@@ -61,6 +61,8 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
             //'onAuthenticateFail' => 'authenticateFail',
 
             'onClearIdentity' => 'clearIdentity',
+            'onHasIdentity' => 'hasIdentity',
+            'onSetIdentity' => 'setIdentity',
             'onGetIdentity' => 'getIdentity',
         );
 
@@ -118,8 +120,36 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
 
             $authService->clearIdentity();
         }
+    }
 
-        return true;
+    /**
+     * onHasIdentity
+     *
+     * @param Event $e e
+     *
+     * @return bool|Result
+     */
+    public function onHasIdentity($e)
+    {
+        $authService = $this->getAuthService();
+
+        return $authService->hasIdentity();
+    }
+
+    /**
+     * onSetIdentity
+     *
+     * @param Event $e e
+     *
+     * @return void|Result
+     */
+    public function onSetIdentity($e)
+    {
+        $identity = $e->getParam('identity');
+
+        $authService = $this->getAuthService();
+
+        $authService->setIdentity($identity);
     }
 
     /**
@@ -135,7 +165,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
 
         if ($authService->hasIdentity()) {
 
-            return  $authService->getIdentity();
+            return $authService->getIdentity();
         }
 
         return null;

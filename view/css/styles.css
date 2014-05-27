@@ -1,0 +1,86 @@
+/* + bootstrap */
+.tooltip-inner {
+    max-width: 400px;
+    text-align: left;
+}
+
+.rcmuser .alert .glyphicon {
+    font-size: 1.5em;
+    padding-right: 1em;
+}
+/* - bootstrap */
+
+.rcmuser a.nostyle,
+.rcmuser a.nostyle:hover,
+.rcmuser a.nostyle:visited,
+.rcmuser a.nostyle:link ,
+.rcmuser a.nostyle:active {
+    color: #000;
+    text-decoration: none;
+}
+
+.rcmuser .admin-acl {
+
+}
+
+.rcmuser .admin-acl .roleId{
+    border: 0;
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.rcmuser .admin-acl .ruleHeader {
+    padding: 0 0 .5em 0;
+}
+
+.rcmuser .admin-acl .ruleTitle{
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: none;
+    text-transform: capitalize;
+}
+
+.rcmuser .admin-acl .rule {
+    color: #000;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.rcmuser .admin-acl .resource-name {
+    color: #000;
+    font-size: 1.1em;
+    font-weight: bold;
+}
+.rcmuser .admin-acl .resource-privilege{
+    color: #000;
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: capitalize;
+}
+
+.rcmuser .admin-acl .panel-title a,
+.rcmuser .admin-acl .panel-title a:link,
+.rcmuser .admin-acl .panel-title a:hover,
+.rcmuser .admin-acl .panel-title a:visited,
+.rcmuser .admin-acl .panel-title a:active {
+    border: 0;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.rcmuser .admin-acl-resource-section {
+    border-bottom: .1em solid #999999;
+    border-left: .3em solid #999999;
+    border-top: .1em solid #999999;
+    padding: .5em 0em .5em 0em;
+}
+
+.rcmuser .admin-acl-resource-footer{
+    padding: .5em 0em .5em 0em;
+}

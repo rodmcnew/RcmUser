@@ -67,7 +67,7 @@ class EventListeners implements FactoryInterface
 
         try {
             $listeners[] = $serviceLocator->get(
-                'RcmUser\Acl\UserDataServiceListeners'
+                'RcmUser\User\UserRoleDataServiceListeners'
             );
         } catch (\Exception $e) {
             // no listeners

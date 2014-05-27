@@ -35,24 +35,23 @@ namespace RcmUser\Acl\Provider;
  */
 interface ResourceProviderInterface
 {
-
     /**
+     * getResources
      * Return a multi-dimensional array of resources and privileges
      * containing ALL possible resources
      *
      * @return array
      */
-    public function getAll();
-
+    public function getResources();
 
     /**
-     * Return a multi-dimensional array of resources and privileges
-     * containing a filtered list of resources
-     * for example: if you have dynamic resources,
-     * you may not want to load these every time the is and acl check,
-     * so you have the option to only load them when they are needed
+     * getResource
+     * Return the requested resource
+     * Can be used to return resources dynamically.
      *
-     * @return mixed
+     * @param $resourceId
+     *
+     * @return array
      */
-    public function getAvailableAtRuntime();
+    public function getResource($resourceId);
 } 

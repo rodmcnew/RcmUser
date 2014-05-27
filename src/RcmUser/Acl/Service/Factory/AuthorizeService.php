@@ -1,8 +1,8 @@
 <?php
 /**
- * BjyIdentityProvider.php
+ * AuthorizeService.php
  *
- * BjyIdentityProvider
+ * AuthorizeService
  *
  * PHP version 5
  *
@@ -17,13 +17,14 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
+
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * BjyIdentityProvider
+ * AuthorizeService
  *
- * BjyIdentityProvider Factory
+ * AuthorizeService Factory
  *
  * PHP version 5
  *
@@ -35,26 +36,36 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class BjyIdentityProvider implements FactoryInterface
+class AuthorizeService implements FactoryInterface
 {
+
     /**
      * createService
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return mixed|\RcmUser\Acl\Provider\BjyIdentityProvider
+     * @return \RcmUser\Acl\Service\AuthorizeService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $rcmUserService = $serviceLocator->get('RcmUser\Service\RcmUserService');
         $cfg = $serviceLocator->get('RcmUser\Acl\Config');
-
-        $service = new \RcmUser\Acl\Provider\BjyIdentityProvider();
-        $service->setUserService($rcmUserService);
-        $service->setDefaultRoleIdentities(
-            $cfg->get('DefaultRoleIdentities', array())
+        $aclResourceService = $serviceLocator->get(
+            'RcmUser\Acl\Service\AclResourceService'
         );
+        $aclRoleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRoleDataMapper'
+        );
+        $aclRuleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRuleDataMapper'
+        );
+
+        $service = new \RcmUser\Acl\Service\AuthorizeService();
+        $service->setAclResourceService($aclResourceService);
+        $service->setAclRoleDataMapper($aclRoleDataMapper);
+        $service->setAclRuleDataMapper($aclRuleDataMapper);
+        $service->setSuperAdminRole($cfg->get('SuperAdminRole'));
 
         return $service;
     }
-}
+
+} 

@@ -67,7 +67,6 @@ This module uses the ZF2 Authentication libraries.  This requires it to provide:
 
 ### ACL ###
 
-This module utilizes bjyoungblood/bjy-authorize (https://github.com/bjyoungblood/BjyAuthorize) for it's ACL logic.
 This module wraps resources in a root schema and provides data mappers for storage of roles and rules.
 This module also provides a service, controller plug-in and view helper for isAllowed (rcmUserIsAllowed for plug-in and helper)
 
@@ -81,12 +80,16 @@ Requirements
 
 - php 5.5.* (not tested on lesser versions)
 - zendframework 2.2.x
-- bjyoungblood/bjy-authorize 1.4.*
 
 Optional based on configuration
 
 - doctrine 2.x
 - mysql 5.6.x (not tested on lesser versions)
+
+View
+- AngularJs (https://angularjs.org/)
+- Bootstrap (http://getbootstrap.com/)
+- UI Bootstrap (http://angular-ui.github.io/bootstrap/)
 
 Installation
 ------------
@@ -133,9 +136,9 @@ return array(
             /*
              * InputFilter
              * Used in:
-             *  RcmUser\User\Data\UserValidator
+             *  RcmUser\User\Db\UserDataMapper
              *
-             * If validator is used, this input filter will be applied
+             * This input filter will be applied
              * to the User object on create and save.
              */
             'InputFilter' => array(
@@ -203,6 +206,14 @@ return array(
             'DefaultAuthenticatedRoleIdentities' => array('user'),
 
             /*
+             * SuperAdminRole
+             *
+             * If this is set, this role will get full permissions always
+             * Basically over-rides standard permission handling
+             */
+            'SuperAdminRole' => 'admin',
+
+            /*
              * ResourceProviders
              * Used in:
              *  RcmUser\Acl\Service\AclResourceService
@@ -220,7 +231,7 @@ return array(
                  * RcmUserAccess
                  * This module inject some of this module's resources.
                  */
-                'RcmUserAccess' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                'rcmuser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
             ),
         ),
     ),
@@ -276,7 +287,7 @@ return array(
             /*
              * UserRolesDataMapper
              * Required for (ACL user property):
-             *  RcmUser\Acl\Service\Factory\EventListeners
+             *  RcmUser\User\Event\UserRoleDataServiceListeners
              *
              * This is a DataMapper adapter that is used
              * to abstract the data storage method.
@@ -290,7 +301,7 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
@@ -311,9 +322,9 @@ return array(
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
             /*
-             * UserDataPreparer (requires Encryptor)
+             * UserDataPreparer
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Used by default to prepare data for DB storage.
              * By default, encrypts passwords and creates id (UUID)
@@ -334,6 +345,13 @@ return array(
              */
             'RcmUser\User\UserDataServiceListeners' =>
                 'RcmUser\User\Service\Factory\UserDataServiceListeners',
+
+            /*
+             * UserRoleDataServiceListeners
+             * Required for (User Acl Property populating):
+             */
+            'RcmUser\User\UserRoleDataServiceListeners' =>
+                'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
 
             /* ************************************** */
             /* AUTH ********************************* */
@@ -378,7 +396,6 @@ return array(
              * By default this module uses the default Adapter and Storage
              * to do authentication
              * This may be configure to use custom AuthenticationService as required
-             * This may be configure to use custom AuthenticationService as required
              */
             'RcmUser\Authentication\AuthenticationService' =>
                 'RcmUser\Authentication\Service\Factory\AuthenticationService',
@@ -409,7 +426,7 @@ return array(
                 'RcmUser\Acl\Service\Factory\AclResourceService',
 
             /*
-             * UserAuthorizeService (ACL)
+             * AuthorizeService (ACL)
              * Used by:
              *  RcmUserService
              *  ControllerPluginRcmUserIsAllowed
@@ -417,8 +434,8 @@ return array(
              *
              * Exposes the ACL isAllowed method
              */
-            'RcmUser\Acl\Service\UserAuthorizeService' =>
-                'RcmUser\Acl\Service\Factory\UserAuthorizeService',
+            'RcmUser\Acl\Service\AuthorizeService' =>
+                'RcmUser\Acl\Service\Factory\AuthorizeService',
             /*
              * AclRoleDataMapper
              * Required for:
@@ -440,27 +457,14 @@ return array(
                 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
 
             /*
-             * UserDataServiceListeners
-             * Required for (User Property populating):
+             * AclDataService
+             * Required for accessing mappers
+             * This is designed to expose a simple facade
+             * for use in displaying and updating ACL data
+             * in views
              */
-            'RcmUser\Acl\UserDataServiceListeners' =>
-                'RcmUser\Acl\Service\Factory\UserDataServiceListeners',
-
-            /*
-             * BJY-Authorize providers
-             * - This module depends on bjyauthorize for ACL logic
-             * Required for BjyAuthorize:
-             *
-             * This module builds the required providers for bjyauthorize
-             */
-            'RcmUser\Acl\Provider\BjyIdentityProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
-            'RcmUser\Acl\Provider\BjyRoleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRoleProvider',
-            'RcmUser\Acl\Provider\BjyRuleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRuleProvider',
-            'RcmUser\Acl\Provider\BjyResourceProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyResourceProvider',
+            'RcmUser\Acl\AclDataService' =>
+                'RcmUser\Acl\Service\Factory\AclDataService',
 
             /* ************************************** */
             /* CORE ********************************* */
@@ -471,7 +475,7 @@ return array(
              *  UserDataService
              *  UserPropertyService
              *  UserAuthenticationService
-             *  UserAuthorizeService
+             *  AuthorizeService
              */
             'RcmUser\Service\RcmUserService' =>
                 'RcmUser\Service\Factory\RcmUserService',
@@ -492,23 +496,26 @@ return array(
     ),
 
     /*
-     * bjyauthorize configuration
-     *
-     * This module inject providers to bjyauthorize
+     * Allows doctrine to generate tables as needed
+     * Only required if using doctrine entities and mappers
+     * And you want doctrine utilities to work correctly
      */
-    'bjyauthorize' => array(
-        'default_role' => 'guest',
-        'authenticated_role' => 'user',
-        'identity_provider' => 'RcmUser\Acl\Provider\BjyIdentityProvider',
-        'role_providers' => array(
-            'RcmUser\Acl\Provider\BjyRoleProvider' => array('guest'),
-        ),
-        'resource_providers' => array(
-            'RcmUser\Acl\Provider\BjyResourceProvider' => array(),
-        ),
-        'rule_providers' => array(
-            'RcmUser\Acl\Provider\BjyRuleProvider' => array(),
-        ),
+    'doctrine' => array(
+        'driver' => array(
+            'RcmUser' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/RcmUser/Acl/Entity',
+                    __DIR__ . '/../src/RcmUser/User/Entity',
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'RcmUser' => 'RcmUser'
+                )
+            )
+        )
     ),
 )
 

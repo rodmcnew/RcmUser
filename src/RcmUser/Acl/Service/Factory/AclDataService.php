@@ -1,8 +1,8 @@
 <?php
 /**
- * BjyResourceProvider.php
+ * AclDataService.php
  *
- * BjyResourceProvider
+ * AclDataService
  *
  * PHP version 5
  *
@@ -21,9 +21,9 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * BjyRoleProvider
+ * AclDataService
  *
- * BjyRoleProvider Factory
+ * AclDataService Factory
  *
  * PHP version 5
  *
@@ -35,22 +35,25 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class BjyRoleProvider implements FactoryInterface
+class AclDataService implements FactoryInterface
 {
-
     /**
      * createService
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return mixed|\RcmUser\Acl\Provider\BjyRoleProvider
+     * @return mixed|\RcmUser\Config\Config
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
         $aclRoleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRoleDataMapper');
+        $aclRuleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRuleDataMapper');
 
-        $service = new \RcmUser\Acl\Provider\BjyRoleProvider();
+        $service = new \RcmUser\Acl\Service\AclDataService();
+        $service->setConfig($cfg);
         $service->setAclRoleDataMapper($aclRoleDataMapper);
+        $service->setAclRuleDataMapper($aclRuleDataMapper);
 
         return $service;
     }

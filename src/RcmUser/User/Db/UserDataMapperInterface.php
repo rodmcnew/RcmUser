@@ -38,9 +38,6 @@ use RcmUser\User\Result;
  */
 interface UserDataMapperInterface
 {
-    const ID_FIELD = 'id';
-    const USERNAME_FIELD = 'username';
-
     /**
      * fetchById
      *

@@ -17,6 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
+use Zend\Permissions\Acl\Assertion\AssertionInterface;
+
 
 /**
  * AclRule
@@ -35,7 +37,6 @@ namespace RcmUser\Acl\Entity;
  */
 class AclRule implements \JsonSerializable, \IteratorAggregate
 {
-
     /**
      * string
      */
@@ -51,45 +52,72 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     const RULE_IGNORE = 'ignore';
 
     /**
-     * @var
+     * @var string
      */
-    protected $rule;
+    protected $rule = null;
 
     /**
-     * @var
+     * @var string
      */
-    protected $role;
+    protected $roleId = null;
 
     /**
-     * @var
+     * @var array/string
      */
-    protected $resource;
+    protected $resource = null;
 
     /**
-     * @var
+     * @var array/string
      */
-    protected $privilege;
+    protected $privilege = null;
 
     /**
-     * setPrivilege
+     * @var AssertionInterface/string $assertion
+     */
+    protected $assertion = null;
+
+    /**
+     * setRule
      *
-     * @param string $privilege privilege
+     * @param string $rule rule
      *
      * @return void
      */
-    public function setPrivilege($privilege)
+    public function setRule($rule)
     {
-        $this->privilege = $privilege;
+        $this->rule = $rule;
     }
 
     /**
-     * getPrivilege
+     * getRule
      *
-     * @return string
+     * @return mixed
      */
-    public function getPrivilege()
+    public function getRule()
     {
-        return $this->privilege;
+        return $this->rule;
+    }
+
+    /**
+     * setRoleId
+     *
+     * @param string $roleId roleId
+     *
+     * @return void
+     */
+    public function setRoleId($roleId)
+    {
+        $this->roleId = $roleId;
+    }
+
+    /**
+     * getRoleId
+     *
+     * @return mixed
+     */
+    public function getRoleId()
+    {
+        return $this->roleId;
     }
 
     /**
@@ -115,47 +143,47 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     }
 
     /**
-     * setRole
+     * setPrivilege
      *
-     * @param AclRole $role role
-     *
-     * @return void
-     */
-    public function setRole(AclRole $role)
-    {
-        $this->role = $role;
-    }
-
-    /**
-     * getRole
-     *
-     * @return mixed
-     */
-    public function getRole()
-    {
-        return $this->role;
-    }
-
-    /**
-     * setRule
-     *
-     * @param string $rule rule
+     * @param string $privilege privilege
      *
      * @return void
      */
-    public function setRule($rule)
+    public function setPrivilege($privilege)
     {
-        $this->rule = $rule;
+        $this->privilege = $privilege;
     }
 
     /**
-     * getRule
+     * getPrivilege
      *
-     * @return mixed
+     * @return string
      */
-    public function getRule()
+    public function getPrivilege()
     {
-        return $this->rule;
+        return $this->privilege;
+    }
+
+    /**
+     * setAssertion
+     *
+     * @param AssertionInterface/string $assertion assertion
+     *
+     * @return void
+     */
+    public function setAssertion($assertion)
+    {
+        $this->assertion = $assertion;
+    }
+
+    /**
+     * getAssertion
+     *
+     * @return AssertionInterface/string
+     */
+    public function getAssertion()
+    {
+        return $this->assertion;
     }
 
     /**
@@ -167,7 +195,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     {
         $obj = new \stdClass();
         $obj->rule = $this->getRule();
-        $obj->role = $this->getrole();
+        $obj->roleId = $this->getRoleId();
         $obj->resource = $this->getResource();
         $obj->privilege = $this->getPrivilege();
 

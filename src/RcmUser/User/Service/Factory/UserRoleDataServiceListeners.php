@@ -1,8 +1,8 @@
 <?php
 /**
- * UserAuthorizeService.php
+ * UserRoleDataServiceListeners.php
  *
- * UserAuthorizeService
+ * UserRoleDataServiceListeners
  *
  * PHP version 5
  *
@@ -15,16 +15,15 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUser\Acl\Service\Factory;
-
+namespace RcmUser\User\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * UserAuthorizeService
+ * UserRoleDataServiceListeners
  *
- * UserAuthorizeService Factory
+ * UserRoleDataServiceListeners Factory
  *
  * PHP version 5
  *
@@ -36,7 +35,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserAuthorizeService implements FactoryInterface
+class UserRoleDataServiceListeners implements FactoryInterface
 {
 
     /**
@@ -44,14 +43,17 @@ class UserAuthorizeService implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return \RcmUser\Acl\Service\UserAuthorizeService
+     * @return array
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = new \RcmUser\Acl\Service\UserAuthorizeService();
-        $service->setAuthorize($serviceLocator->get('BjyAuthorize\Service\Authorize'));
+        $service
+            = new \RcmUser\User\Event\UserRoleDataServiceListeners();
+
+        $service->setUserRolesDataMapper(
+            $serviceLocator->get('RcmUser\User\UserRolesDataMapper')
+        );
 
         return $service;
     }
-
-} 
+}

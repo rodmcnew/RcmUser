@@ -51,17 +51,17 @@ class AclRuleTest extends Zf2TestCase
     {
         $aclRule = new AclRule();
         $rule = 'allow';
-        $role = new AclRole();
+        $roleId = 'somerole';
         $resource = 'someresource';
         $privilege = 'someprivilege';
 
         $aclRule->setRule($rule);
-        $aclRule->setRole($role);
+        $aclRule->setRoleId($roleId);
         $aclRule->setResource($resource);
         $aclRule->setPrivilege($privilege);
 
         $this->assertTrue($aclRule->getRule() === $rule, 'Setter or getter failed.');
-        $this->assertTrue($aclRule->getRole() === $role, 'Setter or getter failed.');
+        $this->assertTrue($aclRule->getRoleId() === $roleId, 'Setter or getter failed.');
         $this->assertTrue(
             $aclRule->getResource() === $resource, 'Setter or getter failed.'
         );
@@ -86,7 +86,7 @@ class AclRuleTest extends Zf2TestCase
         $privilege = 'someprivilege';
 
         $aclRule->setRule($rule);
-        $aclRule->setRole($role);
+        $aclRule->setRoleId($role);
         $aclRule->setResource($resource);
         $aclRule->setPrivilege($privilege);
 
@@ -111,7 +111,7 @@ class AclRuleTest extends Zf2TestCase
         $privilege = 'someprivilege';
 
         $aclRule->setRule($rule);
-        $aclRule->setRole($role);
+        $aclRule->setRoleId($role);
         $aclRule->setResource($resource);
         $aclRule->setPrivilege($privilege);
 

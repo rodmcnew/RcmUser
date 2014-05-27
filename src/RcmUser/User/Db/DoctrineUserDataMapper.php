@@ -19,6 +19,7 @@ namespace RcmUser\User\Db;
 
 
 use Doctrine\ORM\EntityManager;
+use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\User\Entity\DoctrineUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
@@ -39,8 +40,8 @@ use RcmUser\User\Result;
  * @link      https://github.com/reliv
  */
 class DoctrineUserDataMapper
-    extends AbstractUserDataMapper
-    implements UserDataMapperInterface
+    extends UserDataMapper
+    implements DoctrineMapperInterface
 {
     const USER_DELETED_STATE = 'deleted';
     /**

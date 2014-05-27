@@ -1,0 +1,236 @@
+<?php
+
+$this->rcmUserBuildHtmlHead();
+
+$this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
+$this->headScript()->appendFile($this->url('RcmUserAdminJs'));
+
+?>
+<div ng-app="rcmuserAdminAclApp">
+<div class="rcmuser" ng-controller="rcmuserAdminAclRoles">
+
+<div class="container-fluid admin-acl">
+
+<script type="text/ng-template" id="addRule.html">
+    <div class="rcmuser">
+        <div class="admin-acl">
+            <div class="modal-header">
+                <h3 class="modal-title">Add rule: </h3>
+            </div>
+            <div class="modal-body">
+
+                <form>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-xs" ng-click="addRule()">Add Rule</button>
+                <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="removeRule.html">
+    <div class="rcmuser">
+        <div class="admin-acl">
+            <div class="modal-header">
+                <h3 class="modal-title">Are you sure you want to delete: </h3>
+            </div>
+            <div class="modal-body">
+
+                <div>
+                    <div>For role:</div>
+                    <div class="roleId">{{ruleData.roleId}}</div>
+                    <div class="rule">{{ruleData.rule}}</div>
+                </div>
+                <div>
+                    <div>Access to resource:</div>
+                    <div class="resource-name">{{resourceData.resource.name}}</div>
+                </div>
+                <div>
+                    <div>For privilege:</div>
+                    <div class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</div>
+                </div>
+                <div>
+                    <div class="resource-details">
+                        {{resourceData.resource.description}}<br/><br/>
+                        Resource: {{resourceData.resource.resourceId}}<br/>
+                        NameSpace: {{resourceData.resourceNs}}
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-xs" ng-click="removeRule()">Remove Rule</button>
+                <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="addRole.html">
+    <div class="rcmuser">
+        <div class="admin-acl">
+            <div class="modal-header">
+                <h3 class="modal-title">Add role: </h3>
+            </div>
+            <div class="modal-body">
+
+                <form>
+
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-xs" ng-click="addRole()">Add Role</button>
+                <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="removeRole.html">
+    <div class="rcmuser">
+        <div class="admin-acl">
+            <div class="modal-header">
+                <h3 class="modal-title">Are you sure you want to delete: </h3>
+            </div>
+            <div class="modal-body">
+
+                <div>
+                    <div>Role:</div>
+                    <div class="roleId">{{roleData.role.roleId}}</div>
+                </div>
+                <div>
+                    <div>And rules:</div>
+                    <div ng-repeat="ruleData in roleData.rules">
+                        <div>
+                            <span class="rule">{{ruleData.rule}}</span>
+                        </div>
+                        <div>
+                            <div>Access to resource:</div>
+                            <div class="resource-name">{{resourceData.resource.name}}</div>
+                        </div>
+                        <div>
+                            <div>For privilege:</div>
+                            <div class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</div>
+                        </div>
+                        <div>
+                            <div class="resource-details">
+                                {{resourceData.resource.description}}<br/><br/>
+                                Resource: {{resourceData.resource.resourceId}}<br/>
+                                NameSpace: {{resourceData.resourceNs}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary btn-xs" ng-click="removeRule()">Remove Rule</button>
+                <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<div class="container-fluid">
+    <h1>Access
+        <small>Control user roles and access</small>
+    </h1>
+    <p class="lead">Set up the user roles and access to resources.</p>
+</div>
+
+<div class="container-fluid">
+
+    <accordion close-others="oneAtATime">
+
+        <!-- + ROLE -->
+        <accordion-group is-open="isopen" heading="{{role.roleId}}" ng-repeat="roleData in roles">
+
+            <accordion-heading>
+                <div class="accordion-heading">
+                    <span class="roleId" tooltip-placement="right" tooltip="This is a user role.">{{levelRepeat('&#8901;&#8901;',roleData.roleNs)}} {{roleData.role.roleId}}</span>
+                    <!--<span class="" ng-show="roleData.role.parentRoleId">(Parent: {{roleData.role.parentRoleId}})</span>-->
+                    <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                </div>
+            </accordion-heading>
+
+            <section class="ruleHeader">
+                <div class="ruleTitle">Rules:</div>
+            </section>
+
+            <!-- + RESOURCE -->
+            <div ng-hide="superAdminRole == roleData.role.roleId">
+                <div class="container-fluid admin-acl-resource-section" ng-repeat="ruleData in roleData.rules">
+
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-sm-10">
+                                <div>
+                                    <span class="rule">{{ruleData.rule}}</span>
+                                </div>
+                                <div>Access to
+                                    <span class="resource-name" tooltip-placement="right" tooltip-append-to-body="true" tooltip-title="{{resources[ruleData.resource].resource.resourceId}}" tooltip-html-unsafe="{{resources[ruleData.resource].resource.description}}<br/><br/>Resource: {{resources[ruleData.resource].resource.resourceId}}<br/>NameSpace: {{resources[ruleData.resource].resourceNs}}">{{resources[ruleData.resource].resource.name}}</span>
+                                </div>
+                                <div>For privilege
+                                    <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resource])">
+                                    <i class="glyphicon glyphicon-minus"></i> remove
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-hide="roleData.rules.length">
+                    <div class="alert alert-warning">
+                        <i class="glyphicon glyphicon-warning-sign"></i><span class="no-rules">No rules created, no access granted.</span>
+                    </div>
+                </div>
+
+                <div class="container-fluid admin-acl-resource-footer">
+                    <div class="row">
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRule('sm', roleData, resources)">
+                                <i class="glyphicon glyphicon-plus"></i> add
+                            </button>
+                        </div>
+                        <div class="col-sm-10">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="superAdminRole == roleData.role.roleId">
+                <div class="alert alert-info">
+                    <i class="glyphicon glyphicon-info-sign"></i><span class="is-superadmin">This role is super admin. Role has full access and cannot be changed.</span>
+                </div>
+            </div>
+            <!-- + RESOURCE -->
+        </accordion-group>
+        <!-- - ROLE -->
+    </accordion>
+</div>
+
+<div class="container-fluid admin-acl-role-footer">
+    <div class="row">
+        <div class="col-sm-2">
+            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRole('sm', resources)">
+                <i class="glyphicon glyphicon-plus"></i> add role
+            </button>
+        </div>
+        <div class="col-sm-10">
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+</div>
+</div>

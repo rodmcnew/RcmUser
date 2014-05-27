@@ -42,9 +42,9 @@ return array(
             /*
              * InputFilter
              * Used in:
-             *  RcmUser\User\Data\UserValidator
+             *  RcmUser\User\Db\UserDataMapper
              *
-             * If validator is used, this input filter will be applied
+             * This input filter will be applied
              * to the User object on create and save.
              */
             'InputFilter' => array(
@@ -112,24 +112,81 @@ return array(
             'DefaultAuthenticatedRoleIdentities' => array('user'),
 
             /*
+             * SuperAdminRole
+             *
+             * If this is set, this role will get full permissions always
+             * Basically over-rides standard permission handling
+             */
+            'SuperAdminRole' => 'admin',
+
+            /*
              * ResourceProviders
              * Used in:
              *  RcmUser\Acl\Service\AclResourceService
              *
              * This aggregates resources that may be injected by any module,
              * this module wraps the resources
-             * in a core resource with common privileges.
+             * in a root resource with common privileges.
+             *
+             * IMPORTANT:
+             * - Parent resources must be first in the resource array
+             * - It is not possible to share parent or child resources
+             *   between different providers
              *
              * Format for each value of this array is:
-             * 'MyResourceName(Will be top level of resource)' =>
-             * 'MyResource/ResourceProvider(ResourceProviderInterface)',
+             *
+             * 'ProviderId(usually module namespace)' =>
+             * 'MyResource/ResourceProvider(ResourceProviderInterface)'
+             *
+             * OR
+             *
+             * ProviderId(usually module namespace)' => array(
+             *     'resourceId' => 'some-resource'
+             *     'parentResourceId' => null // Or a parent resourceId if needed
+             *     'privileges' => array('privilege1', 'privilege2', 'etc...'),
+             *     'name' => 'Human readable or translatable name',
+             *     'description' => 'Human readable or translatable description',
+             * )
              */
             'ResourceProviders' => array(
+
                 /*
                  * RcmUserAccess
                  * This module inject some of this module's resources.
+                 * Also example of a Resource provider
                  */
-                'RcmUserAccess' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+
+                'RcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                /* example of resource providers as array *
+                'RcmUser\TEST' => array(
+                    'TESTONE' => array(
+                        'resourceId' => 'TESTONE',
+                        'parentResourceId' => null,
+                        'privileges' => array(
+                            'read',
+                            'update',
+                            'create',
+                            'delete',
+                            'execute',
+                        ),
+                        'name' => 'Test resource one.',
+                        'description' => 'test resource one desc.',
+                    ),
+                    'TESTTWO' => array(
+                        'resourceId' => 'TESTTWO',
+                        'parentResourceId' => 'TESTONE',
+                        'privileges' => array(
+                            'read',
+                            'update',
+                            'create',
+                            'delete',
+                            'execute',
+                        ),
+                        'name' => 'Test resource two.',
+                        'description' => 'test resource two desc.',
+                    ),
+                ),
+                */
             ),
         ),
     ),
@@ -185,7 +242,7 @@ return array(
             /*
              * UserRolesDataMapper
              * Required for (ACL user property):
-             *  RcmUser\Acl\Service\Factory\EventListeners
+             *  RcmUser\User\Event\UserRoleDataServiceListeners
              *
              * This is a DataMapper adapter that is used
              * to abstract the data storage method.
@@ -199,7 +256,7 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
@@ -220,9 +277,9 @@ return array(
              */
             'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
             /*
-             * UserDataPreparer (requires Encryptor)
+             * UserDataPreparer
              * Required for:
-             *  RcmUser\User\Db\AbstractUserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
              *
              * Used by default to prepare data for DB storage.
              * By default, encrypts passwords and creates id (UUID)
@@ -243,6 +300,13 @@ return array(
              */
             'RcmUser\User\UserDataServiceListeners' =>
                 'RcmUser\User\Service\Factory\UserDataServiceListeners',
+
+            /*
+             * UserRoleDataServiceListeners
+             * Required for (User Acl Property populating):
+             */
+            'RcmUser\User\UserRoleDataServiceListeners' =>
+                'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
 
             /* ************************************** */
             /* AUTH ********************************* */
@@ -317,7 +381,7 @@ return array(
                 'RcmUser\Acl\Service\Factory\AclResourceService',
 
             /*
-             * UserAuthorizeService (ACL)
+             * AuthorizeService (ACL)
              * Used by:
              *  RcmUserService
              *  ControllerPluginRcmUserIsAllowed
@@ -325,12 +389,11 @@ return array(
              *
              * Exposes the ACL isAllowed method
              */
-            'RcmUser\Acl\Service\UserAuthorizeService' =>
-                'RcmUser\Acl\Service\Factory\UserAuthorizeService',
+            'RcmUser\Acl\Service\AuthorizeService' =>
+                'RcmUser\Acl\Service\Factory\AuthorizeService',
             /*
              * AclRoleDataMapper
-             * Required for:
-             *  BjyRoleProvider
+             * Required
              * This data mapper adapter allows this module
              * to read roles from a data source
              * This may be configured to use a custom data mapper if required
@@ -348,27 +411,14 @@ return array(
                 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
 
             /*
-             * UserDataServiceListeners
-             * Required for (User Property populating):
+             * AclDataService
+             * Required for accessing mappers
+             * This is designed to expose a simple facade
+             * for use in displaying and updating ACL data
+             * in views
              */
-            'RcmUser\Acl\UserDataServiceListeners' =>
-                'RcmUser\Acl\Service\Factory\UserDataServiceListeners',
-
-            /*
-             * BJY-Authorize providers
-             * - This module depends on bjyauthorize for ACL logic
-             * Required for BjyAuthorize:
-             *
-             * This module builds the required providers for bjyauthorize
-             */
-            'RcmUser\Acl\Provider\BjyIdentityProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
-            'RcmUser\Acl\Provider\BjyRoleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRoleProvider',
-            'RcmUser\Acl\Provider\BjyRuleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRuleProvider',
-            'RcmUser\Acl\Provider\BjyResourceProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyResourceProvider',
+            'RcmUser\Acl\AclDataService' =>
+                'RcmUser\Acl\Service\Factory\AclDataService',
 
             /* ************************************** */
             /* CORE ********************************* */
@@ -379,7 +429,7 @@ return array(
              *  UserDataService
              *  UserPropertyService
              *  UserAuthenticationService
-             *  UserAuthorizeService
+             *  AuthorizeService
              */
             'RcmUser\Service\RcmUserService' =>
                 'RcmUser\Service\Factory\RcmUserService',
@@ -400,10 +450,33 @@ return array(
     ),
 
     /*
+     * Allows doctrine to generate tables as needed
+     * Only required if using doctrine entities and mappers
+     * And you want doctrine utilities to work correctly
+     */
+    'doctrine' => array(
+        'driver' => array(
+            'RcmUser' => array(
+                'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                'cache' => 'array',
+                'paths' => array(
+                    __DIR__ . '/../src/RcmUser/Acl/Entity',
+                    __DIR__ . '/../src/RcmUser/User/Entity',
+                )
+            ),
+            'orm_default' => array(
+                'drivers' => array(
+                    'RcmUser' => 'RcmUser'
+                )
+            )
+        )
+    ),
+
+    /*
+     * @deprecated
      * bjyauthorize configuration
      *
      * This module inject providers to bjyauthorize
-     */
     'bjyauthorize' => array(
         'default_role' => 'guest',
         'authenticated_role' => 'user',
@@ -419,16 +492,48 @@ return array(
         ),
     ),
 
+            /*
+             * @deprecated
+             * BJY-Authorize providers
+             * - This module depends on bjyauthorize for ACL logic
+             * Required for BjyAuthorize:
+             *
+             * This module builds the required providers for bjyauthorize
+
+            'RcmUser\Acl\Provider\BjyIdentityProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
+            'RcmUser\Acl\Provider\BjyRoleProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyRoleProvider',
+            'RcmUser\Acl\Provider\BjyRuleProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyRuleProvider',
+            'RcmUser\Acl\Provider\BjyResourceProvider' =>
+                'RcmUser\Acl\Service\Factory\BjyResourceProvider',
+            *
+    */
+
     'controllers' => array(
         'invokables' => array(
-            'RcmUser\Controller\User' => 'RcmUser\Controller\UserController',
+            'RcmUser\Controller\User' =>
+                'RcmUser\Controller\UserController',
+            'RcmUser\Controller\AdminAclController' =>
+                'RcmUser\Controller\AdminAclController',
+            'RcmUser\Controller\AdminApiAclResourcesController' =>
+                'RcmUser\Controller\AdminApiAclResourcesController',
+            'RcmUser\Controller\AdminApiAclRulesByRolesController' =>
+                'RcmUser\Controller\AdminApiAclRulesByRolesController',
+            'RcmUser\Controller\AdminJsController' =>
+                'RcmUser\Controller\AdminJsController',
+            'RcmUser\Controller\AdminCssController' =>
+                'RcmUser\Controller\AdminCssController',
+            'RcmUser\Controller\AdminApiAclRuleController' =>
+                'RcmUser\Controller\AdminApiAclRuleController',
         ),
     ),
 
     'router' => array(
         'routes' => array(
             'RcmUser' => array(
-
+                'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
                     'route' => '/rcmuser[/:action]',
@@ -440,32 +545,82 @@ return array(
                         'action' => 'index',
                     ),
                 ),
-                /*
-                'type'    => 'Literal',
-                'options' => array(
-                    'route'    => '/rcm-user',
-                    'defaults' => array(
-                        //'__NAMESPACE__' => 'RcmUser\Controller',
-                        'controller'    => 'RcmUser\Controller\User',
-                        'action'        => 'index',
-                    ),
-                ),
+            ),
+
+            'RcmUserAdminAcl' => array(
                 'may_terminate' => true,
-                'child_routes' => array(
-                    'default' => array(
-                        'type'    => 'Segment',
-                        'options' => array(
-                            'route'    => '/[:controller[/:action]]',
-                            'constraints' => array(
-                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                                'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
-                            ),
-                            'defaults' => array(
-                            ),
-                        ),
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser-acl',
+                    'constraints' => array(
+                        'terminal' => '[0-1]',
+                    ),
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminAclController',
+                        'action' => 'index',
                     ),
                 ),
-                */
+            ),
+            'RcmUserAdminJs' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser/js/admin.js',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminJsController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'RcmUserAdminCss' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser/css/admin.css',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminCssController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclResources' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-acl-resources[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclResourcesController',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclRulesByRoles' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-acl-rulesbyroles[/:id]',
+                    'constraints' => array(
+                        'id' => '[0-9]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclRulesByRolesController',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclRule' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-acl-rule[/:id]',
+                    //'constraints' => array(
+                    //'id' => '[a-zA-Z0-9_-]+',
+                    //),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclRuleController',
+                    ),
+                ),
             ),
         ),
     ),
@@ -473,6 +628,9 @@ return array(
     'view_manager' => array(
         'template_path_stack' => array(
             'RcmUser' => __DIR__ . '/../view',
+        ),
+        'strategies' => array(
+            'ViewJsonStrategy',
         ),
     ),
 
@@ -486,9 +644,9 @@ return array(
     'view_helpers' => array(
         'factories' => array(
             'rcmUserIsAllowed' =>
-                'RcmUser\Service\Factory\ViewHelperRcmUserIsAllowed',
+                'RcmUser\View\Service\Factory\ViewHelperRcmUserIsAllowed',
+            'rcmUserBuildHtmlHead' =>
+                'RcmUser\View\Service\Factory\ViewHelperRcmUserBuildHtmlHead',
         ),
     ),
-
-
 );

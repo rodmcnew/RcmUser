@@ -18,9 +18,9 @@
 namespace RcmUser\Acl\Db;
 
 
+use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Db\DoctrineMapper;
-use Doctrine\ORM\QueryBuilder;
+use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Result;
 
 /**
@@ -39,9 +39,62 @@ use RcmUser\Result;
  * @link      https://github.com/reliv
  */
 class DoctrineAclRuleDataMapper
-    extends DoctrineMapper
-    implements AclRuleDataMapperInterface
+    extends AclRuleDataMapper
+    implements AclRuleDataMapperInterface, DoctrineMapperInterface
 {
+    /**
+     * @var EntityManager $entityManager
+     */
+    protected $entityManager;
+
+    /**
+     * @var string $entityClass
+     */
+    protected $entityClass;
+
+    /**
+     * setEntityManager
+     *
+     * @param EntityManager $entityManager entityManager
+     *
+     * @return void
+     */
+    public function setEntityManager(EntityManager $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
+    /**
+     * getEntityManager
+     *
+     * @return EntityManager
+     */
+    public function getEntityManager()
+    {
+        return $this->entityManager;
+    }
+
+    /**
+     * setEntityClass
+     *
+     * @param string $entityClass entityClass namespace
+     *
+     * @return void
+     */
+    public function setEntityClass($entityClass)
+    {
+        $this->entityClass = (string)$entityClass;
+    }
+
+    /**
+     * getEntityClass
+     *
+     * @return string
+     */
+    public function getEntityClass()
+    {
+        return $this->entityClass;
+    }
 
     /**
      * fetchAll
@@ -66,53 +119,78 @@ class DoctrineAclRuleDataMapper
     }
 
     /**
-     * fetchById
-     *
-     * @param int $id the id
-     *
-     * @return Result
-     */
-    public function fetchById($id)
-    {
-    }
-
-    /**
      * fetchByRole
      *
-     * @param string $roleId the roleIdentity
+     * @param string $roleId the roleId
      *
      * @return Result
      */
     public function fetchByRole($roleId)
     {
-    }
+        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
+            ->findBy(array('roleId' => $roleId));
 
+        if (empty($rules)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Rules could not be found by role Id.'
+            );
+        }
+
+        return new Result($rules);
+    }
 
     /**
      * fetchByRule
      *
-     * @param string $rule the rule
+     * @param AclRule|string $rule rule
      *
-     * @return Result
+     * @return Result|Result
      */
     public function fetchByRule($rule = AclRule::RULE_ALLOW)
     {
-
         $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findBy(array('rule' => $rule));
-
-        /*
-        $query = $this->getEntityManager()->createQuery('
-            SELECT role FROM '.$this->getEntityClass().' rule
-            INDEX BY rule.rule'
-        );
-
-        $rules = $query->getResult();
-        */
 
         if (empty($rules)) {
 
             return new Result(null, Result::CODE_FAIL, 'Rules could not be found.');
+        }
+
+        return new Result($rules);
+    }
+
+    /**
+     * fetchByResource
+     *
+     * @param string $resourceId resourceId
+     *
+     * @return mixed|Result
+     */
+    public function fetchByResource($resourceId)
+    {
+        //$rules = $this->getEntityManager()->getRepository($this->getEntityClass())
+        //    ->findBy(array('resource' => $resourceId));
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
+            'INDEX BY rule.id ' .
+            'WHERE rule.resource = ?1'
+        );
+
+        $query->setParameter(1, $resourceId);
+
+        $rules = $query->getResult();
+
+        if (empty($rules)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Rules could not be found by resource.'
+            );
         }
 
         return new Result($rules);
@@ -127,6 +205,8 @@ class DoctrineAclRuleDataMapper
      */
     public function create(AclRule $aclRule)
     {
+        // todo write me
+        parent::create($aclRule);
     }
 
     /**
@@ -138,6 +218,8 @@ class DoctrineAclRuleDataMapper
      */
     public function read(AclRule $aclRule)
     {
+        // todo write me
+        parent::read($aclRule);
     }
 
     /**
@@ -149,6 +231,8 @@ class DoctrineAclRuleDataMapper
      */
     public function update(AclRule $aclRule)
     {
+        // todo write me
+        parent::update($aclRule);
     }
 
     /**
@@ -160,5 +244,7 @@ class DoctrineAclRuleDataMapper
      */
     public function delete(AclRule $aclRule)
     {
+        // todo write me
+        parent::delete($aclRule);
     }
 } 
