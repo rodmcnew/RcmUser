@@ -445,13 +445,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * getCurrentUser
-     * Get current logged in user or guest in no one is logged in
+     * Get current logged in user or default if no one is logged in
+     * @param mixed $default default
      *
-     * @return mixed|null
+     * @return User|null
      */
-    public function getCurrentUser()
+    public function getCurrentUser($default = null)
     {
-        return $this->getUserAuthService()->getIdentity($this->buildNewUser());
+        $user = $this->getIdentity();
+        return $user;
     }
 
     public function getTempUser()

@@ -56,11 +56,13 @@ class RcmUserGetCurrentUser extends AbstractPlugin
     /**
      * __invoke
      *
-     * @return User|null
+     * @param mixed $default
+     *
+     * @return null|\RcmUser\User\Entity\User
      */
-    public function __invoke()
+    public function __invoke($default = null)
     {
-        $user = $this->rcmUserService->getCurrentUser();
+        $user = $this->rcmUserService->getCurrentUser($default);
 
         return $user;
     }
