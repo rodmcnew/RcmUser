@@ -56,13 +56,9 @@ class RcmUserGetCurrentUser extends AbstractPlugin
     /**
      * __invoke
      *
-     * @param string $resourceId resourceId
-     * @param string $privilege  privilege
-     * @param string $providerId providerId
-     *
-     * @return bool
+     * @return User|null
      */
-    public function __invoke($resourceId, $privilege = null, $providerId = null)
+    public function __invoke()
     {
         $user = $this->rcmUserService->getCurrentUser();
 

@@ -658,6 +658,8 @@ return array(
         'factories' => array(
             'rcmUserIsAllowed' =>
                 'RcmUser\Service\Factory\ControllerPluginRcmUserIsAllowed',
+            'rcmUserGetCurrentUser' =>
+                'RcmUser\Service\Factory\ControllerPluginRcmUserGetCurrentUser',
         ),
     ),
 
@@ -667,6 +669,8 @@ return array(
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserIsAllowed',
             'rcmUserBuildHtmlHead' =>
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserBuildHtmlHead',
+            'rcmUserGetCurrentUser' =>
+                'RcmUser\View\Service\Factory\ViewHelperRcmUserGetCurrentUser',
         ),
     ),
 );
