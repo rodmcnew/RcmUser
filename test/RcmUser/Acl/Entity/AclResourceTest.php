@@ -169,8 +169,58 @@ class AclResourceTest extends Zf2TestCase
         $isvalid = $aclResource->isValidResourceId($badResourceId);
 
         $this->assertFalse($isvalid, 'Resource not valid, but said it was.');
+
+        try{
+            $aclResource->setResourceId($badResourceId);
+
+        }catch(RcmUserException $e){
+
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
     }
 
+    /**
+     * testSetParentResourceId
+     *
+     * @return void
+     */
+    public function testSetParentResourceId()
+    {
+        $aclResource = $this->getAclResource('123');
+        $aclResource2 = $this->getAclResource('432');
+
+        $aclResource->setParentResource($aclResource2);
+
+        $aclResource->setParentResourceId('555');
+
+        $this->assertEquals(
+            '555',
+            $aclResource->getParentResource(),
+            'Setting a parent resourceId should clear parent resource object.'
+        );
+
+        $badResourceId = "!inv@lid$";
+
+        try{
+            $aclResource->setParentResourceId($badResourceId);
+
+        }catch(RcmUserException $e){
+
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
+    }
+
+    /**
+     * testPopulate
+     *
+     * @return void
+     */
     public function testPopulate()
     {
         $aclResourceArray = $this->getAclResourceArray('321');
@@ -266,6 +316,24 @@ class AclResourceTest extends Zf2TestCase
         }
 
         $this->fail("Expected exception not thrown");
+    }
+
+    /**
+     * testJsonSerialize
+     *
+     * @return void
+     */
+    public function testJsonSerialize()
+    {
+        $aclResource = $this->getAclResource('123');
+
+        $stdObj = $aclResource->jsonSerialize();
+
+        $this->assertInstanceOf('\stdClass', $stdObj, 'jsonSerialize did not return std class.');
+
+        $json = json_encode($aclResource);
+
+        $this->assertJson($json, 'Could not encode as JSON.');
     }
 
 }
