@@ -278,10 +278,10 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
             </accordion-heading>
             <section class="roleHeader">
                 <div class="">
-                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)">
+                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-edit"></i> edit role
                     </button>
-                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)">
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-minus"></i> remove role
                     </button>
                 </div>

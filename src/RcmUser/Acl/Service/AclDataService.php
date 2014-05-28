@@ -154,7 +154,6 @@ class AclDataService
     public function getRoleAclData($roleId)
     {
 
-
     }
 
     /**
@@ -188,6 +187,16 @@ class AclDataService
     }
 
     /**
+     * getGuestRole
+     *
+     * @return string|null
+     */
+    public function getGuestRole()
+    {
+        return $this->config->get('GuestRole', null);
+    }
+
+    /**
      * fetchAllRoles
      *
      * @return Result
@@ -206,7 +215,6 @@ class AclDataService
      */
     public function fetchRoleByRoleId($roleId)
     {
-
         return $this->aclRoleDataMapper->fetchByRoleId($roleId);
     }
 
@@ -244,6 +252,23 @@ class AclDataService
     public function deleteRole(AclRole $aclRole)
     {
         $roleId = $aclRole->getRoleId();
+
+        // some roles should not be deleted, like super admin and guest
+        if($roleId == $this->getSuperAdminRole()){
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Super admin role ({$roleId}) cannot be deleted."
+            );
+        }
+
+        if($roleId == $this->getGuestRole()){
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Guest role ({$roleId}) cannot be deleted."
+            );
+        }
 
         $result = $this->aclRoleDataMapper->delete($aclRole);
 
