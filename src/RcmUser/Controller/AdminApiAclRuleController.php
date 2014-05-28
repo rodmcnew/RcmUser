@@ -47,7 +47,7 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     public function get($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration')) {
+        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
             return $this->getNotAllowedResponse();
         }
 
@@ -64,7 +64,7 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     public function create($data)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration')) {
+        if (!$this->isAllowed('rcmuser-acl-administration', 'create')) {
             return $this->getNotAllowedResponse();
         }
 
@@ -95,7 +95,7 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     public function delete($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration')) {
+        if (!$this->isAllowed('rcmuser-acl-administration', 'delete')) {
             return $this->getNotAllowedResponse();
         }
 
