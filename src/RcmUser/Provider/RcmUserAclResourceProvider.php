@@ -39,7 +39,7 @@ use RcmUser\Acl\Provider\ResourceProvider;
 class RcmUserAclResourceProvider extends ResourceProvider
 {
     /**
-     * @var
+     * @var string PROVIDER_ID This needs to be the same as the config
      */
     const PROVIDER_ID = 'RcmUser';
 

@@ -49,7 +49,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     protected $parentResourceId = null;
 
     /**
-     * @var string $parentResource
+     * @var AclResource $parentResource
      */
     protected $parentResource = null;
 
@@ -144,6 +144,14 @@ class AclResource extends GenericResource implements \JsonSerializable
             );
         }
 
+        if(!empty($this->parentResource)){
+
+            if($this->parentResource->getResourceId() != $parentResourceId){
+
+                $this->parentResource = null;
+            }
+        }
+
         $this->parentResourceId = $parentResourceId;
     }
 
@@ -166,6 +174,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setParentResource(AclResource $parentResource)
     {
+        $this->setParentResourceId($parentResource->getResourceId());
         $this->parentResource = $parentResource;
     }
 
@@ -288,7 +297,7 @@ class AclResource extends GenericResource implements \JsonSerializable
             $this->setParentResourceId($data->getParentResourceId());
             $this->setPrivileges($data->getPrivileges());
             $this->setName($data->getName());
-            $this->setDescription($this->getDescription());
+            $this->setDescription($data->getDescription());
 
             return;
         }
