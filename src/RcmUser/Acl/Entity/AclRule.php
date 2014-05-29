@@ -113,6 +113,8 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function setRoleId($roleId)
     {
+        $roleId = strtolower((string) $roleId);
+
         $this->roleId = $roleId;
     }
 

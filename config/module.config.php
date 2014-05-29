@@ -543,7 +543,7 @@ return array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/rcmuser[/:action]',
+                    'route' => '/rcmuser',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),

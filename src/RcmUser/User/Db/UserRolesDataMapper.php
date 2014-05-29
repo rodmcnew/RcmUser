@@ -40,11 +40,6 @@ use RcmUser\User\Entity\User;
 class UserRolesDataMapper implements UserRolesDataMapperInterface
 {
     /**
-     * @var string
-     */
-    const PROPERTY_KEY = 'RcmUser\Acl\UserRoles';
-
-    /**
      * @var array
      */
     protected $defaultRoleIdentities = array();

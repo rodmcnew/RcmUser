@@ -20,8 +20,10 @@ namespace RcmUser\User\Event;
 
 use RcmUser\User\Db\UserRolesDataMapper;
 use RcmUser\User\Db\UserRolesDataMapperInterface;
+use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
+use RcmUser\User\Service\UserRolePropertyService;
 
 /**
  * UserRoleDataServiceListeners
@@ -73,21 +75,30 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
     /**
-     * @var UserRolesDataMapperInterface
+     * @var UserRolePropertyService
      */
-    protected $userRolesDataMapper;
+    protected $userRolePropertyService;
 
     /**
-     * setUserRolesDataMapper
+     * setUserRolePropertyService
      *
-     * @param UserRolesDataMapperInterface $userRolesDataMapper userRolesDataMapper
+     * @param UserRolePropertyService $userRolePropertyService
      *
      * @return void
      */
-    public function setUserRolesDataMapper(
-        UserRolesDataMapperInterface $userRolesDataMapper
-    ) {
-        $this->userRolesDataMapper = $userRolesDataMapper;
+    public function setUserRolePropertyService(UserRolePropertyService $userRolePropertyService)
+    {
+        $this->userRolePropertyService = $userRolePropertyService;
+    }
+
+    /**
+     * getUserRolePropertyService
+     *
+     * @return UserRolePropertyService
+     */
+    public function getUserRolePropertyService()
+    {
+        return $this->userRolePropertyService;
     }
 
     /**
@@ -97,28 +108,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function getUserRolesDataMapper()
     {
-        return $this->userRolesDataMapper;
-    }
-
-    /**
-     * getDefaultAuthenticatedRoleIdentities
-     *
-     * @return array
-     */
-    public function getDefaultAuthenticatedRoleIdentities()
-    {
-        return $this->getUserRolesDataMapper()
-            ->getDefaultAuthenticatedRoleIdentities();
-    }
-
-    /**
-     * getDefaultRoleIdentities
-     *
-     * @return array
-     */
-    public function getDefaultRoleIdentities()
-    {
-        return $this->getUserRolesDataMapper()->getDefaultRoleIdentities();
+        return $this->userRolePropertyService->getUserRolesDataMapper();
     }
 
     /**
@@ -128,7 +118,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function getUserPropertyKey()
     {
-        return UserRolesDataMapper::PROPERTY_KEY;
+        return UserRoleProperty::PROPERTY_KEY;
     }
 
     /**
@@ -170,7 +160,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $responseUser = $e->getParam('responseUser');
 
         $userRoleProperty = $this->buildUserRoleProperty(
-            $this->getDefaultRoleIdentities()
+            $this->getDefaultRoles($responseUser)
         );
 
         $responseUser->setProperty(
@@ -196,8 +186,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
             $responseUser = $result->getUser();
 
-            //$defaultRoleIdentities = $this->getDefaultRoleIdentities();
-
             $currentRoleProperty = $responseUser->getProperty(
                 $this->getUserPropertyKey()
             );
@@ -205,7 +193,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             if (empty($currentRoleProperty)) {
 
                 $newUserRoleProperty = $this->buildUserRoleProperty(
-                    $this->getDefaultAuthenticatedRoleIdentities()
+                    $this->getDefaultRoles($responseUser)
                 );
 
                 $responseUser->setProperty(
@@ -220,7 +208,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             );
 
             $aclResult = $this->getUserRolesDataMapper()->create(
-                $responseUser, $currentRoleProperty->getRoles()
+                $responseUser,
+                $currentRoleProperty->getRoles()
             );
 
             if (!$aclResult->isSuccess()) {
@@ -257,13 +246,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
             $responseUser = $result->getUser();
 
-            if (empty($responseUser->getId())) {
-
-                $roles = $this->getDefaultRoleIdentities();
-            } else {
-
-                $roles = $this->getDefaultAuthenticatedRoleIdentities();
-            }
+            $roles = $this->getDefaultRoles($responseUser);
 
             $readResult = $this->getUserRolesDataMapper()->read($responseUser);
 
@@ -335,7 +318,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             if ($currentRoles === null) {
 
                 $userRoleProperty = $this->buildUserRoleProperty(
-                    $this->getDefaultAuthenticatedRoleIdentities()
+                    $this->getDefaultRoles($responseUser)
                 );
 
                 $responseUser->setProperty(
@@ -413,22 +396,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         }
 
         return $result;
-    }
-
-    /**
-     * buildUserRoleProperty
-     *
-     * @param array $roles roles
-     *
-     * @return UserRoleProperty
-     */
-    protected function buildUserRoleProperty($roles)
-    {
-        return new UserRoleProperty(
-            $roles,
-            $this->getUserRolesDataMapper()->getGuestRoleId(),
-            $this->getUserRolesDataMapper()->getSuperAdminRoleId()
-        );
     }
 
 } 

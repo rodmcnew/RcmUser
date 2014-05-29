@@ -68,6 +68,8 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setRoleId($roleId)
     {
+        $roleId = strtolower((string) $roleId);
+
         if (!$this->isValidRoleId($roleId)) {
 
             throw new RcmUserException("Role roleId ({$roleId}) is invalid.");
@@ -101,6 +103,8 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setParentRoleId($parentRoleId)
     {
+        $parentRoleId = strtolower((string) $parentRoleId);
+
         if (!$this->isValidRoleId($parentRoleId)) {
 
             throw new RcmUserException(

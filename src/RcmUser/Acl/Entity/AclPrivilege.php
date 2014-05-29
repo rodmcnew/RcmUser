@@ -96,6 +96,8 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
      */
     public function setPrivilege($privilege)
     {
+        $privilege = strtolower((string) $privilege);
+
         if (!$this->isValidPrivilege($privilege)) {
 
             throw new RcmUserException(
@@ -110,12 +112,21 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
      * getPrivilege
      *
      * @param string $privilege privilege
+     * @param null   $default   default
      *
-     * @return array
+     * @return null
      */
-    public function getPrivilege($privilege)
+    public function getPrivilege($privilege, $default = null)
     {
-        return $this->privileges;
+        $privilege = strtolower((string) $privilege);
+
+        $key = array_search($privilege, $this->privileges);
+
+        if(!$key){
+            return $default;
+        }
+
+        return $this->privileges[$key];
     }
 
     /**

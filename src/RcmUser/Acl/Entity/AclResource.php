@@ -95,6 +95,8 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setResourceId($resourceId)
     {
+        $resourceId = strtolower((string) $resourceId);
+
         if (!$this->isValidResourceId($resourceId)) {
 
             throw new RcmUserException(
@@ -137,6 +139,8 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setParentResourceId($parentResourceId)
     {
+        $parentResourceId = strtolower((string) $parentResourceId);
+
         if (!$this->isValidResourceId($parentResourceId)) {
 
             throw new RcmUserException(

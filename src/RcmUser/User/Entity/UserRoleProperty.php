@@ -17,6 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
+use RcmUser\User\Service\UserRolePropertyService;
+
 
 /**
  * Class UserRoleProperty
@@ -35,21 +37,42 @@ namespace RcmUser\User\Entity;
  */
 class UserRoleProperty
 {
+    /**
+     * @var string
+     */
+    const PROPERTY_KEY = 'RcmUser\Acl\UserRoles';
+    /**
+     * @var array $roles
+     */
     protected $roles = array();
 
-    protected $guestRoleId = null;
+    /**
+     * @var UserRolePropertyService $userRolePropertyService
+     */
+    protected $userRolePropertyService;
 
-    protected $superAdminRoleId = null;
-
+    /**
+     * @param array $roles
+     * @param UserRolePropertyService $userRolePropertyService
+     */
     public function __construct(
-        $roles = array(),
-        $guestRoleId = null,
-        $superAdminRoleId = null
+        UserRolePropertyService $userRolePropertyService,
+        $roles = array()
     ) {
+        $this->userRolePropertyService = $userRolePropertyService;
         $this->roles = $roles;
-        $this->guestRoleId = $guestRoleId;
-        $this->superAdminRoleId = $superAdminRoleId;
     }
+
+    /**
+     * getUserRolePropertyService
+     *
+     * @return UserRolePropertyService
+     */
+    public function getUserRolePropertyService()
+    {
+        return $this->userRolePropertyService;
+    }
+
 
     /**
      * getRoles
@@ -104,12 +127,7 @@ class UserRoleProperty
      */
     public function isGuest()
     {
-        if ($this->getRole($this->guestRoleId) && (count($this->roles) > 1)) {
-
-            return true;
-        }
-
-        return false;
+        return $this->userRolePropertyService->isGuest($this->roles);
     }
 
     /**
@@ -119,11 +137,6 @@ class UserRoleProperty
      */
     public function isSuperAdmin()
     {
-        if ($this->getRole($this->superAdminRoleId)) {
-
-            return true;
-        }
-
-        return false;
+        return  $this->userRolePropertyService->isSuperAdmin($this->roles);
     }
 } 
