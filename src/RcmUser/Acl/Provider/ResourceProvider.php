@@ -1,8 +1,8 @@
 <?php
 /**
- * ResourceProviderInterface.php
+ * ResourceProvider.php
  *
- * ResourceProviderInterface
+ * ResourceProvider
  *
  * PHP version 5
  *
@@ -17,13 +17,11 @@
 
 namespace RcmUser\Acl\Provider;
 
-use RcmUser\Exception\RcmUserException;
-
 
 /**
- * Interface ResourceProviderInterface
+ * class ResourceProvider
  *
- * ResourceProviderInterface Interface
+ * ResourceProvider
  *
  * PHP version 5
  *
@@ -38,6 +36,10 @@ use RcmUser\Exception\RcmUserException;
 class ResourceProvider implements ResourceProviderInterface
 {
     /**
+     * @var string $providerId
+     */
+    protected $providerId = null;
+    /**
      * @var array $resources
      */
     protected $resources = array();
@@ -45,7 +47,7 @@ class ResourceProvider implements ResourceProviderInterface
     /**
      * __construct
      *
-     * @param array  $resources  resources
+     * @param array $resources resources
      */
     public function __construct($resources)
     {
@@ -55,9 +57,32 @@ class ResourceProvider implements ResourceProviderInterface
     }
 
     /**
-     * getResources
+     * setProviderId
+     *
+     * @param string $providerId providerId
+     *
+     * @return void
+     */
+    public function setProviderId($providerId)
+    {
+        $this->providerId = $providerId;
+    }
+
+    /**
+     * getProviderId
+     *
+     * @return string
+     */
+    public function getProviderId()
+    {
+        return $this->providerId;
+    }
+
+
+    /**
+     * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
-     * containing ALL possible resources
+     * containing ALL possible resources including run-time resources
      *
      * @return array
      */
@@ -69,12 +94,11 @@ class ResourceProvider implements ResourceProviderInterface
     /**
      * getResource
      * Return the requested resource
-     * Can be used to return resources dynamically.
+     * Can be used to return resources dynamically at run-time
      *
-     * @param $resourceId
+     * @param string $resourceId resourceId
      *
      * @return array
-     * @throws \RcmUser\Exception\RcmUserException
      */
     public function getResource($resourceId)
     {
@@ -83,6 +107,6 @@ class ResourceProvider implements ResourceProviderInterface
             return $this->resources[$resourceId];
         }
 
-        throw new RcmUserException('Resource Id (key) ' . $resourceId . ' not found in resources array.');
+        return null;
     }
 } 

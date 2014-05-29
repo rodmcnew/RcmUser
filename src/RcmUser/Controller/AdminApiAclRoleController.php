@@ -1,8 +1,8 @@
 <?php
 /**
- * AdminApiAclRuleController.php
+ * AdminApiAclRoleController.php
  *
- * AdminApiAclRuleController
+ * AdminApiAclRoleController
  *
  * PHP version 5
  *
@@ -17,13 +17,15 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Result;
 use Zend\View\Model\JsonModel;
 
 /**
- * Class AdminApiAclRuleController
+ * Class AdminApiAclRoleController
  *
- * AdminApiAclRuleController
+ * AdminApiAclRoleController
  *
  * PHP version 5
  *
@@ -35,8 +37,9 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminApiAclRuleController extends AbstractAdminApiController
+class AdminApiAclRoleController extends AbstractAdminApiController
 {
+
     /**
      * get
      *
@@ -46,12 +49,22 @@ class AdminApiAclRuleController extends AbstractAdminApiController
      */
     public function get($id)
     {
-        // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration')) {
-            return $this->getNotAllowedResponse();
+
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        try {
+
+            $aclRole = new AclRole();
+            $aclRole->setRoleId((string)$id);
+            $result = $aclDataService->readRole($aclRole);
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
         }
 
-        return new JsonModel(array('get' . $id));
+        return $this->getJsonResponse($result);
     }
 
     /**
@@ -74,9 +87,9 @@ class AdminApiAclRuleController extends AbstractAdminApiController
 
         try {
 
-            $aclRule = new AclRule();
-            $aclRule->populate($data);
-            $result = $aclDataService->createRule($aclRule);
+            $aclRole = new AclRole();
+            $aclRole->populate($data);
+            $result = $aclDataService->createRole($aclRole);
         } catch (\Exception $e) {
 
             return $this->getExceptionResponse($e);
@@ -105,11 +118,10 @@ class AdminApiAclRuleController extends AbstractAdminApiController
 
         try {
 
-            $data = json_decode(urldecode($id), true);
+            $aclRole = new AclRole();
+            $aclRole->setRoleId((string)$id);
 
-            $aclRule = new AclRule();
-            $aclRule->populate($data);
-            $result = $aclDataService->deleteRule($aclRule);
+            $result = $aclDataService->deleteRole($aclRole);
         } catch (\Exception $e) {
 
             return $this->getExceptionResponse($e);

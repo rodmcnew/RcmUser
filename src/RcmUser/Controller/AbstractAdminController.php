@@ -43,14 +43,18 @@ class AbstractAdminController extends AbstractActionController
     /**
      * isAllowed
      *
-     * @param string $resource  resource
-     * @param string $privilege privilege
+     * @param string $resourceId resourceId
+     * @param string $privilege  privilege
      *
      * @return mixed
      */
-    public function isAllowed($resource = 'rcmuser', $privilege = null)
+    public function isAllowed($resourceId = 'rcmuser', $privilege = null)
     {
-        return $this->rcmUserIsAllowed($resource, $privilege, RcmUserAclResourceProvider::PROVIDER_ID);
+        return $this->rcmUserIsAllowed(
+            $resourceId,
+            $privilege,
+            RcmUserAclResourceProvider::PROVIDER_ID
+        );
     }
 
     /**

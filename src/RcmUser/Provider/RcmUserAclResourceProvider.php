@@ -20,7 +20,6 @@ namespace RcmUser\Provider;
 
 use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Acl\Provider\ResourceProvider;
-use RcmUser\Acl\Provider\ResourceProviderInterface;
 
 /**
  * RcmUserAclResourceProvider
@@ -42,7 +41,7 @@ class RcmUserAclResourceProvider extends ResourceProvider
     /**
      * @var
      */
-    const PROVIDER_ID = 'RcmUser\Acl';
+    const PROVIDER_ID = 'RcmUser';
 
     /**
      * default resources  - rcm user needs these,
@@ -61,15 +60,15 @@ class RcmUserAclResourceProvider extends ResourceProvider
     }
 
     /**
-     * getResources
+     * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
-     * containing ALL possible resources
+     * containing ALL possible resources including run-time resources
      *
      * @return array
      */
     public function getResources()
     {
-        if(empty($this->resources)){
+        if (empty($this->resources)) {
 
             $this->buildResources();
         }
@@ -82,14 +81,15 @@ class RcmUserAclResourceProvider extends ResourceProvider
      * Return the requested resource
      * Can be used to return resources dynamically.
      *
-     * @param $resourceId
+     * @param string $resourceId resourceId
      *
      * @return array
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function getResource($resourceId){
+    public function getResource($resourceId)
+    {
 
-        if(empty($this->resources)){
+        if (empty($this->resources)) {
 
             $this->buildResources();
         }

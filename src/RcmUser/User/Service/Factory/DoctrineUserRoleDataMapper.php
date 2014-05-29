@@ -64,6 +64,14 @@ class DoctrineUserRoleDataMapper implements FactoryInterface
             $cfg->get('DefaultRoleIdentities', array())
         );
 
+        $service->setGuestRoleId(
+            $cfg->get('GuestRole')
+        );
+
+        $service->setSuperAdminRoleId(
+            $cfg->get('SuperAdminRole')
+        );
+
         return $service;
     }
 }

@@ -42,7 +42,7 @@ CREATE TABLE rcm_user_acl_rule (
 	id INT AUTO_INCREMENT NOT NULL,
 	roleId VARCHAR(255) NOT NULL,
 	rule VARCHAR(32) NOT NULL, -- allow or deny or ignore
-	resource VARCHAR(255) NOT NULL, -- some resource value
+	resourceId VARCHAR(255) NOT NULL, -- some resource value
 	privilege VARCHAR(255) DEFAULT NULL, -- some privilege value (created, read, update, delete, execute)
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;

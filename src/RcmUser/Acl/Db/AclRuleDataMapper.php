@@ -19,6 +19,7 @@ namespace RcmUser\Acl\Db;
 
 
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Exception\RcmUserException;
 
 /**
  * class AclRuleDataMapper
@@ -77,12 +78,12 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
     /**
      * fetchByResource
      *
-     * @param string $resource resource
+     * @param string $resourceId resourceId
      *
      * @return mixed
      * @throws RcmUserException
      */
-    public function fetchByResource($resource)
+    public function fetchByResource($resourceId)
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }

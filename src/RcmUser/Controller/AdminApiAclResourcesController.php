@@ -56,7 +56,7 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
 
         try {
 
-            $resources = $aclResourceService->getResourcesWithNamespace('.', true);
+            $resources = $aclResourceService->getResourcesWithNamespace();
 
         } catch (\Exception $e) {
 

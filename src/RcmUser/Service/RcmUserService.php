@@ -395,7 +395,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
         $currentUser = $this->getIdentity();
 
-        if ($user->getId() !== $currentUser->getId()) {
+        if (empty($currentUser) || $user->getId() !== $currentUser->getId()) {
 
             throw new RcmUserException(
                 'SetIdentity expects user to be get same identity as current, ' .
@@ -414,7 +414,14 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function refreshIdentity()
     {
-        $user = $this->readUser($this->getIdentity());
+        $currentUser = $this->getIdentity();
+
+        if(empty($currentUser)){
+
+            return null;
+        }
+
+        $user = $this->readUser($currentUser);
 
         if (empty($user->getId())) {
 
@@ -427,14 +434,31 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * getIdentity
+     * getIdentity - get logged in user
      *
      * @return User
      */
     public function getIdentity()
     {
+        return $this->getUserAuthService()->getIdentity();
+    }
 
-        return $this->getUserAuthService()->getIdentity($this->buildNewUser());
+    /**
+     * getCurrentUser
+     * Get current logged in user or default if no one is logged in
+     * @param mixed $default default
+     *
+     * @return User|null
+     */
+    public function getCurrentUser($default = null)
+    {
+        $user = $this->getIdentity();
+        return $user;
+    }
+
+    public function getTempUser()
+    {
+
     }
 
     //@todo implement guestIdentity and hasIdentity
@@ -446,40 +470,43 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /**
      * isAllowed
      *
-     * @param string|AclResource $resource  resource
-     * @param string             $privilege privilege
-     * @param string             $providerId providerId
+     * @param string $resourceId resourceId
+     * @param string $privilege  privilege
+     * @param string $providerId resource providerId
      *
      * @return bool
      */
-    public function isAllowed($resource, $privilege = null, $providerId = null)
+    public function isAllowed($resourceId, $privilege = null, $providerId = null)
     {
-
         $user = $this->getIdentity();
 
-        return $this->isUserAllowed($resource, $privilege, $providerId, $user);
-
+        return $this->isUserAllowed($resourceId, $privilege, $providerId, $user);
     }
 
     /**
      * isUserAllowed
      *
-     * @param string|AclResource $resource  resource
-     * @param null               $privilege privilege
-     * @param string             $providerId providerId
-     * @param User               $user      user
+     * @param string $resourceId resourceId
+     * @param string $privilege  privilege
+     * @param string $providerId resource providerId
+     * @param User   $user       user
      *
      * @return mixed
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function isUserAllowed($resource, $privilege = null, $providerId = null, $user = null)
-    {
+    public function isUserAllowed(
+        $resourceId,
+        $privilege = null,
+        $providerId = null,
+        $user = null
+    ) {
         if (!($user instanceof User)) {
-            throw new RcmUserException('Instance of User expected.');
+
+            return false;
         }
 
         return $this->getAuthorizeService()->isAllowed(
-            $resource,
+            $resourceId,
             $privilege,
             $providerId,
             $user

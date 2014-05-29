@@ -57,13 +57,13 @@ class AclRuleTest extends Zf2TestCase
 
         $aclRule->setRule($rule);
         $aclRule->setRoleId($roleId);
-        $aclRule->setResource($resource);
+        $aclRule->setResourceId($resource);
         $aclRule->setPrivilege($privilege);
 
         $this->assertTrue($aclRule->getRule() === $rule, 'Setter or getter failed.');
         $this->assertTrue($aclRule->getRoleId() === $roleId, 'Setter or getter failed.');
         $this->assertTrue(
-            $aclRule->getResource() === $resource, 'Setter or getter failed.'
+            $aclRule->getResourceId() === $resource, 'Setter or getter failed.'
         );
         $this->assertTrue(
             $aclRule->getPrivilege() === $privilege, 'Setter or getter failed.'
@@ -87,7 +87,7 @@ class AclRuleTest extends Zf2TestCase
 
         $aclRule->setRule($rule);
         $aclRule->setRoleId($role);
-        $aclRule->setResource($resource);
+        $aclRule->setResourceId($resource);
         $aclRule->setPrivilege($privilege);
 
         $aclRuleJson = json_encode($aclRule);
@@ -112,7 +112,7 @@ class AclRuleTest extends Zf2TestCase
 
         $aclRule->setRule($rule);
         $aclRule->setRoleId($role);
-        $aclRule->setResource($resource);
+        $aclRule->setResourceId($resource);
         $aclRule->setPrivilege($privilege);
 
         $iter = $aclRule->getIterator();

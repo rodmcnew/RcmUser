@@ -119,6 +119,11 @@ return array(
              */
             'SuperAdminRole' => 'admin',
 
+            /**
+             * @todo work this out
+             */
+            'GuestRole' => 'guest',
+
             /*
              * ResourceProviders
              * Used in:
@@ -135,8 +140,8 @@ return array(
              *
              * Format for each value of this array is:
              *
-             * 'ProviderId(usually module namespace)' =>
-             * 'MyResource/ResourceProvider(ResourceProviderInterface)'
+             * 'ProviderId(module namespace without back-slashes)' =>
+             * 'MyResource/ResourceProvider(extents ResourceProvider)'
              *
              * OR
              *
@@ -155,10 +160,10 @@ return array(
                  * This module inject some of this module's resources.
                  * Also example of a Resource provider
                  */
+                'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
 
-                'RcmUser\Acl' => 'RcmUser\Provider\RcmUserAclResourceProvider',
                 /* example of resource providers as array *
-                'RcmUser\TEST' => array(
+                'RcmUser.TEST' => array(
                     'TESTONE' => array(
                         'resourceId' => 'TESTONE',
                         'parentResourceId' => null,
@@ -184,9 +189,9 @@ return array(
                         ),
                         'name' => 'Test resource two.',
                         'description' => 'test resource two desc.',
-                    ),
+                    )
                 ),
-                */
+                /* - example */
             ),
         ),
     ),
@@ -527,6 +532,8 @@ return array(
                 'RcmUser\Controller\AdminCssController',
             'RcmUser\Controller\AdminApiAclRuleController' =>
                 'RcmUser\Controller\AdminApiAclRuleController',
+            'RcmUser\Controller\AdminApiAclRoleController' =>
+                'RcmUser\Controller\AdminApiAclRoleController',
         ),
     ),
 
@@ -622,6 +629,19 @@ return array(
                     ),
                 ),
             ),
+            'RcmUserAdminApiAclRole' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-acl-role[/:id]',
+                    'constraints' => array(
+                        'id' => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclRoleController',
+                    ),
+                ),
+            ),
         ),
     ),
 
@@ -638,6 +658,8 @@ return array(
         'factories' => array(
             'rcmUserIsAllowed' =>
                 'RcmUser\Service\Factory\ControllerPluginRcmUserIsAllowed',
+            'rcmUserGetCurrentUser' =>
+                'RcmUser\Service\Factory\ControllerPluginRcmUserGetCurrentUser',
         ),
     ),
 
@@ -647,6 +669,8 @@ return array(
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserIsAllowed',
             'rcmUserBuildHtmlHead' =>
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserBuildHtmlHead',
+            'rcmUserGetCurrentUser' =>
+                'RcmUser\View\Service\Factory\ViewHelperRcmUserGetCurrentUser',
         ),
     ),
 );

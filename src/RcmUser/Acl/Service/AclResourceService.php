@@ -41,30 +41,35 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class AclResourceService
 {
-    const MAX_RESOURCE_NESTING = 10;
     /**
-     * @var
+     * @var ServiceLocatorInterface $serviceLocator
      */
     protected $serviceLocator;
+
     /**
-     * @var AclResource
+     * @var AclResource $rootResource
      */
     protected $rootResource = null;
 
     /**
-     * @var array of resource provider factories
+     * @var array $resourceProviders
      */
     protected $resourceProviders = array();
 
     /**
-     * @var array
+     * @var array $resources
      */
     protected $resources = array();
 
     /**
-     * @var bool
+     * @var bool $isCached
      */
     protected $isCached = false;
+
+    /**
+     * @var int $maxResourceNesting
+     */
+    protected $maxResourceNesting = 10;
 
     /**
      * __construct
@@ -73,7 +78,7 @@ class AclResourceService
      */
     public function __construct($rootResource)
     {
-        $this->rootResource = $this->buildValidResource($rootResource);
+        $this->rootResource = $this->buildValidResource($rootResource, null);
     }
 
     /**
@@ -131,108 +136,69 @@ class AclResourceService
     }
 
     /**
-     * getResource - Get a resource and all of its parents
-     * getProviderResourcesByResourceId
+     * setMaxResourceNesting
      *
-     * @param string $providerId providerId
+     * @param int $maxResourceNesting Max nesting levels for resources
+     *
+     * @return void
+     */
+    public function setMaxResourceNesting($maxResourceNesting)
+    {
+        $this->maxResourceNesting = (int)$maxResourceNesting;
+    }
+
+    /**
+     * getMaxResourceNesting
+     *
+     * @return int
+     */
+    public function getMaxResourceNesting()
+    {
+        return $this->maxResourceNesting;
+    }
+
+    /**
+     * getResources - Get a resource and all of its parents
+     *
      * @param string $resourceId resourceId
-     * @param int    $nestLevel  nestLevel
+     * @param string $providerId providerId
      *
      * @return array
-     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function getResource($providerId, $resourceId, $nestLevel = 0)
+    public function getResources($resourceId, $providerId = null)
     {
-        if ($nestLevel > self::MAX_RESOURCE_NESTING) {
+        // add root
+        $this->addRootResource($this->resources);
 
-            throw new RcmUserException(
-                'Max resource nesting exceded, max nesting level is '
-                . self::MAX_RESOURCE_NESTING);
+        if (empty($providerId)) {
+
+            // return root resource at least
+            return $this->resources;
+        } else {
+
+            $provider = $this->getProvider($providerId);
         }
 
-        $resources = array();
-        // add root
-        $resources[$this->rootResource->getResourceId()]
-            = $this->rootResource;
-
-        if (!isset($this->resourceProviders[$providerId])) {
+        if (empty($provider)) {
 
             return array();
         }
 
-        $this->resourceProviders[$providerId] = $this->buildValidProvider(
-            $this->resourceProviders[$providerId]
-        );
+        // get resource
+        $resource = $provider->getResource($resourceId);
 
-        $resource = $this->resourceProviders[$providerId]->getResource($resourceId);
-        $resource = $this->buildValidResource(
-            $resource
-        );
+        // check for empty resource
+        if (empty($resource)) {
 
-        $resource = $this->buildValidParent($resource);
-
-        $resources[$resource->getResourceId()] = $resource;
-
-        if ($resource->getParentResourceId()
-            == $this->getRootResource()->getResourceId()
-        ) {
-
-            return $resources;
-        } else {
-
-            $parentResources = $this->getResource(
-                $providerId,
-                $resource->getParentResourceId(),
-                ($nestLevel + 1)
-            );
-
-            $resources = array_merge($parentResources, $resources);
-
-            return $resources;
-        }
-    }
-
-    /**
-     * getResources
-     * returns a list of registered resources
-     *
-     * @return array
-     * @throws \RcmUser\Exception\RcmUserException
-     */
-    public function getResources()
-    {
-        // add root
-        $this->resources[$this->rootResource->getResourceId()]
-            = $this->rootResource;
-
-        foreach ($this->resourceProviders as $providerId => $provider) {
-
-            $this->resourceProviders[$providerId] = $this->buildValidProvider(
-                $provider
-            );
-
-            $providerResources
-                = $this->resourceProviders[$providerId]->getResources();
-
-            $resources = array();
-
-            foreach ($providerResources as $resourceId => $resource) {
-
-                $res = $this->buildValidResource($resource);
-                $res = $this->buildValidParent($res);
-
-                if (!isset($this->resources[$res->getResourceId()])) {
-
-                    $resources[$res->getResourceId()] = $res;
-                }
-            }
-
-            $this->resources = array_merge($this->resources, $resources);
+            // resource not found
+            return array();
         }
 
-        // make sure root cannot be over written
-        $this->resources[$this->rootResource->getResourceId()]
-            = $this->rootResource;
+        $resource = $this->buildValidAclResource($resource, $providerId);
+
+        $resources = $this->getResourceStack($provider, $resource);
+
+        $this->resources = $this->resources + $resources;
 
         return $this->resources;
     }
@@ -240,7 +206,8 @@ class AclResourceService
     /**
      * getAllResources - All resources
      * returns a list of all resources
-     * This is used to displays or utilities only, not for ACL checks
+     * This is used for displays or utilities only
+     * should not be used for ACL checks
      *
      * @param bool $refresh refresh
      *
@@ -252,38 +219,28 @@ class AclResourceService
         if (!$this->isCached || $refresh) {
 
             // add root
-            $this->resources[$this->rootResource->getResourceId()]
-                = $this->rootResource;
+            $this->addRootResource($this->resources);
 
-            foreach ($this->resourceProviders as $providerId => $provider) {
+            foreach ($this->resourceProviders as $providerId => &$provider) {
 
-                $this->resourceProviders[$providerId] = $this->buildValidProvider(
-                    $provider
-                );
+                $provider = $this->buildValidProvider($provider, $providerId);
 
-                $providerResources
-                    = $this->resourceProviders[$providerId]->getResources();
+                $providerResources = $provider->getResources();
 
-                foreach ($providerResources as $resourceId => $resource) {
+                foreach ($providerResources as &$resource) {
 
-                    $resource = $this->buildValidResource($resource);
+                    $resource = $this->buildValidAclResource($resource, $providerId);
+                    $resourceId = $resource->getResourceId();
 
-                    if (!isset($this->resources[$resource->getResourceId()])) {
+                    if (!isset($this->resources[$resourceId])) {
 
-                        $resources = $this->getResource(
-                            $providerId,
-                            $resourceId
+                        $newResources = $this->getResources(
+                            $resourceId, $providerId
                         );
-
-                        $this->resources = array_merge($this->resources, $resources);
+                        $this->resources = $this->resources + $newResources;
                     }
-
                 }
             }
-
-            // make sure root cannot be over written
-            $this->resources[$this->rootResource->getResourceId()]
-                = $this->rootResource;
 
             $this->isCached = true;
         }
@@ -292,20 +249,143 @@ class AclResourceService
     }
 
     /**
+     * getResourceStack - build a resource stack for the
+     * provided resource to the top parent
+     *
+     * @param ResourceProviderInterface $provider   provider
+     * @param AclResource               $resource   resource
+     * @param array                     &$resources resources
+     * @param int                       $nestLevel  nestLevel
+     *
+     * @return array
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function getResourceStack(
+        ResourceProviderInterface $provider,
+        AclResource $resource,
+        &$resources = array(),
+        $nestLevel = 0
+    ) {
+        if ($nestLevel > $this->maxResourceNesting) {
+
+            throw new RcmUserException(
+                'Max resource nesting exceded, max nesting level is '
+                . $this->maxResourceNesting
+            );
+        }
+
+        //$resources[$resource->getResourceId()] = $resource;
+        $tempResource = array($resource->getResourceId() => $resource);
+        $resources = $tempResource + $resources;
+
+        $parentId = $resource->getParentResourceId();
+
+        $hasParent = false;
+        $parentResource = null;
+
+        if ($resource->getParentResource() instanceof AclResource) {
+
+            $hasParent = true;
+            $parentResource = $resource->getParentResource();
+        } elseif (!empty($parentId)) {
+
+            $hasParent = true;
+            $parentResource = $provider->getResource($parentId);
+        }
+
+        if ($hasParent && empty($parentResource)) {
+
+            $resources[$resource->getResourceId()]
+                ->setParentResourceId($this->rootResource->getResourceId());
+        }
+
+        if ($hasParent && !empty($parentResource)) {
+
+            $parentResource = $this->buildValidAclResource(
+                $parentResource,
+                $provider->getProviderId()
+            );
+
+            return $this->getResourceStack($provider, $parentResource, $resources);
+        }
+
+        // set parent root
+
+
+        return $resources;
+    }
+
+    /**
+     * getProvider
+     *
+     * @param string $providerId providerId
+     *
+     * @return null
+     */
+    public function getProvider($providerId)
+    {
+        if (!isset($this->resourceProviders[$providerId])) {
+
+            return null;
+        }
+
+        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
+        ) {
+            $this->resourceProviders[$providerId] = $this->buildValidProvider(
+                $this->resourceProviders[$providerId],
+                $providerId
+            );
+        }
+
+        return $this->resourceProviders[$providerId];
+    }
+
+    /**
+     * getProviderByResourceId
+     *
+     * @param string $resourceId resourceId
+     *
+     * @return null|ResourceProviderInterface
+
+    public function getProviderByResourceId($resourceId)
+     * {
+     * foreach ($this->resourceProviders as $providerId => &$provider) {
+     *
+     * $provider = $this->buildValidProvider($provider, $providerId);
+     *
+     * if($provider->hasResource($resourceId)){
+     *
+     * return $provider;
+     * }
+     * }
+     *
+     * return null;
+     * }
+     */
+
+    /**
      * getResourcesWithNamespace
      *
-     * @param string $nsChar  nsChar
-     * @param bool   $getAll  getAll
-     * @param bool   $refresh $refresh
+     * @param string $resourceId resourceId
+     * @param string $providerId providerId
+     * @param bool   $refresh    refresh
+     * @param string $nsChar     nsChar
      *
      * @return array
      */
     public function getResourcesWithNamespace(
-        $nsChar = '.', $getAll = true, $refresh = false
-    )
-    {
+        $resourceId = null,
+        $providerId = null,
+        $refresh = false,
+        $nsChar = '.'
+    ) {
         $aclResources = array();
-        $resources = $this->getNamespacedResources($nsChar, $getAll, $refresh);
+        $resources = $this->getNamespacedResources(
+            $resourceId,
+            $providerId,
+            $refresh,
+            $nsChar
+        );
 
         foreach ($resources as $ns => $res) {
 
@@ -321,24 +401,28 @@ class AclResourceService
     /**
      * getNamespacedResources
      *
-     * @param string $nsChar  nsChar
-     * @param bool   $getAll  getAll
-     * @param bool   $refresh $refresh
+     * @param string $resourceId resourceId
+     * @param string $providerId providerId
+     * @param bool   $refresh    refresh
+     * @param string $nsChar     nsChar
      *
      * @return array
      */
     public function getNamespacedResources(
-        $nsChar = '.', $getAll = true, $refresh = false
-    )
-    {
+        $resourceId = null,
+        $providerId = null,
+        $refresh = false,
+        $nsChar = '.'
+    ) {
         $aclResources = array();
 
-        if ($getAll) {
+        if (empty($resourceId)) {
 
+            // get general list, not dynamic resources
             $resources = $this->getAllResources($refresh);
         } else {
 
-            $resources = $this->getResources();
+            $resources = $this->getResources($resourceId, $providerId);
         }
 
         foreach ($resources as $res) {
@@ -370,50 +454,95 @@ class AclResourceService
         AclResource $aclResource,
         $aclResources,
         $nsChar = '.'
-    )
-    {
+    ) {
         $parentId = $aclResource->getParentResourceId();
         $ns = $aclResource->getResourceId();
-        if (!empty($parentId)) {
+        if (!empty($parentId) && isset($aclResources[$parentId])) {
 
             $parent = $aclResources[$parentId];
 
             $ns = $this->createNamespaceId(
-                    $parent,
-                    $aclResources,
-                    $nsChar
-                ) . $nsChar . $ns;
+                $parent,
+                $aclResources,
+                $nsChar
+            ) . $nsChar . $ns;
         }
 
         return $ns;
     }
 
     /**
+     * addRootResource
+     *
+     * @param array &$resources resources
+     *
+     * @return array
+     */
+    protected function addRootResource(&$resources)
+    {
+
+        // $first_value = reset($array);
+        $rootResource = $this->getRootResource();
+
+        if (!isset($resources[$rootResource->getResourceId()])) {
+
+            $tempRootResource = array(
+                $rootResource->getResourceId() => $rootResource
+            );
+
+            $resources = $tempRootResource + $tempRootResource;
+        }
+
+        return $resources;
+    }
+
+    /**
+     * buildValidAclResource
+     *
+     * @param mixed  $resource   resource
+     * @param string $providerId providerId
+     *
+     * @return AclResource
+     */
+    public function buildValidAclResource($resource, $providerId)
+    {
+        $resource = $this->buildValidResource($resource, $providerId);
+        $resource = $this->buildValidParent($resource);
+
+        return $resource;
+    }
+
+    /**
      * buildValidResource
      *
-     * @param mixed $resource resource
+     * @param mixed  $resourceData resource
+     * @param string $providerId   providerId
      *
      * @return AclResource
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function buildValidResource($resource)
+    public function buildValidResource($resourceData, $providerId)
     {
-        if ($resource instanceof AclResource) {
+        if ($resourceData instanceof AclResource) {
 
-            return $resource;
+            $resource = $resourceData;
+        } elseif (is_array($resourceData)) {
+
+            $resource = new AclResource($resourceData['resourceId']);
+            $resource->populate($resourceData);
+        } else {
+
+            throw new RcmUserException(
+                'Resource is not valid: ' . var_export($resource, true)
+            );
         }
 
-        if (is_array($resource)) {
+        if (empty($resource->getProviderId())) {
 
-            $res = new AclResource($resource['resourceId']);
-            $res->populate($resource);
-
-            return $res;
+            $resource->setProviderId($providerId);
         }
 
-        throw new RcmUserException(
-            'Resource is not valid: ' . var_export($resource, true)
-        );
+        return $resource;
     }
 
     /**
@@ -437,25 +566,39 @@ class AclResourceService
         return $resource;
     }
 
-    protected function buildValidProvider($providerData)
+    /**
+     * buildValidProvider
+     *
+     * @param mixed  $providerData providerData
+     * @param string $providerId   providerId
+     *
+     * @return ResourceProviderInterface
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    protected function buildValidProvider($providerData, $providerId)
     {
+        $provider = null;
+
         if ($providerData instanceof ResourceProviderInterface) {
 
-            return $providerData;
+            $provider = $providerData;
+        } elseif (is_string($providerData)) {
+
+            $provider = $this->getServiceLocator()->get($providerData);
+        } elseif (is_array($providerData)) {
+
+            $provider = new ResourceProvider($providerData);
         }
 
-        if (is_string($providerData)) {
+        if (!($provider instanceof ResourceProviderInterface)) {
 
-            return $this->getServiceLocator()->get($providerData);
+            throw new RcmUserException(
+                'ResourceProvider is not valid: ' . var_export($providerData, true)
+            );
         }
 
-        if (is_array($providerData)) {
+        $provider->setProviderId($providerId);
 
-            return new ResourceProvider($providerData);
-        }
-
-        throw new RcmUserException(
-            'ResourceProvider is not valid: ' . var_export($providerData, true)
-        );
+        return $provider;
     }
 } 
