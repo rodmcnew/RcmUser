@@ -18,7 +18,6 @@
 namespace RcmUser\Acl\Entity;
 
 use RcmUser\Exception\RcmUserException;
-//\Zend\Permissions\Acl\Assertion\AssertionInterface
 
 /**
  * AclRule
@@ -38,36 +37,36 @@ use RcmUser\Exception\RcmUserException;
 class AclRule implements \JsonSerializable, \IteratorAggregate
 {
     /**
-     * string
+     * string RULE_ALLOW
      */
     const RULE_ALLOW = 'allow';
     /**
-     * string
+     * string RULE_DENY
      */
     const RULE_DENY = 'deny';
     /**
-     * string
+     * string RULE_IGNORE
      * this rule is a way of disabling a rule without deleting it
      */
     const RULE_IGNORE = 'ignore';
 
     /**
-     * @var string
+     * @var string $rule
      */
     protected $rule = null;
 
     /**
-     * @var string
+     * @var string $roleId
      */
     protected $roleId = null;
 
     /**
-     * @var string
+     * @var string $resourceId
      */
     protected $resourceId = null;
 
     /**
-     * @var string
+     * @var string $privilege
      */
     protected $privilege = null;
 
@@ -177,6 +176,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
 
     /**
      * setAssertion
+     * \Zend\Permissions\Acl\Assertion\AssertionInterface
      *
      * @param AssertionInterface\string $assertion assertion
      *
