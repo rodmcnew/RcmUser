@@ -45,9 +45,10 @@ class UserController extends AbstractActionController
     {
         $test = array(
             'userController' => $this,
+            'doTest' => false,
         );
 
-        var_dump($this->rcmUserGetCurrentUser());
+        //var_dump($this->rcmUserGetCurrentUser());
 
         return $test;
     }

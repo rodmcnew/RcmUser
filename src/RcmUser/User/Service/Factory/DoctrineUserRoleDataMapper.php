@@ -51,26 +51,9 @@ class DoctrineUserRoleDataMapper implements FactoryInterface
 
         $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
         $acldm = $serviceLocator->get('RcmUser\Acl\AclRoleDataMapper');
-        $service = new \RcmUser\User\Db\DoctrineUserRoleDataMapper();
+        $service = new \RcmUser\User\Db\DoctrineUserRoleDataMapper($acldm);
         $service->setEntityManager($em);
         $service->setEntityClass('RcmUser\User\Entity\DoctrineUserRole');
-        $service->setAclRoleDataMapper($acldm);
-
-        $service->setDefaultAuthenticatedRoleIdentities(
-            $cfg->get('DefaultAuthenticatedRoleIdentities', array())
-        );
-
-        $service->setDefaultRoleIdentities(
-            $cfg->get('DefaultRoleIdentities', array())
-        );
-
-        $service->setGuestRoleId(
-            $cfg->get('GuestRole')
-        );
-
-        $service->setSuperAdminRoleId(
-            $cfg->get('SuperAdminRole')
-        );
 
         return $service;
     }

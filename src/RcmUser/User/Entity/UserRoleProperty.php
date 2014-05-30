@@ -17,7 +17,7 @@
 
 namespace RcmUser\User\Entity;
 
-use RcmUser\User\Service\UserRolePropertyService;
+use RcmUser\User\Service\UserRoleService;
 
 
 /**
@@ -47,32 +47,25 @@ class UserRoleProperty
     protected $roles = array();
 
     /**
-     * @var UserRolePropertyService $userRolePropertyService
-     */
-    protected $userRolePropertyService;
-
-    /**
      * @param array $roles
-     * @param UserRolePropertyService $userRolePropertyService
      */
     public function __construct(
-        UserRolePropertyService $userRolePropertyService,
         $roles = array()
     ) {
-        $this->userRolePropertyService = $userRolePropertyService;
-        $this->roles = $roles;
+        $this->roles = $this->setRoles($roles);
     }
 
     /**
-     * getUserRolePropertyService
+     * setRoles
      *
-     * @return UserRolePropertyService
+     * @param array $roles roles
+     *
+     * @return array
      */
-    public function getUserRolePropertyService()
+    public function setRoles($roles)
     {
-        return $this->userRolePropertyService;
+        $this->roles = $roles;
     }
-
 
     /**
      * getRoles
@@ -82,6 +75,21 @@ class UserRoleProperty
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * setRole
+     *
+     * @param string $roleId roleId
+     *
+     * @return void
+     */
+    public function setRole($roleId)
+    {
+        if(!$this->hasRole($roleId)){
+
+            $this->roles[] = $roleId;
+        }
     }
 
     /**
@@ -112,7 +120,7 @@ class UserRoleProperty
      */
     public function hasRole($roleId)
     {
-        if ($this->getRole($roleId)) {
+        if ($this->getRole($roleId, false)) {
 
             return true;
         }
@@ -120,23 +128,4 @@ class UserRoleProperty
         return false;
     }
 
-    /**
-     * isGuest
-     *
-     * @return bool
-     */
-    public function isGuest()
-    {
-        return $this->userRolePropertyService->isGuest($this->roles);
-    }
-
-    /**
-     * isSuperAdmin
-     *
-     * @return bool
-     */
-    public function isSuperAdmin()
-    {
-        return  $this->userRolePropertyService->isSuperAdmin($this->roles);
-    }
 } 

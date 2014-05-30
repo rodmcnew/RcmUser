@@ -19,8 +19,8 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap'])
 
         $scope.resources = JSON.parse('<?php echo json_encode($resources); ?>');
         $scope.roles = JSON.parse('<?php echo json_encode($roles); ?>');
-        $scope.superAdminRole = '<?php echo $superAdminRole; ?>';
-        $scope.guestRole = '<?php echo $guestRole; ?>';
+        $scope.superAdminRole = '<?php echo $superAdminRoleId; ?>';
+        $scope.guestRole = '<?php echo $guestRoleId; ?>';
 
         $scope.oneAtATime = true;
 

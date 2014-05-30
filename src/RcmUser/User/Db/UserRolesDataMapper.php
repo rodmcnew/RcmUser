@@ -17,6 +17,7 @@
 
 namespace RcmUser\User\Db;
 
+use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
@@ -40,112 +41,28 @@ use RcmUser\User\Entity\User;
 class UserRolesDataMapper implements UserRolesDataMapperInterface
 {
     /**
-     * @var array
+     * @var AclRoleDataMapperInterface
      */
-    protected $defaultRoleIdentities = array();
-    /**
-     * @var array
-     */
-    protected $defaultAuthenticatedRoleIdentities = array();
+    protected $aclRoleDataMapper;
 
     /**
-     * @var string
-     */
-    protected $guestRoleId = null;
-
-    /**
-     * @var string
-     */
-    protected $superAdminRoleId = null;
-
-    /**
-     * setDefaultAuthenticatedRoleIdentities
+     * __construct
      *
-     * @param array $defaultAuthenticatedRoleIdentities defaults
-     *
-     * @return void
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
      */
-    public function setDefaultAuthenticatedRoleIdentities(
-        $defaultAuthenticatedRoleIdentities
-    ) {
-        $this->defaultAuthenticatedRoleIdentities
-            = $defaultAuthenticatedRoleIdentities;
+    public function __construct(AclRoleDataMapperInterface $aclRoleDataMapper)
+    {
+        $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
     /**
-     * getDefaultAuthenticatedRoleIdentities
+     * getAclRoleDataMapper
      *
-     * @return array
+     * @return AclRoleDataMapperInterface
      */
-    public function getDefaultAuthenticatedRoleIdentities()
+    public function getAclRoleDataMapper()
     {
-        return $this->defaultAuthenticatedRoleIdentities;
-    }
-
-    /**
-     * setDefaultRoleIdentities
-     *
-     * @param array $defaultRoleIdentities defaultRoleIdentities
-     *
-     * @return void
-     */
-    public function setDefaultRoleIdentities($defaultRoleIdentities)
-    {
-        $this->defaultRoleIdentities = $defaultRoleIdentities;
-    }
-
-    /**
-     * getDefaultRoleIdentities
-     *
-     * @return array
-     */
-    public function getDefaultRoleIdentities()
-    {
-        return $this->defaultRoleIdentities;
-    }
-
-    /**
-     * setGuestRoleId
-     *
-     * @param string $guestRoleId guestRoleId
-     *
-     * @return void
-     */
-    public function setGuestRoleId($guestRoleId)
-    {
-        $this->guestRoleId = $guestRoleId;
-    }
-
-    /**
-     * getGuestRoleId
-     *
-     * @return string
-     */
-    public function getGuestRoleId()
-    {
-        return $this->guestRoleId;
-    }
-
-    /**
-     * setSuperAdminRoleId
-     *
-     * @param string $superAdminRoleId superAdminRoleId
-     *
-     * @return void
-     */
-    public function setSuperAdminRoleId($superAdminRoleId)
-    {
-        $this->superAdminRoleId = $superAdminRoleId;
-    }
-
-    /**
-     * getSuperAdminRoleId
-     *
-     * @return string
-     */
-    public function getSuperAdminRoleId()
-    {
-        return $this->superAdminRoleId;
+        return $this->aclRoleDataMapper;
     }
 
     /**

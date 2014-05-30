@@ -17,12 +17,9 @@
 
 namespace RcmUser\Acl\Service;
 
-use RcmUser\Acl\Db\AclRoleDataMapper;
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Db\UserRolesDataMapper;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
@@ -69,11 +66,6 @@ class AuthorizeService
      * @var AclRuleDataMapperInterface $aclRuleDataMapper
      */
     protected $aclRuleDataMapper;
-
-    /**
-     * @var string $superAdminRole
-     */
-    protected $superAdminRole = null;
 
     /**
      * setAclResourceService
@@ -144,25 +136,13 @@ class AuthorizeService
     }
 
     /**
-     * setSuperAdminRole
-     *
-     * @param string $superAdminRole superAdminRole
-     *
-     * @return void
-     */
-    public function setSuperAdminRole($superAdminRole)
-    {
-        $this->superAdminRole = $superAdminRole;
-    }
-
-    /**
-     * getSuperAdminRole
+     * getSuperAdminRoleId
      *
      * @return string
      */
-    public function getSuperAdminRole()
+    public function getSuperAdminRoleId()
     {
-        return $this->superAdminRole;
+        return $this->aclRoleDataMapper->fetchSuperAdminRoleId();
     }
 
     /**
@@ -193,7 +173,7 @@ class AuthorizeService
     public function getUserRoles(User $user)
     {
         /** @var $userRoleProperty UserRoleProperty */
-        $userRoleProperty = $user->getProperty(UserRolesDataMapper::PROPERTY_KEY);
+        $userRoleProperty = $user->getProperty(UserRoleProperty::PROPERTY_KEY);
 
         if(!($userRoleProperty instanceof UserRoleProperty)){
 
@@ -260,14 +240,14 @@ class AuthorizeService
     }
 
     /**
-     * getAcl
+     * getAcl - This cannot be called before resources are parsed
      *
      * @param string $resourceId resourceId
      * @param string $providerId providerId
      *
      * @return Acl
      */
-    public function getAcl($resourceId, $providerId = null)
+    public function getAcl($resourceId, $providerId)
     {
         if (!isset($this->acl)) {
 
@@ -299,16 +279,8 @@ class AuthorizeService
             }
         }
 
-        // rules
-        if (empty($providerId) || empty($resourceId)) {
-
-            // get all
-            $rules = $this->getRules();
-        } else {
-
-            // get only for resources
-            $rules = $this->getRules($resources);
-        }
+        // get only for resources
+        $rules = $this->getRules($resources);
 
         foreach ($rules as $aclRule) {
 
@@ -383,9 +355,10 @@ class AuthorizeService
         /* Check super admin
             we over-ride everything if user has super admin
         */
-        if (!empty($this->superAdminRole)
+        $superAdminRoleId = $this->getSuperAdminRoleId();
+        if (!empty($superAdminRoleId)
             && is_array($userRoles)
-            && in_array($this->superAdminRole, $userRoles)
+            && in_array($superAdminRoleId, $userRoles)
         ) {
 
             return true;

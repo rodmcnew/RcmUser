@@ -65,12 +65,12 @@ interface ResourceProviderInterface
 
     /**
      * getResource
-     * Return the requested resource
+     * Return the requested resource or null if not found
      * Can be used to return resources dynamically at run-time
      *
      * @param string $resourceId $resourceId
      *
-     * @return array
+     * @return AclResource|array|null
      */
     public function getResource($resourceId);
 } 

@@ -1,8 +1,8 @@
 <?php
 /**
- * AuthorizeService.php
+ * UserRoleDataServiceListeners.php
  *
- * AuthorizeService
+ * UserRoleDataServiceListeners
  *
  * PHP version 5
  *
@@ -15,16 +15,15 @@
  * @link      https://github.com/reliv
  */
 
-namespace RcmUser\Acl\Service\Factory;
-
+namespace RcmUser\User\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * AuthorizeService
+ * UserRoleDataServiceListeners
  *
- * AuthorizeService Factory
+ * UserRoleDataServiceListeners Factory
  *
  * PHP version 5
  *
@@ -36,7 +35,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AuthorizeService implements FactoryInterface
+class UserRoleService implements FactoryInterface
 {
 
     /**
@@ -44,26 +43,14 @@ class AuthorizeService implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return \RcmUser\Acl\Service\AuthorizeService
+     * @return array
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $aclResourceService = $serviceLocator->get(
-            'RcmUser\Acl\Service\AclResourceService'
+        $service = new \RcmUser\User\Service\UserRoleService(
+            $serviceLocator->get('RcmUser\User\UserRolesDataMapper')
         );
-        $aclRoleDataMapper = $serviceLocator->get(
-            'RcmUser\Acl\AclRoleDataMapper'
-        );
-        $aclRuleDataMapper = $serviceLocator->get(
-            'RcmUser\Acl\AclRuleDataMapper'
-        );
-
-        $service = new \RcmUser\Acl\Service\AuthorizeService();
-        $service->setAclResourceService($aclResourceService);
-        $service->setAclRoleDataMapper($aclRoleDataMapper);
-        $service->setAclRuleDataMapper($aclRuleDataMapper);
 
         return $service;
     }
-
-} 
+}

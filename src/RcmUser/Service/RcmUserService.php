@@ -434,13 +434,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * getIdentity - get logged in user
+     * getIdentity - get logged in user or default
      *
-     * @return User
+     * @param mixed $default default
+     *
+     * @return mixed|null
      */
-    public function getIdentity()
+    public function getIdentity($default = null)
     {
-        return $this->getUserAuthService()->getIdentity();
+        return $this->getUserAuthService()->getIdentity($default);
     }
 
     /**
@@ -452,13 +454,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function getCurrentUser($default = null)
     {
-        $user = $this->getIdentity();
+        $user = $this->getIdentity($default);
         return $user;
-    }
-
-    public function getTempUser()
-    {
-
     }
 
     //@todo implement guestIdentity and hasIdentity
@@ -537,6 +534,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     public function buildUser(User $user)
     {
         $result = $this->getUserDataService()->buildUser($user);
+
+        if(empty($result)){
+            // return $user;
+        }
 
         if ($result->isSuccess() || $result->getUser() == null) {
 

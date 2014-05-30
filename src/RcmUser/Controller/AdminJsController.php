@@ -60,15 +60,15 @@ class AdminJsController extends AbstractAdminController
 
         $resources = $aclResourceService->getResourcesWithNamespace();
         $roles = $aclDataService->getRulesByRoles();
-        $superAdminRole = $aclDataService->getSuperAdminRole();
-        $guestRole = $aclDataService->getGuestRole();
+        $superAdminRoleId = $aclDataService->getSuperAdminRoleId();
+        $guestRoleId = $aclDataService->getGuestRoleId();
 
         $viewModel = new ViewModel(
             array(
                 'resources' => $resources,
                 'roles' => $roles,
-                'superAdminRole' => $superAdminRole,
-                'guestRole' => $guestRole,
+                'superAdminRoleId' => $superAdminRoleId,
+                'guestRoleId' => $guestRoleId,
             )
         );
         $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
