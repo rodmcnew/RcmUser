@@ -52,7 +52,7 @@ class UserRoleProperty
     public function __construct(
         $roles = array()
     ) {
-        $this->roles = $this->setRoles($roles);
+        $this->setRoles($roles);
     }
 
     /**

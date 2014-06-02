@@ -2,6 +2,10 @@
 ?>
 <pre>
 <?php
+if ($dumpUser) {
+
+    var_dump($this->rcmUserGetCurrentUser());
+}
 if ($doTest) {
 
     /* Implementation test */

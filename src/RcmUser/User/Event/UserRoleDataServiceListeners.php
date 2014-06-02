@@ -186,14 +186,9 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             $this->buildValidUserRoleProperty($responseUser, array())
         );
 
-        $responseUser->setProperty(
-            $this->getUserPropertyKey(),
-            $userRoleProperty
-        );
-
         $roles = $userRoleProperty->getRoles();
 
-        if (!$this->isDefaultRoles($roles)) {
+        if ($this->isDefaultRoles($roles)) {
 
             return new Result($responseUser, Result::CODE_SUCCESS);
         }
@@ -237,17 +232,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         $responseUser = $result->getUser();
 
-        /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
-        $userRoleProperty = $responseUser->getProperty(
-            $this->getUserPropertyKey(),
-            $this->buildValidUserRoleProperty($responseUser, array())
-        );
-
-        $responseUser->setProperty(
-            $this->getUserPropertyKey(),
-            $userRoleProperty
-        );
-
         $readResult = $this->getUserRoleService()->readRoles($responseUser);
 
         if (!$readResult->isSuccess()) {
@@ -255,7 +239,12 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             return $readResult;
         }
 
-        $userRoleProperty->setRoles($readResult->getData());
+        $roles = $readResult->getData();
+
+        $userRoleProperty = $this->buildValidUserRoleProperty(
+            $responseUser,
+            $roles
+        );
 
         $responseUser->setProperty(
             $this->getUserPropertyKey(),
@@ -316,14 +305,9 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             $this->buildValidUserRoleProperty($responseUser, array())
         );
 
-        $responseUser->setProperty(
-            $this->getUserPropertyKey(),
-            $userRoleProperty
-        );
-
         $roles = $userRoleProperty->getRoles();
 
-        if (!$this->isDefaultRoles($roles)) {
+        if ($this->isDefaultRoles($roles)) {
 
             return new Result($responseUser, Result::CODE_SUCCESS);
         }
@@ -373,11 +357,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             $this->buildUserRoleProperty(array())
         );
 
-        $responseUser->setProperty(
-            $this->getUserPropertyKey(),
-            $userRoleProperty
-        );
-
         $aclResult = $this->getUserRoleService()->deleteRoles(
             $responseUser,
             $userRoleProperty->getRoles()
@@ -387,6 +366,11 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
             return $aclResult;
         }
+
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            $this->buildUserRoleProperty(array())
+        );
 
         $userRoleProperty->setRoles(array());
 
