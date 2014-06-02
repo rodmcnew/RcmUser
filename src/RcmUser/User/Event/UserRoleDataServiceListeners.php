@@ -224,7 +224,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Result|void
+     * @return \RcmUser\User\Result
      */
     public function onReadUserSuccess($e)
     {
@@ -263,7 +263,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         return new Result($responseUser, Result::CODE_SUCCESS);
-
     }
 
     /**
@@ -433,8 +432,23 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function buildValidUserRoleProperty(User $user, $roles = array())
     {
-
         return $this->getUserRoleService()->buildValidUserRoleProperty(
+            $user,
+            $roles
+        );
+    }
+
+    /**
+     * buildValidRoles
+     *
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return array
+     */
+    public function buildValidRoles(User $user, $roles = array())
+    {
+        return $this->getUserRoleService()->buildValidRoles(
             $user,
             $roles
         );
