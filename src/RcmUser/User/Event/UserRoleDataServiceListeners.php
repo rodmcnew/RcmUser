@@ -193,17 +193,17 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             return new Result($responseUser, Result::CODE_SUCCESS);
         }
 
-        $aclResult = $this->getUserRoleService()->createRoles(
+        $createResult = $this->getUserRoleService()->createRoles(
             $responseUser,
             $roles
         );
 
-        if (!$aclResult->isSuccess()) {
+        if (!$createResult->isSuccess()) {
 
-            return $aclResult;
+            return new Result($responseUser, Result::CODE_FAIL, $createResult->getMessages());
         }
 
-        $userRoleProperty->setRoles($aclResult->getData());
+        $userRoleProperty->setRoles($createResult->getData());
 
         $responseUser->setProperty(
             $this->getUserPropertyKey(),
@@ -236,7 +236,11 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         if (!$readResult->isSuccess()) {
 
-            return $readResult;
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $readResult->getMessages()
+            );
         }
 
         $roles = $readResult->getData();
@@ -320,7 +324,10 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         if (!$updateResult->isSuccess()) {
 
-            return $updateResult;
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $updateResult->getMessages());
         }
 
         $userRoleProperty->setRoles($updateResult->getData());
@@ -357,14 +364,18 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             $this->buildUserRoleProperty(array())
         );
 
-        $aclResult = $this->getUserRoleService()->deleteRoles(
+        $deleteResult = $this->getUserRoleService()->deleteRoles(
             $responseUser,
             $userRoleProperty->getRoles()
         );
 
-        if (!$aclResult->isSuccess()) {
+        if (!$deleteResult->isSuccess()) {
 
-            return $aclResult;
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $deleteResult->getMessages()
+            );
         }
 
         $userRoleProperty = $responseUser->getProperty(
