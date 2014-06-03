@@ -41,6 +41,75 @@ use RcmUser\User\Result;
 class UserDataService extends EventProvider
 {
     /**
+     * @var UserDataMapperInterface
+     */
+    protected $userDataMapper;
+
+    /**
+     * setUserDataMapper
+     *
+     * @param UserDataMapperInterface $userDataMapper userDataMapper
+     *
+     * @return void
+     */
+    public function setUserDataMapper(UserDataMapperInterface $userDataMapper)
+    {
+        $this->userDataMapper = $userDataMapper;
+    }
+
+    /**
+     * getUserDataMapper
+     *
+     * @return UserDataMapperInterface
+     */
+    public function getUserDataMapper()
+    {
+        return $this->userDataMapper;
+    }
+
+    /**
+     * fetchAll
+     *
+     * @param array $params params
+     *
+     * @return mixed
+     */
+    public function fetchAll(
+        $params = array()
+    ) {
+
+        return $this->userDataMapper->fetchAll($params);
+    }
+
+    /**
+     * fetchById
+     *
+     * @param mixed $id id
+     *
+     * @return \RcmUser\User\Result
+     */
+    public function fetchById(
+        $id
+    ) {
+
+        return $this->userDataMapper->fetchById($id);
+    }
+
+    /**
+     * fetchByUsername
+     *
+     * @param string $username username
+     *
+     * @return \RcmUser\User\Result
+     */
+    public function fetchByUsername(
+        $username
+    ) {
+
+        return $this->userDataMapper->fetchById($username);
+    }
+
+    /**
      * buildUser - Allows events listeners to set default values for a new
      * user as needed.  Very helpful for creating guest or ambiguous users
      *
@@ -423,4 +492,7 @@ class UserDataService extends EventProvider
 
         return $result;
     }
+
+    /* USERS ******************* */
+
 } 

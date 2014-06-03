@@ -100,6 +100,24 @@ class DoctrineUserDataMapper
     }
 
     /**
+     * fetchAll
+     *
+     * @param array $params params
+     *
+     * @return mixed
+     * @throws RcmUserException
+     */
+    public function fetchAll(
+        $params = array()
+    ) {
+        $users = $this->getEntityManager()
+            ->getRepository($this->getEntityClass())
+            ->findAll();
+
+        return new \RcmUser\Result($users);
+    }
+
+    /**
      * fetchById
      *
      * @param mixed $id id

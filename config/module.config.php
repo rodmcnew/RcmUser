@@ -487,68 +487,45 @@ return array(
         )
     ),
 
-    /*
-     * @deprecated
-     * bjyauthorize configuration
-     *
-     * This module inject providers to bjyauthorize
-    'bjyauthorize' => array(
-        'default_role' => 'guest',
-        'authenticated_role' => 'user',
-        'identity_provider' => 'RcmUser\Acl\Provider\BjyIdentityProvider',
-        'role_providers' => array(
-            'RcmUser\Acl\Provider\BjyRoleProvider' => array('guest'),
-        ),
-        'resource_providers' => array(
-            'RcmUser\Acl\Provider\BjyResourceProvider' => array(),
-        ),
-        'rule_providers' => array(
-            'RcmUser\Acl\Provider\BjyRuleProvider' => array(),
-        ),
-    ),
-
-            /*
-             * @deprecated
-             * BJY-Authorize providers
-             * - This module depends on bjyauthorize for ACL logic
-             * Required for BjyAuthorize:
-             *
-             * This module builds the required providers for bjyauthorize
-
-            'RcmUser\Acl\Provider\BjyIdentityProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyIdentityProvider',
-            'RcmUser\Acl\Provider\BjyRoleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRoleProvider',
-            'RcmUser\Acl\Provider\BjyRuleProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyRuleProvider',
-            'RcmUser\Acl\Provider\BjyResourceProvider' =>
-                'RcmUser\Acl\Service\Factory\BjyResourceProvider',
-            *
-    */
-
     'controllers' => array(
         'invokables' => array(
-            'RcmUser\Controller\User' =>
-                'RcmUser\Controller\UserController',
-            'RcmUser\Controller\AdminAclController' =>
-                'RcmUser\Controller\AdminAclController',
-            'RcmUser\Controller\AdminApiAclResourcesController' =>
-                'RcmUser\Controller\AdminApiAclResourcesController',
-            'RcmUser\Controller\AdminApiAclRulesByRolesController' =>
-                'RcmUser\Controller\AdminApiAclRulesByRolesController',
-            'RcmUser\Controller\AdminJsController' =>
-                'RcmUser\Controller\AdminJsController',
-            'RcmUser\Controller\AdminCssController' =>
-                'RcmUser\Controller\AdminCssController',
-            'RcmUser\Controller\AdminApiAclRuleController' =>
-                'RcmUser\Controller\AdminApiAclRuleController',
-            'RcmUser\Controller\AdminApiAclRoleController' =>
-                'RcmUser\Controller\AdminApiAclRoleController',
+            // GENERAL
+            'RcmUser\Controller\User'
+            => 'RcmUser\Controller\UserController',
+            // ADMIN GENERAL
+            'RcmUser\Controller\AdminJsController'
+            => 'RcmUser\Controller\AdminJsController',
+
+            'RcmUser\Controller\AdminCssController'
+            => 'RcmUser\Controller\AdminCssController',
+            // ADMIN ACL
+            'RcmUser\Controller\AdminAclController'
+            => 'RcmUser\Controller\AdminAclController',
+
+            'RcmUser\Controller\AdminApiAclResourcesController'
+            => 'RcmUser\Controller\AdminApiAclResourcesController',
+
+            'RcmUser\Controller\AdminApiAclRulesByRolesController'
+            => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
+
+            'RcmUser\Controller\AdminApiAclRuleController'
+            => 'RcmUser\Controller\AdminApiAclRuleController',
+
+            'RcmUser\Controller\AdminApiAclRoleController'
+            => 'RcmUser\Controller\AdminApiAclRoleController',
+            // ADMIN USERS
+            'RcmUser\Controller\AdminUserController'
+            => 'RcmUser\Controller\AdminUserController',
+
+            'RcmUser\Controller\AdminApiUserController'
+            => 'RcmUser\Controller\AdminApiUserController',
+
         ),
     ),
 
     'router' => array(
         'routes' => array(
+            // GENERAL
             'RcmUser' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -563,32 +540,7 @@ return array(
                     ),
                 ),
             ),
-
-            'RcmUserAdminAcl' => array(
-                'may_terminate' => true,
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/admin/rcmuser-acl',
-                    'constraints' => array(
-                        'terminal' => '[0-1]',
-                    ),
-                    'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminAclController',
-                        'action' => 'index',
-                    ),
-                ),
-            ),
-            'RcmUserAdminJs' => array(
-                'may_terminate' => true,
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/admin/rcmuser/js/admin.js',
-                    'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminJsController',
-                        'action' => 'index',
-                    ),
-                ),
-            ),
+            // ADMIN GENERAL
             'RcmUserAdminCss' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -597,6 +549,30 @@ return array(
                     'defaults' => array(
                         'controller' => 'RcmUser\Controller\AdminCssController',
                         'action' => 'index',
+                    ),
+                ),
+            ),
+            // ADMIN ACL
+            'RcmUserAdminAcl' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser-acl',
+                    'constraints' => array(),
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminAclController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'RcmUserAdminAclJs' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser/js/admin-acl.js',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminJsController',
+                        'action' => 'adminAcl',
                     ),
                 ),
             ),
@@ -649,6 +625,43 @@ return array(
                     'defaults' => array(
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclRoleController',
+                    ),
+                ),
+            ),
+            // ADMIN USERS
+            'RcmUserAdminUsers' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser-users',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminUserController',
+                        'action' => 'index',
+                    ),
+                ),
+            ),
+            'RcmUserAdminUserJs' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser/js/admin-users.js',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminJsController',
+                        'action' => 'adminUsers',
+                    ),
+                ),
+            ),
+
+            'RcmUserAdminApiUser' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-user[/:id]',
+                    'constraints' => array(
+                        'id' => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiUserController',
                     ),
                 ),
             ),

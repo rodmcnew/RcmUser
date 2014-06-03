@@ -19,6 +19,7 @@ namespace RcmUser\User\Service;
 
 
 use RcmUser\Event\EventProvider;
+use RcmUser\Result;
 use RcmUser\User\Entity\User;
 
 /**
@@ -61,7 +62,7 @@ class UserPropertyService extends EventProvider
         if ($property === null || $refresh) {
             // @event getUserProperty.pre -
             $this->getEventManager()->trigger(
-                __FUNCTION__ . '.pre',
+                __FUNCTION__,
                 $this,
                 array('user' => $user, 'propertyNameSpace' => $propertyNameSpace)
             );
@@ -70,6 +71,36 @@ class UserPropertyService extends EventProvider
         $property = $user->getProperty($propertyNameSpace, $dflt);
 
         return $property;
+    }
+
+    /**
+     * getUserPropertyEditUrl
+     * Get a link to an edit page for this user
+     *
+     * @param User   $user              user
+     * @param string $propertyNameSpace propertyNameSpace
+     *
+     * @return mixed
+     */
+    public function getUserPropertyEditUrl(
+        User $user,
+        $propertyNameSpace
+    ) {
+        $results = $this->getEventManager()->trigger(
+            __FUNCTION__,
+            $this,
+            array('user' => $user, 'propertyNameSpace' => $propertyNameSpace),
+           function ($result) {
+               return $result->isSuccess();
+           }
+        );
+
+        if ($results->stopped()) {
+
+            return $results->last();
+        }
+
+        return new Result(null, Result::CODE_FAIL, 'No property link found.');
     }
 
 } 
