@@ -43,11 +43,6 @@ use RcmUser\Result;
 class AclDataService
 {
     /**
-     * @var Config $config
-     */
-    protected $config;
-
-    /**
      * @var AclRoleDataMapperInterface
      */
     protected $aclRoleDataMapper;
@@ -56,28 +51,6 @@ class AclDataService
      * @var AclRuleDataMapperInterface
      */
     protected $aclRuleDataMapper;
-
-    /**
-     * setConfig
-     *
-     * @param Config $config config
-     *
-     * @return void
-     */
-    public function setConfig(Config $config)
-    {
-        $this->config = $config;
-    }
-
-    /**
-     * getConfig
-     *
-     * @return Config
-     */
-    public function getConfig()
-    {
-        return $this->config;
-    }
 
     /**
      * setAclRoleDataMapper
@@ -154,37 +127,46 @@ class AclDataService
     public function getRoleAclData($roleId)
     {
 
-
     }
 
     /**
-     * getDefaultRoleIdentities
+     * getDefaultGuestRoleIds
      *
-     * @return null
+     * @return array
      */
-    public function getDefaultRoleIdentities()
+    public function getDefaultGuestRoleIds()
     {
-        return $this->config->get('DefaultRoleIdentities', array());
+        return $this->aclRoleDataMapper->fetchDefaultGuestRoleIds();
     }
 
     /**
-     * getDefaultAuthenticatedRoleIdentities
+     * getDefaultUserRoleIds
      *
-     * @return null
+     * @return array
      */
-    public function getDefaultAuthenticatedRoleIdentities()
+    public function getDefaultUserRoleIds()
     {
-        return $this->config->get('DefaultAuthenticatedRoleIdentities', array());
+        return $this->aclRoleDataMapper->fetchDefaultUserRoleIds();
     }
 
     /**
-     * getSuperAdminRole
+     * getSuperAdminRoleId
      *
      * @return string|null
      */
-    public function getSuperAdminRole()
+    public function getSuperAdminRoleId()
     {
-        return $this->config->get('SuperAdminRole', null);
+        return $this->aclRoleDataMapper->fetchSuperAdminRoleId();
+    }
+
+    /**
+     * getGuestRoleId
+     *
+     * @return string|null
+     */
+    public function getGuestRoleId()
+    {
+        return $this->aclRoleDataMapper->fetchGuestRoleId();
     }
 
     /**
@@ -206,7 +188,6 @@ class AclDataService
      */
     public function fetchRoleByRoleId($roleId)
     {
-
         return $this->aclRoleDataMapper->fetchByRoleId($roleId);
     }
 
@@ -244,6 +225,23 @@ class AclDataService
     public function deleteRole(AclRole $aclRole)
     {
         $roleId = $aclRole->getRoleId();
+
+        // some roles should not be deleted, like super admin and guest
+        if($roleId == $this->getSuperAdminRoleId()){
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Super admin role ({$roleId}) cannot be deleted."
+            );
+        }
+
+        if($roleId == $this->getGuestRoleId()){
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Guest role ({$roleId}) cannot be deleted."
+            );
+        }
 
         $result = $this->aclRoleDataMapper->delete($aclRole);
 
@@ -421,7 +419,7 @@ class AclDataService
         }
 
         // check if is super admin
-        if ($roleId == $this->getSuperAdminRole()) {
+        if ($roleId == $this->getSuperAdminRoleId()) {
 
             return new Result(
                 null,

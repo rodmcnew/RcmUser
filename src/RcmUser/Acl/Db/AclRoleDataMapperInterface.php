@@ -37,6 +37,33 @@ use RcmUser\Acl\Entity\AclRole;
  */
 interface AclRoleDataMapperInterface
 {
+    /**
+     * fetchSuperAdminRoleId
+     *
+     * @return string|null
+     */
+    public function fetchSuperAdminRoleId();
+
+    /**
+     * fetchGuestRoleId
+     *
+     * @return string|null
+     */
+    public function fetchGuestRoleId();
+
+    /**
+     * fetchDefaultGuestRoleIds
+     *
+     * @return array
+     */
+    public function fetchDefaultGuestRoleIds();
+
+    /**
+     * fetchDefaultUserRoleIds
+     *
+     * @return array
+     */
+    public function fetchDefaultUserRoleIds();
 
     /**
      * fetchAll

@@ -39,7 +39,7 @@ use RcmUser\Acl\Provider\ResourceProvider;
 class RcmUserAclResourceProvider extends ResourceProvider
 {
     /**
-     * @var
+     * @var string PROVIDER_ID This needs to be the same as the config
      */
     const PROVIDER_ID = 'RcmUser';
 
@@ -104,12 +104,20 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     protected function buildResources()
     {
+        $privileges = array(
+            'read',
+            'update',
+            'create',
+            'delete',
+        );
+
         /* parent resource */
         $this->resources['rcmuser'] = new AclResource(
             'rcmuser'
         );
         $this->resources['rcmuser']->setName('RCM User');
         $this->resources['rcmuser']->setDescription('All RCM user access.');
+        $this->resources['rcmuser']->setPrivileges($privileges);
 
         /* user edit */
         $this->resources['rcmuser-user-administration'] = new AclResource(
@@ -121,6 +129,8 @@ class RcmUserAclResourceProvider extends ResourceProvider
             ->setName('User Administration');
         $this->resources['rcmuser-user-administration']
             ->setDescription('Allows the editing of user data.');
+        $this->resources['rcmuser-user-administration']
+            ->setPrivileges($privileges);
 
         /* access and roles */
         $this->resources['rcmuser-acl-administration'] = new AclResource(
@@ -132,5 +142,7 @@ class RcmUserAclResourceProvider extends ResourceProvider
             ->setName('Role and Access Administration');
         $this->resources['rcmuser-acl-administration']
             ->setDescription('Allows the editing of user access and role data.');
+        $this->resources['rcmuser-acl-administration']
+            ->setPrivileges($privileges);
     }
 } 

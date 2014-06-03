@@ -47,11 +47,10 @@ class UserRoleDataServiceListeners implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service
-            = new \RcmUser\User\Event\UserRoleDataServiceListeners();
+        $service = new \RcmUser\User\Event\UserRoleDataServiceListeners();
 
-        $service->setUserRolesDataMapper(
-            $serviceLocator->get('RcmUser\User\UserRolesDataMapper')
+        $service->setUserRoleService(
+            $serviceLocator->get('RcmUser\User\Service\UserRoleService')
         );
 
         return $service;

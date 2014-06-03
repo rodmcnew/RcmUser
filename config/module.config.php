@@ -100,7 +100,7 @@ return array(
         'Acl\Config' => array(
 
             /*
-             * DefaultRoleIdentities and DefaultAuthenticatedRoleIdentities
+             * DefaultGuestRoleIds and DefaultUserRoleIds
              * Used by:
              *  RcmUser\Acl\EventListeners
              *
@@ -108,21 +108,21 @@ return array(
              * for a user on the user data events
              * in RcmUser\User\Service\UserDataService.
              */
-            'DefaultRoleIdentities' => array('guest'),
-            'DefaultAuthenticatedRoleIdentities' => array('user'),
+            'DefaultGuestRoleIds' => array('guest'),
+            'DefaultUserRoleIds' => array('user'),
 
             /*
-             * SuperAdminRole
+             * SuperAdminRoleId
              *
              * If this is set, this role will get full permissions always
              * Basically over-rides standard permission handling
              */
-            'SuperAdminRole' => 'admin',
+            'SuperAdminRoleId' => 'admin',
 
             /**
              * @todo work this out
              */
-            'GuestRole' => 'guest',
+            'GuestRoleId' => 'guest',
 
             /*
              * ResourceProviders
@@ -230,6 +230,16 @@ return array(
              */
             'RcmUser\User\Service\UserPropertyService' =>
                 'RcmUser\User\Service\Factory\UserPropertyService',
+
+            /*
+             * UserRoleService - Core User Role data access service
+             * Required *
+             *
+             * This service exposes basic CRUD operations for the User roles.
+             */
+            'RcmUser\User\Service\UserRoleService' =>
+                'RcmUser\User\Service\Factory\UserRoleService',
+
             /*
              * UserDataMapper - Data source adapter
              * Required for:
@@ -543,7 +553,7 @@ return array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/rcmuser[/:action]',
+                    'route' => '/rcmuser',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),

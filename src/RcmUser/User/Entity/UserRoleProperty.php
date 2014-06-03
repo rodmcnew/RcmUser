@@ -17,6 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
+use RcmUser\User\Service\UserRoleService;
+
 
 /**
  * Class UserRoleProperty
@@ -35,20 +37,34 @@ namespace RcmUser\User\Entity;
  */
 class UserRoleProperty
 {
+    /**
+     * @var string
+     */
+    const PROPERTY_KEY = 'RcmUser\Acl\UserRoles';
+    /**
+     * @var array $roles
+     */
     protected $roles = array();
 
-    protected $guestRoleId = null;
-
-    protected $superAdminRoleId = null;
-
+    /**
+     * @param array $roles
+     */
     public function __construct(
-        $roles = array(),
-        $guestRoleId = null,
-        $superAdminRoleId = null
+        $roles = array()
     ) {
+        $this->setRoles($roles);
+    }
+
+    /**
+     * setRoles
+     *
+     * @param array $roles roles
+     *
+     * @return array
+     */
+    public function setRoles($roles)
+    {
         $this->roles = $roles;
-        $this->guestRoleId = $guestRoleId;
-        $this->superAdminRoleId = $superAdminRoleId;
     }
 
     /**
@@ -59,6 +75,21 @@ class UserRoleProperty
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * setRole
+     *
+     * @param string $roleId roleId
+     *
+     * @return void
+     */
+    public function setRole($roleId)
+    {
+        if(!$this->hasRole($roleId)){
+
+            $this->roles[] = $roleId;
+        }
     }
 
     /**
@@ -89,7 +120,7 @@ class UserRoleProperty
      */
     public function hasRole($roleId)
     {
-        if ($this->getRole($roleId)) {
+        if ($this->getRole($roleId, false)) {
 
             return true;
         }
@@ -97,33 +128,4 @@ class UserRoleProperty
         return false;
     }
 
-    /**
-     * isGuest
-     *
-     * @return bool
-     */
-    public function isGuest()
-    {
-        if ($this->getRole($this->guestRoleId) && (count($this->roles) > 1)) {
-
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * isSuperAdmin
-     *
-     * @return bool
-     */
-    public function isSuperAdmin()
-    {
-        if ($this->getRole($this->superAdminRoleId)) {
-
-            return true;
-        }
-
-        return false;
-    }
 } 

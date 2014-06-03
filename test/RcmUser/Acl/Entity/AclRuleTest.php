@@ -19,6 +19,7 @@ namespace RcmUser\Test\Acl\Entity;
 
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Exception\RcmUserException;
 use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
@@ -54,20 +55,113 @@ class AclRuleTest extends Zf2TestCase
         $roleId = 'somerole';
         $resource = 'someresource';
         $privilege = 'someprivilege';
+        $assertion = 'someassertion';
 
         $aclRule->setRule($rule);
         $aclRule->setRoleId($roleId);
         $aclRule->setResourceId($resource);
         $aclRule->setPrivilege($privilege);
+        $aclRule->setAssertion($assertion);
 
-        $this->assertTrue($aclRule->getRule() === $rule, 'Setter or getter failed.');
-        $this->assertTrue($aclRule->getRoleId() === $roleId, 'Setter or getter failed.');
-        $this->assertTrue(
-            $aclRule->getResourceId() === $resource, 'Setter or getter failed.'
+        $this->assertEquals(
+            $rule,
+            $aclRule->getRule(),
+            'Setter or getter failed.'
         );
-        $this->assertTrue(
-            $aclRule->getPrivilege() === $privilege, 'Setter or getter failed.'
+        $this->assertEquals(
+            $roleId,
+            $aclRule->getRoleId(),
+            'Setter or getter failed.'
         );
+        $this->assertEquals(
+            $resource,
+            $aclRule->getResourceId(),
+            'Setter or getter failed.'
+        );
+        $this->assertEquals(
+            $privilege,
+            $aclRule->getPrivilege(),
+            'Setter or getter failed.'
+        );
+        $this->assertEquals(
+            $assertion,
+            $aclRule->getAssertion(),
+            'Setter or getter failed.'
+        );
+
+        $aclRule->setPrivilege('');
+        $this->assertNull(
+            $aclRule->getPrivilege(),
+            'Empty privilege should be stored as null.'
+        );
+    }
+
+    /**
+     * testSetRule
+     *
+     * @return void
+     */
+    public function testSetRule()
+    {
+        $aclRule = new AclRule();
+        $rule = 'NOPE';
+
+        try {
+
+            $aclRule->setRule($rule);
+
+        } catch (RcmUserException $e) {
+
+            $this->assertInstanceOf(
+                '\RcmUser\Exception\RcmUserException',
+                $e
+            );
+
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
+    }
+
+    public function testPopulate()
+    {
+        $aclRuleA = new AclRule();
+        $aclRuleB = new AclRule();
+        $data = array(
+            'rule' => 'allow',
+            'roleId' => 'somerole',
+            'resourceId' => 'someresource',
+            'privilege' => 'someprivilege',
+            'assertion' => 'someassertion',
+        );
+
+        $aclRuleA->populate($data);
+
+        $arrayA = iterator_to_array($aclRuleA);
+
+        $this->assertEquals($data, $arrayA, 'Populate failed.');
+
+        $aclRuleB->populate($aclRuleA);
+
+        $arrayB = iterator_to_array($aclRuleA);
+
+        $this->assertEquals($arrayA, $arrayB, 'Populate failed.');
+
+        try {
+
+            $aclRuleB->populate('NOPE');
+
+        } catch (RcmUserException $e) {
+
+            $this->assertInstanceOf(
+                '\RcmUser\Exception\RcmUserException',
+                $e
+            );
+
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
     }
 
     /**
@@ -81,12 +175,12 @@ class AclRuleTest extends Zf2TestCase
     {
         $aclRule = new AclRule();
         $rule = 'allow';
-        $role = new AclRole();
+        $roleId = 'role';
         $resource = 'someresource';
         $privilege = 'someprivilege';
 
         $aclRule->setRule($rule);
-        $aclRule->setRoleId($role);
+        $aclRule->setRoleId($roleId);
         $aclRule->setResourceId($resource);
         $aclRule->setPrivilege($privilege);
 
@@ -106,12 +200,12 @@ class AclRuleTest extends Zf2TestCase
     {
         $aclRule = new AclRule();
         $rule = 'allow';
-        $role = new AclRole();
+        $roleId = 'role';
         $resource = 'someresource';
         $privilege = 'someprivilege';
 
         $aclRule->setRule($rule);
-        $aclRule->setRoleId($role);
+        $aclRule->setRoleId($roleId);
         $aclRule->setResourceId($resource);
         $aclRule->setPrivilege($privilege);
 

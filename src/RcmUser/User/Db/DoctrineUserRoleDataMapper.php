@@ -57,11 +57,6 @@ class DoctrineUserRoleDataMapper
     protected $entityClass;
 
     /**
-     * @var AclRoleDataMapperInterface $aclRoleDataMapper
-     */
-    protected $aclRoleDataMapper;
-
-    /**
      * setEntityManager
      *
      * @param EntityManager $entityManager entityManager
@@ -104,29 +99,6 @@ class DoctrineUserRoleDataMapper
     public function getEntityClass()
     {
         return $this->entityClass;
-    }
-
-    /**
-     * setAclRoleDataMapper
-     *
-     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
-     *
-     * @return void
-     */
-    public function setAclRoleDataMapper(
-        AclRoleDataMapperInterface $aclRoleDataMapper
-    ) {
-        $this->aclRoleDataMapper = $aclRoleDataMapper;
-    }
-
-    /**
-     * getAclRoleDataMapper
-     *
-     * @return AclRoleDataMapperInterface
-     */
-    public function getAclRoleDataMapper()
-    {
-        return $this->aclRoleDataMapper;
     }
 
     /**
@@ -226,7 +198,9 @@ class DoctrineUserRoleDataMapper
 
         if ($currentRolesResult->isSuccess()) {
 
-            throw new RcmUserException(
+            return new Result(
+                $currentRolesResult->getData(),
+                Result::CODE_FAIL,
                 'Roles already exist for user: ' . $user->getId()
             );
         }
@@ -295,7 +269,13 @@ class DoctrineUserRoleDataMapper
             $userAclRoles[] = $userRole['roleId'];
         }
 
-        return new Result($userAclRoles);
+        $message = '';
+        if(empty($userAclRoles)){
+
+            $message = 'No roles found';
+        }
+
+        return new Result($userAclRoles, Result::CODE_SUCCESS, $message);
     }
 
     /**

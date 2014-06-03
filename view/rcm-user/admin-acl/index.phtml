@@ -220,8 +220,8 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                 </div>
             </div>
             -->
+            </div>
         </div>
-    </div>
 </script>
 
 <!-- REMOVE ROLE TEMPLATE -->
@@ -237,7 +237,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                     <div>Role:</div>
                     <div class="roleId">{{roleData.role.roleId}}</div>
                     <div>{{roleData.role.description}}</div>
-                    <div>With parent: </div>
+                    <div>With parent:</div>
                     <div class="roleId">{{roleData.role.parentRoleId}}</div>
                 </div>
             </div>
@@ -277,11 +277,19 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                 </div>
             </accordion-heading>
             <section class="roleHeader">
+                <div class="roleDetails">
+                    <div class="roleIdDetails">
+                        Role Id: {{roleData.role.roleId}}
+                    </div>
+                    <div class="roleDescription" ng-show="roleData.role.description">
+                        Description: {{roleData.role.description}}
+                    </div>
+                </div>
                 <div class="">
-                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)">
+                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-edit"></i> edit role
                     </button>
-                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)">
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-minus"></i> remove role
                     </button>
                 </div>
@@ -311,12 +319,12 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 
                             <div class="col-sm-3">
                                 <div class="btn-group-vertical">
-                                <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRule('sm', ruleData)">
-                                    <i class="glyphicon glyphicon-edit"></i> edit rule
-                                </button>
-                                <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])">
-                                    <i class="glyphicon glyphicon-minus"></i> remove rule
-                                </button>
+                                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRule('sm', ruleData)">
+                                        <i class="glyphicon glyphicon-edit"></i> edit rule
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])">
+                                        <i class="glyphicon glyphicon-minus"></i> remove rule
+                                    </button>
                                 </div>
                             </div>
                         </div>

@@ -46,28 +46,29 @@ class AdminJsController extends AbstractAdminController
     public function indexAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration')) {
+        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
             return $this->getNotAllowedResponse();
         }
 
         $aclResourceService = $this->getServiceLocator()->get(
             'RcmUser\Acl\Service\AclResourceService'
         );
+        /** @var $aclDataService \RcmUser\Acl\Service\AclDataService */
         $aclDataService = $this->getServiceLocator()->get(
             'RcmUser\Acl\AclDataService'
         );
 
         $resources = $aclResourceService->getResourcesWithNamespace();
-
         $roles = $aclDataService->getRulesByRoles();
-
-        $superAdminRole = $aclDataService->getSuperAdminRole();
+        $superAdminRoleId = $aclDataService->getSuperAdminRoleId();
+        $guestRoleId = $aclDataService->getGuestRoleId();
 
         $viewModel = new ViewModel(
             array(
                 'resources' => $resources,
                 'roles' => $roles,
-                'superAdminRole' => $superAdminRole,
+                'superAdminRoleId' => $superAdminRoleId,
+                'guestRoleId' => $guestRoleId,
             )
         );
         $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');

@@ -89,7 +89,6 @@ class AuthorizeServiceTest extends Zf2TestCase {
         $this->authorizeService->setAclResourceService($aclResourceService);
         $this->authorizeService->setAclRoleDataMapper($aclRoleDataMapper);
         $this->authorizeService->setAclRuleDataMapper($aclRuleDataMapper);
-        $this->authorizeService->setSuperAdminRole('admin');
     }
 
     public function testGetSet(){
@@ -99,11 +98,9 @@ class AuthorizeServiceTest extends Zf2TestCase {
         $authServ = $this->getAuthorizeService();
 
         $result = $authServ->getAclResourceService();
-        //var_dump($result);
         $this->assertInstanceOf('\RcmUser\Acl\Service\AclResourceService', $result, "Getter or Setter failed");
         $this->assertInstanceOf('\RcmUser\Acl\Db\AclRoleDataMapper', $authServ->getAclRoleDataMapper(), "Getter or Setter failed");
         $this->assertInstanceOf('\RcmUser\Acl\Db\AclRuleDataMapper', $authServ->getAclRuleDataMapper(), "Getter or Setter failed");
-        $this->assertEquals('admin',$authServ->getSuperAdminRole(), "Getter or Setter failed");
 
     }
 

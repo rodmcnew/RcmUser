@@ -172,8 +172,8 @@ class AclResourceService
 
         if (empty($providerId)) {
 
-            // return root resource at least
-            return $this->resources;
+            $provider = $this->getProviderByResourceId($resourceId);
+
         } else {
 
             $provider = $this->getProvider($providerId);
@@ -181,7 +181,8 @@ class AclResourceService
 
         if (empty($provider)) {
 
-            return array();
+            // return root resource at least
+            return $this->resources;
         }
 
         // get resource
@@ -329,7 +330,8 @@ class AclResourceService
             return null;
         }
 
-        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
+        if (!($this->resourceProviders[$providerId] instanceof
+            ResourceProviderInterface)
         ) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
                 $this->resourceProviders[$providerId],
@@ -338,6 +340,33 @@ class AclResourceService
         }
 
         return $this->resourceProviders[$providerId];
+    }
+
+    /**
+     * getProviderByResourceId
+     *
+     * @param string $resourceId resourceId
+     *
+     * @return ResourceProviderInterface
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function getProviderByResourceId($resourceId)
+    {
+        foreach ($this->resourceProviders as $providerId => &$provider) {
+
+            $provider = $this->buildValidProvider($provider, $providerId);
+
+            $resource = $provider->getResource($resourceId);
+
+            if (!empty($resource)) {
+
+                return $provider;
+            }
+        }
+
+        throw new RcmUserException(
+            "Provide could not be found for resource: {$resourceId}"
+        );
     }
 
     /**
@@ -462,10 +491,10 @@ class AclResourceService
             $parent = $aclResources[$parentId];
 
             $ns = $this->createNamespaceId(
-                $parent,
-                $aclResources,
-                $nsChar
-            ) . $nsChar . $ns;
+                    $parent,
+                    $aclResources,
+                    $nsChar
+                ) . $nsChar . $ns;
         }
 
         return $ns;
@@ -533,7 +562,7 @@ class AclResourceService
         } else {
 
             throw new RcmUserException(
-                'Resource is not valid: ' . var_export($resource, true)
+                'Resource is not valid: ' . var_export($resourceData, true)
             );
         }
 
