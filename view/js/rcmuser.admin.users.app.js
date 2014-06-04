@@ -15,7 +15,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.loading = false;
 
-            $scope.users = JSON.parse('<?php echo json_encode($users); ?>');
+            eval('$scope.users = <?php echo json_encode($users); ?>');
 
             $scope.oneAtATime = false;
 

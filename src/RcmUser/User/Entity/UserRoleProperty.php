@@ -17,8 +17,6 @@
 
 namespace RcmUser\User\Entity;
 
-use RcmUser\User\Service\UserRoleService;
-
 
 /**
  * Class UserRoleProperty
@@ -35,7 +33,7 @@ use RcmUser\User\Service\UserRoleService;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserRoleProperty implements \JsonSerializable
+class UserRoleProperty implements UserPropertyInterface
 {
     /**
      * @var string

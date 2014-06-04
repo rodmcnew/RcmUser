@@ -58,10 +58,18 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                     <div ng-controller="rcmuserAdminUser" ng-init="user=user;">
                         <section class="userHeader">
                             <div class="userDetails">
-                                <div class="user-username">{{user.username}}</div>
-                                <div class="user-password">{{user.password}}</div>
-                                <div class="user-state">{{user.state}}</div>
-                                <div class="user-id">{{user.id}}</div>
+                                <div>
+                                    <span class="">Id: </span>
+                                    <span class="user-id">{{user.id}}</span>
+                                </div>
+                                <div>
+                                    <span class="">Username: </span>
+                                    <span class="user-username">{{user.username}}</span>
+                                </div>
+                                <div ng-show="user.state">
+                                    <span class="">User state: </span>
+                                    <span class="user-state">{{user.state}}</span>
+                                </div>
                                 <!--<div class="user-properties">{{user.properties}}</div>-->
                             </div>
                             <div class="">
@@ -81,7 +89,6 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
 
                         <div class="userEdit" ng-show="showEdit">
                             EDIT
-                            {{user | json}}
                         </div>
 
                     </div>

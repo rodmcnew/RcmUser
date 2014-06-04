@@ -101,13 +101,13 @@ class AclDataService
     /* ROLES ******************** */
 
     /**
-     * getAclData
+     * getAllRolesData - alias getAllRoles without result
      *
      * @return array
      */
-    public function getAclData()
+    public function getAllRolesData()
     {
-        $result = $this->fetchAllRoles();
+        $result = $this->getAllRoles();
 
         if (!$result->isSuccess()) {
 
@@ -170,23 +170,23 @@ class AclDataService
     }
 
     /**
-     * fetchAllRoles
+     * getAllRoles
      *
      * @return Result
      */
-    public function fetchAllRoles()
+    public function getAllRoles()
     {
         return $this->aclRoleDataMapper->fetchAll();
     }
 
     /**
-     * fetchRoleByRoleId
+     * getRoleByRoleId
      *
      * @param string $roleId roleId
      *
      * @return mixed
      */
-    public function fetchRoleByRoleId($roleId)
+    public function getRoleByRoleId($roleId)
     {
         return $this->aclRoleDataMapper->fetchByRoleId($roleId);
     }
@@ -250,7 +250,7 @@ class AclDataService
             return $result;
         }
 
-        $rulesResult = $this->fetchRulesByRole($roleId);
+        $rulesResult = $this->getRulesByRole($roleId);
 
         if (!$rulesResult->isSuccess()) {
 
@@ -309,7 +309,7 @@ class AclDataService
     public function getNamespacedRoles($nsChar = '.')
     {
         $aclRoles = array();
-        $result = $this->fetchAllRoles();
+        $result = $this->getAllRoles();
 
         if (!$result->isSuccess()) {
 
@@ -362,35 +362,35 @@ class AclDataService
     /* RULES ******************** */
 
     /**
-     * fetchRulesAll
+     * getAllRules
      *
      * @return \Result
      */
-    public function fetchRulesAll()
+    public function getAllRules()
     {
         return $this->aclRuleDataMapper->fetchAll();
     }
 
     /**
-     * fetchRulesByResource
+     * getRulesByResource
      *
      * @param string $resourceId $resourceId
      *
      * @return Result
      */
-    public function fetchRulesByResource($resourceId)
+    public function getRulesByResource($resourceId)
     {
         return $this->aclRuleDataMapper->fetchByResource($resourceId);
     }
 
     /**
-     * fetchRulesByRole
+     * getRulesByRole
      *
      * @param string $roleId roleId
      *
      * @return Result
      */
-    public function fetchRulesByRole($roleId)
+    public function getRulesByRole($roleId)
     {
         return $this->aclRuleDataMapper->fetchByRole($roleId);
     }
@@ -429,7 +429,7 @@ class AclDataService
         }
 
         // check if role exists
-        $result = $this->fetchRoleByRoleId($roleId);
+        $result = $this->getRoleByRoleId($roleId);
 
         if (!$result->isSuccess()) {
 
@@ -498,7 +498,7 @@ class AclDataService
             $aclRoles[$ns] = array();
             $aclRoles[$ns]['role'] = $role;
             $aclRoles[$ns]['roleNs'] = $ns;
-            $rulesResult = $this->fetchRulesByRole($id);
+            $rulesResult = $this->getRulesByRole($id);
             if ($rulesResult->isSuccess()) {
 
                 $aclRoles[$ns]['rules'] = $rulesResult->getData();

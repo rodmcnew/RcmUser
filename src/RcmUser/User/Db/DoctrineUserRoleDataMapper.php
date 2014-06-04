@@ -19,7 +19,6 @@ namespace RcmUser\User\Db;
 
 
 use Doctrine\ORM\EntityManager;
-use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Exception\RcmUserException;
@@ -99,6 +98,21 @@ class DoctrineUserRoleDataMapper
     public function getEntityClass()
     {
         return $this->entityClass;
+    }
+
+    /**
+     * fetchAll
+     *
+     * @return mixed
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function fetchAll()
+    {
+        $users = $this->getEntityManager()
+            ->getRepository($this->getEntityClass())
+            ->findAll();
+
+        return new Result($users);
     }
 
     /**

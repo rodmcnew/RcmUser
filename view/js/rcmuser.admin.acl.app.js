@@ -18,8 +18,8 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
 
         $scope.loading = false;
 
-        $scope.resources = JSON.parse('<?php echo json_encode($resources); ?>');
-        $scope.roles = JSON.parse('<?php echo json_encode($roles); ?>');
+        eval('$scope.resources = <?php echo json_encode($resources); ?>');
+        eval('$scope.roles = <?php echo json_encode($roles); ?>');
         $scope.superAdminRole = '<?php echo $superAdminRoleId; ?>';
         $scope.guestRole = '<?php echo $guestRoleId; ?>';
 

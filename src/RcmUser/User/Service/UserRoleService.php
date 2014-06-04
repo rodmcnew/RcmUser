@@ -117,6 +117,16 @@ class UserRoleService
     }
 
     /**
+     * getAllUserRoles
+     *
+     * @return mixed
+     */
+    public function getAllUserRoles(){
+
+        return $this->getUserRolesDataMapper()->fetchAll();
+    }
+
+    /**
      * isGuest
      *
      * @param array $roles roles

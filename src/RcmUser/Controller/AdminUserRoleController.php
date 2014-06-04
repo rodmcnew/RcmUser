@@ -18,13 +18,12 @@
 namespace RcmUser\Controller;
 
 use Zend\Http\Response;
-use Zend\View\Model\ViewModel;
 
 
 /**
- * Class AdminUserController
+ * Class AdminUserRoleController
  *
- * AdminUserController
+ * AdminUserRoleController
  *
  * PHP version 5
  *
@@ -36,7 +35,7 @@ use Zend\View\Model\ViewModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminUserController extends AbstractAdminController
+class AdminUserRoleController extends AbstractAdminController
 {
     /**
      * indexAction - list
@@ -46,7 +45,7 @@ class AdminUserController extends AbstractAdminController
     public function indexAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration')) {
+        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
             return $this->getNotAllowedResponse();
         }
 
