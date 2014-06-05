@@ -43,7 +43,7 @@ class AdminJsController extends AbstractAdminController
      *
      * @return void
      */
-    public function indexAction()
+    public function adminAclAction()
     {
         // ACCESS CHECK
         if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
@@ -72,6 +72,87 @@ class AdminJsController extends AbstractAdminController
             )
         );
         $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
+        $viewModel->setTerminal(true);
+
+        $response = $this->getResponse();
+        $response->setStatusCode(Response::STATUS_CODE_200);
+        $response->getHeaders()->addHeaders(
+            array(
+                'Content-Type' => 'application/javascript'
+            )
+        );
+
+        return $viewModel;
+    }
+
+    /**
+     * adminUsersAction
+     *
+     * @return void
+     */
+    public function adminUsersAction()
+    {
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+            return $this->getNotAllowedResponse();
+        }
+
+        /** @var \RcmUser\User\Service\UserDataService $userDataService */
+        $userDataService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserDataService'
+        );
+
+        $result = $userDataService->fetchAll();
+
+        $viewModel = new ViewModel(
+            array(
+                'users' => $result->getData()
+            )
+        );
+
+        $viewModel->setTemplate('js/rcmuser.admin.users.app.js');
+        $viewModel->setTerminal(true);
+
+        $response = $this->getResponse();
+        $response->setStatusCode(Response::STATUS_CODE_200);
+        $response->getHeaders()->addHeaders(
+            array(
+                'Content-Type' => 'application/javascript'
+            )
+        );
+
+        return $viewModel;
+    }
+
+    /**
+     * adminUsersAction
+     *
+     * @return void
+     */
+    public function adminUserRolesAction()
+    {
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+            return $this->getNotAllowedResponse();
+        }
+
+        /** @var \RcmUser\User\Service\UserDataService $userDataService */
+        $userDataService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserDataService'
+        );
+
+        $userId = $this->getEvent()->getRouteMatch()->getParam('userId');
+        // @todo clean input
+
+        $result = $userDataService->fetchById($userId);
+
+        $viewModel = new ViewModel(
+            array(
+                'user' => $result->getData()
+            )
+        );
+
+        $viewModel->setTemplate('js/rcmuser.admin.user.role.app.js');
         $viewModel->setTerminal(true);
 
         $response = $this->getResponse();

@@ -66,6 +66,17 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     }
 
     /**
+     * fetchAll
+     *
+     * @return mixed
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function fetchAll()
+    {
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+    }
+
+    /**
      * add
      *
      * @param User    $user      user

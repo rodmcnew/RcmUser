@@ -17,8 +17,6 @@
 
 namespace RcmUser\User\Entity;
 
-use RcmUser\User\Service\UserRoleService;
-
 
 /**
  * Class UserRoleProperty
@@ -35,7 +33,7 @@ use RcmUser\User\Service\UserRoleService;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserRoleProperty
+class UserRoleProperty implements UserPropertyInterface
 {
     /**
      * @var string
@@ -126,6 +124,47 @@ class UserRoleProperty
         }
 
         return false;
+    }
+
+    /**
+     * jsonSerialize
+     *
+     * @return \stdClass
+     */
+    public function jsonSerialize()
+    {
+        return $this->getRoles();
+    }
+
+    /**
+     * populate
+     *
+     * @param array $data data
+     *
+     * @return void
+     * @throws RcmUserException
+     */
+    public function populate($data = array())
+    {
+        if (($data instanceof UserRoleProperty)) {
+
+            $this->setRoles($data->getRoles());
+
+            return;
+        }
+
+        if (is_array($data)) {
+
+            $this->setRoles($data);
+
+            return;
+        }
+
+        throw new RcmUserException(
+            'Could not be populated, ' .
+            getClass($this) .
+            ' date format not supported'
+        );
     }
 
 } 

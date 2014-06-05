@@ -535,8 +535,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
         $result = $this->getUserDataService()->buildUser($user);
 
+        // since build user is an event, we might not get anything
         if(empty($result)){
-            // return $user;
+            return $user;
         }
 
         if ($result->isSuccess() || $result->getUser() == null) {

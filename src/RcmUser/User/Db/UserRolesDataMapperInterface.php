@@ -47,6 +47,13 @@ interface UserRolesDataMapperInterface
     public function getAclRoleDataMapper();
 
     /**
+     * fetchAll
+     *
+     * @return mixed
+     */
+    public function fetchAll();
+
+    /**
      * add
      *
      * @param User    $user      user

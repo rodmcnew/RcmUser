@@ -51,6 +51,7 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
+        /** @var \RcmUser\Acl\Service\AclDataService $aclDataService */
         $aclDataService = $this->getServiceLocator()->get(
             'RcmUser\Acl\AclDataService'
         );
