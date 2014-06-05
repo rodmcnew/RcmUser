@@ -103,10 +103,11 @@ class DoctrineUserRoleDataMapper
     /**
      * fetchAll
      *
-     * @return mixed
-     * @throws \RcmUser\Exception\RcmUserException
+     * @param array $options options
+     *
+     * @return Result
      */
-    public function fetchAll()
+    public function fetchAll($options = array())
     {
         $users = $this->getEntityManager()
             ->getRepository($this->getEntityClass())

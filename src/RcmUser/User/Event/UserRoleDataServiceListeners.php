@@ -49,26 +49,14 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     protected $listenerMethods
         = array(
+            'onGetAllUsersSuccess' => 'getAllUsersSuccess',
+
             'onBuildUser' => 'buildUser',
-
             'onBeforeCreateUser' => 'beforeCreateUser',
-            //'onCreateUser' => 'createUser',
-            //'onCreateUserFail' => 'createUserFail',
             'onCreateUserSuccess' => 'createUserSuccess',
-
-            //'onBeforeReadUser' => 'beforeReadUser',
-            //'onReadUser' => 'readUser',
-            //'onReadUserFail' => 'readUserFail',
             'onReadUserSuccess' => 'readUserSuccess',
-
             'onBeforeUpdateUser' => 'beforeUpdateUser',
-            //'onUpdateUser' => 'updateUser',
-            //'onUpdateUserFail' => 'updateUserFail',
             'onUpdateUserSuccess' => 'updateUserSuccess',
-
-            //'onBeforeDeleteUser' => 'beforeDeleteUser',
-            //'onDeleteUser' => 'deleteUser',
-            //'onDeleteUserFail' => 'deleteUserFail',
             'onDeleteUserSuccess' => 'deleteUserSuccess',
         );
 
@@ -107,6 +95,57 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     public function getUserPropertyKey()
     {
         return UserRoleProperty::PROPERTY_KEY;
+    }
+
+    /**
+     * onGetAllUsersSuccess
+     *
+     * @param Event $e e
+     *
+     * @return \Rcm\Result
+     */
+    public function onGetAllUsersSuccess($e)
+    {
+        $result = $e->getParam('result');
+
+        if (!$result->isSuccess()) {
+
+            return $result;
+        }
+
+        $users = $result->getData();
+
+        foreach($users as &$user){
+
+            $readResult = $this->getUserRoleService()->readRoles($user);
+
+            if ($readResult->isSuccess()) {
+
+                $roles = $readResult->getData();
+            } else {
+
+                $result->setMessage(
+                    'Could not read user roles: ' . $readResult->getMessages()
+                );
+
+                $roles = array();
+            }
+
+            $userRoleProperty = $this->buildValidUserRoleProperty(
+                $user,
+                $roles
+            );
+
+            $user->setProperty(
+                $this->getUserPropertyKey(),
+                $userRoleProperty
+            );
+
+        }
+
+        $result->setData($users);
+
+        return $result;
     }
 
     /**

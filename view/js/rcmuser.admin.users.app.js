@@ -2,8 +2,8 @@
 
 angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
-    .controller('rcmuserAdminUsers', ['$scope', '$modal', 'rcmUserHttp', 'RcmUserResult', 'RcmResults',
-        function ($scope, $modal, rcmUserHttp, RcmUserResult, RcmResults) {
+    .controller('rcmuserAdminUsers', ['$scope', '$log', '$modal', 'rcmUserHttp', 'RcmUserResult', 'RcmResults',
+        function ($scope, $log, $modal, rcmUserHttp, RcmUserResult, RcmResults) {
             var self = this;
             self.url = {
                 user: "<?php echo $this->url('RcmUserAdminApiUser', array()); ?>"
@@ -15,7 +15,24 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.loading = false;
 
-            eval('$scope.users = <?php echo json_encode($users); ?>');
+            $scope.availableStates = [
+                'enabled',
+                'disabled'
+            ]
+
+            // Users
+            eval('self.usersResult = <?php echo json_encode($usersResult); ?>');
+            $log.log(self.usersResult);
+            $scope.users = self.usersResult.data;
+            $scope.messages = self.usersResult.messages;
+            $scope.showMessages = false;
+
+            // User Roles
+            eval('self.roles = <?php echo json_encode($roles); ?>');
+            $scope.roles = self.roles;
+
+            eval('self.rolePropertyId = <?php echo json_encode($rolePropertyId); ?>');
+            $scope.rolePropertyId = self.rolePropertyId;
 
             $scope.oneAtATime = false;
 

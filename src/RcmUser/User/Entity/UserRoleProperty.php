@@ -38,7 +38,7 @@ class UserRoleProperty implements UserPropertyInterface
     /**
      * @var string
      */
-    const PROPERTY_KEY = 'RcmUser\Acl\UserRoles';
+    const PROPERTY_KEY = 'RcmUserUserRoles';
     /**
      * @var array $roles
      */

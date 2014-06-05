@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\JsonForm;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**

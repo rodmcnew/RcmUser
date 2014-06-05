@@ -17,6 +17,8 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Http\Response;
 use Zend\View\Model\ViewModel;
 
@@ -102,11 +104,22 @@ class AdminJsController extends AbstractAdminController
             'RcmUser\User\Service\UserDataService'
         );
 
-        $result = $userDataService->fetchAll();
+        /** @var \RcmUser\Acl\Service\AclDataService $aclDataService */
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        $userResult = $userDataService->getAllUsers(array());
+
+        $rolePropertyId = UserRoleProperty::PROPERTY_KEY;
+
+        $rolesResult = $aclDataService->getAllRoles();
 
         $viewModel = new ViewModel(
             array(
-                'users' => $result->getData()
+                'usersResult' => $userResult,
+                'rolePropertyId' => $rolePropertyId,
+                'roles' => $rolesResult->getData(),
             )
         );
 
@@ -144,11 +157,12 @@ class AdminJsController extends AbstractAdminController
         $userId = $this->getEvent()->getRouteMatch()->getParam('userId');
         // @todo clean input
 
-        $result = $userDataService->fetchById($userId);
+        $user = new User($userId);
+        $result = $userDataService->read($user);
 
         $viewModel = new ViewModel(
             array(
-                'user' => $result->getData()
+                'userResult' => $result
             )
         );
 

@@ -386,7 +386,7 @@ class Tester implements ServiceLocatorAwareInterface
             $userRoleProperty = new UserRoleProperty(
                 $userRoles
             );
-            $user->setProperty('RcmUser\Acl\UserRoles', $userRoleProperty);
+            $user->setProperty(UserRoleProperty::PROPERTY_KEY, $userRoleProperty);
             $tester->addMessage("->buildUser result: " . json_encode($user, true));
             $user = $tester->testCreateUser($user);
             if (empty($user)) {
@@ -418,7 +418,7 @@ class Tester implements ServiceLocatorAwareInterface
             return $tester->getMessage();
         }
 
-        $properties = $user->getProperty('RcmUser\Acl\UserRoles', 'NOT SET');
+        $properties = $user->getProperty(UserRoleProperty::PROPERTY_KEY, 'NOT SET');
         if ($properties === 'NOT SET') {
             $tester->addMessage("TEST FAILED");
 
