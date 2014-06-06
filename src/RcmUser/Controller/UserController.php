@@ -51,18 +51,37 @@ class UserController extends AbstractActionController
         );
 
         /** @var \RcmUser\Acl\Service\AclDataService $aclDS /
-        $aclDS = $this->getServiceLocator()->get('RcmUser\Acl\AclDataService');
-        var_dump($aclDS->getAllRules());
-        /* */
+         * $aclDS = $this->getServiceLocator()->get('RcmUser\Acl\AclDataService');
+         * var_dump($aclDS->getAllRules());
+         * /* */
 
         /** @var \RcmUser\User\Service\UserRoleService $userRoleService *
-        $userRoleService = $this->getServiceLocator()->get(
-            'RcmUser\User\Service\UserRoleService'
+         * $userRoleService = $this->getServiceLocator()->get(
+         * 'RcmUser\User\Service\UserRoleService'
+         * );
+         * var_dump($userRoleService->getAllUserRoles());
+         * /* */
+
+        //var_dump($this->rcmUserGetCurrentUser());
+
+        /** @var \RcmUser\Service\RcmUserService $rcmUserService *
+        $rcmUserService = $this->getServiceLocator()->get(
+            'RcmUser\Service\RcmUserService'
         );
-        var_dump($userRoleService->getAllUserRoles());
+        $allowed = $rcmUserService->isAllowed(
+            'Sites.' . '4',
+            'admin',
+            '\Rcm\Acl\ResourceProvider'
+        );
         /* */
 
-        var_dump($this->rcmUserGetCurrentUser());
+        /** @var \RcmUser\Log\DoctrineLogger $logger */
+        $logger = $this->getServiceLocator()->get(
+            'RcmUser\Log\Logger'
+        );
+
+        $logger->info('TEST', array('SOMETEST','DATA'));
+
 
         return $test;
     }
