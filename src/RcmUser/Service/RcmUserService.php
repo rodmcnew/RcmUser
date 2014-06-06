@@ -148,7 +148,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /**
      * getAuthorizeService: ACL service
      *
-     * @return mixed
+     * @return AuthorizeService
      */
     public function getAuthorizeService()
     {
