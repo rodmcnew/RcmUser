@@ -313,7 +313,7 @@ class AclDataService
 
         if (!$result->isSuccess()) {
 
-            return array();
+            return $result;
         }
 
         $roles = $result->getData();
@@ -331,7 +331,10 @@ class AclDataService
 
         ksort($aclRoles);
 
-        return $aclRoles;
+        return new Result(
+            $aclRoles,
+            Result::CODE_SUCCESS
+        );
     }
 
     /**
@@ -364,7 +367,7 @@ class AclDataService
     /**
      * getAllRules
      *
-     * @return \Result
+     * @return Result
      */
     public function getAllRules()
     {
@@ -490,7 +493,14 @@ class AclDataService
     public function getRulesByRoles($nsChar = '.')
     {
         $aclRoles = array();
-        $roles = $this->getNamespacedRoles($nsChar);
+        $result = $this->getNamespacedRoles($nsChar);
+
+        if (!$result->isSuccess()) {
+
+            return $result;
+        }
+
+        $roles = $result->getData();
 
         foreach ($roles as $ns => $role) {
 
@@ -508,7 +518,10 @@ class AclDataService
             }
         }
 
-        return $aclRoles;
+        return new Result(
+            $aclRoles,
+            Result::CODE_SUCCESS
+        );
     }
 
 } 
