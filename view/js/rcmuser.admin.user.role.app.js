@@ -16,9 +16,9 @@ angular.module('rcmuserAdminUserRoleApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.loading = false;
 
-            eval('var userResult = <?php echo json_encode(userResult); ?>');
+            eval('var user = <?php echo json_encode(userResult.getData()); ?>');
 
-            $scope.user = userResult.data;
+            $scope.user = user;
 
             $scope.oneAtATime = false;
         }

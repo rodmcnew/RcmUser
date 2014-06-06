@@ -282,7 +282,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function isValidResourceId($resourceId)
     {
-        if (preg_match('/[^a-z_\-0-9]/i', $resourceId)) {
+        if (preg_match('/[^a-z_\-0-9\.]/i', $resourceId)) {
             return false;
         }
 

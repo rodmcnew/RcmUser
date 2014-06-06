@@ -48,23 +48,8 @@ class RcmUserBuildHtmlHead extends AbstractHelper
     {
         $view = $this->getView();
 
-        $view->rcmIncludeAngularJs(
-            array(
-                'js' => array(
-                    'angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js'
-                ),
-                //'css' => array(
-                //    'angular-ui/bootstrap/assets/bootstrap-responsive.css'
-                //)
-            )
-        );
-
-        $view->rcmIncludeTwitterBootstrap(
-            array(
-                'css' => array(
-                    'css/bootstrap-theme.css',
-                )
-            )
-        );
+        $view->rcmIncludeAngularJsUiBootstrap();
+        $view->rcmIncludeAngularJs();
+        $view->rcmIncludeTwitterBootstrap();
     }
 } 

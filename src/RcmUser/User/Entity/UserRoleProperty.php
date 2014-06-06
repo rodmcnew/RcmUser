@@ -161,9 +161,8 @@ class UserRoleProperty implements UserPropertyInterface
         }
 
         throw new RcmUserException(
-            'Could not be populated, ' .
-            getClass($this) .
-            ' date format not supported'
+            'Object ' . get_class($this) . ' ' .
+            'could not be populated, date format not supported'
         );
     }
 
