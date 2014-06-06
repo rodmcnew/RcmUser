@@ -1,0 +1,102 @@
+<?php
+
+// builds js and css dependencies
+$this->rcmUserBuildHtmlHead();
+$this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
+$this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
+
+?>
+<div ng-app="rcmuserAdminUsersApp">
+    <div class="rcmuser" ng-controller="rcmuserAdminUsers">
+        <div class="container-fluid admin-users">
+            <div class="container-fluid">
+                <h1>Users
+                    <small>Edit and create users</small>
+                </h1>
+                <p class="lead">Set up new users or edit existing.</p>
+            </div>
+
+            <form class="search-header form-horizontal" role="userSearch">
+                <div class="form-group">
+                    <div class="col-sm-3">
+                        <input
+                            class="form-control input-sm"
+                            name="userSearch"
+                            ng-model="userQuery"
+                            placeholder="search"
+                            type="text"
+                            />
+                    </div>
+                    <div class="col-sm-offset-7 col-sm-2">
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="">
+                            <i class="glyphicon glyphicon-plus"></i> add user
+                        </button>
+                    </div>
+                </div>
+            </form>
+
+            <accordion class="useraccordion" close-others="oneAtATime">
+
+                <!-- USER -->
+                <accordion-group
+                    heading="{{user.id}}"
+                    is-open="accordionOpen"
+                    ng-repeat="user in users | userFilter:userQuery"
+                    >
+
+                    <accordion-heading>
+                        <div class="accordion-heading">
+                            <span class="user-username">{{user.username}}</span>
+                            <i
+                                class="opener glyphicon"
+                                ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"
+                                >
+                            </i>
+                        </div>
+                    </accordion-heading>
+
+                    <div ng-controller="rcmuserAdminUser" ng-init="user=user;">
+                        <section class="userHeader">
+                            <div class="userDetails">
+                                <div>
+                                    <span class="">Id: </span>
+                                    <span class="user-id">{{user.id}}</span>
+                                </div>
+                                <div>
+                                    <span class="">Username: </span>
+                                    <span class="user-username">{{user.username}}</span>
+                                </div>
+                                <div ng-show="user.state">
+                                    <span class="">User state: </span>
+                                    <span class="user-state">{{user.state}}</span>
+                                </div>
+                                <!--<div class="user-properties">{{user.properties}}</div>-->
+                            </div>
+                            <div class="">
+                                <button type="button" class="btn btn-primary btn-xs" ng-click="openEditUser()" ng-hide="">
+                                    <i class="glyphicon glyphicon-edit"></i> edit user
+                                </button>
+                                <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveUser()" ng-hide="">
+                                    <i class="glyphicon glyphicon-minus"></i> remove user
+                                </button>
+                            </div>
+
+                        </section>
+
+                        <div class="loading" ng-show="loading">LOADING...</div>
+
+                        <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+
+                        <div class="userEdit" ng-show="showEdit">
+                            EDIT
+                        </div>
+
+                    </div>
+
+                </accordion-group>
+
+            </accordion>
+
+        </div>
+    </div>
+</div>

@@ -45,7 +45,23 @@ class UserController extends AbstractActionController
     {
         $test = array(
             'userController' => $this,
+            'doTest' => false,
+            'dumpUser' => false,
         );
+
+        /** @var \RcmUser\Acl\Service\AclDataService $aclDS /
+        $aclDS = $this->getServiceLocator()->get('RcmUser\Acl\AclDataService');
+        var_dump($aclDS->getAllRules());
+        /* */
+
+        /** @var \RcmUser\User\Service\UserRoleService $userRoleService *
+        $userRoleService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserRoleService'
+        );
+        var_dump($userRoleService->getAllUserRoles());
+        /* */
+
+        //var_dump($this->rcmUserGetCurrentUser());
 
         return $test;
     }

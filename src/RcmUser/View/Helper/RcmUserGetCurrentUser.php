@@ -64,7 +64,7 @@ class RcmUserGetCurrentUser extends AbstractHelper
      */
     public function __invoke($default = null)
     {
-        $user = $this->rcmUserService->getCurrentUser($default);
+        $user = $this->rcmUserService->getIdentity($default);
 
         return $user;
     }

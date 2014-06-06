@@ -85,8 +85,8 @@ class AbstractAdminApiController extends AbstractRestfulController
     {
         $result = new Result(
             null,
-            $e->getCode(),
-            $e->getMessage()
+            Result::CODE_FAIL,
+            "Code: " . $e->getCode() . ": " . $e->getMessage()
         );
         /*
         . " | " .$e->getFile() .

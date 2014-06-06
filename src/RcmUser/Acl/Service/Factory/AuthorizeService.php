@@ -48,7 +48,6 @@ class AuthorizeService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\Acl\Config');
         $aclResourceService = $serviceLocator->get(
             'RcmUser\Acl\Service\AclResourceService'
         );
@@ -63,7 +62,6 @@ class AuthorizeService implements FactoryInterface
         $service->setAclResourceService($aclResourceService);
         $service->setAclRoleDataMapper($aclRoleDataMapper);
         $service->setAclRuleDataMapper($aclRuleDataMapper);
-        $service->setSuperAdminRole($cfg->get('SuperAdminRole'));
 
         return $service;
     }

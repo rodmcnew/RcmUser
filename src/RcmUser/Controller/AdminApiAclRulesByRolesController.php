@@ -47,10 +47,11 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
     public function getList()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration')) {
+        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
             return $this->getNotAllowedResponse();
         }
 
+        /** @var \RcmUser\Acl\Service\AclDataService $aclDataService */
         $aclDataService = $this->getServiceLocator()->get(
             'RcmUser\Acl\AclDataService'
         );

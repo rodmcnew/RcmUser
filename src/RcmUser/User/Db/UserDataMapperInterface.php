@@ -39,6 +39,17 @@ use RcmUser\User\Result;
 interface UserDataMapperInterface
 {
     /**
+     * fetchAll
+     *
+     * @param array $params params
+     *
+     * @return mixed
+     */
+    public function fetchAll(
+        $params = array()
+    );
+
+    /**
      * fetchById
      *
      * @param mixed $id id

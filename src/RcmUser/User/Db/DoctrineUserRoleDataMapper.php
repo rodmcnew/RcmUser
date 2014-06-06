@@ -19,7 +19,6 @@ namespace RcmUser\User\Db;
 
 
 use Doctrine\ORM\EntityManager;
-use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Exception\RcmUserException;
@@ -55,11 +54,6 @@ class DoctrineUserRoleDataMapper
      * @var
      */
     protected $entityClass;
-
-    /**
-     * @var AclRoleDataMapperInterface $aclRoleDataMapper
-     */
-    protected $aclRoleDataMapper;
 
     /**
      * setEntityManager
@@ -107,26 +101,18 @@ class DoctrineUserRoleDataMapper
     }
 
     /**
-     * setAclRoleDataMapper
+     * fetchAll
      *
-     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
-     *
-     * @return void
+     * @return mixed
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function setAclRoleDataMapper(
-        AclRoleDataMapperInterface $aclRoleDataMapper
-    ) {
-        $this->aclRoleDataMapper = $aclRoleDataMapper;
-    }
-
-    /**
-     * getAclRoleDataMapper
-     *
-     * @return AclRoleDataMapperInterface
-     */
-    public function getAclRoleDataMapper()
+    public function fetchAll()
     {
-        return $this->aclRoleDataMapper;
+        $users = $this->getEntityManager()
+            ->getRepository($this->getEntityClass())
+            ->findAll();
+
+        return new Result($users);
     }
 
     /**
@@ -226,7 +212,9 @@ class DoctrineUserRoleDataMapper
 
         if ($currentRolesResult->isSuccess()) {
 
-            throw new RcmUserException(
+            return new Result(
+                $currentRolesResult->getData(),
+                Result::CODE_FAIL,
                 'Roles already exist for user: ' . $user->getId()
             );
         }
@@ -295,7 +283,13 @@ class DoctrineUserRoleDataMapper
             $userAclRoles[] = $userRole['roleId'];
         }
 
-        return new Result($userAclRoles);
+        $message = '';
+        if(empty($userAclRoles)){
+
+            $message = 'No roles found';
+        }
+
+        return new Result($userAclRoles, Result::CODE_SUCCESS, $message);
     }
 
     /**

@@ -19,6 +19,7 @@ namespace RcmUser\User\Service;
 
 
 use RcmUser\Event\EventProvider;
+use RcmUser\Result;
 use RcmUser\User\Entity\User;
 
 /**
@@ -61,7 +62,7 @@ class UserPropertyService extends EventProvider
         if ($property === null || $refresh) {
             // @event getUserProperty.pre -
             $this->getEventManager()->trigger(
-                __FUNCTION__ . '.pre',
+                __FUNCTION__,
                 $this,
                 array('user' => $user, 'propertyNameSpace' => $propertyNameSpace)
             );
@@ -70,6 +71,75 @@ class UserPropertyService extends EventProvider
         $property = $user->getProperty($propertyNameSpace, $dflt);
 
         return $property;
+    }
+
+    /**
+     * getUserPropertyLinks
+     * Get a link to an edit page for this user
+     *
+     * @param User   $user              user
+     * @param string $propertyNameSpace propertyNameSpace
+     *
+     * @return mixed
+     */
+    public function getUserPropertyLinks(
+        User $user,
+        $propertyNameSpace
+    ) {
+        $results = $this->getEventManager()->trigger(
+            __FUNCTION__,
+            $this,
+            array('user' => $user, 'propertyNameSpace' => $propertyNameSpace),
+            function ($result) {
+
+                if($result instanceof Result){
+                    return $result->isSuccess();
+                }
+                return false;
+            }
+        );
+
+        if ($results->stopped()) {
+
+            return $results->last();
+        }
+
+        return new Result(null, Result::CODE_FAIL, 'No property link found.');
+    }
+
+    /**
+     * getUserPropertyIsAllowed
+     * Check access for a user to a property
+     * If no results returned
+     *
+     * @param User   $user              user
+     * @param string $propertyNameSpace propertyNameSpace
+     *
+     * @return mixed
+     */
+    public function getUserPropertyIsAllowed(
+        User $user,
+        $propertyNameSpace
+    ) {
+        $results = $this->getEventManager()->trigger(
+            __FUNCTION__,
+            $this,
+            array('user' => $user, 'propertyNameSpace' => $propertyNameSpace),
+            function ($result) {
+
+                if($result instanceof Result){
+                    return $result->isSuccess();
+                }
+                return false;
+            }
+        );
+
+        if ($results->stopped()) {
+
+            return $results->last();
+        }
+
+        return new Result(true, Result::CODE_FAIL, 'No Access property found.');
     }
 
 } 

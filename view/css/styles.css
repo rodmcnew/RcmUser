@@ -1,4 +1,4 @@
-/* + bootstrap */
+/******<BOOTSTRAP>******/
 .tooltip-inner {
     max-width: 400px;
     text-align: left;
@@ -7,29 +7,8 @@
 .modal-content .dropdown {
 
 }
-/* ALERT */
-.rcmuser .alert {
-    word-wrap: break-word;
-}
-.rcmuser .alert ul {
-    padding-left: 1em;
-}
-.rcmuser .alert .glyphicon {
-    font-size: 1.5em;
-    padding-right: 1em;
-}
-.rcmuser .alert .alert-header {
-    padding-bottom: .5em;
-}
-.rcmuser .alert .alert-messages {
 
-}
-.rcmuser .btn-group-vertical button {
-    margin-bottom: .2em;
-}
-/* - bootstrap */
-
-/* loader */
+/* <loader> */
 .spinner {
     display: inline-block;
     opacity: 0;
@@ -65,7 +44,32 @@
 .has-spinner.btn-large.active .spinner {
     width: 19px;
 }
-/* - loader */
+/* </loader> */
+
+/******</BOOTSTRAP>******/
+
+/******<GENERAL>*******/
+/* <ALERT> */
+.rcmuser .alert {
+    word-wrap: break-word;
+}
+.rcmuser .alert ul {
+    padding-left: 1em;
+}
+.rcmuser .alert .glyphicon {
+    font-size: 1.5em;
+    padding-right: 1em;
+}
+.rcmuser .alert .alert-header {
+    padding-bottom: .5em;
+}
+.rcmuser .alert .alert-messages {
+
+}
+.rcmuser .btn-group-vertical button {
+    margin-bottom: .2em;
+}
+/* </ALERT> */
 
 .rcmuser a.nostyle,
 .rcmuser a.nostyle:hover,
@@ -76,20 +80,37 @@
     text-decoration: none;
 }
 
+.rcmuser .panel-title a,
+.rcmuser .panel-title a:link,
+.rcmuser .panel-title a:hover,
+.rcmuser .panel-title a:visited,
+.rcmuser .panel-title a:active {
+    border: 0;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.rcmuser label{
+    font-weight: bold;
+}
+
+.rcmuser.title{
+    font-weight: bold;
+}
+
+.rcmuser .modal-title{
+    font-weight: bold;
+}
+
+.rcmuser .search-header {
+    margin-bottom: .5em;
+}
+/******</GENERAL>*******/
+
+/******<ADMIN_ACL>*******/
 .rcmuser .admin-acl {
 
-}
-
-.rcmuser .admin-acl label{
-    font-weight: bold;
-}
-
-.rcmuser .admin-acl .title{
-    font-weight: bold;
-}
-
-.rcmuser .admin-acl .modal-title{
-    font-weight: bold;
 }
 
 .rcmuser .admin-acl .roleId{
@@ -102,8 +123,12 @@
 }
 
 .rcmuser .admin-acl .roleHeader {
-    border-bottom: .1em solid #999999;
+    border-bottom: .1em solid #DDDDDD;
     margin: 0 0 .5em 0;
+    padding: 0 0 .5em 0;
+}
+
+.rcmuser .admin-acl .roleDetails {
     padding: 0 0 .5em 0;
 }
 
@@ -138,26 +163,44 @@
     text-transform: capitalize;
 }
 
-.rcmuser .admin-acl .panel-title a,
-.rcmuser .admin-acl .panel-title a:link,
-.rcmuser .admin-acl .panel-title a:hover,
-.rcmuser .admin-acl .panel-title a:visited,
-.rcmuser .admin-acl .panel-title a:active {
-    border: 0;
-    color: #000;
-    font-weight: bold;
-    text-decoration: none;
-}
-
 .rcmuser .admin-acl-resource-section {
-    border-bottom: .1em solid #999999;
-    border-left: .3em solid #999999;
-    border-top: .1em solid #999999;
+    border-bottom: .1em solid #DDDDDD;
+    border-left: .3em solid #DDDDDD;
+    border-top: .1em solid #DDDDDD;
     padding: .5em 0em .5em 0em;
 }
 
 .rcmuser .admin-acl-resource-footer{
     padding: .5em 0em .5em 0em;
 }
+/******</ADMIN_ACL>*******/
 
+/******<ADMIN_USER>*******/
+.rcmuser .admin-users {}
 
+.useraccordion .panel-default > .panel-heading
+{
+    color: #333333;
+    background-color: #FFFFFF;
+    background-image: none;
+    border-top-color: #dddddd;
+    border-right-color-value: #dddddd;
+    border-bottom-color: #dddddd;
+    border-left-color-value: #dddddd;
+}
+.rcmuser .admin-users .userHeader {
+    border-bottom: .1em solid #DDDDDD;
+    margin: 0 0 .5em 0;
+    padding: 0 0 .5em 0;
+}
+.rcmuser .admin-acl .userDetails {
+    padding: 0 0 .5em 0;
+}
+.rcmuser .admin-users .user-username {
+    font-weight: bold;
+}
+
+.rcmuser .admin-users .user-state {
+    font-weight: normal;
+}
+/******</ADMIN_USER>*******/

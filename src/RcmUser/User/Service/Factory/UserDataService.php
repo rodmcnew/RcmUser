@@ -48,8 +48,13 @@ class UserDataService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        // @todo invokable
+        /** @var \RcmUser\User\Db\UserDataMapper $userDataMapper */
+        $userDataMapper = $serviceLocator->get(
+            'RcmUser\User\UserDataMapper'
+        );
         $service = new \RcmUser\User\Service\UserDataService();
+
+        $service->setUserDataMapper($userDataMapper);
 
         return $service;
     }

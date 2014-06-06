@@ -17,6 +17,7 @@
 
 namespace RcmUser\Test\Provider;
 
+use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\Zf2TestCase;
 
@@ -25,9 +26,17 @@ require_once __DIR__ . '/../../Zf2TestCase.php';
 class RcmUserAclResourceProviderTest extends Zf2TestCase
 {
 
+    /**
+     * @var $rcmUserAclResourceProvider \RcmUser\Provider\RcmUserAclResourceProvider
+     */
     public $rcmUserAclResourceProvider;
 
-    public function getRcmUserAclResourceProvider()
+    /**
+     * buildRcmUserAclResourceProvider
+     *
+     * @return RcmUserAclResourceProvider
+     */
+    public function buildRcmUserAclResourceProvider()
     {
         $this->rcmUserAclResourceProvider = new RcmUserAclResourceProvider();
 
@@ -35,31 +44,53 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
     }
 
     /**
+     * testGetSet
+     *
+     * @return void
+     */
+    public function testGetSet()
+    {
+        $this->buildRcmUserAclResourceProvider();
+
+        $providerId = 'test';
+
+        $this->rcmUserAclResourceProvider->setProviderId($providerId);
+
+        $getProviderId = $this->rcmUserAclResourceProvider->getProviderId();
+
+        $this->assertEquals($providerId, $getProviderId, 'Set or Get failed.');
+    }
+
+    /**
      * testGetResources
      *
-     * @covers \RcmUser\Provider\RcmUserAclResourceProvider::getAll
+     * @covers \RcmUser\Provider\RcmUserAclResourceProvider::getResources
      *
      * @return void
      */
     public function testGetResources()
     {
-        $resources = $this->getRcmUserAclResourceProvider()->getResources();
+        $this->buildRcmUserAclResourceProvider();
+
+        $resources = $this->rcmUserAclResourceProvider->getResources();
 
         $this->assertTrue(is_array($resources), 'Array of resources not returned.');
     }
 
     /**
-     * testGetAvailableAtRuntime
+     * testGetResource
      *
-     * @covers \RcmUser\Provider\RcmUserAclResourceProvider::getAvailableAtRuntime
+     * @covers \RcmUser\Provider\RcmUserAclResourceProvider::getResource
      *
      * @return void
      */
-    public function testGetAvailableAtRuntime()
+    public function testGetResource()
     {
-        $resources = $this->getRcmUserAclResourceProvider()->getAvailableAtRuntime();
+        $this->buildRcmUserAclResourceProvider();
 
-        $this->assertTrue(is_array($resources), 'Array of resources not returned.');
+        $resource = $this->rcmUserAclResourceProvider->getResource('rcmuser');
+
+        $this->assertTrue(($resource instanceof AclResource), 'AclResource not returned.');
     }
 }
  

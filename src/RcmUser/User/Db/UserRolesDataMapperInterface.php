@@ -40,38 +40,24 @@ interface UserRolesDataMapperInterface
 {
 
     /**
-     * getDefaultAuthenticatedRoleIdentities
+     * getAclRoleDataMapper
      *
-     * @return array
+     * @return AclRoleDataMapperInterface
      */
-    public function getDefaultAuthenticatedRoleIdentities();
+    public function getAclRoleDataMapper();
 
     /**
-     * getDefaultRoleIdentities
+     * fetchAll
      *
-     * @return array
+     * @return mixed
      */
-    public function getDefaultRoleIdentities();
-
-    /**
-     * getGuestRoleId
-     *
-     * @return string\null
-     */
-    public function getGuestRoleId();
-
-    /**
-     * getSuperAdminRoleId
-     *
-     * @return string|null
-     */
-    public function getSuperAdminRoleId();
+    public function fetchAll();
 
     /**
      * add
      *
      * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param string  $aclRoleId aclRoleId
      *
      * @return Result
      */

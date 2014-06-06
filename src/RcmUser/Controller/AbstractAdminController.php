@@ -20,6 +20,7 @@ namespace RcmUser\Controller;
 use RcmUser\Provider\RcmUserAclResourceProvider;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 
 /**
@@ -69,5 +70,19 @@ class AbstractAdminController extends AbstractActionController
         $response->setContent($response->renderStatusLine());
 
         return $response;
+    }
+
+    /**
+     * buildView
+     *
+     * @param array $viewArr viewArr
+     *
+     * @return ViewModel
+     */
+    protected function buildView($viewArr = array())
+    {
+        $view = new ViewModel($viewArr);
+
+        return $view;
     }
 } 

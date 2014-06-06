@@ -155,4 +155,19 @@ class UserRole implements UserRoleInterface
             'User role data could not be populated, date format not supported'
         );
     }
+
+    /**
+     * jsonSerialize
+     *
+     * @return \stdClass
+     */
+    public function jsonSerialize()
+    {
+        $obj = new \stdClass();
+        $obj->id = $this->getId();
+        $obj->roleId = $this->getRoleId();
+        $obj->userId = $this->getUserId();
+
+        return $obj;
+    }
 } 

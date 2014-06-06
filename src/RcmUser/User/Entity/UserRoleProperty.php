@@ -33,22 +33,36 @@ namespace RcmUser\User\Entity;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserRoleProperty
+class UserRoleProperty implements UserPropertyInterface
 {
+    /**
+     * @var string
+     */
+    const PROPERTY_KEY = 'RcmUser\Acl\UserRoles';
+    /**
+     * @var array $roles
+     */
     protected $roles = array();
 
-    protected $guestRoleId = null;
-
-    protected $superAdminRoleId = null;
-
+    /**
+     * @param array $roles
+     */
     public function __construct(
-        $roles = array(),
-        $guestRoleId = null,
-        $superAdminRoleId = null
+        $roles = array()
     ) {
+        $this->setRoles($roles);
+    }
+
+    /**
+     * setRoles
+     *
+     * @param array $roles roles
+     *
+     * @return array
+     */
+    public function setRoles($roles)
+    {
         $this->roles = $roles;
-        $this->guestRoleId = $guestRoleId;
-        $this->superAdminRoleId = $superAdminRoleId;
     }
 
     /**
@@ -59,6 +73,21 @@ class UserRoleProperty
     public function getRoles()
     {
         return $this->roles;
+    }
+
+    /**
+     * setRole
+     *
+     * @param string $roleId roleId
+     *
+     * @return void
+     */
+    public function setRole($roleId)
+    {
+        if(!$this->hasRole($roleId)){
+
+            $this->roles[] = $roleId;
+        }
     }
 
     /**
@@ -89,7 +118,7 @@ class UserRoleProperty
      */
     public function hasRole($roleId)
     {
-        if ($this->getRole($roleId)) {
+        if ($this->getRole($roleId, false)) {
 
             return true;
         }
@@ -98,32 +127,44 @@ class UserRoleProperty
     }
 
     /**
-     * isGuest
+     * jsonSerialize
      *
-     * @return bool
+     * @return \stdClass
      */
-    public function isGuest()
+    public function jsonSerialize()
     {
-        if ($this->getRole($this->guestRoleId) && (count($this->roles) > 1)) {
-
-            return true;
-        }
-
-        return false;
+        return $this->getRoles();
     }
 
     /**
-     * isSuperAdmin
+     * populate
      *
-     * @return bool
+     * @param array $data data
+     *
+     * @return void
+     * @throws RcmUserException
      */
-    public function isSuperAdmin()
+    public function populate($data = array())
     {
-        if ($this->getRole($this->superAdminRoleId)) {
+        if (($data instanceof UserRoleProperty)) {
 
-            return true;
+            $this->setRoles($data->getRoles());
+
+            return;
         }
 
-        return false;
+        if (is_array($data)) {
+
+            $this->setRoles($data);
+
+            return;
+        }
+
+        throw new RcmUserException(
+            'Could not be populated, ' .
+            getClass($this) .
+            ' date format not supported'
+        );
     }
+
 } 

@@ -194,7 +194,7 @@ return array(
         'Acl\Config' => array(
 
             /*
-             * DefaultRoleIdentities and DefaultAuthenticatedRoleIdentities
+             * DefaultGuestRoleIds and DefaultUserRoleIds
              * Used by:
              *  RcmUser\Acl\EventListeners
              *
@@ -202,16 +202,16 @@ return array(
              * for a user on the user data events
              * in RcmUser\User\Service\UserDataService.
              */
-            'DefaultRoleIdentities' => array('guest'),
-            'DefaultAuthenticatedRoleIdentities' => array('user'),
+            'DefaultGuestRoleIds' => array('guest'),
+            'DefaultUserRoleIds' => array('user'),
 
             /*
-             * SuperAdminRole
+             * SuperAdminRoleId
              *
              * If this is set, this role will get full permissions always
              * Basically over-rides standard permission handling
              */
-            'SuperAdminRole' => 'admin',
+            'SuperAdminRoleId' => 'admin',
 
             /*
              * ResourceProviders

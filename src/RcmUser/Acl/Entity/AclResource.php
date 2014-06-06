@@ -49,7 +49,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     protected $parentResourceId = null;
 
     /**
-     * @var string $parentResource
+     * @var AclResource $parentResource
      */
     protected $parentResource = null;
 
@@ -95,7 +95,9 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setResourceId($resourceId)
     {
-        if (!$this->isValidResourceId($resourceId)) {
+        $resourceId = strtolower((string)$resourceId);
+
+        if (!$this->isValidResourceId($resourceId) || empty($resourceId)) {
 
             throw new RcmUserException(
                 "Resource resourceId ({$resourceId}) is invalid."
@@ -137,11 +139,26 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setParentResourceId($parentResourceId)
     {
+        $parentResourceId = strtolower((string)$parentResourceId);
+
         if (!$this->isValidResourceId($parentResourceId)) {
 
             throw new RcmUserException(
                 "Resource parentResourceId ({$parentResourceId}) is invalid."
             );
+        }
+
+        if (!empty($this->parentResource)) {
+
+            if ($this->parentResource->getResourceId() != $parentResourceId) {
+
+                $parentResourceId = null;
+            }
+        }
+
+        if (empty($parentResourceId)) {
+
+            $parentResourceId = null;
         }
 
         $this->parentResourceId = $parentResourceId;
@@ -166,6 +183,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setParentResource(AclResource $parentResource)
     {
+        $this->setParentResourceId($parentResource->getResourceId());
         $this->parentResource = $parentResource;
     }
 
@@ -288,7 +306,7 @@ class AclResource extends GenericResource implements \JsonSerializable
             $this->setParentResourceId($data->getParentResourceId());
             $this->setPrivileges($data->getPrivileges());
             $this->setName($data->getName());
-            $this->setDescription($this->getDescription());
+            $this->setDescription($data->getDescription());
 
             return;
         }

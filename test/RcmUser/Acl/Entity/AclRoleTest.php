@@ -51,6 +51,9 @@ class AclRoleTest extends Zf2TestCase
     public function testSetGet()
     {
         $aclRole = new AclRole();
+        $parentAclRole = new AclRole();
+        $parentAclRole->setRoleId('ppp');
+
         $role = 'testrole';
         $prole = 'parenttestrole';
         $desc = 'Descript';
@@ -63,6 +66,98 @@ class AclRoleTest extends Zf2TestCase
         $this->assertTrue($aclRole->getParentRoleId() === $prole, 'Setter or getter failed.');
         $this->assertTrue($aclRole->getParent() === $prole, 'Setter or getter failed.');
         $this->assertTrue($aclRole->getDescription() === $desc, 'Setter or getter failed.');
+
+        $aclRole->setParentRole($parentAclRole);
+        $this->assertTrue($aclRole->getParent() === $parentAclRole, 'Setter or getter failed.');
+    }
+
+    /**
+     * testSetRoleIdInValid
+     *
+     * @return void
+     */
+    public function testSetRoleIdInValid()
+    {
+        $aclRole = new AclRole();
+        $roleId = '!inV@lid';
+
+        try{
+            $aclRole->setRoleId($roleId);
+
+        }catch(RcmUserException $e){
+
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
+    }
+
+    /**
+     * testSetRoleIdEmpty
+     *
+     * @return void
+     */
+    public function testSetRoleIdEmpty()
+    {
+        $aclRole = new AclRole();
+        $roleId = '';
+
+        try{
+            $aclRole->setRoleId($roleId);
+
+        }catch(RcmUserException $e){
+
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
+    }
+
+    /**
+     * testSetParentRoleIdInValid
+     *
+     * @return void
+     */
+    public function testSetParentRoleIdInValid()
+    {
+        $aclRole = new AclRole();
+        $roleId = '!inV@lid';
+
+        try{
+            $aclRole->setParentRoleId($roleId);
+
+        }catch(RcmUserException $e){
+
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
+    }
+
+    /**
+     * testSetParentRoleId
+     *
+     * @return void
+     */
+    public function testSetParentRoleId()
+    {
+        $aclRole = new AclRole();
+        $parentAclRole  = new AclRole();
+        $parentAclRole->setRoleId('2222');
+        $aclRole->setParentRoleId('');
+
+        $this->assertNull($aclRole->getParentRoleId(), 'Role id that is set empty should be null');
+
+        $aclRole->setParentRole($parentAclRole);
+
+        $this->assertEquals($parentAclRole->getRoleId(), $aclRole->getParentRoleId(), 'Parent role id not populated.');
+
+        $aclRole->setParentRoleId('3333');
+
+        $this->assertNull($aclRole->getParentRole(), 'New parent id should clear parent role object');
     }
 
     /**
@@ -75,15 +170,21 @@ class AclRoleTest extends Zf2TestCase
     public function testPopulate()
     {
         $aclRole = new AclRole();
+        $parentAclRole = new AclRole();
+        $parentAclRole->setRoleId('ppp');
         $aclRoleA = array(
             'roleId' => 'arrayRoleA',
-            'parentRoleId' => 'arrayRoleA',
+            'parentRoleId' => 'ppp',
             'description' => 'arrayRoleA',
+            'parentRole' => $parentAclRole
         );
         $aclRoleB = new AclRole();
+        $parentAclRoleB = new AclRole();
+        $parentAclRoleB->setRoleId('pppB');
         $aclRoleB->setRoleId('roleB');
-        $aclRoleB->setParentRoleId('roleB');
+        $aclRoleB->setParentRoleId('pppB');
         $aclRoleB->setDescription('roleB');
+        $aclRoleB->setParentRole($parentAclRoleB);
 
         $aclRoleC = 'wrong format';
 
@@ -151,6 +252,19 @@ class AclRoleTest extends Zf2TestCase
         $this->assertArrayHasKey(
             'roleId', $aclRoleArr, 'Iterator did not populate correctly.'
         );
+    }
+
+    /**
+     * testToString
+     *
+     * @return void
+     */
+    public function testToString()
+    {
+        $aclRole = new AclRole();
+        $aclRole->setRoleId('role');
+
+        $this->assertEquals('role', $aclRole->__toString(), 'toString should return role id.');
     }
 }
  

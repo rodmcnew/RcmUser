@@ -1,9 +1,9 @@
 <?php
 
+// builds js and css dependencies
 $this->rcmUserBuildHtmlHead();
-
 $this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
-$this->headScript()->appendFile($this->url('RcmUserAdminJs'));
+$this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 
 ?>
 <div ng-app="rcmuserAdminAclApp">
@@ -220,8 +220,8 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                 </div>
             </div>
             -->
+            </div>
         </div>
-    </div>
 </script>
 
 <!-- REMOVE ROLE TEMPLATE -->
@@ -237,7 +237,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                     <div>Role:</div>
                     <div class="roleId">{{roleData.role.roleId}}</div>
                     <div>{{roleData.role.description}}</div>
-                    <div>With parent: </div>
+                    <div>With parent:</div>
                     <div class="roleId">{{roleData.role.parentRoleId}}</div>
                 </div>
             </div>
@@ -259,6 +259,26 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
     <p class="lead">Set up the user roles and access to resources.</p>
 </div>
 
+<form class="search-header form-horizontal" role="userSearch">
+    <div class="form-group">
+        <!--<div class="col-sm-3">
+            <input
+                class="form-control input-sm"
+                name="roleSearch"
+                ng-model="roleQuery"
+                placeholder="search"
+                type="text"
+                />
+        </div>
+        -->
+        <div class="col-sm-offset-10 col-sm-2">
+            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRole('sm', roles)">
+                <i class="glyphicon glyphicon-plus"></i> add role
+            </button>
+        </div>
+    </div>
+</form>
+
 
 <div class="container-fluid">
 
@@ -277,11 +297,19 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
                 </div>
             </accordion-heading>
             <section class="roleHeader">
+                <div class="roleDetails">
+                    <div class="roleIdDetails">
+                        Role Id: {{roleData.role.roleId}}
+                    </div>
+                    <div class="roleDescription" ng-show="roleData.role.description">
+                        Description: {{roleData.role.description}}
+                    </div>
+                </div>
                 <div class="">
-                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)">
+                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-edit"></i> edit role
                     </button>
-                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)">
+                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-minus"></i> remove role
                     </button>
                 </div>
@@ -311,12 +339,12 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
 
                             <div class="col-sm-3">
                                 <div class="btn-group-vertical">
-                                <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRule('sm', ruleData)">
-                                    <i class="glyphicon glyphicon-edit"></i> edit rule
-                                </button>
-                                <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])">
-                                    <i class="glyphicon glyphicon-minus"></i> remove rule
-                                </button>
+                                    <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRule('sm', ruleData)">
+                                        <i class="glyphicon glyphicon-edit"></i> edit rule
+                                    </button>
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])">
+                                        <i class="glyphicon glyphicon-minus"></i> remove rule
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -345,25 +373,14 @@ $this->headScript()->appendFile($this->url('RcmUserAdminJs'));
             </div>
             <div ng-show="superAdminRole == roleData.role.roleId">
                 <div class="alert alert-info">
-                    <i class="glyphicon glyphicon-info-sign"></i><span class="is-superadmin">This role is super admin. Role has full access and cannot be changed.</span>
+                    <i class="glyphicon glyphicon-info-sign"></i>
+                    <span class="is-superadmin">This role is super admin. Role has full access and cannot be changed.</span>
                 </div>
             </div>
             <!-- + RESOURCE -->
         </accordion-group>
         <!-- - ROLE -->
     </accordion>
-</div>
-
-<div class="container-fluid admin-acl-role-footer">
-    <div class="row">
-        <div class="col-sm-2">
-            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRole('sm', roles)">
-                <i class="glyphicon glyphicon-plus"></i> add role
-            </button>
-        </div>
-        <div class="col-sm-10">
-        </div>
-    </div>
 </div>
 
 </div>

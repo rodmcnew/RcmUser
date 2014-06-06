@@ -18,10 +18,10 @@
 namespace RcmUser\User\Event;
 
 
-use RcmUser\User\Db\UserRolesDataMapper;
-use RcmUser\User\Db\UserRolesDataMapperInterface;
+use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
+use RcmUser\User\Service\UserRoleService;
 
 /**
  * UserRoleDataServiceListeners
@@ -41,11 +41,11 @@ use RcmUser\User\Result;
 class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 {
     /**
-     * @var int
+     * @var int $priority
      */
     protected $priority = 1;
     /**
-     * @var array
+     * @var array $listenerMethods
      */
     protected $listenerMethods
         = array(
@@ -73,52 +73,30 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
     /**
-     * @var UserRolesDataMapperInterface
+     * @var UserRoleService $userRoleService
      */
-    protected $userRolesDataMapper;
+    protected $userRoleService;
 
     /**
-     * setUserRolesDataMapper
+     * setUserRoleService
      *
-     * @param UserRolesDataMapperInterface $userRolesDataMapper userRolesDataMapper
+     * @param UserRoleService $userRoleService
      *
      * @return void
      */
-    public function setUserRolesDataMapper(
-        UserRolesDataMapperInterface $userRolesDataMapper
-    ) {
-        $this->userRolesDataMapper = $userRolesDataMapper;
+    public function setUserRoleService(UserRoleService $userRoleService)
+    {
+        $this->userRoleService = $userRoleService;
     }
 
     /**
-     * getUserRolesDataMapper
+     * getUserRoleService
      *
-     * @return UserRolesDataMapperInterface
+     * @return UserRoleService
      */
-    public function getUserRolesDataMapper()
+    public function getUserRoleService()
     {
-        return $this->userRolesDataMapper;
-    }
-
-    /**
-     * getDefaultAuthenticatedRoleIdentities
-     *
-     * @return array
-     */
-    public function getDefaultAuthenticatedRoleIdentities()
-    {
-        return $this->getUserRolesDataMapper()
-            ->getDefaultAuthenticatedRoleIdentities();
-    }
-
-    /**
-     * getDefaultRoleIdentities
-     *
-     * @return array
-     */
-    public function getDefaultRoleIdentities()
-    {
-        return $this->getUserRolesDataMapper()->getDefaultRoleIdentities();
+        return $this->userRoleService;
     }
 
     /**
@@ -128,7 +106,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function getUserPropertyKey()
     {
-        return UserRolesDataMapper::PROPERTY_KEY;
+        return UserRoleProperty::PROPERTY_KEY;
     }
 
     /**
@@ -166,11 +144,14 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onBuildUser($e)
     {
+
         // $requestUser = $e->getParam('requestUser');
+        /** @var User $responseUser */
         $responseUser = $e->getParam('responseUser');
 
-        $userRoleProperty = $this->buildUserRoleProperty(
-            $this->getDefaultRoleIdentities()
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            $this->buildValidUserRoleProperty($responseUser, array())
         );
 
         $responseUser->setProperty(
@@ -192,55 +173,45 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     {
         $result = $e->getParam('result');
 
-        if ($result->isSuccess()) {
+        if (!$result->isSuccess()) {
 
-            $responseUser = $result->getUser();
+            return $result;
+        }
 
-            //$defaultRoleIdentities = $this->getDefaultRoleIdentities();
+        $responseUser = $result->getUser();
 
-            $currentRoleProperty = $responseUser->getProperty(
-                $this->getUserPropertyKey()
-            );
+        /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            $this->buildValidUserRoleProperty($responseUser, array())
+        );
 
-            if (empty($currentRoleProperty)) {
+        $roles = $userRoleProperty->getRoles();
 
-                $newUserRoleProperty = $this->buildUserRoleProperty(
-                    $this->getDefaultAuthenticatedRoleIdentities()
-                );
-
-                $responseUser->setProperty(
-                    $this->getUserPropertyKey(),
-                    $newUserRoleProperty
-                );
-            }
-
-            /** @var $currentRoleProperty \RcmUser\User\Entity\UserRoleProperty */
-            $currentRoleProperty = $responseUser->getProperty(
-                $this->getUserPropertyKey()
-            );
-
-            $aclResult = $this->getUserRolesDataMapper()->create(
-                $responseUser, $currentRoleProperty->getRoles()
-            );
-
-            if (!$aclResult->isSuccess()) {
-
-                return $aclResult;
-            }
-
-            $newUserRoleProperty = $this->buildUserRoleProperty(
-                $aclResult->getData()
-            );
-
-            $responseUser->setProperty(
-                $this->getUserPropertyKey(),
-                $newUserRoleProperty
-            );
+        if ($this->isDefaultRoles($roles)) {
 
             return new Result($responseUser, Result::CODE_SUCCESS);
         }
 
-        return $result;
+        $createResult = $this->getUserRoleService()->createRoles(
+            $responseUser,
+            $roles
+        );
+
+        if (!$createResult->isSuccess()) {
+
+            return new Result($responseUser, Result::CODE_FAIL, $createResult->getMessages());
+        }
+
+        $userRoleProperty->setRoles($createResult->getData());
+
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $userRoleProperty
+        );
+
+        return new Result($responseUser, Result::CODE_SUCCESS);
+
     }
 
     /**
@@ -248,41 +219,43 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Result|void
+     * @return \RcmUser\User\Result
      */
     public function onReadUserSuccess($e)
     {
         $result = $e->getParam('result');
-        if ($result->isSuccess()) {
 
-            $responseUser = $result->getUser();
+        if (!$result->isSuccess()) {
 
-            if (empty($responseUser->getId())) {
-
-                $roles = $this->getDefaultRoleIdentities();
-            } else {
-
-                $roles = $this->getDefaultAuthenticatedRoleIdentities();
-            }
-
-            $readResult = $this->getUserRolesDataMapper()->read($responseUser);
-
-            if ($readResult->isSuccess()) {
-
-                $roles = $readResult->getData();
-            }
-
-            $userRoleProperty = $this->buildUserRoleProperty($roles);
-
-            $responseUser->setProperty(
-                $this->getUserPropertyKey(),
-                $userRoleProperty
-            );
-
-            return new Result($responseUser, Result::CODE_SUCCESS);
+            return $result;
         }
 
-        return $result;
+        $responseUser = $result->getUser();
+
+        $readResult = $this->getUserRoleService()->readRoles($responseUser);
+
+        if (!$readResult->isSuccess()) {
+
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $readResult->getMessages()
+            );
+        }
+
+        $roles = $readResult->getData();
+
+        $userRoleProperty = $this->buildValidUserRoleProperty(
+            $responseUser,
+            $roles
+        );
+
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $userRoleProperty
+        );
+
+        return new Result($responseUser, Result::CODE_SUCCESS);
     }
 
     /**
@@ -323,53 +296,48 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     {
         $result = $e->getParam('result');
 
-        if ($result->isSuccess()) {
+        if (!$result->isSuccess()) {
 
-            $responseUser = $result->getUser();
+            return $result;
+        }
 
-            $currentRoles = $responseUser->getProperty(
-                $this->getUserPropertyKey(),
-                null
-            );
+        $responseUser = $result->getUser();
 
-            if ($currentRoles === null) {
+        /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            $this->buildValidUserRoleProperty($responseUser, array())
+        );
 
-                $userRoleProperty = $this->buildUserRoleProperty(
-                    $this->getDefaultAuthenticatedRoleIdentities()
-                );
+        $roles = $userRoleProperty->getRoles();
 
-                $responseUser->setProperty(
-                    $this->getUserPropertyKey(),
-                    $userRoleProperty
-                );
-            }
-
-            $aclResult = $this->getUserRolesDataMapper()->update(
-                $responseUser,
-                $responseUser->getProperty(
-                    $this->getUserPropertyKey(),
-                    array()
-                )
-            );
-
-            if (!$aclResult->isSuccess()) {
-
-                return $aclResult;
-            }
-
-            $userRoleProperty = $this->buildUserRoleProperty(
-                $aclResult->getData()
-            );
-
-            $responseUser->setProperty(
-                $this->getUserPropertyKey(),
-                $userRoleProperty
-            );
+        if ($this->isDefaultRoles($roles)) {
 
             return new Result($responseUser, Result::CODE_SUCCESS);
         }
 
-        return $result;
+        // do update
+        $updateResult = $this->getUserRoleService()->updateRoles(
+            $responseUser,
+            $userRoleProperty->getRoles()
+        );
+
+        if (!$updateResult->isSuccess()) {
+
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $updateResult->getMessages());
+        }
+
+        $userRoleProperty->setRoles($updateResult->getData());
+
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $userRoleProperty
+        );
+
+        return new Result($responseUser, Result::CODE_SUCCESS);
     }
 
     /**
@@ -383,36 +351,58 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     {
         $result = $e->getParam('result');
 
-        if ($result->isSuccess()) {
+        if (!$result->isSuccess()) {
 
-            $responseUser = $result->getUser();
-
-            $aclResult = $this->getUserRolesDataMapper()->delete(
-                $responseUser,
-                $responseUser->getProperty(
-                    $this->getUserPropertyKey(),
-                    array()
-                )
-            );
-
-            if (!$aclResult->isSuccess()) {
-
-                return $aclResult;
-            }
-
-            $userRoleProperty = $this->buildUserRoleProperty(
-                $this->getDefaultRoleIdentities()
-            );
-
-            $responseUser->setProperty(
-                $this->getUserPropertyKey(),
-                $userRoleProperty
-            );
-
-            return new Result($responseUser, Result::CODE_SUCCESS);
+            return $result;
         }
 
-        return $result;
+        $responseUser = $result->getUser();
+
+        /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            $this->buildUserRoleProperty(array())
+        );
+
+        $deleteResult = $this->getUserRoleService()->deleteRoles(
+            $responseUser,
+            $userRoleProperty->getRoles()
+        );
+
+        if (!$deleteResult->isSuccess()) {
+
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $deleteResult->getMessages()
+            );
+        }
+
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            $this->buildUserRoleProperty(array())
+        );
+
+        $userRoleProperty->setRoles(array());
+
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $userRoleProperty
+        );
+
+        return new Result($responseUser, Result::CODE_SUCCESS);
+    }
+
+    /**
+     * isDefaultRoles
+     *
+     * @param array $roles roles
+     *
+     * @return mixed
+     */
+    public function isDefaultRoles($roles)
+    {
+        return $this->getUserRoleService()->isDefaultRoles($roles);
     }
 
     /**
@@ -422,13 +412,40 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return UserRoleProperty
      */
-    protected function buildUserRoleProperty($roles)
+    public function buildUserRoleProperty($roles = array())
     {
-        return new UserRoleProperty(
-            $roles,
-            $this->getUserRolesDataMapper()->getGuestRoleId(),
-            $this->getUserRolesDataMapper()->getSuperAdminRoleId()
+        return $this->getUserRoleService()->buildUserRoleProperty($roles);
+    }
+
+    /**
+     * buildValidUserRoleProperty
+     *
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return UserRoleProperty
+     */
+    public function buildValidUserRoleProperty(User $user, $roles = array())
+    {
+        return $this->getUserRoleService()->buildValidUserRoleProperty(
+            $user,
+            $roles
         );
     }
 
+    /**
+     * buildValidRoles
+     *
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return array
+     */
+    public function buildValidRoles(User $user, $roles = array())
+    {
+        return $this->getUserRoleService()->buildValidRoles(
+            $user,
+            $roles
+        );
+    }
 } 

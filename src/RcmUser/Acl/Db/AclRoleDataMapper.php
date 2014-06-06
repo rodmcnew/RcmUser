@@ -19,6 +19,7 @@ namespace RcmUser\Acl\Db;
 
 
 use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Config\Config;
 use RcmUser\Exception\RcmUserException;
 
 /**
@@ -38,6 +39,74 @@ use RcmUser\Exception\RcmUserException;
  */
 class AclRoleDataMapper implements AclRoleDataMapperInterface
 {
+
+    protected $config = null;
+
+
+    public function __construct(Config $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
+     * fetchSuperAdminRoleId
+     *
+     * @return string|null
+     * @throws RcmUserException
+     */
+    public function fetchSuperAdminRoleId()
+    {
+        if(!empty($this->config)){
+            return $this->config->get('SuperAdminRoleId', null);
+        }
+
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+    }
+
+    /**
+     * fetchGuestRoleId
+     *
+     * @return string|null
+     * @throws RcmUserException
+     */
+    public function fetchGuestRoleId()
+    {
+        if(!empty($this->config)){
+            return $this->config->get('GuestRoleId', null);
+        }
+
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+    }
+
+    /**
+     * fetchDefaultGuestRoleIds
+     *
+     * @return array
+     * @throws RcmUserException
+     */
+    public function fetchDefaultGuestRoleIds()
+    {
+        if(!empty($this->config)){
+            return $this->config->get('DefaultGuestRoleIds', array());
+        }
+
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+    }
+
+    /**
+     * fetchDefaultUserRoleIds
+     *
+     * @return array
+     * @throws RcmUserException
+     */
+    public function fetchDefaultUserRoleIds()
+    {
+        if(!empty($this->config)){
+            return $this->config->get('DefaultUserRoleIds', array());
+        }
+
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+    }
 
     /**
      * fetchAll
