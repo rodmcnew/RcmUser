@@ -102,7 +102,7 @@ class DoctrineAclRoleDataMapper
     /**
      * fetchAll
      *
-     * @return Result|Result
+     * @return Result
      */
     public function fetchAll()
     {
@@ -127,7 +127,7 @@ class DoctrineAclRoleDataMapper
      *
      * @param string $roleId the role identity string
      *
-     * @return Role
+     * @return Result
      */
     public function fetchByRoleId($roleId)
     {
@@ -148,7 +148,7 @@ class DoctrineAclRoleDataMapper
      *
      * @param mixed $parentRoleId the parent id
      *
-     * @return array
+     * @return Result
      */
     public function fetchByParentRoleId($parentRoleId)
     {
@@ -169,7 +169,7 @@ class DoctrineAclRoleDataMapper
      *
      * @param AclRole $aclRole acl role
      *
-     * @return mixed|void
+     * @return Result
      */
     public function create(AclRole $aclRole)
     {
@@ -202,7 +202,7 @@ class DoctrineAclRoleDataMapper
      *
      * @param AclRole $aclRole the acl role
      *
-     * @return mixed
+     * @return Result
      */
     public function read(AclRole $aclRole)
     {
@@ -230,7 +230,7 @@ class DoctrineAclRoleDataMapper
      *
      * @param AclRole $aclRole acl role
      *
-     * @return mixed
+     * @return Result
      */
     public function update(AclRole $aclRole)
     {
@@ -268,7 +268,7 @@ class DoctrineAclRoleDataMapper
      *
      * @param AclRole $aclRole acl role
      *
-     * @return mixed
+     * @return Result
      */
     public function delete(AclRole $aclRole)
     {

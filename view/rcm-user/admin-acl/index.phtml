@@ -29,7 +29,6 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                             <!--<option value="ignore">ignore</option>-->
                         </select>
                     </div>
-
                     <div class="form-group">
                         <label for="roleId">Role: </label>
 
@@ -42,6 +41,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                         <input
                             class="form-control"
                             name="resourceQuery"
+                            ng-focus="toggleDropdown($event, true)"
                             ng-click="toggleDropdown($event, true)"
                             ng-model="ruleData.resourceId"
                             placeholder="Enter resource id"
@@ -49,9 +49,9 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                             type="text"
                             />
 
-                        <div class="dropdown" is-open="status.isopen">
-                            <ul class="dropdown-menu">
-                                <li ng-repeat="resource in resources | resourceFilter:ruleData.resourceId">
+                        <div class="list-dropdown" ng-show="status.isopen" ng-mouseleave="toggleDropdown($event, false)">
+                            <ul class="list-group">
+                                <li class="list-group-item" ng-repeat="resource in resources | resourceFilter:ruleData.resourceId">
                                     <a href ng-click="ruleData.resourceId = resource.resource.resourceId; toggleDropdown($event, false)">
                                         <div class="title">{{resource.resource.name}}</div>
                                         <div>({{resource.resource.resourceId}})</div>

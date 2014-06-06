@@ -58,7 +58,7 @@ class AdminApiAclRoleController extends AbstractAdminApiController
 
         try {
 
-            $result = $aclDataService->getAllRoles();
+            $result = $aclDataService->getNamespacedRoles();
         } catch (\Exception $e) {
 
             return $this->getExceptionResponse($e);

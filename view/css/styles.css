@@ -110,6 +110,27 @@
 .rcmuser .search-header {
     margin-bottom: .5em;
 }
+
+.rcmuser .list-dropdown{
+    position: relative;
+}
+
+.rcmuser .list-dropdown a,
+.rcmuser .list-dropdown a:link,
+.rcmuser .list-dropdown a:hover,
+.rcmuser .list-dropdown a:visited,
+.rcmuser .list-dropdown a:active {
+    border: 0;
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.rcmuser .list-dropdown .list-group{
+
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6); -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    position: absolute;
+}
 /******</GENERAL>*******/
 
 /******<ADMIN_ACL>*******/

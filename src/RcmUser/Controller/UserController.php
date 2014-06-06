@@ -62,7 +62,7 @@ class UserController extends AbstractActionController
         var_dump($userRoleService->getAllUserRoles());
         /* */
 
-        //var_dump($this->rcmUserGetCurrentUser());
+        var_dump($this->rcmUserGetCurrentUser());
 
         return $test;
     }

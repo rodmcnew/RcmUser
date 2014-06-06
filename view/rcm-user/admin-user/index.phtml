@@ -35,29 +35,27 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                 </div>
             </form>
 
-            <accordion class="useraccordion" close-others="oneAtATime">
+            <div class="useraccordion" close-others="oneAtATime">
 
-                <!-- USER -->
-                <accordion-group
-                    heading="{{user.id}}"
-                    is-open="accordionOpen"
+                <div
+                    class="panel panel-default"
                     ng-repeat="user in users | userFilter:userQuery"
                     >
 
-                    <accordion-heading>
-                        <div class="accordion-heading">
+                    <div class="panel-heading" ng-click="userPanelBodyShow = !userPanelBodyShow">
+                        <div class="panel-title">
                             <span class="user-username">{{user.username}}</span>
                             <span class="use-id">({{user.id}})</span>
                             <i
                                 class="opener glyphicon"
-                                ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"
+                                ng-class="{'glyphicon-chevron-down': userPanelBodyShow, 'glyphicon-chevron-right': !userPanelBodyShow}"
                                 >
                             </i>
                         </div>
-                    </accordion-heading>
+                    </div>
 
-                    <accordion-heading class="accordion-body">
-                        <div class="accordion-inner" ng-controller="rcmuserAdminUser" ng-init="user=user;">
+                    <div class="panel-body" ng-show="userPanelBodyShow">
+                        <div class="" ng-controller="rcmuserAdminUser" ng-init="user=user;">
                             <section class="user">
                                 <div class="userDetails">
                                     <form role="form">
@@ -113,7 +111,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                                         <div class="input-group" ng-repeat="role in user.properties[rolePropertyId]">
                                                             <input type="text" class="form-control" disabled="disabled" ng-value="role"/>
                                                     <span class="input-group-btn">
-                                                        <button class="btn btn-warning btn-xs" type="button">Remove</button>
+                                                        <button class="btn btn-warning btn-xs" ng-click="removeRole(user, role)" type="button">Remove</button>
                                                     </span>
                                                         </div>
                                                     </div>
@@ -130,8 +128,8 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                                                 <span class="caret"></span>
                                                             </button>
                                                             <ul class="dropdown-menu" role="menu">
-                                                                <li ng-repeat="role in roles">
-                                                                    <a href="#">{{role.roleId}}</a>
+                                                                <li ng-repeat="(roleNs, role) in roles">
+                                                                    <a href="#" ng-click="addRole(user, role.roleId)">{{getNamespaceRepeatString(roleNs, '..')}} {{role.roleId}}</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -167,19 +165,19 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                             </section>
 
                         </div>
+                    </div>
+                </div>
 
-                </accordion-group>
-
-            </accordion>
+            </div>
 
         </div>
-        <button type="button" class="btn btn-info btn-xs" ng-click="showMessages = !showMessages" ng-show="messages">
+        <button type="button" class="btn btn-danger btn-xs" ng-click="showMessages = !showMessages" ng-show="messages">
             <i class="glyphicon glyphicon-edit"></i>
             <span ng-hide="showMessages">show errors</span>
             <span ng-show="showMessages">hide errors</span>
         </button>
         <div class="messages" ng-show="showMessages">
-            <div class="alert alert-warning">
+            <div class="alert alert-danger">
                 <ul>
                     <li ng-repeat="message in messages">{{message}}</li>
                 </ul>

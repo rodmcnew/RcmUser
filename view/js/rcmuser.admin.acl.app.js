@@ -19,7 +19,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
         $scope.loading = false;
 
         eval('$scope.resources = <?php echo json_encode($resources); ?>');
-        eval('$scope.roles = <?php echo json_encode($roles); ?>');
+        eval('$scope.roles = <?php echo json_encode($rolesResult->getData()); ?>');
         $scope.superAdminRole = '<?php echo $superAdminRoleId; ?>';
         $scope.guestRole = '<?php echo $guestRoleId; ?>';
 
@@ -53,7 +53,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                 $scope.loading = false;
 
                 $scope.status = {
-                    isopen: true
+                    isopen: false
                 };
 
                 $scope.toggleDropdown = function ($event, isopen) {

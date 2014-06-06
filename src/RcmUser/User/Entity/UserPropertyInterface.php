@@ -36,4 +36,5 @@ namespace RcmUser\User\Entity;
 
 interface UserPropertyInterface extends \JsonSerializable{
 
+    public function populate($data = array());
 } 

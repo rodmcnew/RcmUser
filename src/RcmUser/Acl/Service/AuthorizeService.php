@@ -43,6 +43,7 @@ use Zend\Permissions\Acl\Acl;
 class AuthorizeService
 {
     /**
+     *
      * @var string RESOURCE_DELIMITER
      */
     const RESOURCE_DELIMITER = '.';
@@ -364,6 +365,24 @@ class AuthorizeService
             return true;
         }
 
+        $acl = $this->getAcl($resourceId, $providerId);
+
+        foreach ($userRoles as $userRole) {
+
+            $result = $acl->isAllowed(
+                $userRole,
+                $resourceId,
+                $privilege
+            );
+
+            if ($result) {
+                return $result;
+            }
+        }
+
+        return false;
+
+        /* @deprecated
         $resources = $this->parseResource($resourceId);
 
         foreach ($resources as $res) {
@@ -383,11 +402,11 @@ class AuthorizeService
                 }
             }
         }
-
-        return false;
+        */
     }
 
     /**
+     * @deprecated
      * parseResource
      * This allows use to parse our dot notation for nested resources
      * which is used when a missing resource can inherit.
