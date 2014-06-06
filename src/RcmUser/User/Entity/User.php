@@ -196,32 +196,38 @@ class User implements UserInterface, \JsonSerializable
     /**
      * setProperty
      *
-     * @param string $key key
-     * @param mixed  $val val
+     * @param string $propertyId propertyId
+     * @param mixed  $value      value
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function setProperty($key, $val)
+    public function setProperty($propertyId, $value)
     {
-        $this->properties[$key] = $val;
+        if(!$this->isValidPropertyId($propertyId)){
+
+            throw new RcmUserException("Property Id is invald: {$propertyId}");
+        }
+
+        $this->properties[$propertyId] = $value;
     }
 
     /**
      * getProperty
      *
-     * @param string $key key
-     * @param null   $def def
+     * @param string $propertyId propertyId
+     * @param null   $default    default if not found
      *
      * @return null
      */
-    public function getProperty($key, $def = null)
+    public function getProperty($propertyId, $default = null)
     {
-        if (array_key_exists($key, $this->properties)) {
+        if (array_key_exists($propertyId, $this->properties)) {
 
-            return $this->properties[$key];
+            return $this->properties[$propertyId];
         }
 
-        return $def;
+        return $default;
     }
 
     /**
@@ -232,6 +238,22 @@ class User implements UserInterface, \JsonSerializable
     public function isEnabled()
     {
         return $this->getState() !== self::STATE_DISABLED;
+    }
+
+    /**
+     * isValidPropertyId
+     *
+     * @param string $propertyId propertyId
+     *
+     * @return bool
+     */
+    public function isValidPropertyId($propertyId)
+    {
+        if (preg_match('/[^a-z_\-0-9]/i', $propertyId)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**

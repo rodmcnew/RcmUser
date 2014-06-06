@@ -57,7 +57,7 @@ class AdminApiUserController extends AbstractAdminApiController
 
         try {
 
-            $result = $userDataService->fetchAll();
+            $result = $userDataService->getAllUsers(array());
         } catch (\Exception $e) {
 
             return $this->getExceptionResponse($e);

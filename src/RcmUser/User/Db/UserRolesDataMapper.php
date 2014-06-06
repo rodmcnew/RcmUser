@@ -68,10 +68,12 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * fetchAll
      *
-     * @return mixed
+     * @param array $options options
+     *
+     * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function fetchAll()
+    public function fetchAll($options = array())
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }

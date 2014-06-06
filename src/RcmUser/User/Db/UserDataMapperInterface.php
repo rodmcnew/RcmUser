@@ -41,12 +41,12 @@ interface UserDataMapperInterface
     /**
      * fetchAll
      *
-     * @param array $params params
+     * @param array $options options
      *
      * @return mixed
      */
     public function fetchAll(
-        $params = array()
+        $options = array()
     );
 
     /**

@@ -49,9 +49,11 @@ interface UserRolesDataMapperInterface
     /**
      * fetchAll
      *
+     * @param array $options options
+     *
      * @return mixed
      */
-    public function fetchAll();
+    public function fetchAll($options = array());
 
     /**
      * add
