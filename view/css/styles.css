@@ -7,7 +7,11 @@
 .modal-content .dropdown {
 
 }
-
+.accordion-inner {
+}
+.accordion-body[class*="in collapse"]{ overflow:visible;}
+.accordion-body.in:hover { overflow:visible; }
+.accordion-body.in { overflow:visible; }
 /* <loader> */
 .spinner {
     display: inline-block;
@@ -188,7 +192,8 @@
     border-bottom-color: #dddddd;
     border-left-color-value: #dddddd;
 }
-.rcmuser .admin-users .userHeader {
+.rcmuser .admin-users .user
+{
     border-bottom: .1em solid #DDDDDD;
     margin: 0 0 .5em 0;
     padding: 0 0 .5em 0;
@@ -202,5 +207,13 @@
 
 .rcmuser .admin-users .user-state {
     font-weight: normal;
+}
+
+.rcmuser .admin-users .user_roles
+{
+    border: .1em solid #dddddd;
+    border-radius: .5em;
+    padding-top: 1em;
+    padding-bottom: 1em;
 }
 /******</ADMIN_USER>*******/

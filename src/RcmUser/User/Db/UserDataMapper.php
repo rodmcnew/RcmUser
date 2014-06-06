@@ -126,13 +126,13 @@ class UserDataMapper implements UserDataMapperInterface
     /**
      * fetchAll
      *
-     * @param array $params params
+     * @param array $options options
      *
      * @return mixed
      * @throws RcmUserException
      */
     public function fetchAll(
-        $params = array()
+        $options = array()
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }

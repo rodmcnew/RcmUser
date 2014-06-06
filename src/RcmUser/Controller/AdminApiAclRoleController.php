@@ -41,6 +41,33 @@ class AdminApiAclRoleController extends AbstractAdminApiController
 {
 
     /**
+     * getList
+     *
+     * @return mixed|\Zend\Stdlib\ResponseInterface|JsonModel
+     */
+    public function getList()
+    {
+        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
+            return $this->getNotAllowedResponse();
+        }
+
+        /** @var \RcmUser\Acl\Service\AclDataService $aclDataService */
+        $aclDataService = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclDataService'
+        );
+
+        try {
+
+            $result = $aclDataService->getAllRoles();
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
+    }
+
+    /**
      * get
      *
      * @param string $id id

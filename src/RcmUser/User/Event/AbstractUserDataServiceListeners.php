@@ -48,6 +48,11 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     protected $priority = -1;
     protected $listenerMethods
         = array(
+            'onBeforeGetAllUsers' => 'beforeGetAllUsers',
+            'onGetAllUsers' => 'getAllUsers',
+            'onGetAllUsersFail' => 'getAllUsersFail',
+            'onGetAllUsersSuccess' => 'getAllUsersSuccess',
+
             'onBuildUser' => 'buildUser',
 
             'onBeforeCreateUser' => 'beforeCreateUser',
@@ -108,6 +113,71 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             }
         }
     }
+
+    /**
+     * onBeforeGetAllUsers
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
+    public function onBeforeGetAllUsers($e)
+    {
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Listener ('.__METHOD__.') not defined.'
+        );
+    }
+
+    /**
+     * onGetAllUsers
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
+    public function onGetAllUsers($e)
+    {
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Listener ('.__METHOD__.') not defined.'
+        );
+    }
+
+    /**
+     * onGetAllUsersFail
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
+    public function onGetAllUsersFail($e)
+    {
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Listener ('.__METHOD__.') not defined.'
+        );
+    }
+
+    /**
+     * onGetAllUsersSuccess
+     *
+     * @param Event $e e
+     *
+     * @return Result
+     */
+    public function onGetAllUsersSuccess($e)
+    {
+        return new Result(
+            null,
+            Result::CODE_FAIL,
+            'Listener ('.__METHOD__.') not defined.'
+        );
+    }
+
     /**
      * onBuildUser
      *

@@ -43,27 +43,11 @@ class UserDataServiceListeners
     protected $priority = -1;
     protected $listenerMethods
         = array(
-            //'onBuildUser' => 'buildUser',
-
-            //'onBeforeCreateUser' => 'beforeCreateUser',
+            'onGetAllUsers' => 'getAllUsers',
             'onCreateUser' => 'createUser',
-            //'onCreateUserFail' => 'createUserFail',
-            //'onCreateUserSuccess' => 'createUserSuccess',
-
-            //'onBeforeReadUser' => 'beforeReadUser',
             'onReadUser' => 'readUser',
-            //'onReadUserFail' => 'readUserFail',
-            //'onReadUserSuccess' => 'readUserSuccess',
-
-            //'onBeforeUpdateUser' => 'beforeUpdateUser',
             'onUpdateUser' => 'updateUser',
-            //'onUpdateUserFail' => 'updateUserFail',
-            //'onUpdateUserSuccess' => 'updateUserSuccess',
-
-            //'onBeforeDeleteUser' => 'beforeDeleteUser',
             'onDeleteUser' => 'deleteUser',
-            //'onDeleteUserFail' => 'deleteUserFail',
-            //'onDeleteUserSuccess' => 'deleteUserSuccess',
         );
 
     /**
@@ -93,6 +77,19 @@ class UserDataServiceListeners
         return $this->userDataMapper;
     }
 
+    /**
+     * onGetAllUsers
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
+    public function onGetAllUsers($e)
+    {
+        $options = $e->getParam('options');
+
+        return $this->getUserDataMapper()->fetchAll($options);
+    }
     /**
      * onCreateUser
      *

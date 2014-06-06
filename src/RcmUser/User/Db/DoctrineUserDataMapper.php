@@ -73,7 +73,6 @@ class DoctrineUserDataMapper
      */
     public function getEntityManager()
     {
-
         return $this->entityManager;
     }
 
@@ -102,13 +101,12 @@ class DoctrineUserDataMapper
     /**
      * fetchAll
      *
-     * @param array $params params
+     * @param array $options options
      *
-     * @return mixed
-     * @throws RcmUserException
+     * @return \RcmUser\Result
      */
     public function fetchAll(
-        $params = array()
+        $options = array()
     ) {
         $users = $this->getEntityManager()
             ->getRepository($this->getEntityClass())

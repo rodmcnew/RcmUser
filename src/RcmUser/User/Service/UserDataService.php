@@ -68,45 +68,68 @@ class UserDataService extends EventProvider
     }
 
     /**
-     * fetchAll
+     * getAllUsers
      *
-     * @param array $params params
+     * @param array $options options
      *
      * @return mixed
      */
-    public function fetchAll(
-        $params = array()
+    public function getAllUsers(
+        $options = array()
     ) {
+        /* @event beforeGetAllUsers */
+        $results = $this->getEventManager()->trigger(
+            'beforeGetAllUsers',
+            $this,
+            array(
+                'options' => $options,
+            ),
+            function ($result) {
+                return !$result->isSuccess();
+            }
+        );
 
-        return $this->userDataMapper->fetchAll($params);
-    }
+        if ($results->stopped()) {
 
-    /**
-     * fetchById
-     *
-     * @param mixed $id id
-     *
-     * @return \RcmUser\User\Result
-     */
-    public function fetchById(
-        $id
-    ) {
+            return $results->last();
+        }
 
-        return $this->userDataMapper->fetchById($id);
-    }
+        /* @event readUser */
+        $results = $this->getEventManager()->trigger(
+            'getAllUsers',
+            $this,
+            array(
+                'options' => $options,
+            ),
+            function ($result) {
 
-    /**
-     * fetchByUsername
-     *
-     * @param string $username username
-     *
-     * @return \RcmUser\User\Result
-     */
-    public function fetchByUsername(
-        $username
-    ) {
+                return !$result->isSuccess();
+            }
+        );
 
-        return $this->userDataMapper->fetchById($username);
+        if ($results->stopped()) {
+
+            $result = $results->last();
+            $this->getEventManager()->trigger(
+                'getAllUsersFail',
+                $this,
+                array('result' => $result)
+            );
+
+            return $result;
+        }
+
+        // default result may be changed in success listener
+        $result = $results->last();
+
+        /* @event readUserSuccess */
+        $this->getEventManager()->trigger(
+            'getAllUsersSuccess',
+            $this,
+            array('result' => $result)
+        );
+
+        return $result;
     }
 
     /**
