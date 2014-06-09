@@ -51,18 +51,20 @@ class UserController extends AbstractActionController
         );
 
         /** @var \RcmUser\Acl\Service\AclDataService $aclDS /
-         * $aclDS = $this->getServiceLocator()->get('RcmUser\Acl\AclDataService');
-         * var_dump($aclDS->getAllRules());
-         * /* */
+         $aclDS = $this->getServiceLocator()->get('RcmUser\Acl\AclDataService');
+         var_dump($aclDS->getAllRules());
+         /* */
 
         /** @var \RcmUser\User\Service\UserRoleService $userRoleService *
-         * $userRoleService = $this->getServiceLocator()->get(
-         * 'RcmUser\User\Service\UserRoleService'
-         * );
-         * var_dump($userRoleService->getAllUserRoles());
-         * /* */
+         $userRoleService = $this->getServiceLocator()->get(
+         'RcmUser\User\Service\UserRoleService'
+         );
+         var_dump($userRoleService->getAllUserRoles());
+         /* */
 
-        //var_dump($this->rcmUserGetCurrentUser());
+        /* User *
+        var_dump($this->rcmUserGetCurrentUser());
+        /* */
 
         /** @var \RcmUser\Service\RcmUserService $rcmUserService *
         $rcmUserService = $this->getServiceLocator()->get(
@@ -73,14 +75,28 @@ class UserController extends AbstractActionController
             'admin',
             '\Rcm\Acl\ResourceProvider'
         );
+        /** @var \RcmUser\User\Entity\User $currentUser *
+        $currentUser = $rcmUserService->getIdentity(null);
+
+        var_dump($currentUser);
+
+        $currentUser->setState('test');
+
+        $rcmUserService->setIdentity($currentUser);
+
+        $updatedSessUser = $rcmUserService->getIdentity(null);
+
+        var_dump($updatedSessUser);
         /* */
 
-        /** @var \RcmUser\Log\DoctrineLogger $logger */
+        /** @var \RcmUser\Log\DoctrineLogger $logger *
         $logger = $this->getServiceLocator()->get(
             'RcmUser\Log\Logger'
         );
 
         $logger->info('TEST', array('SOMETEST','DATA'));
+        /* */
+
 
 
         return $test;

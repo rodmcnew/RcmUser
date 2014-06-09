@@ -50,7 +50,7 @@ CREATE TABLE rcm_user_acl_rule (
 -- LOGS
 CREATE TABLE rcm_user_log (
   id INT AUTO_INCREMENT NOT NULL,
-  date DATETIME NOT NULL,
+  dateTimeUtc DATETIME NOT NULL,
   type VARCHAR(16) NOT NULL,
   message TEXT NOT NULL,
   extra TEXT DEFAULT NULL,

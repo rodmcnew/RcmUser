@@ -141,7 +141,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function setAuthorizeService(
         AuthorizeService $authorizeService
-    ) {
+    )
+    {
         $this->authorizeService = $authorizeService;
     }
 
@@ -292,7 +293,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    ) {
+    )
+    {
         return $this->getUserPropertyService()->getUserProperty(
             $user,
             $propertyNameSpace,
@@ -314,7 +316,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    ) {
+    )
+    {
         $user = $this->getIdentity();
 
         if (empty($user)) {
@@ -416,14 +419,22 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     {
         $currentUser = $this->getIdentity();
 
-        if(empty($currentUser)){
+        if (empty($currentUser)) {
 
             return null;
         }
 
-        $user = $this->readUser($currentUser);
+        $result = $this->readUser($currentUser);
 
-        if (empty($user->getId())) {
+        if (!$result->isSuccess()) {
+            return null;
+        }
+
+        $user = $result->getUser();
+
+        $userId = $user->getId();
+
+        if ($userId != $currentUser->getId()) {
 
             throw new RcmUserException(
                 'RefreshIdentity expects user to be get same identity as current.'
@@ -448,6 +459,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /**
      * getCurrentUser
      * Get current logged in user or default if no one is logged in
+     *
      * @param mixed $default default
      *
      * @return User|null
@@ -455,6 +467,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     public function getCurrentUser($default = null)
     {
         $user = $this->getIdentity($default);
+
         return $user;
     }
 
@@ -496,7 +509,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $privilege = null,
         $providerId = null,
         $user = null
-    ) {
+    )
+    {
         if (!($user instanceof User)) {
 
             return false;
@@ -536,7 +550,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $result = $this->getUserDataService()->buildUser($user);
 
         // since build user is an event, we might not get anything
-        if(empty($result)){
+        if (empty($result)) {
             return $user;
         }
 
