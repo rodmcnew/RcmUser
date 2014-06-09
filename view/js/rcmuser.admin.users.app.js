@@ -8,6 +8,8 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
         eval('self.roles = <?php echo json_encode($roles); ?>');
 
+        eval('self.defaultRoles = <?php echo json_encode($defaultRoles); ?>');
+
         eval('self.rolePropertyId = <?php echo json_encode($rolePropertyId); ?>');
 
         self.url = {
@@ -60,7 +62,6 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             }
 
             self.rolePropertyId = rcmuserAdminUsersData.rolePropertyId;
-
             self.rcmUserHttp = rcmUserHttp;
 
             $scope.alerts = new RcmResults()
@@ -71,6 +72,20 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             $scope.getNamespaceRepeatString = getNamespaceRepeatString;
 
             $scope.showEdit = false;
+
+            $scope.defaultRoles = rcmuserAdminUsersData.defaultRoles
+
+            $scope.isDefaultRole = function(roleId){
+
+                var index = $scope.defaultRoles.indexOf(roleId)
+
+                if(index !== -1){
+
+                    return true;
+                }
+
+                return false;
+            }
 
             $scope.openEditUser = function () {
                 var onSuccess = function (data, status) {

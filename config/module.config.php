@@ -519,6 +519,9 @@ return array(
 
             'RcmUser\Controller\AdminApiAclRoleController'
             => 'RcmUser\Controller\AdminApiAclRoleController',
+
+            'RcmUser\Controller\AdminApiAclDefaultUserRoleController'
+            => 'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
             // ADMIN USERS
             'RcmUser\Controller\AdminUserController'
             => 'RcmUser\Controller\AdminUserController',
@@ -634,6 +637,19 @@ return array(
                     'defaults' => array(
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclRoleController',
+                    ),
+                ),
+            ),
+            'RcmUserAdminApiAclDefaultUserRole' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-acl-default-user-roles[/:id]',
+                    'constraints' => array(
+                        'id' => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
                     ),
                 ),
             ),

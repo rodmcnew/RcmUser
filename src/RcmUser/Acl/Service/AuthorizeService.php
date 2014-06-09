@@ -360,7 +360,7 @@ class AuthorizeService
         /* Check super admin
             we over-ride everything if user has super admin
         */
-        $superAdminRoleId = $this->getSuperAdminRoleId();
+        $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
         if (!empty($superAdminRoleId)
             && is_array($userRoles)
             && in_array($superAdminRoleId, $userRoles)

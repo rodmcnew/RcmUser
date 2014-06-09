@@ -79,7 +79,7 @@ class UserRoleService
     /**
      * getDefaultGuestRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function getDefaultGuestRoleIds()
     {
@@ -89,7 +89,7 @@ class UserRoleService
     /**
      * getDefaultUserRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function getDefaultUserRoleIds()
     {
@@ -99,7 +99,7 @@ class UserRoleService
     /**
      * getGuestRoleId
      *
-     * @return string|null
+     * @return Result
      */
     public function getGuestRoleId()
     {
@@ -109,7 +109,7 @@ class UserRoleService
     /**
      * getSuperAdminRoleId
      *
-     * @return null|string
+     * @return Result
      */
     public function getSuperAdminRoleId()
     {
@@ -119,7 +119,7 @@ class UserRoleService
     /**
      * getAllUserRoles
      *
-     * @return mixed
+     * @return Result
      */
     public function getAllUserRoles(){
 
@@ -135,7 +135,7 @@ class UserRoleService
      */
     public function isGuest($roles)
     {
-        $guestRoleId = $this->getGuestRoleId();
+        $guestRoleId = $this->getGuestRoleId()->getData();
         $key = array_search($guestRoleId, $roles);
 
         /**
@@ -158,7 +158,7 @@ class UserRoleService
      */
     public function isSuperAdmin($roles)
     {
-        $superAdminRoleId = $this->getSuperAdminRoleId();
+        $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
         $key = array_search($superAdminRoleId, $roles);
 
         if ($key !== false) {
@@ -178,12 +178,12 @@ class UserRoleService
      */
     public function isDefaultRoles($roles)
     {
-        if($roles == $this->getDefaultGuestRoleIds()){
+        if($roles == $this->getDefaultGuestRoleIds()->getData()){
 
             return true;
         }
 
-        if($roles == $this->getDefaultUserRoleIds()){
+        if($roles == $this->getDefaultUserRoleIds()->getData()){
 
             return true;
         }
@@ -315,10 +315,10 @@ class UserRoleService
 
         if (empty($user->getId())) {
 
-            $roles = $this->getDefaultGuestRoleIds();
+            $roles = $this->getDefaultGuestRoleIds()->getData();
         } else {
 
-            $roles = $this->getDefaultUserRoleIds();
+            $roles = $this->getDefaultUserRoleIds()->getData();
         }
 
         return $roles;

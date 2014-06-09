@@ -132,7 +132,7 @@ class AclDataService
     /**
      * getDefaultGuestRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function getDefaultGuestRoleIds()
     {
@@ -142,7 +142,7 @@ class AclDataService
     /**
      * getDefaultUserRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function getDefaultUserRoleIds()
     {
@@ -152,7 +152,7 @@ class AclDataService
     /**
      * getSuperAdminRoleId
      *
-     * @return string|null
+     * @return Result
      */
     public function getSuperAdminRoleId()
     {
@@ -162,7 +162,7 @@ class AclDataService
     /**
      * getGuestRoleId
      *
-     * @return string|null
+     * @return Result
      */
     public function getGuestRoleId()
     {
@@ -227,7 +227,8 @@ class AclDataService
         $roleId = $aclRole->getRoleId();
 
         // some roles should not be deleted, like super admin and guest
-        if($roleId == $this->getSuperAdminRoleId()){
+        $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
+        if($roleId == $this->$superAdminRoleId()){
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -235,7 +236,8 @@ class AclDataService
             );
         }
 
-        if($roleId == $this->getGuestRoleId()){
+        $guestRoleId = $this->getGuestRoleId()->getData();
+        if($roleId == $guestRoleId){
             return new Result(
                 null,
                 Result::CODE_FAIL,

@@ -108,11 +108,19 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                                 <div class="row" id="roles">
 
                                                     <div class="col-sm-6">
-                                                        <div class="input-group" ng-repeat="role in user.properties[rolePropertyId]">
-                                                            <input type="text" class="form-control" disabled="disabled" ng-value="role"/>
-                                                    <span class="input-group-btn">
-                                                        <button class="btn btn-warning btn-xs" ng-click="removeRole(user, role)" type="button">Remove</button>
-                                                    </span>
+                                                        <div class="input-group" ng-repeat="roleId in user.properties[rolePropertyId]">
+                                                            <input type="text" class="form-control" disabled="disabled" ng-value="roleId"/>
+                                                            <span class="input-group-btn">
+                                                                <button
+                                                                    class="btn btn-warning btn-xs"
+                                                                    ng-click="removeRole(user, roleId)"
+                                                                    ng-disabled="isDefaultRole(roleId)"
+                                                                    type="button"
+                                                                    >
+                                                                    <span ng-hide="isDefaultRole(roleId)">remove role</span>
+                                                                    <span ng-show="isDefaultRole(roleId)">default role</span>
+                                                                </button>
+                                                            </span>
                                                         </div>
                                                     </div>
                                                     <div class="col-sm-offset-2 col-sm-3">
@@ -129,7 +137,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                                             </button>
                                                             <ul class="dropdown-menu" role="menu">
                                                                 <li ng-repeat="(roleNs, role) in roles">
-                                                                    <a href="#" ng-click="addRole(user, role.roleId)">{{getNamespaceRepeatString(roleNs, '..')}} {{role.roleId}}</a>
+                                                                    <a href="#" ng-click="addRole(user, role.roleId)" ng-hide="isDefaultRole(role.roleId)">{{getNamespaceRepeatString(roleNs, '..')}} {{role.roleId}}</a>
                                                                 </li>
                                                             </ul>
                                                         </div>
