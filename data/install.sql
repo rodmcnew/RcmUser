@@ -22,7 +22,7 @@ CREATE TABLE rcm_user_user_role (
 CREATE TABLE rcm_user_acl_role (
 	id INT AUTO_INCREMENT NOT NULL,
 	parentRoleId VARCHAR(255) DEFAULT NULL,
-	roleId VARCHAR(255) NOT NULL,
+	roleId VARCHAR(255) NOT NULL UNIQUE,
 	description VARCHAR(255) DEFAULT NULL, 
 	PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
@@ -45,6 +45,16 @@ CREATE TABLE rcm_user_acl_rule (
 	resourceId VARCHAR(255) NOT NULL, -- some resource value
 	privilege VARCHAR(255) DEFAULT NULL, -- some privilege value (created, read, update, delete, execute)
 	PRIMARY KEY(id)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
+
+-- LOGS
+CREATE TABLE rcm_user_log (
+  id INT AUTO_INCREMENT NOT NULL,
+  dateTimeUtc DATETIME NOT NULL,
+  type VARCHAR(16) NOT NULL,
+  message TEXT NOT NULL,
+  extra TEXT DEFAULT NULL,
+  PRIMARY KEY(id)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci ENGINE = InnoDB;
 
 /*
