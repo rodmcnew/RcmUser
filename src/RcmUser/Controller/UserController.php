@@ -89,7 +89,7 @@ class UserController extends AbstractActionController
         var_dump($updatedSessUser);
         /* */
 
-        /** @var \RcmUser\Log\DoctrineLogger $logger *
+        /** @var \RcmUser\Log\DoctrineLogger $logger */
         $logger = $this->getServiceLocator()->get(
             'RcmUser\Log\Logger'
         );
