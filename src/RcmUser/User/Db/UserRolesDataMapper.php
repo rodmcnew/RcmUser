@@ -82,7 +82,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * add
      *
      * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
@@ -96,7 +96,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * remove
      *
      * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException

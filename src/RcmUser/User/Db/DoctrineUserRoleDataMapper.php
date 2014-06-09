@@ -120,7 +120,7 @@ class DoctrineUserRoleDataMapper
      * add
      *
      * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      */
@@ -151,7 +151,7 @@ class DoctrineUserRoleDataMapper
      * remove
      *
      * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      */

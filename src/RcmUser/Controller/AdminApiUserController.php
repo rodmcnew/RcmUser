@@ -131,4 +131,22 @@ class AdminApiUserController extends AbstractAdminApiController
 
         return $this->getJsonResponse(null);
     }
+
+    /**
+     * update
+     *
+     * @param mixed $id
+     * @param mixed $data
+     *
+     * @return array|mixed
+     */
+    public function update($id, $data)
+    {
+        // ACCESS CHECK
+        if (!$this->isAllowed('rcmuser-user-administration', 'update')) {
+            return $this->getNotAllowedResponse();
+        }
+
+        return $this->getJsonResponse(array($id, $data));
+    }
 } 

@@ -118,18 +118,6 @@ class AclDataService
     }
 
     /**
-     * getRoleAclData
-     *
-     * @param string $roleId roleId
-     *
-     * @return void
-     */
-    public function getRoleAclData($roleId)
-    {
-
-    }
-
-    /**
      * getDefaultGuestRoleIds
      *
      * @return Result
@@ -424,7 +412,7 @@ class AclDataService
         }
 
         // check if is super admin
-        if ($roleId == $this->getSuperAdminRoleId()) {
+        if ($roleId == $this->getSuperAdminRoleId()->getData()) {
 
             return new Result(
                 null,

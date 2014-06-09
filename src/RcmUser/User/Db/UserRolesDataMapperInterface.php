@@ -18,7 +18,6 @@
 namespace RcmUser\User\Db;
 
 
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\User\Entity\User;
 
 /**
@@ -69,7 +68,7 @@ interface UserRolesDataMapperInterface
      * remove
      *
      * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      */

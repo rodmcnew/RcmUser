@@ -45,7 +45,9 @@ class UserRoleProperty implements UserPropertyInterface
     protected $roles = array();
 
     /**
-     * @param array $roles
+     * __construct
+     *
+     * @param array $roles role id list
      */
     public function __construct(
         $roles = array()
@@ -56,9 +58,9 @@ class UserRoleProperty implements UserPropertyInterface
     /**
      * setRoles
      *
-     * @param array $roles roles
+     * @param $roles
      *
-     * @return array
+     * @return void
      */
     public function setRoles($roles)
     {
