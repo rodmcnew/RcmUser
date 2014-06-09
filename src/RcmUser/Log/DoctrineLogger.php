@@ -57,11 +57,11 @@ class DoctrineLogger implements LoggerInterface
     public function log($type, $message, $extra = array())
     {
         $tz = new \DateTimeZone('UTC');
-        $date = new \DateTime('now', $tz);
+        $dateTimeUtc = new \DateTime('now', $tz);
         $type = strtoupper($type);
         $extra = json_encode($extra);
 
-        $logEntry = new DoctrineLogEntry($date, $type, $message, $extra);
+        $logEntry = new DoctrineLogEntry($dateTimeUtc, $type, $message, $extra);
 
         $this->entityManager->persist($logEntry);
         $this->entityManager->flush();

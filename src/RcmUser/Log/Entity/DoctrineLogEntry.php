@@ -67,9 +67,9 @@ class DoctrineLogEntry extends LogEntry
     protected $extra = '';
 
     /**
-     * @var string $date date
+     * @var string $dateTimeUtc dateTimeUtc
      *
      * @ORM\Column(type="datetime", nullable=false)
      */
-    protected $date = '';
+    protected $dateTimeUtc = '';
 } 

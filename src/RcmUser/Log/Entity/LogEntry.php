@@ -52,43 +52,43 @@ class LogEntry {
     protected $extra = '';
 
     /**
-     * @var string $date date
+     * @var string $dateTimeUtc dateTimeUtc
      */
-    protected $date = '';
+    protected $dateTimeUtc = '';
 
     /**
-     * @param string $date    date
-     * @param string $type    type
-     * @param string $message message
-     * @param string $extra   extra
+     * @param string $dateTimeUtc dateTimeUtc
+     * @param string $type        type
+     * @param string $message     message
+     * @param string $extra       extra
      */
-    function __construct($date, $type, $message, $extra = ''){
+    function __construct($dateTimeUtc, $type, $message, $extra = ''){
 
-        $this->setDate($date);
+        $this->setDateTimeUtc($dateTimeUtc);
         $this->setType($type);
         $this->setMessage($message);
         $this->setExtra($extra);
     }
     /**
-     * setDate
+     * setDateTimeUtc
      *
-     * @param string $date date
+     * @param string $dateTimeUtc dateTimeUtc
      *
      * @return void
      */
-    public function setDate($date)
+    public function setDateTimeUtc($dateTimeUtc)
     {
-        $this->date = $date;
+        $this->dateTimeUtc = $dateTimeUtc;
     }
 
     /**
-     * getDate
+     * getDateTimeUtc
      *
      * @return string
      */
-    public function getDate()
+    public function getDateTimeUtc()
     {
-        return $this->date;
+        return $this->dateTimeUtc;
     }
 
     /**
