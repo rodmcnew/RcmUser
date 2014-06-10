@@ -216,7 +216,7 @@ class AclDataService
 
         // some roles should not be deleted, like super admin and guest
         $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
-        if($roleId == $this->$superAdminRoleId()){
+        if($roleId == $superAdminRoleId){
             return new Result(
                 null,
                 Result::CODE_FAIL,

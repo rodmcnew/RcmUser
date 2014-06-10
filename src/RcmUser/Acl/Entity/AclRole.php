@@ -68,6 +68,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setRoleId($roleId)
     {
+        // set to lowercase to avoid overlaps
         $roleId = strtolower((string) $roleId);
 
         if (!$this->isValidRoleId($roleId)) {
@@ -103,6 +104,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setParentRoleId($parentRoleId)
     {
+        // set to lowercase to avoid overlaps
         $parentRoleId = strtolower((string) $parentRoleId);
 
         if (!$this->isValidRoleId($parentRoleId)) {

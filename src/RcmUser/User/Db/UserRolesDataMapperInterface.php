@@ -107,8 +107,9 @@ interface UserRolesDataMapperInterface
      * delete
      *
      * @param User $user user
+     * @param array $roles roles
      *
      * @return Result
      */
-    public function delete(User $user);
+    public function delete(User $user, $roles = array());
 } 

@@ -12,6 +12,8 @@ angular.module('rcmuserCore', [])
 
             self.execute = function (config, onSuccess, onFail) {
 
+                //console.log(config);
+
                 self.http(config)
                     .success(function (data, status, headers, config) {
 

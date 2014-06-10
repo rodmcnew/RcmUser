@@ -173,28 +173,28 @@ class AclRoleTest extends Zf2TestCase
         $parentAclRole = new AclRole();
         $parentAclRole->setRoleId('ppp');
         $aclRoleA = array(
-            'roleId' => 'arrayRoleA',
+            'roleId' => 'arrayrolea',
             'parentRoleId' => 'ppp',
             'description' => 'arrayRoleA',
             'parentRole' => $parentAclRole
         );
         $aclRoleB = new AclRole();
         $parentAclRoleB = new AclRole();
-        $parentAclRoleB->setRoleId('pppB');
-        $aclRoleB->setRoleId('roleB');
-        $aclRoleB->setParentRoleId('pppB');
-        $aclRoleB->setDescription('roleB');
+        $parentAclRoleB->setRoleId('pppb');
+        $aclRoleB->setRoleId('roleb');
+        $aclRoleB->setParentRoleId('pppb');
+        $aclRoleB->setDescription('roleb');
         $aclRoleB->setParentRole($parentAclRoleB);
 
         $aclRoleC = 'wrong format';
 
         $aclRole->populate($aclRoleA);
 
-        $this->assertTrue($aclRole->getRoleId() === 'arrayRoleA', 'Setter or getter failed.');
+        $this->assertTrue($aclRole->getRoleId() === 'arrayrolea', 'Setter or getter failed.');
 
         $aclRole->populate($aclRoleB);
 
-        $this->assertTrue($aclRole->getRoleId() === 'roleB', 'Setter or getter failed.');
+        $this->assertTrue($aclRole->getRoleId() === 'roleb', 'Setter or getter failed.');
 
         try{
             $aclRole->populate($aclRoleC);

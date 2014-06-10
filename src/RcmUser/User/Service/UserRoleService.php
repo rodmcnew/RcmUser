@@ -52,8 +52,7 @@ class UserRoleService
      */
     public function __construct(
         UserRolesDataMapperInterface $userRolesDataMapper
-    )
-    {
+    ) {
 
         $this->userRolesDataMapper = $userRolesDataMapper;
     }
@@ -205,12 +204,7 @@ class UserRoleService
     {
         $defaultUserRoles = $this->getDefaultUserRoleIds()->getData();
 
-        if (in_array($roleId, $defaultUserRoles)) {
-
-            return true;
-        }
-
-        return true;
+        return in_array($roleId, $defaultUserRoles);
     }
 
     /**
@@ -234,18 +228,13 @@ class UserRoleService
     /**
      * canRemove role
      *
-     * @param User   $user
-     * @param string $aclRoleId
+     * @param User   $user   user
+     * @param string $roleId roleId
      *
      * @return bool
      */
-    public function canRemoveRole(User $user, $aclRoleId)
+    public function canRemoveRole(User $user, $roleId)
     {
-        if ($this->isDefaultUserRole($aclRoleId)) {
-
-            return false;
-        }
-
         return true;
     }
 
@@ -281,6 +270,15 @@ class UserRoleService
      */
     public function removeRole(User $user, $roleId)
     {
+        if (!$this->canRemoveRole($user, $roleId)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Role ({$roleId}) is set via logic and cannot be removed."
+            );
+        }
+
         return $this->getUserRolesDataMapper()->remove($user, $roleId);
     }
 
@@ -294,16 +292,27 @@ class UserRoleService
      */
     public function createRoles(User $user, $roles = array())
     {
+
+        $result =  new Result(
+            null,
+            Result::CODE_SUCCESS
+        );
+
         foreach($roles as $roleId){
 
-            if (!$this->canAddRole($user, $roleId)) {
+            $canAdd = $this->canAddRole($user, $roleId);
+            if (!$canAdd) {
 
-                return new Result(
-                    null,
-                    Result::CODE_FAIL,
+                $result->setCode(Result::CODE_FAIL);
+                $result->setMessage(
                     "Role ({$roleId}) is set via logic and cannot be added."
                 );
             }
+        }
+
+        if(!$result->isSuccess()){
+
+            return $result;
         }
 
         return $this->getUserRolesDataMapper()->create($user, $roles);
@@ -332,16 +341,16 @@ class UserRoleService
      */
     public function updateRoles(User $user, $roles = array())
     {
-        foreach($roles as $roleId){
+        $result =  new Result(
+            null,
+            Result::CODE_SUCCESS
+        );
 
-            if (!$this->canAddRole($user, $roleId)) {
+        // @todo validations here
 
-                return new Result(
-                    null,
-                    Result::CODE_FAIL,
-                    "Role ({$roleId}) is set via logic and cannot be added."
-                );
-            }
+        if(!$result->isSuccess()){
+
+            return $result;
         }
 
         return $this->getUserRolesDataMapper()->update($user, $roles);
@@ -351,12 +360,36 @@ class UserRoleService
      * deleteRoles
      *
      * @param User $user user
+     * @param array $roles roles
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function deleteRoles(User $user)
+    public function deleteRoles(User $user, $roles = array())
     {
+
+        $result =  new Result(
+            null,
+            Result::CODE_SUCCESS
+        );
+
+        foreach($roles as $roleId){
+
+            $canRem = $this->canRemoveRole($user, $roleId);
+            if (!$canRem) {
+
+                $result->setCode(Result::CODE_FAIL);
+                $result->setMessage(
+                    "Role ({$roleId}) is set via logic and cannot be removed."
+                );
+            }
+        }
+
+        if(!$result->isSuccess()){
+
+            return $result;
+        }
+
         return $this->getUserRolesDataMapper()->delete($user);
     }
 

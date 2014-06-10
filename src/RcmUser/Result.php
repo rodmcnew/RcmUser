@@ -79,7 +79,11 @@ class Result implements \JsonSerializable
 
         if (!is_array($messages)) {
 
-            $this->setMessage((string)$messages);
+            $message = (string)$messages;
+            if (!empty($message)) {
+
+                $this->setMessage($message);
+            }
         } else {
 
             $this->setMessages($messages);

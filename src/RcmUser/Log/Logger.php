@@ -37,23 +37,14 @@ use Zend\Log\LoggerInterface;
  */
 class Logger implements LoggerInterface
 {
-    const LEVEL_EMERG = 80;
-    const LEVEL_ALERT = 70;
-    const LEVEL_CRIT = 60;
-    const LEVEL_ERR = 50;
-    const LEVEL_WARN = 40;
-    const LEVEL_NOTICE = 30;
-    const LEVEL_INFO = 20;
-    const LEVEL_DEBUG = 10;
-
-    protected $logLevel = Logger::LEVEL_ERR;
+    protected $logLevel = \Zend\Log\Logger::ERR;
 
     /**
      * __construct
      *
      * @param int $logLevel logLevel
      */
-    public function __construct($logLevel = Logger::LEVEL_ERR)
+    public function __construct($logLevel = \Zend\Log\Logger::ERR)
     {
         $this->setLogLevel($logLevel);
     }
@@ -89,9 +80,9 @@ class Logger implements LoggerInterface
      */
     public function getLevel($type)
     {
-        if (defined('self::LEVEL_' . $type)) {
+        if (defined('\Zend\Log\Logger::' . $type)) {
 
-            return constant('self::LEVEL_' . $type);
+            return constant('\Zend\Log\Logger::' . $type);
         }
 
         return $this->logLevel;
@@ -108,7 +99,7 @@ class Logger implements LoggerInterface
     {
         $level = $this->getLevel($type);
 
-        if ($level < $this->getLogLevel()) {
+        if ($level > $this->getLogLevel()) {
             // no logging
             return false;
         }

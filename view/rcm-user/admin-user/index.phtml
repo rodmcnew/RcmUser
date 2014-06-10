@@ -57,6 +57,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                     <div class="panel-body" ng-show="userPanelBodyShow">
                         <div class="" ng-controller="rcmuserAdminUser" ng-init="user=user;">
                             <section class="user">
+                                <pre>{{user | json}}</pre>
                                 <div class="userDetails">
                                     <form role="form">
                                         <div class="form-group">

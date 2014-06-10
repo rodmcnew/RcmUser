@@ -530,8 +530,10 @@ return array(
             => 'RcmUser\Controller\AdminApiUserController',
 
             // ADMIN USER ROLES
-            'RcmUser\Controller\AdminUserRoleController'
-            => 'RcmUser\Controller\AdminUserRoleController',
+            /*'RcmUser\Controller\AdminUserRoleController'
+            => 'RcmUser\Controller\AdminUserRoleController',*/
+            'RcmUser\Controller\AdminApiUserRoleController'
+            => 'RcmUser\Controller\AdminApiUserRoleController',
         ),
     ),
 
@@ -690,7 +692,7 @@ return array(
                     ),
                 ),
             ),
-            // ADMIN USER ROLES
+            /* ADMIN USER ROLES
             'RcmUserAdminUserRole' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -713,6 +715,21 @@ return array(
                     ),
                 ),
             ),
+            */
+            'RcmUserAdminApiUserRole' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-user-role[/:id]',
+                    'constraints' => array(
+                        'id' => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiUserRoleController',
+                    ),
+                ),
+            ),
+
         ),
     ),
 

@@ -97,7 +97,14 @@ class UserController extends AbstractActionController
         $logger->info('TEST', array('SOMETEST','DATA'));
         /* */
 
+        //var_export($this->getServiceLocator()->getCanonicalNames());
+        /** @var \Zend\Log\WriterPluginManager $LogWriterManager */
+        //$LogWriterManager = $this->getServiceLocator()->get('LogWriterManager');
+        //print_r($LogWriterManager->getServiceLocator());
 
+        /** @var \Zend\Log\ProcessorPluginManager $LogProcessorManager */
+        //$LogProcessorManager = $this->getServiceLocator()->get('LogProcessorManager');
+        //print_r($LogProcessorManager);
 
         return $test;
     }

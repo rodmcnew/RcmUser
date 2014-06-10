@@ -151,11 +151,12 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * delete
      *
      * @param User $user user
+     * @param array $roles roles
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function delete(User $user)
+    public function delete(User $user, $roles = array())
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
