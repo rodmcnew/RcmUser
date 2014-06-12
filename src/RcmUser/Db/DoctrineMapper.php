@@ -42,7 +42,7 @@ class DoctrineMapper implements DoctrineMapperInterface
     protected $entityManager;
 
     /**
-     * @var
+     * @var string
      */
     protected $entityClass;
 

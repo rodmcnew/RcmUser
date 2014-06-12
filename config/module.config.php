@@ -461,6 +461,12 @@ return array(
              * Required *
              */
             'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
+
+            /*
+             * Logging
+             * Required *
+             */
+            'RcmUser\Log\Logger' => 'RcmUser\Service\Factory\DoctrineLogger',
         ),
     ),
 

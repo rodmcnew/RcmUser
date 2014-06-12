@@ -94,10 +94,16 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 }
             }
 
-            $scope.removeRole = function (userId, roleId) {
+            $scope.removeRole = function (user, roleId) {
 
-                console.log(userId);
-                console.log(roleId);
+                var index = user.properties[self.rolePropertyId].indexOf(roleId);
+
+                if(index === -1){
+
+                    return;
+                }
+
+                user.properties[self.rolePropertyId].splice(index, 1);
             }
 
             $scope.addUser = function (user) {

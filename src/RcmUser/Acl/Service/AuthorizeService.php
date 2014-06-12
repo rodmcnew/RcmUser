@@ -20,6 +20,7 @@ namespace RcmUser\Acl\Service;
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
@@ -99,7 +100,8 @@ class AuthorizeService
      */
     public function setAclRoleDataMapper(
         AclRoleDataMapperInterface $aclRoleDataMapper
-    ) {
+    )
+    {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
@@ -122,7 +124,8 @@ class AuthorizeService
      */
     public function setAclRuleDataMapper(
         AclRuleDataMapperInterface $aclRuleDataMapper
-    ) {
+    )
+    {
         $this->aclRuleDataMapper = $aclRuleDataMapper;
     }
 
@@ -176,7 +179,7 @@ class AuthorizeService
         /** @var $userRoleProperty UserRoleProperty */
         $userRoleProperty = $user->getProperty(UserRoleProperty::PROPERTY_KEY);
 
-        if(!($userRoleProperty instanceof UserRoleProperty)){
+        if (!($userRoleProperty instanceof UserRoleProperty)) {
 
             return array();
         }
@@ -339,20 +342,21 @@ class AuthorizeService
      * @param User   $user       user
      *
      * @return bool
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function isAllowed(
         $resourceId,
         $privilege = null,
         $providerId = null,
         $user = null
-    ) {
+    )
+    {
         if (!($user instanceof User)) {
 
             return false;
         }
 
         $userRoles = $this->getUserRoles($user);
-
         /* Check super admin
             we over-ride everything if user has super admin
         */
@@ -365,35 +369,14 @@ class AuthorizeService
             return true;
         }
 
-        $acl = $this->getAcl($resourceId, $providerId);
-
-        foreach ($userRoles as $userRole) {
-
-            $result = $acl->isAllowed(
-                $userRole,
-                $resourceId,
-                $privilege
-            );
-
-            if ($result) {
-                return $result;
-            }
-        }
-
-        return false;
-
-        /* @deprecated
-        $resources = $this->parseResource($resourceId);
-
-        foreach ($resources as $res) {
-
+        try {
             $acl = $this->getAcl($resourceId, $providerId);
 
             foreach ($userRoles as $userRole) {
 
                 $result = $acl->isAllowed(
                     $userRole,
-                    $res,
+                    $resourceId,
                     $privilege
                 );
 
@@ -401,8 +384,43 @@ class AuthorizeService
                     return $result;
                 }
             }
+
+        } catch (\Exception $e) {
+            // @todo - report this error or log
+            throw new RcmUserException(
+                'AuthorizeService->isAllowed failed to check: ' .
+                "providerId: {$providerId} " .
+                "resourceId: {$resourceId} " .
+                'privilege: ' . var_export($privilege, true) . ' ' .
+                'user id: ' . $user->getId() . ' ' .
+                'Acl failed with error: ' .
+                $e->getMessage()
+            );
         }
-        */
+
+        return false;
+
+        /* @deprecated
+        $resources = $this->parseResource($resourceId);
+         *
+         * foreach ($resources as $res) {
+         *
+         * $acl = $this->getAcl($resourceId, $providerId);
+         *
+         * foreach ($userRoles as $userRole) {
+         *
+         * $result = $acl->isAllowed(
+         * $userRole,
+         * $res,
+         * $privilege
+         * );
+         *
+         * if ($result) {
+         * return $result;
+         * }
+         * }
+         * }
+         */
     }
 
     /**
