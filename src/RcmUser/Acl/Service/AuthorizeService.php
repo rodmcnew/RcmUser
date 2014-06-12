@@ -349,12 +349,13 @@ class AuthorizeService
         $privilege = null,
         $providerId = null,
         $user = null
-    )
-    {
+    ) {
         if (!($user instanceof User)) {
 
             return false;
         }
+
+        $resourceId = strtolower($resourceId);
 
         $userRoles = $this->getUserRoles($user);
         /* Check super admin
@@ -374,6 +375,7 @@ class AuthorizeService
 
             foreach ($userRoles as $userRole) {
 
+                // @todo this will fail on deny
                 $result = $acl->isAllowed(
                     $userRole,
                     $resourceId,

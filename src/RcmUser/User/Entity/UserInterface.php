@@ -116,6 +116,38 @@ interface UserInterface extends \IteratorAggregate
     public function getState();
 
     /**
+     * setEmail
+     *
+     * @param string $email valid email
+     *
+     * @return void
+     */
+    public function setEmail($email);
+
+    /**
+     * getEmail
+     *
+     * @return string
+     */
+    public function getEmail();
+
+    /**
+     * setName
+     *
+     * @param string $name Display name
+     *
+     * @return void
+     */
+    public function setName($name);
+
+    /**
+     * getName
+     *
+     * @return string
+     */
+    public function getName();
+
+    /**
      * populate
      *
      * @param User|array $data    data as User or array

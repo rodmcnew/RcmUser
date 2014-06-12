@@ -167,5 +167,4 @@ class UserRoleProperty implements UserPropertyInterface
             'could not be populated, date format not supported'
         );
     }
-
 } 

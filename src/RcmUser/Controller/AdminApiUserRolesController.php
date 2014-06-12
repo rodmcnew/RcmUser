@@ -1,8 +1,8 @@
 <?php
 /**
- * AdminApiUserRoleController.php
+ * AdminApiUserRolesController.php
  *
- * AdminApiUserRoleController
+ * AdminApiUserRolesController
  *
  * PHP version 5
  *
@@ -17,16 +17,13 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Result;
 use RcmUser\User\Entity\User;
-use RcmUser\User\Entity\UserRoleProperty;
-use Zend\View\Model\JsonModel;
 
 /**
- * Class AdminApiUserRoleController
+ * Class AdminApiUserRolesController
  *
- * AdminApiUserRoleController
+ * AdminApiUserRolesController
  *
  * PHP version 5
  *
@@ -38,16 +35,16 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminApiUserRoleController extends AbstractAdminApiController
+class AdminApiUserRolesController extends AbstractAdminApiController
 {
     /**
      * get GET
      *
-     * @param string $id userId
+     * @param string $userId userId
      *
      * @return string
      */
-    public function get($id)
+    public function get($userId)
     {
         // ACCESS CHECK
         if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
@@ -61,11 +58,11 @@ class AdminApiUserRoleController extends AbstractAdminApiController
 
         try {
 
-            $user = new User($id);
+            $user = new User($userId);
 
             $result = $userRoleService->readRoles($user);
 
-            $result->setMessage("For user id: {$id}");
+            $result->setMessage("For user id: {$userId}");
 
         } catch (\Exception $e) {
 
@@ -95,7 +92,7 @@ class AdminApiUserRoleController extends AbstractAdminApiController
 
         try {
 
-            if (!isset($data['id'])) {
+            if (!isset($data['userId'])) {
                 $result = new Result(
                     null,
                     Result::CODE_FAIL,
@@ -105,7 +102,7 @@ class AdminApiUserRoleController extends AbstractAdminApiController
                 return $this->getJsonResponse($result);
             }
 
-            $user = new User($data['id']);
+            $user = new User($data['userId']);
 
             if (!isset($data['roles'])) {
                 $result = new Result(
@@ -208,6 +205,15 @@ class AdminApiUserRoleController extends AbstractAdminApiController
         $userRoleService = $this->getServiceLocator()->get(
             'RcmUser\User\Service\UserRoleService'
         );
+
+        // @todo implement this
+        $result = new Result(
+            null,
+            Result::CODE_FAIL,
+            "Method not available."
+        );
+
+        return $this->getJsonResponse($result);
 
         try {
 

@@ -19,7 +19,6 @@ namespace RcmUser\User\Db;
 
 
 use Doctrine\ORM\EntityManager;
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\Result;
@@ -126,16 +125,37 @@ class DoctrineUserRoleDataMapper
      */
     public function add(User $user, $aclRoleId)
     {
-        $userId = $user->getId();
-
-        if (empty($userId)) {
+        if (!$this->canAdd($user, $aclRoleId)) {
 
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'User id required to add user role.'
+                'Role not available to add or user not valid.'
             );
         }
+
+        $result = $this->read($user);
+
+        if (!$result->isSuccess()) {
+
+            $result->setMessage("Could not add role: {$aclRoleId}");
+
+            return $result;
+        }
+
+
+        $currentRoles = $result->getData();
+
+        if (in_array($aclRoleId, $currentRoles)) {
+
+            return new Result(
+                $aclRoleId,
+                Result::CODE_FAIL,
+                "Role: {$aclRoleId} already exists."
+            );
+        }
+
+        $userId = $user->getId();
 
         $userRole = new DoctrineUserRole();
         $userRole->setUserId($userId);
@@ -161,16 +181,15 @@ class DoctrineUserRoleDataMapper
      */
     public function remove(User $user, $aclRoleId)
     {
-        $userId = $user->getId();
-
-        if (empty($userId)) {
-
+        if(!$this->canRemove($user, $aclRoleId)){
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'User id required to add user role.'
+                'Missing user id to remove role.'
             );
         }
+
+        $userId = $user->getId();
 
         $userRoles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
@@ -230,7 +249,7 @@ class DoctrineUserRoleDataMapper
         }
 
         $returnResult = new Result(
-            null,
+            array(),
             Result::CODE_SUCCESS
         );
 
@@ -336,12 +355,9 @@ class DoctrineUserRoleDataMapper
             $curRoles = array();
         }
 
-        $result = $this->getAclRoleDataMapper()->fetchAll();
+        $availableRoles = $this->getAvailableRoles();
 
-        if ($result->isSuccess()) {
-
-            $availableRoles = $result->getData();
-        } else {
+        if (empty($availableRoles)) {
 
             throw new RcmUserException('No roles are available to assign.');
         }
@@ -382,9 +398,7 @@ class DoctrineUserRoleDataMapper
 
             // trim out current roles as we find them to leave only roles that
             // do not exist
-
             $index = array_search($roleId, $invalidRoles);
-            //$indexRol = array_search($roleId, $roles);
             if ($index !== false) {
 
                 unset($invalidRoles[$index]);
@@ -427,13 +441,16 @@ class DoctrineUserRoleDataMapper
         }
 
         $returnResult->setData(
-            array(
-                'added' => $addedRoles,
-                'removed' => $removedRoles,
-                'ignored' => $ignored,
-                'roles' => $curRoles,
-            )
+            $curRoles
         );
+
+        $resultInfo = array(
+            'added' => $addedRoles,
+            'removed' => $removedRoles,
+            'ignored' => $ignored,
+        );
+
+        $returnResult->setMessage(json_encode($resultInfo));
 
         return $returnResult;
     }

@@ -59,6 +59,18 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     protected $description = '';
 
     /**
+     * Sets the Role identifier
+     *
+     * @param string $roleId
+     */
+    public function __construct($roleId = null)
+    {
+        if($roleId !== null){
+            $this->roleId = (string) $roleId;
+        }
+    }
+
+    /**
      * setRoleId
      *
      * @param string $roleId role identity

@@ -43,11 +43,6 @@ class UserDataMapper implements UserDataMapperInterface
     const USERNAME_FIELD = 'username';
 
     /**
-     * @var string
-     */
-    protected $defaultUserState = User::STATE_DISABLED;
-
-    /**
      * @var UserDataPreparerInterface
      */
     protected $userDataPreparer;
@@ -99,28 +94,6 @@ class UserDataMapper implements UserDataMapperInterface
     public function getUserValidator()
     {
         return $this->userValidator;
-    }
-
-    /**
-     * setDefaultUserState
-     *
-     * @param string $defaultUserState defaultUserState
-     *
-     * @return void
-     */
-    public function setDefaultUserState($defaultUserState)
-    {
-        $this->defaultUserState = $defaultUserState;
-    }
-
-    /**
-     * getDefaultUserState
-     *
-     * @return string
-     */
-    public function getDefaultUserState()
-    {
-        return $this->defaultUserState;
     }
 
     /**

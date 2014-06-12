@@ -56,8 +56,8 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
 
                     <div class="panel-body" ng-show="userPanelBodyShow">
                         <div class="" ng-controller="rcmuserAdminUser" ng-init="user=user;">
+                            <pre>{{user | json}}</pre>
                             <section class="user">
-                                <pre>{{user | json}}</pre>
                                 <div class="userDetails">
                                     <form role="form">
                                         <div class="form-group">
@@ -79,7 +79,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                         </div>
 
                                         <div class="form-group">
-                                            <label for="password">Password</label>
+                                            <label for="password">Password: </label>
                                             <input
                                                 class="form-control"
                                                 id="password"
@@ -100,6 +100,28 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                                 >
                                                 <option value="">n/a</option>
                                             </select>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="email">Email:</label>
+                                            <input
+                                                class="form-control"
+                                                id="email"
+                                                ng-model="user.email"
+                                                placeholder="email@example.com"
+                                                type="email"
+                                                />
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label for="name">Display name: </label>
+                                            <input
+                                                class="form-control"
+                                                id="name"
+                                                ng-model="user.name"
+                                                placeholder=""
+                                                type="text"
+                                                />
                                         </div>
 
                                         <div class="form-group">
@@ -138,7 +160,17 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                                             </button>
                                                             <ul class="dropdown-menu" role="menu">
                                                                 <li ng-repeat="(roleNs, role) in roles">
-                                                                    <a href="#" ng-click="addRole(user, role.roleId)" ng-hide="isDefaultRole(role.roleId)">{{getNamespaceRepeatString(roleNs, '..')}} {{role.roleId}}</a>
+                                                                    <a
+                                                                        href="#"
+                                                                        ng-click="addRole(user, role.roleId)"
+                                                                        ng-hide="isDefaultRole(role.roleId)">
+                                                                        {{getNamespaceRepeatString(roleNs, '..')}} {{role.roleId}}
+                                                                    </a>
+                                                                    <a
+                                                                        href="#"
+                                                                        ng-show="isDefaultRole(role.roleId)">
+                                                                        {{getNamespaceRepeatString(roleNs, '..')}} {{role.roleId}} (default role)
+                                                                    </a>
                                                                 </li>
                                                             </ul>
                                                         </div>
@@ -150,28 +182,24 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                     </form>
                                 </div>
                                 <div class="">
-                                    <button type="button" class="btn btn-primary btn-xs" ng-click="saveUser()" ng-hide="">
+                                    <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+
+                                    <button type="button" class="btn btn-primary btn-xs" ng-click="updateUser(user)" ng-hide="">
                                         <i class="glyphicon glyphicon-edit"></i> save user
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveUser()" ng-hide="">
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="deleteUser(user)" ng-hide="">
                                         <i class="glyphicon glyphicon-minus"></i> remove user
                                     </button>
-                                    <!--
-                                    <button type="button" class="btn btn-xs" ng-click="openEditUser()" ng-hide="">
-                                        <i class="glyphicon glyphicon-edit"></i> edit user properties
+                                    <button type="button" class="btn btn-xs" ng-click="resetUser()" ng-hide="">
+                                        reset
                                     </button>
-                                    -->
                                 </div>
                             </section>
 
                             <section class="userProperties">
                                 <div class="loading" ng-show="loading">LOADING...</div>
-
-                                <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
-
                                 <div class="userEdit" ng-show="showEdit">
-                                    EDIT
-                                    {{user | json}}
+                                    <!--@future: Load links to other edit pages-->
                                 </div>
                             </section>
 

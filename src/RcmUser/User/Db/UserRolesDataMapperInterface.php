@@ -39,11 +39,11 @@ interface UserRolesDataMapperInterface
 {
 
     /**
-     * getAclRoleDataMapper
+     * getAvailableRoles
      *
-     * @return AclRoleDataMapperInterface
+     * @return array
      */
-    public function getAclRoleDataMapper();
+    public function getAvailableRoles();
 
     /**
      * fetchAll
