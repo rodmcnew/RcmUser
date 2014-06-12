@@ -14,7 +14,6 @@
  * @version   GIT: <git_id>
  * @link      https://github.com/reliv
  */
-
 return array(
 
     'RcmUser' => array(
@@ -496,47 +495,47 @@ return array(
     'controllers' => array(
         'invokables' => array(
             // GENERAL
-            'RcmUser\Controller\User'
-            => 'RcmUser\Controller\UserController',
+            'RcmUser\Controller\User' =>
+                'RcmUser\Controller\UserController',
             // ADMIN GENERAL
-            'RcmUser\Controller\AdminJsController'
-            => 'RcmUser\Controller\AdminJsController',
+            'RcmUser\Controller\AdminJsController' =>
+                'RcmUser\Controller\AdminJsController',
 
-            'RcmUser\Controller\AdminCssController'
-            => 'RcmUser\Controller\AdminCssController',
+            'RcmUser\Controller\AdminCssController' =>
+                'RcmUser\Controller\AdminCssController',
             // ADMIN ACL
-            'RcmUser\Controller\AdminAclController'
-            => 'RcmUser\Controller\AdminAclController',
+            'RcmUser\Controller\AdminAclController' =>
+                'RcmUser\Controller\AdminAclController',
 
-            'RcmUser\Controller\AdminApiAclResourcesController'
-            => 'RcmUser\Controller\AdminApiAclResourcesController',
+            'RcmUser\Controller\AdminApiAclResourcesController' =>
+                'RcmUser\Controller\AdminApiAclResourcesController',
 
-            'RcmUser\Controller\AdminApiAclRulesByRolesController'
-            => 'RcmUser\Controller\AdminApiAclRulesByRolesController',
+            'RcmUser\Controller\AdminApiAclRulesByRolesController' =>
+                'RcmUser\Controller\AdminApiAclRulesByRolesController',
 
-            'RcmUser\Controller\AdminApiAclRuleController'
-            => 'RcmUser\Controller\AdminApiAclRuleController',
+            'RcmUser\Controller\AdminApiAclRuleController' =>
+                'RcmUser\Controller\AdminApiAclRuleController',
 
-            'RcmUser\Controller\AdminApiAclRoleController'
-            => 'RcmUser\Controller\AdminApiAclRoleController',
+            'RcmUser\Controller\AdminApiAclRoleController' =>
+                'RcmUser\Controller\AdminApiAclRoleController',
 
-            'RcmUser\Controller\AdminApiAclDefaultUserRoleController'
-            => 'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
+            'RcmUser\Controller\AdminApiAclDefaultUserRoleController' =>
+                'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
             // ADMIN USERS
-            'RcmUser\Controller\AdminUserController'
-            => 'RcmUser\Controller\AdminUserController',
+            'RcmUser\Controller\AdminUserController' =>
+                'RcmUser\Controller\AdminUserController',
 
-            'RcmUser\Controller\AdminApiUserController'
-            => 'RcmUser\Controller\AdminApiUserController',
+            'RcmUser\Controller\AdminApiUserController' =>
+                'RcmUser\Controller\AdminApiUserController',
 
             // ADMIN USER ROLES
             /*'RcmUser\Controller\AdminUserRoleController'
             => 'RcmUser\Controller\AdminUserRoleController',*/
-            'RcmUser\Controller\AdminApiUserRolesController'
-            => 'RcmUser\Controller\AdminApiUserRolesController',
+            'RcmUser\Controller\AdminApiUserRolesController' =>
+                'RcmUser\Controller\AdminApiUserRolesController',
 
-            'RcmUser\Controller\AdminApiUserRoleController'
-            => 'RcmUser\Controller\AdminApiUserRoleController',
+            'RcmUser\Controller\AdminApiUserRoleController' =>
+                'RcmUser\Controller\AdminApiUserRoleController',
         ),
     ),
 
@@ -724,7 +723,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/api/rcmuser-user-roles[/:id]',
                     //'constraints' => array(
-                        //'id' => '[a-zA-Z0-9_-]+',
+                    //'id' => '[a-zA-Z0-9_-]+',
                     //),
                     'defaults' => array(
                         'controller' =>
@@ -738,7 +737,7 @@ return array(
                 'options' => array(
                     'route' => '/admin/api/rcmuser-user-role[/:id]',
                     //'constraints' => array(
-                        //'id' => '[a-zA-Z0-9_-]+',
+                    //'id' => '[a-zA-Z0-9_-]+',
                     //),
                     'defaults' => array(
                         'controller' =>
