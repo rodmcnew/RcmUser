@@ -111,6 +111,15 @@ class RcmUserAclResourceProvider extends ResourceProvider
             'delete',
         );
 
+        $userPrivileges = array(
+            'read',
+            'update',
+            'create',
+            'delete',
+            'update_credentials',
+            'create_credentials',
+        );
+
         /* parent resource */
         $this->resources['rcmuser'] = new AclResource(
             'rcmuser'
@@ -123,26 +132,22 @@ class RcmUserAclResourceProvider extends ResourceProvider
         $this->resources['rcmuser-user-administration'] = new AclResource(
             'rcmuser-user-administration',
             'rcmuser',
-            array('read', 'write')
+            $userPrivileges
         );
         $this->resources['rcmuser-user-administration']
             ->setName('User Administration');
         $this->resources['rcmuser-user-administration']
             ->setDescription('Allows the editing of user data.');
-        $this->resources['rcmuser-user-administration']
-            ->setPrivileges($privileges);
 
         /* access and roles */
         $this->resources['rcmuser-acl-administration'] = new AclResource(
             'rcmuser-acl-administration',
             'rcmuser',
-            array()
+            $privileges
         );
         $this->resources['rcmuser-acl-administration']
             ->setName('Role and Access Administration');
         $this->resources['rcmuser-acl-administration']
             ->setDescription('Allows the editing of user access and role data.');
-        $this->resources['rcmuser-acl-administration']
-            ->setPrivileges($privileges);
     }
 } 

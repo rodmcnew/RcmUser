@@ -53,7 +53,6 @@ interface ResourceProviderInterface
      */
     public function getProviderId();
 
-
     /**
      * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges

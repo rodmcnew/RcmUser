@@ -74,6 +74,41 @@ class UserPropertyService extends EventProvider
     }
 
     /**
+     * populateUserProperty
+     * Build a new user property and populate data
+     *
+     * @param string $propertyNameSpace propertyNameSpace
+     * @param mixed  $data              data to populate property
+     *
+     * @return Result
+     */
+    public function populateUserProperty(
+        $propertyNameSpace,
+        $data = array()
+    ) {
+        $results = $this->getEventManager()->trigger(
+            __FUNCTION__,
+            $this,
+            array('propertyNameSpace' => $propertyNameSpace, 'data' => $data),
+            function ($result) {
+
+                if($result instanceof Result){
+                    return $result->isSuccess();
+                }
+                return false;
+            }
+        );
+
+        if ($results->stopped()) {
+
+            return $results->last();
+        }
+
+        return new Result(null, Result::CODE_FAIL, 'No property found to populate.');
+    }
+
+    /**
+     * @todo
      * getUserPropertyLinks
      * Get a link to an edit page for this user
      *
@@ -108,6 +143,7 @@ class UserPropertyService extends EventProvider
     }
 
     /**
+     * @todo
      * getUserPropertyIsAllowed
      * Check access for a user to a property
      * If no results returned

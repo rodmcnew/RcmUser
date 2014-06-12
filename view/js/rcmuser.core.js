@@ -12,6 +12,8 @@ angular.module('rcmuserCore', [])
 
             self.execute = function (config, onSuccess, onFail) {
 
+                //console.log(config);
+
                 self.http(config)
                     .success(function (data, status, headers, config) {
 
@@ -114,6 +116,11 @@ angular.module('rcmuserCore', [])
             scope.closeAlert = function (index) {
                 scope.rcmResults.clear();
             };
+
+            scope.type = {
+                0: 'warning',
+                1: 'info'
+            }
         }
 
         return {
@@ -124,9 +131,9 @@ angular.module('rcmuserCore', [])
                 'alertTitle': '='
             },
             template: '' +
-                '<alert class="alert" ng-repeat="alert in rcmResults.results" type="{{alert.type}}" close="closeAlert($index)">' +
+                '<alert class="alert alert-{{type[alert.code]}}" ng-repeat="alert in rcmResults.results" type="" close="closeAlert($index)">' +
                 '    <div class="alert-header">' +
-                '        <i class="glyphicon glyphicon-warning-sign"></i>' +
+                '        <i class="glyphicon glyphicon-{{type[alert.code]}}-sign"></i>' +
                 '        <span class="alert-title"><strong>{{alertTitle}}</strong></span>' +
                 '    </div>' +
                 '    <div class="alert-messages">' +

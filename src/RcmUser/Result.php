@@ -67,7 +67,7 @@ class Result implements \JsonSerializable
     /**
      * __construct
      *
-     * @param null  $data     data
+     * @param mixed $data     data
      * @param int   $code     code
      * @param array $messages messages
      */
@@ -79,7 +79,11 @@ class Result implements \JsonSerializable
 
         if (!is_array($messages)) {
 
-            $this->setMessage((string)$messages);
+            $message = (string)$messages;
+            if (!empty($message)) {
+
+                $this->setMessage($message);
+            }
         } else {
 
             $this->setMessages($messages);
@@ -133,7 +137,7 @@ class Result implements \JsonSerializable
     /**
      * setMessage
      *
-     * @param mixed $value value
+     * @param string $value value
      *
      * @return void
      */
@@ -145,8 +149,8 @@ class Result implements \JsonSerializable
     /**
      * getMessage
      *
-     * @param int  $key     key
-     * @param null $default default
+     * @param int   $key     key
+     * @param mixed $default default
      *
      * @return null|mixed
      */

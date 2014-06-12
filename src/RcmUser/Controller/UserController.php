@@ -89,7 +89,7 @@ class UserController extends AbstractActionController
         var_dump($updatedSessUser);
         /* */
 
-        /** @var \RcmUser\Log\DoctrineLogger $logger */
+        /** @var \RcmUser\Log\DoctrineLogger $logger *
         $logger = $this->getServiceLocator()->get(
             'RcmUser\Log\Logger'
         );
@@ -97,7 +97,14 @@ class UserController extends AbstractActionController
         $logger->info('TEST', array('SOMETEST','DATA'));
         /* */
 
+        //var_export($this->getServiceLocator()->getCanonicalNames());
+        /** @var \Zend\Log\WriterPluginManager $LogWriterManager */
+        //$LogWriterManager = $this->getServiceLocator()->get('LogWriterManager');
+        //print_r($LogWriterManager->getServiceLocator());
 
+        /** @var \Zend\Log\ProcessorPluginManager $LogProcessorManager */
+        //$LogProcessorManager = $this->getServiceLocator()->get('LogProcessorManager');
+        //print_r($LogProcessorManager);
 
         return $test;
     }

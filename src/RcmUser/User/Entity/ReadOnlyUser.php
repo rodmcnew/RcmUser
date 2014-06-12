@@ -126,6 +126,42 @@ class ReadOnlyUser extends User
     }
 
     /**
+     * setEmail
+     *
+     * @param string $email valid email
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserReadOnlyException
+     */
+    public function setEmail($email)
+    {
+        if (!$this->locked) {
+
+            return parent::setEmail($email);
+        }
+
+        throw new RcmUserReadOnlyException('Object is READ ONLY');
+    }
+
+    /**
+     * setName
+     *
+     * @param string $name Display name
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserReadOnlyException
+     */
+    public function setName($name)
+    {
+        if (!$this->locked) {
+
+            return parent::setName($name);
+        }
+
+        throw new RcmUserReadOnlyException('Object is READ ONLY');
+    }
+
+    /**
      * setProperties
      *
      * @param array $properties properties
