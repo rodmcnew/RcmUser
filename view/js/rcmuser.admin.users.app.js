@@ -117,7 +117,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.addUser = function (user) {
 
-                console.log(user);
+                $log.log(user);
             }
 
             $scope.updateUser = function (user) {
@@ -125,7 +125,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
                 var onSuccess = function (data, status) {
 
-                    console.log(data);
+                    $log.log(data);
                     $scope.user = data.data;
                 }
 
@@ -133,8 +133,14 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             }
 
             $scope.removeUser = function (user) {
+                $log.log(user);
+                var onSuccess = function (data, status) {
 
-                console.log(user);
+                    //$log.log(data);
+                    //$scope.user = null;
+                }
+
+                self.removeUser(onSuccess, user);
             }
 
             $scope.resetUser = function ()
@@ -149,8 +155,13 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
                 var apiSuccess = function (data, status) {
 
-                    console.log(data);
+                    $log.log(data);
                     $scope.loading = false;
+
+                    if(data.messages.length == 0){
+                        data.messages.push("Success!")
+                    }
+                    $scope.alerts.add(data);
 
                     if (typeof(onSuccess) === 'function') {
                         onSuccess(data, status);
@@ -172,6 +183,36 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 self.rcmUserHttp.execute(config, apiSuccess, apiFail);
             };
 
+            self.removeUser = function (onSuccess, user) {
+
+                $scope.alerts = new RcmResults()
+                $scope.loading = true;
+
+                var apiSuccess = function (data, status) {
+
+                    $log.log(data);
+                    $scope.loading = false;
+
+                    if (typeof(onSuccess) === 'function') {
+                        onSuccess(data, status);
+                    }
+                };
+
+                var apiFail = function (data, status) {
+
+                    $scope.loading = false;
+                    $scope.alerts.add(data);
+                };
+
+                var config = {
+                    method: 'DELETE',
+                    url: self.url.users + '/' + user.id,
+                    data: user
+                };
+
+                self.rcmUserHttp.execute(config, apiSuccess, apiFail);
+            };
+
             self.getUser = function (onSuccess, user) {
 
                 $scope.alerts = new RcmResults()
@@ -179,7 +220,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
                 var apiSuccess = function (data, status) {
 
-                    console.log(data);
+                    $log.log(data);
                     $scope.loading = false;
 
                     if (typeof(onSuccess) === 'function') {
@@ -221,6 +262,8 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 if (compareStr(user.id, query)
                     || compareStr(user.username, query)
                     || compareStr(user.state, query)
+                    || compareStr(user.email, query)
+                    || compareStr(user.name, query)
                     ) {
                     result.push(user);
                 }

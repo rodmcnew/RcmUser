@@ -181,12 +181,12 @@ $this->headScript()->appendFile($this->url('RcmUserAdminUserJs'));
                                     </form>
                                 </div>
                                 <div class="">
-                                    <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+                                    <div rcm-alerts rcm-results="alerts" alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
 
                                     <button type="button" class="btn btn-primary btn-xs" ng-click="updateUser(user)" ng-hide="">
                                         <i class="glyphicon glyphicon-edit"></i> save user
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-xs" ng-click="deleteUser(user)" ng-hide="">
+                                    <button type="button" class="btn btn-warning btn-xs" ng-click="removeUser(user)" ng-hide="">
                                         <i class="glyphicon glyphicon-minus"></i> remove user
                                     </button>
                                     <button type="button" class="btn btn-xs" ng-click="resetUser()" ng-hide="">

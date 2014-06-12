@@ -19,7 +19,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Add rule: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+                <div rcm-alerts rcm-results="alerts" alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
                 <form name="addRuleForm" role="form">
                     <div class="form-group">
                         <label for="rule">Rule: </label>
@@ -91,7 +91,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Are you sure you want to delete rule: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+                <div rcm-alerts rcm-results="alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
                 <div>
                     <div class="rule">{{ruleData.rule}}</div>
                     <div>Role of:</div>
@@ -133,7 +133,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Add role: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+                <div rcm-alerts rcm-results="alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
                 <form name="addRoleForm" role="form">
                     <div class="form-group">
                         <label for="roleId">Role Id: </label>
@@ -182,7 +182,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Edit role: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+                <div rcm-alerts rcm-results="alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
                 <!-- @todo creat me
                 <form name="editRoleForm" role="form">
                     <div class="form-group">
@@ -233,7 +233,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Are you sure you want to delete: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
+                <div rcm-alerts rcm-results="alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
                 <div>
                     <div>Role:</div>
                     <div class="roleId">{{roleData.role.roleId}}</div>
