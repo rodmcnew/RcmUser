@@ -199,11 +199,6 @@ class DoctrineUserDataMapper
     public function create(User $requestUser, User $responseUser)
     {
         /* VALIDATE */
-        if (empty($responseUser->getState())) {
-
-            $responseUser->setState($this->getDefaultUserState());
-        }
-
         $result = $this->getUserValidator()->validateCreateUser(
             $requestUser,
             $responseUser

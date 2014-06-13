@@ -62,8 +62,8 @@ class AdminJsController extends AbstractAdminController
 
         $resources = $aclResourceService->getResourcesWithNamespace();
         $rolesResult = $aclDataService->getRulesByRoles();
-        $superAdminRoleId = $aclDataService->getSuperAdminRoleId();
-        $guestRoleId = $aclDataService->getGuestRoleId();
+        $superAdminRoleId = $aclDataService->getSuperAdminRoleId()->getData();
+        $guestRoleId = $aclDataService->getGuestRoleId()->getData();
 
         $viewModel = new ViewModel(
             array(
@@ -115,11 +115,14 @@ class AdminJsController extends AbstractAdminController
 
         $rolesResult = $aclDataService->getNamespacedRoles();
 
+        $defaultRolesResult = $aclDataService->getDefaultUserRoleIds();
+
         $viewModel = new ViewModel(
             array(
                 'usersResult' => $userResult,
                 'rolePropertyId' => $rolePropertyId,
                 'roles' => $rolesResult->getData(),
+                'defaultRoles' => $defaultRolesResult->getData(),
             )
         );
 

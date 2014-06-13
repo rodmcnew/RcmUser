@@ -18,6 +18,7 @@
 namespace RcmUser\User\Service;
 
 
+use RcmUser\Result;
 use RcmUser\User\Db\UserRolesDataMapperInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
@@ -79,27 +80,31 @@ class UserRoleService
     /**
      * getDefaultGuestRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function getDefaultGuestRoleIds()
     {
-        return $this->getAclRoleDataMapper()->fetchDefaultGuestRoleIds();
+        $result = $this->getAclRoleDataMapper()->fetchDefaultGuestRoleIds();
+
+        return $result;
     }
 
     /**
      * getDefaultUserRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function getDefaultUserRoleIds()
     {
-        return $this->getAclRoleDataMapper()->fetchDefaultUserRoleIds();
+        $result = $this->getAclRoleDataMapper()->fetchDefaultUserRoleIds();
+
+        return $result;
     }
 
     /**
      * getGuestRoleId
      *
-     * @return string|null
+     * @return Result
      */
     public function getGuestRoleId()
     {
@@ -109,7 +114,7 @@ class UserRoleService
     /**
      * getSuperAdminRoleId
      *
-     * @return null|string
+     * @return Result
      */
     public function getSuperAdminRoleId()
     {
@@ -119,9 +124,10 @@ class UserRoleService
     /**
      * getAllUserRoles
      *
-     * @return mixed
+     * @return Result
      */
-    public function getAllUserRoles(){
+    public function getAllUserRoles()
+    {
 
         return $this->getUserRolesDataMapper()->fetchAll();
     }
@@ -135,13 +141,13 @@ class UserRoleService
      */
     public function isGuest($roles)
     {
-        $guestRoleId = $this->getGuestRoleId();
-        $key = array_search($guestRoleId, $roles);
+        $guestRoleId = $this->getGuestRoleId()->getData();
+        $inArray = in_array($guestRoleId, $roles);
 
         /**
          * If we have the guest role and only the guest role;
          */
-        if ($key !== false && (count($roles) < 2)) {
+        if ($inArray && (count($roles) < 2)) {
 
             return true;
         }
@@ -158,10 +164,9 @@ class UserRoleService
      */
     public function isSuperAdmin($roles)
     {
-        $superAdminRoleId = $this->getSuperAdminRoleId();
-        $key = array_search($superAdminRoleId, $roles);
+        $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
 
-        if ($key !== false) {
+        if (in_array($superAdminRoleId, $roles)) {
 
             return true;
         }
@@ -170,25 +175,179 @@ class UserRoleService
     }
 
     /**
-     * isDefaultRoles
+     * isDefaultGuestRole
      *
-     * @param array $roles roles
+     * @param array $roleId role id
      *
      * @return bool
      */
-    public function isDefaultRoles($roles)
+    public function isDefaultGuestRole($roleId)
     {
-        if($roles == $this->getDefaultGuestRoleIds()){
+        $defaultGuestRoles = $this->getDefaultUserRoleIds()->getData();
 
-            return true;
-        }
-
-        if($roles == $this->getDefaultUserRoleIds()){
+        if (in_array($roleId, $defaultGuestRoles)) {
 
             return true;
         }
 
         return true;
+    }
+
+    /**
+     * isDefaultGuestRoles
+     *
+     * @param array $roleIds role ids
+     *
+     * @return bool
+     */
+    public function isDefaultGuestRoles($roleIds)
+    {
+        $defaultGuestRoles = $this->getDefaultUserRoleIds()->getData();
+
+        foreach($defaultGuestRoles as $roleId){
+
+            if(!in_array($roleId, $roleIds)){
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * isDefaultUserRole
+     *
+     * @param array $roleId role id
+     *
+     * @return bool
+     */
+    public function isDefaultUserRole($roleId)
+    {
+        $defaultUserRoles = $this->getDefaultUserRoleIds()->getData();
+
+        return in_array($roleId, $defaultUserRoles);
+    }
+
+    /**
+     * isDefaultUserRoles
+     *
+     * @param array $roleIds role ids
+     *
+     * @return bool
+     */
+    public function isDefaultUserRoles($roleIds)
+    {
+        $defaultUserRoles = $this->getDefaultUserRoleIds()->getData();
+
+        foreach($defaultUserRoles as $roleId){
+
+            if(!in_array($roleId, $roleIds)){
+
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * canAdd role
+     *
+     * @param User   $user
+     * @param string $aclRoleId
+     *
+     * @return bool
+     */
+    public function canAddRole(User $user, $aclRoleId)
+    {
+        if ($this->isDefaultUserRole($aclRoleId)) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * validateAddRoles
+     *
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return Result
+     */
+    public function validateAddRoles(User $user, $roles)
+    {
+        $result = new Result(
+            null,
+            Result::CODE_SUCCESS
+        );
+
+        foreach($roles as $key => $roleId){
+
+            $can = $this->canAddRole($user, $roleId);
+            if (!$can) {
+
+                $result->setCode(Result::CODE_FAIL);
+                $result->setMessage(
+                    "Role ({$roleId}) is retricted and cannot be added."
+                );
+
+                unset($roles[$key]);
+            }
+        }
+
+        $result->setData($roles);
+
+        return $result;
+    }
+
+    /**
+     * canRemove role
+     *
+     * @param User   $user   user
+     * @param string $roleId roleId
+     *
+     * @return bool
+     */
+    public function canRemoveRole(User $user, $roleId)
+    {
+        return true;
+    }
+
+    /**
+     * validateRemoveRoles
+     *
+     * @param User  $user  user
+     * @param array $roles roles
+     *
+     * @return Result
+     */
+    public function validateRemoveRoles(User $user, $roles)
+    {
+        $result = new Result(
+            null,
+            Result::CODE_SUCCESS
+        );
+
+        foreach($roles as $key => $roleId){
+
+            $can = $this->canRemoveRole($user, $roleId);
+            if (!$can) {
+
+                $result->setCode(Result::CODE_FAIL);
+                $result->setMessage(
+                    "Role ({$roleId}) is retricted and cannot be removed."
+                );
+
+                unset($roles[$key]);
+            }
+        }
+
+        $result->setData($roles);
+
+        return $result;
     }
 
     /**
@@ -201,19 +360,37 @@ class UserRoleService
      */
     public function addRole(User $user, $roleId)
     {
+        if (!$this->canAddRole($user, $roleId)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Role ({$roleId}) is set via logic and cannot be added."
+            );
+        }
+
         return $this->getUserRolesDataMapper()->add($user, $roleId);
     }
 
     /**
      * removeRole
      *
-     * @param User    $user   user
-     * @param string  $roleId aclRoleId
+     * @param User   $user   user
+     * @param string $roleId aclRoleId
      *
      * @return Result
      */
     public function removeRole(User $user, $roleId)
     {
+        if (!$this->canRemoveRole($user, $roleId)) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Role ({$roleId}) is set via logic and cannot be removed."
+            );
+        }
+
         return $this->getUserRolesDataMapper()->remove($user, $roleId);
     }
 
@@ -227,6 +404,14 @@ class UserRoleService
      */
     public function createRoles(User $user, $roles = array())
     {
+
+        $result = $this->validateAddRoles($user, $roles);
+
+        if(!$result->isSuccess()){
+
+            return $result;
+        }
+
         return $this->getUserRolesDataMapper()->create($user, $roles);
     }
 
@@ -253,6 +438,13 @@ class UserRoleService
      */
     public function updateRoles(User $user, $roles = array())
     {
+        $result = $this->validateAddRoles($user, $roles);
+
+        if(!$result->isSuccess()){
+
+            return $result;
+        }
+
         return $this->getUserRolesDataMapper()->update($user, $roles);
     }
 
@@ -260,12 +452,20 @@ class UserRoleService
      * deleteRoles
      *
      * @param User $user user
+     * @param array $roles roles
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function deleteRoles(User $user)
+    public function deleteRoles(User $user, $roles = array())
     {
+        $result = $this->validateRemoveRoles($user, $roles);
+
+        if(!$result->isSuccess()){
+
+            return $result;
+        }
+
         return $this->getUserRolesDataMapper()->delete($user);
     }
 
@@ -276,8 +476,9 @@ class UserRoleService
      *
      * @return UserRoleProperty
      */
-    public function buildUserRoleProperty($roles = array())
-    {
+    public function buildUserRoleProperty(
+        $roles = array()
+    ) {
         return new UserRoleProperty(
             $roles
         );
@@ -291,10 +492,18 @@ class UserRoleService
      *
      * @return UserRoleProperty
      */
-    public function buildValidUserRoleProperty(User $user, $roles = array()){
+    public function buildValidUserRoleProperty(
+        User $user,
+        $roles = array()
+    ) {
+
+        $roles = $this->buildValidRoles(
+            $user,
+            $roles
+        );
 
         return $this->buildUserRoleProperty(
-            $this->buildValidRoles($user, $roles)
+            $roles
         );
     }
 
@@ -306,8 +515,10 @@ class UserRoleService
      *
      * @return array
      */
-    public function buildValidRoles(User $user, $roles = array())
-    {
+    public function buildValidRoles(
+        User $user,
+        $roles = array()
+    ) {
         if (!empty($roles)) {
 
             return $roles;
@@ -315,10 +526,10 @@ class UserRoleService
 
         if (empty($user->getId())) {
 
-            $roles = $this->getDefaultGuestRoleIds();
+            $roles = $this->getDefaultGuestRoleIds()->getData();
         } else {
 
-            $roles = $this->getDefaultUserRoleIds();
+            $roles = $this->getDefaultUserRoleIds()->getData();
         }
 
         return $roles;

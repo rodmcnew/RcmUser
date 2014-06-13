@@ -40,28 +40,28 @@ interface AclRoleDataMapperInterface
     /**
      * fetchSuperAdminRoleId
      *
-     * @return string|null
+     * @return Result
      */
     public function fetchSuperAdminRoleId();
 
     /**
      * fetchGuestRoleId
      *
-     * @return string|null
+     * @return Result
      */
     public function fetchGuestRoleId();
 
     /**
      * fetchDefaultGuestRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function fetchDefaultGuestRoleIds();
 
     /**
      * fetchDefaultUserRoleIds
      *
-     * @return array
+     * @return Result
      */
     public function fetchDefaultUserRoleIds();
 
@@ -77,7 +77,7 @@ interface AclRoleDataMapperInterface
      *
      * @param string $roleId roleId
      *
-     * @return mixed
+     * @return Result
      */
     public function fetchByRoleId($roleId);
 

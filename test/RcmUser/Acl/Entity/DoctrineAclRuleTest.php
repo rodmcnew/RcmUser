@@ -50,7 +50,7 @@ class DoctrineAclRuleTest extends Zf2TestCase
     {
         $aclRule = new DoctrineAclRule();
 
-        $roleId = 123;
+        $roleId = '123';
         $id = 321;
 
         $aclRule->setId($id);

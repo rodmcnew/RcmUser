@@ -51,7 +51,7 @@ class DoctrineAclRoleTest extends Zf2TestCase
         $aclRole = new DoctrineAclRole();
 
         $id = 123;
-        $parentRoleId = 321;
+        $parentRoleId = '321';
 
         $aclRole->setId($id);
         $aclRole->setParentRoleId($parentRoleId);

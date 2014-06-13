@@ -7,11 +7,17 @@
 .modal-content .dropdown {
 
 }
+
 .accordion-inner {
 }
 .accordion-body[class*="in collapse"]{ overflow:visible;}
 .accordion-body.in:hover { overflow:visible; }
 .accordion-body.in { overflow:visible; }
+
+.panel-group .panel {
+    overflow: visible;
+}
+
 /* <loader> */
 .spinner {
     display: inline-block;
@@ -75,6 +81,11 @@
 }
 /* </ALERT> */
 
+.rcmuser .modal-body
+{
+    max-height: none;
+    overflow: visible;
+}
 .rcmuser a.nostyle,
 .rcmuser a.nostyle:hover,
 .rcmuser a.nostyle:visited,
@@ -112,6 +123,7 @@
 }
 
 .rcmuser .list-dropdown{
+    overflow: visible;
     position: relative;
 }
 

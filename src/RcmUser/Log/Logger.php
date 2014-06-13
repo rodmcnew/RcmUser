@@ -1,0 +1,216 @@
+<?php
+/**
+ * Logger.php
+ *
+ * Logger
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Log
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   GIT: <git_id>
+ * @link      https://github.com/reliv
+ */
+
+namespace RcmUser\Log;
+
+use Zend\Log\LoggerInterface;
+
+
+/**
+ * Class Logger
+ *
+ * Logger
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Log
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
+class Logger implements LoggerInterface
+{
+    protected $logLevel = \Zend\Log\Logger::ERR;
+
+    /**
+     * __construct
+     *
+     * @param int $logLevel logLevel
+     */
+    public function __construct($logLevel = \Zend\Log\Logger::ERR)
+    {
+        $this->setLogLevel($logLevel);
+    }
+
+    /**
+     * setLogLevel
+     *
+     * @param int $logLevel logLevel
+     *
+     * @return void
+     */
+    protected function setLogLevel($logLevel)
+    {
+        $this->logLevel = $logLevel;
+    }
+
+    /**
+     * getLogLevel
+     *
+     * @return int
+     */
+    public function getLogLevel()
+    {
+        return $this->logLevel;
+    }
+
+    /**
+     * getLevel - get the level int from string
+     *
+     * @param string $type type
+     *
+     * @return mixed
+     */
+    public function getLevel($type)
+    {
+        if (defined('\Zend\Log\Logger::' . $type)) {
+
+            return constant('\Zend\Log\Logger::' . $type);
+        }
+
+        return $this->logLevel;
+    }
+
+    /**
+     * canLog
+     *
+     * @param int $type type
+     *
+     * @return bool
+     */
+    public function canLog($type)
+    {
+        $level = $this->getLevel($type);
+
+        if ($level > $this->getLogLevel()) {
+            // no logging
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * log
+     *
+     * @param string $type    type
+     * @param string $message message
+     * @param array  $extra   extra
+     *
+     * @return LoggerInterface
+     */
+    protected function log($type, $message, $extra = array())
+    {
+        if ($this->canLog($type)) {
+            // no logging
+            return $this;
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function emerg($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function alert($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function crit($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function err($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function warn($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function notice($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function info($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+
+    /**
+     * @param string            $message
+     * @param array|Traversable $extra
+     *
+     * @return LoggerInterface
+     */
+    public function debug($message, $extra = array())
+    {
+        return $this->log(__FUNCTION__, $message, $extra);
+    }
+} 

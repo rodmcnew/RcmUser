@@ -39,7 +39,7 @@ use Zend\Log\LoggerInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineLogger implements LoggerInterface
+class DoctrineLogger extends Logger
 {
 
     /**
@@ -47,15 +47,27 @@ class DoctrineLogger implements LoggerInterface
      */
     protected $entityManager;
 
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManager $entityManager, $logLevel = Logger::LEVEL_ERR)
     {
-
         $this->entityManager = $entityManager;
+        $this->setLogLevel($logLevel);
     }
 
-
+    /**
+     * log
+     *
+     * @param string $type    type
+     * @param string $message message
+     * @param array  $extra   extra
+     *
+     * @return LoggerInterface
+     */
     public function log($type, $message, $extra = array())
     {
+        if(!$this->canLog($type)){
+
+            return $this;
+        }
         $tz = new \DateTimeZone('UTC');
         $dateTimeUtc = new \DateTime('now', $tz);
         $type = strtoupper($type);
@@ -65,94 +77,9 @@ class DoctrineLogger implements LoggerInterface
 
         $this->entityManager->persist($logEntry);
         $this->entityManager->flush();
+
+        return $this;
     }
 
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function emerg($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
-
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function alert($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
-
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function crit($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
-
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function err($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
-
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function warn($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
-
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function notice($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
-
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function info($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
-
-    /**
-     * @param string            $message
-     * @param array|Traversable $extra
-     *
-     * @return LoggerInterface
-     */
-    public function debug($message, $extra = array())
-    {
-        $this->log(__FUNCTION__, $message, $extra);
-    }
 
 } 

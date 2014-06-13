@@ -1,8 +1,8 @@
 <?php
 /**
- * AdminApiAclRulesByRolesController.php
+ * AdminApiAclDefaultUserRoleController.php
  *
- * AdminApiAclRulesByRolesController
+ * AdminApiAclDefaultUserRoleController
  *
  * PHP version 5
  *
@@ -17,14 +17,15 @@
 
 namespace RcmUser\Controller;
 
-use Zend\Http\Response;
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Result;
 use Zend\View\Model\JsonModel;
 
-
 /**
- * Class AdminApiAclRulesByRolesController
+ * Class AdminApiAclDefaultUserRoleController
  *
- * AdminApiAclRulesByRolesController
+ * AdminApiAclDefaultUserRoleController
  *
  * PHP version 5
  *
@@ -36,7 +37,7 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminApiAclRulesByRolesController extends AbstractAdminApiController
+class AdminApiAclDefaultUserRoleController extends AbstractAdminApiController
 {
 
     /**
@@ -46,8 +47,6 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
      */
     public function getList()
     {
-
-        // ACCESS CHECK
         if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
             return $this->getNotAllowedResponse();
         }
@@ -59,7 +58,7 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
 
         try {
 
-            $result = $aclDataService->getRulesByRoles();
+            $result = $aclDataService->getDefaultUserRoleIds();
         } catch (\Exception $e) {
 
             return $this->getExceptionResponse($e);
@@ -67,4 +66,5 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
 
         return $this->getJsonResponse($result);
     }
+
 } 

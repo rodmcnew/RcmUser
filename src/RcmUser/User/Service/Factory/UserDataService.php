@@ -48,12 +48,16 @@ class UserDataService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $cfg = $serviceLocator->get('RcmUser\User\Config');
         /** @var \RcmUser\User\Db\UserDataMapper $userDataMapper */
         $userDataMapper = $serviceLocator->get(
             'RcmUser\User\UserDataMapper'
         );
-        $service = new \RcmUser\User\Service\UserDataService();
 
+        $service = new \RcmUser\User\Service\UserDataService();
+        $service->setDefaultUserState(
+            $cfg->get('DefaultUserState', null)
+        );
         $service->setUserDataMapper($userDataMapper);
 
         return $service;

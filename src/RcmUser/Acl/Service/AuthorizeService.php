@@ -349,18 +349,19 @@ class AuthorizeService
         $privilege = null,
         $providerId = null,
         $user = null
-    )
-    {
+    ) {
         if (!($user instanceof User)) {
 
             return false;
         }
 
+        $resourceId = strtolower($resourceId);
+
         $userRoles = $this->getUserRoles($user);
         /* Check super admin
             we over-ride everything if user has super admin
         */
-        $superAdminRoleId = $this->getSuperAdminRoleId();
+        $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
         if (!empty($superAdminRoleId)
             && is_array($userRoles)
             && in_array($superAdminRoleId, $userRoles)
@@ -374,6 +375,7 @@ class AuthorizeService
 
             foreach ($userRoles as $userRole) {
 
+                // @todo this will fail on deny
                 $result = $acl->isAllowed(
                     $userRole,
                     $resourceId,
