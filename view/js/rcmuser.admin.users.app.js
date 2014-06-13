@@ -8,6 +8,8 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
         eval('self.roles = <?php echo json_encode($roles); ?>');
 
+        eval('self.defaultRoles = <?php echo json_encode($defaultRoles); ?>');
+
         eval('self.rolePropertyId = <?php echo json_encode($rolePropertyId); ?>');
 
         self.url = {
@@ -25,9 +27,6 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
     .controller('rcmuserAdminUsers', ['$scope', '$log', '$modal', 'rcmUserHttp', 'RcmUserResult', 'RcmResults', 'rcmuserAdminUsersData',
         function ($scope, $log, $modal, rcmUserHttp, RcmUserResult, RcmResults, rcmuserAdminUsersData) {
             var self = this;
-            self.url = {
-                user: "<?php echo $this->url('RcmUserAdminApiUser', array()); ?>"
-            }
 
             self.rcmUserHttp = rcmUserHttp;
 
@@ -55,22 +54,32 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
         function ($scope, $log, rcmUserHttp, RcmUserResult, RcmResults, rcmuserAdminUsersData, getNamespaceRepeatString) {
 
             var self = this;
-            self.url = {
-                user: "<?php echo $this->url('RcmUserAdminApiUser', array()); ?>"
-            }
-
+            self.url = rcmuserAdminUsersData.url;
             self.rolePropertyId = rcmuserAdminUsersData.rolePropertyId;
-
             self.rcmUserHttp = rcmUserHttp;
 
             $scope.alerts = new RcmResults()
             $scope.loading = false;
 
-
-
             $scope.getNamespaceRepeatString = getNamespaceRepeatString;
 
             $scope.showEdit = false;
+
+            $scope.defaultRoles = rcmuserAdminUsersData.defaultRoles;
+
+            $scope.orgUser = angular.copy($scope.user);
+
+            $scope.isDefaultRole = function(roleId){
+
+                var index = $scope.defaultRoles.indexOf(roleId)
+
+                if(index !== -1){
+
+                    return true;
+                }
+
+                return false;
+            }
 
             $scope.openEditUser = function () {
                 var onSuccess = function (data, status) {
@@ -82,7 +91,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 self.getUser(onSuccess, $scope.user);
             }
 
-            $scope.openRemoveUser = function () {
+            $scope.openDeleteUser = function () {
                 // show dialog
             }
 
@@ -113,13 +122,55 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.updateUser = function (user) {
 
-                console.log(user);
+
+                var onSuccess = function (data, status) {
+
+                    console.log(data);
+                    $scope.user = data.data;
+                }
+
+                self.updateUser(onSuccess, user);
             }
 
             $scope.removeUser = function (user) {
 
                 console.log(user);
             }
+
+            $scope.resetUser = function ()
+            {
+                $scope.user = angular.copy($scope.orgUser);
+            }
+
+            self.updateUser = function (onSuccess, user) {
+
+                $scope.alerts = new RcmResults()
+                $scope.loading = true;
+
+                var apiSuccess = function (data, status) {
+
+                    console.log(data);
+                    $scope.loading = false;
+
+                    if (typeof(onSuccess) === 'function') {
+                        onSuccess(data, status);
+                    }
+                };
+
+                var apiFail = function (data, status) {
+
+                    $scope.loading = false;
+                    $scope.alerts.add(data);
+                };
+
+                var config = {
+                    method: 'PUT',
+                    url: self.url.users + '/' + user.id,
+                    data: user
+                };
+
+                self.rcmUserHttp.execute(config, apiSuccess, apiFail);
+            };
 
             self.getUser = function (onSuccess, user) {
 
@@ -144,7 +195,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
                 var config = {
                     method: 'GET',
-                    url: self.url.user + '/' + user.id
+                    url: self.url.users + '/' + user.id
                 };
 
                 self.rcmUserHttp.execute(config, apiSuccess, apiFail);

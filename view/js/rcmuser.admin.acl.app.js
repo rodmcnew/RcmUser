@@ -2,8 +2,8 @@
 
 angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
 
-    .controller('rcmuserAdminAclRoles', ['$scope', '$modal', 'rcmUserHttp', 'RcmUserResult', 'RcmResults',
-        function ($scope, $modal, rcmUserHttp, RcmUserResult, RcmResults) {
+    .controller('rcmuserAdminAclRoles', ['$scope', '$modal', 'rcmUserHttp', 'RcmUserResult', 'RcmResults', 'getNamespaceRepeatString',
+        function ($scope, $modal, rcmUserHttp, RcmUserResult, RcmResults, getNamespaceRepeatString) {
 
         var getRoles;
         var self = this;
@@ -27,14 +27,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
 
         var resourceCount = $scope.resources.length
 
-        $scope.levelRepeat = function (repeatStr, namespace) {
-            var n = (namespace.split(".").length - 1);
-            var a = [];
-            while (a.length < n) {
-                a.push(repeatStr);
-            }
-            return a.join('');
-        };
+        $scope.levelRepeat = getNamespaceRepeatString;
 
         /**
          * Open add rule modal
@@ -204,6 +197,8 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                     $modalInstance.close();
                 };
 
+                $scope.getNamespaceRepeatString = getNamespaceRepeatString;
+
                 var onSuccess = function (data, status) {
 
                     $scope.loading = false;
@@ -302,7 +297,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
 
             var apiSuccess = function (data, status) {
 
-                $scope.roles = data;
+                $scope.roles = data.data;
 
                 if (typeof(onSuccess) === 'function') {
 

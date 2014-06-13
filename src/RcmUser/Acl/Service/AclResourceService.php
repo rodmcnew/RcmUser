@@ -167,6 +167,8 @@ class AclResourceService
      */
     public function getResources($resourceId, $providerId = null)
     {
+        $resourceId = strtolower($resourceId);
+
         // add root
         $this->addRootResource($this->resources);
 
@@ -352,6 +354,8 @@ class AclResourceService
      */
     public function getProviderByResourceId($resourceId)
     {
+        $resourceId = strtolower($resourceId);
+
         foreach ($this->resourceProviders as $providerId => &$provider) {
 
             $provider = $this->buildValidProvider($provider, $providerId);
@@ -408,6 +412,7 @@ class AclResourceService
         $refresh = false,
         $nsChar = '.'
     ) {
+        $resourceId = strtolower($resourceId);
         $aclResources = array();
         $resources = $this->getNamespacedResources(
             $resourceId,
@@ -444,6 +449,8 @@ class AclResourceService
         $nsChar = '.'
     ) {
         $aclResources = array();
+
+        $resourceId = strtolower($resourceId);
 
         if (empty($resourceId)) {
 

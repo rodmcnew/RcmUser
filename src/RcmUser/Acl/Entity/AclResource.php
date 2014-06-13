@@ -95,6 +95,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setResourceId($resourceId)
     {
+        // set to lowercase to avoid overlaps
         $resourceId = strtolower((string)$resourceId);
 
         if (!$this->isValidResourceId($resourceId) || empty($resourceId)) {
@@ -139,6 +140,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setParentResourceId($parentResourceId)
     {
+        // set to lowercase to avoid overlaps
         $parentResourceId = strtolower((string)$parentResourceId);
 
         if (!$this->isValidResourceId($parentResourceId)) {
@@ -150,9 +152,9 @@ class AclResource extends GenericResource implements \JsonSerializable
 
         if (!empty($this->parentResource)) {
 
-            if ($this->parentResource->getResourceId() != $parentResourceId) {
+            if ($this->parentResource->getResourceId() !== $parentResourceId) {
 
-                $parentResourceId = null;
+                $this->parentResource = null;
             }
         }
 

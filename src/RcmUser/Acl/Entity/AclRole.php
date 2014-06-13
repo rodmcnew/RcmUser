@@ -59,6 +59,18 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     protected $description = '';
 
     /**
+     * Sets the Role identifier
+     *
+     * @param string $roleId
+     */
+    public function __construct($roleId = null)
+    {
+        if($roleId !== null){
+            $this->roleId = (string) $roleId;
+        }
+    }
+
+    /**
      * setRoleId
      *
      * @param string $roleId role identity
@@ -68,6 +80,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setRoleId($roleId)
     {
+        // set to lowercase to avoid overlaps
         $roleId = strtolower((string) $roleId);
 
         if (!$this->isValidRoleId($roleId)) {
@@ -103,6 +116,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function setParentRoleId($parentRoleId)
     {
+        // set to lowercase to avoid overlaps
         $parentRoleId = strtolower((string) $parentRoleId);
 
         if (!$this->isValidRoleId($parentRoleId)) {

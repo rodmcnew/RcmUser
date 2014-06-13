@@ -19,7 +19,6 @@ namespace RcmUser\User\Db;
 
 
 use Doctrine\ORM\EntityManager;
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\Result;
@@ -119,23 +118,44 @@ class DoctrineUserRoleDataMapper
     /**
      * add
      *
-     * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param User   $user      user
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      */
     public function add(User $user, $aclRoleId)
     {
-        $userId = $user->getId();
-
-        if (empty($userId)) {
+        if (!$this->canAdd($user, $aclRoleId)) {
 
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'User id required to add user role.'
+                'Role not available to add or user not valid.'
             );
         }
+
+        $result = $this->read($user);
+
+        if (!$result->isSuccess()) {
+
+            $result->setMessage("Could not add role: {$aclRoleId}");
+
+            return $result;
+        }
+
+
+        $currentRoles = $result->getData();
+
+        if (in_array($aclRoleId, $currentRoles)) {
+
+            return new Result(
+                $aclRoleId,
+                Result::CODE_FAIL,
+                "Role: {$aclRoleId} already exists."
+            );
+        }
+
+        $userId = $user->getId();
 
         $userRole = new DoctrineUserRole();
         $userRole->setUserId($userId);
@@ -144,38 +164,41 @@ class DoctrineUserRoleDataMapper
         $this->getEntityManager()->persist($userRole);
         $this->getEntityManager()->flush();
 
-        return new Result($userRole);
+        return new Result(
+            $aclRoleId,
+            Result::CODE_SUCCESS,
+            'Role added.'
+        );
     }
 
     /**
      * remove
      *
-     * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param User   $user      user
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      */
     public function remove(User $user, $aclRoleId)
     {
-        $userId = $user->getId();
-
-        if (empty($userId)) {
-
+        if(!$this->canRemove($user, $aclRoleId)){
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'User id required to add user role.'
+                'Missing user id to remove role.'
             );
         }
+
+        $userId = $user->getId();
 
         $userRoles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
         )->findBy(
-            array(
-                'userId' => $userId,
-                'roleId' => $aclRoleId,
-            )
-        );
+                array(
+                    'userId' => $userId,
+                    'roleId' => $aclRoleId,
+                )
+            );
 
         foreach ($userRoles as $userRole) {
 
@@ -184,7 +207,11 @@ class DoctrineUserRoleDataMapper
 
         $this->getEntityManager()->flush();
 
-        return new Result();
+        return new Result(
+            $aclRoleId,
+            Result::CODE_SUCCESS,
+            'Role removed.'
+        );
     }
 
     /**
@@ -210,8 +237,9 @@ class DoctrineUserRoleDataMapper
         }
 
         $currentRolesResult = $this->read($user);
+        $currentRoles = $currentRolesResult->getData();
 
-        if ($currentRolesResult->isSuccess()) {
+        if (!empty($currentRoles)) {
 
             return new Result(
                 $currentRolesResult->getData(),
@@ -219,6 +247,11 @@ class DoctrineUserRoleDataMapper
                 'Roles already exist for user: ' . $user->getId()
             );
         }
+
+        $returnResult = new Result(
+            array(),
+            Result::CODE_SUCCESS
+        );
 
         foreach ($userRoles as $key => $roleId) {
 
@@ -228,7 +261,12 @@ class DoctrineUserRoleDataMapper
 
             if (!$aclRoleResult->isSuccess() || empty($aclRole)) {
 
-                // error/ignore undefined roles
+                $returnResult->setCode(Result::CODE_FAIL);
+                $returnResult->setMessage(
+                    "Failed to add role {$roleId} with error: " .
+                    $aclRoleResult->getMessage()
+                );
+
                 unset($userRoles[$key]);
                 continue;
             }
@@ -244,7 +282,9 @@ class DoctrineUserRoleDataMapper
 
         // @todo check for failure
 
-        return new Result($userRoles);
+        $returnResult->setData($userRoles);
+
+        return $returnResult;
     }
 
     /**
@@ -285,7 +325,7 @@ class DoctrineUserRoleDataMapper
         }
 
         $message = '';
-        if(empty($userAclRoles)){
+        if (empty($userAclRoles)) {
 
             $message = 'No roles found';
         }
@@ -304,6 +344,7 @@ class DoctrineUserRoleDataMapper
      */
     public function update(User $user, $roles = array())
     {
+
         $result = $this->read($user);
 
         if ($result->isSuccess()) {
@@ -314,51 +355,104 @@ class DoctrineUserRoleDataMapper
             $curRoles = array();
         }
 
-        $result = $this->getAclRoleDataMapper()->fetchAll();
+        $availableRoles = $this->getAvailableRoles();
 
-        if ($result->isSuccess()) {
-
-            $availableRoles = $result->getData();
-        } else {
+        if (empty($availableRoles)) {
 
             throw new RcmUserException('No roles are available to assign.');
         }
 
-        $userAclRoles = array();
+        $failed = array();
+        $returnResult = new Result(
+            $failed,
+            Result::CODE_SUCCESS
+        );
 
-        foreach ($availableRoles as $key => $aclRole) {
+        $addRoles = array_diff($roles, $curRoles);
+        $invalidRoles = $curRoles;
+        $addedRoles = array();
+
+        // build new roles
+        foreach ($availableRoles as $aclRole) {
 
             $roleId = $aclRole->getRoleId();
 
-            if (in_array($roleId, $curRoles) && !in_array($roleId, $roles)) {
-                $this->remove($user, $roleId);
-                unset($curRoles[$key]);
-            }
-            if (in_array($roleId, $roles) && !in_array($roleId, $curRoles)) {
+            if (in_array($roleId, $addRoles)) {
 
-                $this->add($user, $roleId);
-                $userAclRoles[$roleId] = $roleId;
-                unset($roles[$key]);
+                $addResult = $this->add($user, $roleId);
+
+                if (!$addResult->isSuccess()) {
+
+                    $failed[] = $roleId;
+                    $returnResult->setCode(Result::CODE_FAIL);
+                    $returnResult->setMessage(
+                        "Failed to add role {$roleId} with error: " .
+                        $addResult->getMessage()
+                    );
+                    $returnResult->setData($failed);
+                } else {
+
+                    $addedRoles[] = $roleId;
+                }
+            }
+
+            // trim out current roles as we find them to leave only roles that
+            // do not exist
+            $index = array_search($roleId, $invalidRoles);
+            if ($index !== false) {
+
+                unset($invalidRoles[$index]);
             }
         }
 
-        // make sure roles are valid
-        // $roles should be empty, anything left was unavailable
-        if (!empty($roles)) {
-            // remove the rest
-            foreach ($roles as $key => $roleId) {
-                $this->remove($user, $roleId);
+        $removeRoles = array_diff($curRoles, $roles);
+        $removeRoles = array_merge($removeRoles, $invalidRoles);
+        $removedRoles = array();
+
+        foreach ($removeRoles as $roleId) {
+
+            $removeResult = $this->remove($user, $roleId);
+
+            if (!$removeResult->isSuccess()) {
+
+                $failed[] = $roleId;
+                $returnResult->setCode(Result::CODE_FAIL);
+                $returnResult->setMessage(
+                    "Failed to remove role {$roleId} with error: " .
+                    $removeResult->getMessage()
+                );
+                $returnResult->setData($failed);
+            } else {
+
+                $removedRoles[] = $roleId;
             }
         }
 
-        if (!empty($curRoles)) {
-            // remove the rest
-            foreach ($roles as $key => $roleId) {
-                $this->remove($user, $roleId);
-            }
+        $ignored = array_diff($addRoles, $addedRoles);
+
+        $result = $this->read($user);
+
+        if ($result->isSuccess()) {
+
+            $curRoles = $result->getData();
+        } else {
+
+            $curRoles = array();
         }
 
-        return new Result($userAclRoles);
+        $returnResult->setData(
+            $curRoles
+        );
+
+        $resultInfo = array(
+            'added' => $addedRoles,
+            'removed' => $removedRoles,
+            'ignored' => $ignored,
+        );
+
+        $returnResult->setMessage(json_encode($resultInfo));
+
+        return $returnResult;
     }
 
     /**
@@ -371,10 +465,29 @@ class DoctrineUserRoleDataMapper
      */
     public function delete(User $user, $roles = array())
     {
+        $failed = array();
+
+        $result = new Result(
+            $failed,
+            Result::CODE_SUCCESS
+        );
+
         foreach ($roles as $key => $roleId) {
-            $this->remove($user, $roleId);
+
+            $removeResult = $this->remove($user, $roleId);
+
+            if (!$removeResult->isSuccess()) {
+
+                $failed[] = $roleId;
+                $result->setCode(Result::CODE_FAIL);
+                $result->setMessage(
+                    "Failed to remove role {$roleId} with error: " .
+                    $removeResult->getMessage()
+                );
+                $result->setData($failed);
+            }
         }
 
-        return new Result();
+        return $result;
     }
 } 

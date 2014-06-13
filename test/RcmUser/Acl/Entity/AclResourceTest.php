@@ -76,7 +76,7 @@ class AclResourceTest extends Zf2TestCase
         return array(
             'resourceId' => $resourceId,
             'providerId' => 'providerId',
-            'parentResourceId' => 'parentResourceId',
+            'parentResourceId' => 'parentresourceid',
             'privileges' => 'privileges',
             'name' => 'name',
             'description' => 'description',
@@ -91,13 +91,13 @@ class AclResourceTest extends Zf2TestCase
     public function testSetGet()
     {
         $resourceIds = array(
-            'testId0',
-            'testId1',
+            'testid0',
+            'testid1',
         );
         $aclResourceArray = $this->getAclResourceArray($resourceIds[0]);
 
         $aclResource = $this->getAclResource($resourceIds[0]);
-        $aclParentResource = $this->getAclResource('parentResourceId2');
+        $aclParentResource = $this->getAclResource('parentresourceid2');
 
         $this->assertEquals(
             $resourceIds[0],

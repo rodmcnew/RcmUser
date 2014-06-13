@@ -143,8 +143,8 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                         <label for="roleId">Parent Role: </label>
                         <select class="form-control" name="parentRoleId" ng-model="roleData.parentRoleId" required="true">
                             <option selected="selected" value="">-- choose parent role --</option>
-                            <option selected="selected" value="">*root*</option>
-                            <option ng-repeat="roleObj in roles" value="{{roleObj.role.roleId}}">{{roleObj.role.roleId}}</option>
+                            <option selected="selected" value="" ng-value="">*root*</option>
+                            <option ng-repeat="roleObj in roles" value="{{roleObj.role.roleId}}">{{getNamespaceRepeatString(roleObj.roleNs, '..')}} {{roleObj.role.roleId}}</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -154,9 +154,10 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                             name="description"
                             ng-model="roleData.description"
                             ng-required="true"
-                            ng-minlength="5"
+                            minlength="5"
                             ng-maxlength="255"
                             required="true"
+                            value=""
                             >
                         </textarea>
                     </div>
@@ -289,7 +290,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 
             <accordion-heading>
                 <div class="accordion-heading">
-                    <span class="roleId" tooltip-placement="right" tooltip="This is a user role with roleId of &quot;{{roleData.role.roleId}}&quot;">{{levelRepeat('&#8901;&#8901;',roleData.roleNs)}} {{roleData.role.roleId}} </span>
+                    <span class="roleId" tooltip-placement="right" tooltip="This is a user role with roleId of &quot;{{roleData.role.roleId}}&quot;">{{levelRepeat(roleData.roleNs, '&#8901;&#8901;', '.')}} {{roleData.role.roleId}} </span>
                     <i class="role-opener glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
                     <span class="role-actions pull-right">
 

@@ -18,7 +18,6 @@
 namespace RcmUser\User\Db;
 
 
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\User\Entity\User;
 
 /**
@@ -40,11 +39,11 @@ interface UserRolesDataMapperInterface
 {
 
     /**
-     * getAclRoleDataMapper
+     * getAvailableRoles
      *
-     * @return AclRoleDataMapperInterface
+     * @return array
      */
-    public function getAclRoleDataMapper();
+    public function getAvailableRoles();
 
     /**
      * fetchAll
@@ -69,7 +68,7 @@ interface UserRolesDataMapperInterface
      * remove
      *
      * @param User    $user      user
-     * @param AclRole $aclRoleId aclRoleId
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      */
@@ -108,8 +107,9 @@ interface UserRolesDataMapperInterface
      * delete
      *
      * @param User $user user
+     * @param array $roles roles
      *
      * @return Result
      */
-    public function delete(User $user);
+    public function delete(User $user, $roles = array());
 } 

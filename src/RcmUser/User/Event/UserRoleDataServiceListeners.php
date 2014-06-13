@@ -441,7 +441,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function isDefaultRoles($roles)
     {
-        return $this->getUserRoleService()->isDefaultRoles($roles);
+        return $this->getUserRoleService()->isDefaultUserRoles($roles);
     }
 
     /**
