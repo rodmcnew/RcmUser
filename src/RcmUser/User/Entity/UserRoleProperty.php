@@ -112,6 +112,16 @@ class UserRoleProperty implements UserPropertyInterface
     }
 
     /**
+     * hasRoles
+     *
+     * @return bool
+     */
+    public function hasRoles()
+    {
+        return !empty($this->roles);
+    }
+
+    /**
      * hasRole
      *
      * @param string $roleId role

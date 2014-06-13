@@ -20,6 +20,15 @@ return array(
         'User\Config' => array(
 
             /*
+             * ValidUserStates
+             * Used for UI
+             */
+            'ValidUserStates' => array(
+                'disabled', // **REQUIRED for User entity**
+                'enabled',
+            ),
+
+            /*
              * DefaultUserState
              * Used in:
              *  RcmUser\User\Service\UserDataService
@@ -528,6 +537,9 @@ return array(
             'RcmUser\Controller\AdminApiUserController' =>
                 'RcmUser\Controller\AdminApiUserController',
 
+            'RcmUser\Controller\AdminApiUserValidUserStatesController' =>
+                'RcmUser\Controller\AdminApiUserValidUserStatesController',
+
             // ADMIN USER ROLES
             /*'RcmUser\Controller\AdminUserRoleController'
             => 'RcmUser\Controller\AdminUserRoleController',*/
@@ -694,6 +706,20 @@ return array(
                     ),
                 ),
             ),
+            'RcmUserAdminApiUserValidUserStates' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/admin/api/rcmuser-user-validuserstates[/:id]',
+                    'constraints' => array(
+                        'id' => '[a-zA-Z0-9_-]+',
+                    ),
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\Controller\AdminApiUserValidUserStatesController',
+                    ),
+                ),
+            ),
+
             /* ADMIN USER ROLES
             'RcmUserAdminUserRole' => array(
                 'may_terminate' => true,

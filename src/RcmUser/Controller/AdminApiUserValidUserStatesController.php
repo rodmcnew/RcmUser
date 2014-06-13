@@ -1,8 +1,8 @@
 <?php
 /**
- * AdminApiAclResourcesController.php
+ * AdminApiUserValidUserStatesController.php
  *
- * LongDescHere
+ * AdminApiUserValidUserStatesController
  *
  * PHP version 5
  *
@@ -17,15 +17,15 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Result;
-use Zend\Http\Response;
 use Zend\View\Model\JsonModel;
 
-
 /**
- * Class AdminApiAclResourcesController
+ * Class AdminApiUserValidUserStatesController
  *
- * AdminApiAclResourcesController
+ * AdminApiUserValidUserStatesController
  *
  * PHP version 5
  *
@@ -37,30 +37,30 @@ use Zend\View\Model\JsonModel;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AdminApiAclResourcesController extends AbstractAdminApiController
+class AdminApiUserValidUserStatesController extends AbstractAdminApiController
 {
+
     /**
      * getList
      *
-     * @return mixed|JsonModel
+     * @return mixed|\Zend\Stdlib\ResponseInterface|JsonModel
      */
     public function getList()
     {
-        // ACCESS CHECK
         if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
             return $this->getNotAllowedResponse();
         }
 
-        $aclResourceService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\Service\AclResourceService'
+        /** @var \RcmUser\User\Service\UserDataService $userDataService */
+        $userDataService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserDataService'
         );
 
         try {
 
             $result = new Result(
-                $aclResourceService->getResourcesWithNamespace()
+                $userDataService->getValidUserStates()
             );
-
         } catch (\Exception $e) {
 
             return $this->getExceptionResponse($e);
@@ -68,4 +68,5 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
 
         return $this->getJsonResponse($result);
     }
-}
+
+} 

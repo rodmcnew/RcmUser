@@ -149,6 +149,40 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     }
 
     /**
+     * onBuildUser
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
+    public function onBuildUser($e)
+    {
+        // $requestUser = $e->getParam('requestUser');
+        /** @var User $responseUser */
+        $responseUser = $e->getParam('responseUser');
+
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            null
+        );
+
+        if (!$userRoleProperty instanceof UserRoleProperty) {
+
+            $userRoleProperty = $this->buildValidUserRoleProperty(
+                $responseUser,
+                array()
+            );
+        }
+
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $userRoleProperty
+        );
+
+        return new Result($responseUser);
+    }
+
+    /**
      * onBeforeCreateUser
      *
      * @param Event $e e
@@ -175,33 +209,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     }
 
     /**
-     * onBuildUser
-     *
-     * @param Event $e e
-     *
-     * @return \RcmUser\User\Result
-     */
-    public function onBuildUser($e)
-    {
-
-        // $requestUser = $e->getParam('requestUser');
-        /** @var User $responseUser */
-        $responseUser = $e->getParam('responseUser');
-
-        $userRoleProperty = $responseUser->getProperty(
-            $this->getUserPropertyKey(),
-            $this->buildValidUserRoleProperty($responseUser, array())
-        );
-
-        $responseUser->setProperty(
-            $this->getUserPropertyKey(),
-            $userRoleProperty
-        );
-
-        return new Result($responseUser);
-    }
-
-    /**
      * onCreateUserSuccess
      *
      * @param Event $e e
@@ -222,7 +229,20 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            $this->buildValidUserRoleProperty($responseUser, array())
+            null
+        );
+
+        if (!$userRoleProperty instanceof UserRoleProperty) {
+
+            $userRoleProperty = $this->buildValidUserRoleProperty(
+                $responseUser,
+                array()
+            );
+        }
+
+        $responseUser->setProperty(
+            $this->getUserPropertyKey(),
+            $userRoleProperty
         );
 
         $roles = $userRoleProperty->getRoles();

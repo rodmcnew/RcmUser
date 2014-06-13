@@ -240,9 +240,14 @@ class UserRoleService
     {
         $defaultUserRoles = $this->getDefaultUserRoleIds()->getData();
 
-        foreach($defaultUserRoles as $roleId){
+        if (count($defaultUserRoles) !== count($roleIds)) {
 
-            if(!in_array($roleId, $roleIds)){
+            return false;
+        }
+
+        foreach ($defaultUserRoles as $roleId) {
+
+            if (!in_array($roleId, $roleIds)) {
 
                 return false;
             }

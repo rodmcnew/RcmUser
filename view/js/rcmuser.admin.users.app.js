@@ -1,20 +1,13 @@
 // rcmuserCore include <?php echo "\n"; include(__DIR__ . '/rcmuser.core.js'); ?>
 
 angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
-    .factory('rcmuserAdminUsersData', function(){
+    .factory('rcmuserAdminUsersData', ['rcmUserConfig', function(rcmUserConfig){
 
         self = this;
-        eval('self.usersResult = <?php echo json_encode($usersResult); ?>');
 
-        eval('self.roles = <?php echo json_encode($roles); ?>');
+        self.url = rcmUserConfig.url;
 
-        eval('self.defaultRoles = <?php echo json_encode($defaultRoles); ?>');
-
-        eval('self.rolePropertyId = <?php echo json_encode($rolePropertyId); ?>');
-
-        self.url = {
-            users: "<?php echo $this->url('RcmUserAdminApiUser', array()); ?>"
-        }
+        self.rolePropertyId = '<?php echo $rolePropertyId; ?>';
 
         self.availableStates = [
             'enabled',
@@ -23,49 +16,112 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
         return self;
 
-    })
-    .controller('rcmuserAdminUsers', ['$scope', '$log', '$modal', 'rcmUserHttp', 'RcmUserResult', 'RcmResults', 'rcmuserAdminUsersData',
-        function ($scope, $log, $modal, rcmUserHttp, RcmUserResult, RcmResults, rcmuserAdminUsersData) {
+    }])
+    .controller('rcmuserAdminUsers', ['$scope', '$log', '$modal', 'RcmUserHttp', 'RcmUserResult', 'RcmResults', 'rcmuserAdminUsersData',
+        function ($scope, $log, $modal, RcmUserHttp, RcmUserResult, RcmResults, rcmuserAdminUsersData) {
             var self = this;
 
-            self.rcmUserHttp = rcmUserHttp;
-
-            $scope.alerts = new RcmResults()
-            $scope.loading = false;
+            $scope.rcmUserHttp = new RcmUserHttp();
+            //$scope.rcmUserHttp.includeSuccessAlerts = true;
 
             $scope.availableStates = [
                 'enabled',
                 'disabled'
             ]
 
+            self.getUsers = function (onSuccess, onFail) {
+
+                var config = {
+                    method: 'GET',
+                    url: rcmuserAdminUsersData.url.users
+                };
+
+                $scope.rcmUserHttp.execute(config, onSuccess, onFail);
+            };
+
+            self.getRoles = function (onSuccess, onFail) {
+
+                var config = {
+                    method: 'GET',
+                    url: rcmuserAdminUsersData.url.role
+                };
+
+                $scope.rcmUserHttp.execute(config, onSuccess, onFail);
+            };
+
+            self.getValidUserStates = function (onSuccess, onFail) {
+
+                var config = {
+                    method: 'GET',
+                    url: rcmuserAdminUsersData.url.validUserStates
+                };
+
+                $scope.rcmUserHttp.execute(config, onSuccess, onFail);
+            };
+
             // User
-            $scope.users = rcmuserAdminUsersData.usersResult.data;
-            $scope.messages = rcmuserAdminUsersData.usersResult.messages;
             $scope.showMessages = false;
+            self.getUsers(
+                function(data, status) {
+
+                    $scope.users = data.data;
+                    $scope.messages = data.messages;
+                }
+            );
 
             // User Roles
-            $scope.roles = rcmuserAdminUsersData.roles;
+            self.getRoles(
+                function(data, status) {
+
+                    $scope.roles = data.data;
+                    $scope.messages = data.messages;
+                }
+            );
+
+            // valid user states
+            self.getValidUserStates(
+                function(data, status) {
+
+                    $scope.availableStates = data.data;
+                }
+            );
+
             $scope.rolePropertyId = rcmuserAdminUsersData.rolePropertyId;
 
             $scope.oneAtATime = false;
 
+            $scope.addUser = function () {
+
+                $log.log($scope.users)
+                var user = {
+                    username: '',
+                    password: null,
+                    state: 'disabled',
+                    email: '',
+                    name: '',
+                    properties: [],
+                    isNew: true
+                }
+                user.properties[rcmuserAdminUsersData.rolePropertyId] = [];
+
+                $scope.users.unshift(user);
+            }
+
         }
-    ]).controller('rcmuserAdminUser', ['$scope', '$log', 'rcmUserHttp', 'RcmUserResult', 'RcmResults', 'rcmuserAdminUsersData', 'getNamespaceRepeatString',
-        function ($scope, $log, rcmUserHttp, RcmUserResult, RcmResults, rcmuserAdminUsersData, getNamespaceRepeatString) {
+    ]).controller('rcmuserAdminUser', ['$scope', '$log', 'RcmUserHttp', 'RcmUserResult', 'RcmResults', 'rcmuserAdminUsersData', 'getNamespaceRepeatString',
+        function ($scope, $log, RcmUserHttp, RcmUserResult, RcmResults, rcmuserAdminUsersData, getNamespaceRepeatString) {
 
             var self = this;
             self.url = rcmuserAdminUsersData.url;
             self.rolePropertyId = rcmuserAdminUsersData.rolePropertyId;
-            self.rcmUserHttp = rcmUserHttp;
 
-            $scope.alerts = new RcmResults()
-            $scope.loading = false;
+            $scope.rcmUserHttp = new RcmUserHttp();
 
             $scope.getNamespaceRepeatString = getNamespaceRepeatString;
 
             $scope.showEdit = false;
 
-            $scope.defaultRoles = rcmuserAdminUsersData.defaultRoles;
+            $scope.defaultRoles = [];
 
             $scope.orgUser = angular.copy($scope.user);
 
@@ -91,7 +147,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 self.getUser(onSuccess, $scope.user);
             }
 
-            $scope.openDeleteUser = function () {
+            $scope.openRemoveUser = function () {
                 // show dialog
             }
 
@@ -115,32 +171,36 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 user.properties[self.rolePropertyId].splice(index, 1);
             }
 
-            $scope.addUser = function (user) {
+            /* <USER> */
+            $scope.createUser = function (user) {
 
-                $log.log(user);
+                var onSuccess = function (data, status) {
+
+                    $scope.user = data.data;
+
+                }
+
+                self.createUser(user, onSuccess);
             }
 
             $scope.updateUser = function (user) {
 
-
                 var onSuccess = function (data, status) {
 
-                    $log.log(data);
                     $scope.user = data.data;
                 }
 
-                self.updateUser(onSuccess, user);
+                self.updateUser(user, onSuccess);
             }
 
             $scope.removeUser = function (user) {
-                $log.log(user);
+
                 var onSuccess = function (data, status) {
 
-                    //$log.log(data);
-                    //$scope.user = null;
+                    $scope.user = $scope.users.splice($scope.index,1);
                 }
 
-                self.removeUser(onSuccess, user);
+                self.removeUser(user, onSuccess);
             }
 
             $scope.resetUser = function ()
@@ -148,31 +208,25 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 $scope.user = angular.copy($scope.orgUser);
             }
 
-            self.updateUser = function (onSuccess, user) {
+            $scope.cancelCreateUser = function ()
+            {
+                // @todo need pop this from users in parent scope
+                $scope.user = $scope.users.splice($scope.index,1);
+            }
 
-                $scope.alerts = new RcmResults()
-                $scope.loading = true;
+            // API CALLS
+            self.createUser = function (user, onSuccess) {
 
-                var apiSuccess = function (data, status) {
-
-                    $log.log(data);
-                    $scope.loading = false;
-
-                    if(data.messages.length == 0){
-                        data.messages.push("Success!")
-                    }
-                    $scope.alerts.add(data);
-
-                    if (typeof(onSuccess) === 'function') {
-                        onSuccess(data, status);
-                    }
+                var config = {
+                    method: 'POST',
+                    url: self.url.users,
+                    data: user
                 };
 
-                var apiFail = function (data, status) {
+                $scope.rcmUserHttp.execute(config, onSuccess);
+            };
 
-                    $scope.loading = false;
-                    $scope.alerts.add(data);
-                };
+            self.updateUser = function (user, onSuccess) {
 
                 var config = {
                     method: 'PUT',
@@ -180,29 +234,10 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     data: user
                 };
 
-                self.rcmUserHttp.execute(config, apiSuccess, apiFail);
+                $scope.rcmUserHttp.execute(config, onSuccess);
             };
 
-            self.removeUser = function (onSuccess, user) {
-
-                $scope.alerts = new RcmResults()
-                $scope.loading = true;
-
-                var apiSuccess = function (data, status) {
-
-                    $log.log(data);
-                    $scope.loading = false;
-
-                    if (typeof(onSuccess) === 'function') {
-                        onSuccess(data, status);
-                    }
-                };
-
-                var apiFail = function (data, status) {
-
-                    $scope.loading = false;
-                    $scope.alerts.add(data);
-                };
+            self.removeUser = function (user, onSuccess) {
 
                 var config = {
                     method: 'DELETE',
@@ -210,37 +245,36 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     data: user
                 };
 
-                self.rcmUserHttp.execute(config, apiSuccess, apiFail);
+                $scope.rcmUserHttp.execute(config, onSuccess);
             };
 
             self.getUser = function (onSuccess, user) {
-
-                $scope.alerts = new RcmResults()
-                $scope.loading = true;
-
-                var apiSuccess = function (data, status) {
-
-                    $log.log(data);
-                    $scope.loading = false;
-
-                    if (typeof(onSuccess) === 'function') {
-                        onSuccess(data, status);
-                    }
-                };
-
-                var apiFail = function (data, status) {
-
-                    $scope.loading = false;
-                    $scope.alerts.add(data);
-                };
 
                 var config = {
                     method: 'GET',
                     url: self.url.users + '/' + user.id
                 };
 
-                self.rcmUserHttp.execute(config, apiSuccess, apiFail);
+                $scope.rcmUserHttp.execute(config, onSuccess);
             };
+            /* </USER> */
+
+            self.getDefaultUserRoles = function (onSuccess) {
+
+                var config = {
+                    method: 'GET',
+                    url: rcmuserAdminUsersData.url.defaultUserRoles
+                };
+
+                $scope.rcmUserHttp.execute(config, onSuccess);
+            };
+
+            self.getDefaultUserRoles(
+                function(data, status) {
+
+                    $scope.defaultRoles = data.data;
+                }
+            );
         }
     ])
     .filter('userFilter', function () {

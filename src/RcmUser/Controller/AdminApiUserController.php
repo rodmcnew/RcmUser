@@ -154,7 +154,7 @@ class AdminApiUserController extends AbstractAdminApiController
         );
 
         try {
-            //$data = $this->processBodyContent($this->getRequest());
+            //$data = json_decode($this->getRequest()->getContent());
             $currentUser = $this->rcmUserGetCurrentUser();
 
             if($id == $currentUser->getId()){
