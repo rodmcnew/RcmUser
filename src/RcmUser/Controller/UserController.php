@@ -68,7 +68,7 @@ class UserController extends AbstractActionController
         var_dump($this->rcmUserGetCurrentUser());
         /* */
 
-        /** @var \RcmUser\User\Service\UserDataService $userDataService */
+        /** @var \RcmUser\User\Service\UserDataService $userDataService *
         $userDataService = $this->getServiceLocator()->get(
             'RcmUser\User\Service\UserDataService'
         );
@@ -78,7 +78,7 @@ class UserController extends AbstractActionController
         //var_dump($result);
 
         $user = new User();
-        $user->setUsername('Meeee');
+        $user->setUsername('MeToorr');
         $user->setPassword('123123123');
         $rolsProp = new UserRoleProperty();
         $rolsProp->setRole('customer');
@@ -88,6 +88,7 @@ class UserController extends AbstractActionController
         $userRes = $userDataService->createUser($user);
 
         var_dump($userRes);
+        /* */
 
         /** @var \RcmUser\Service\RcmUserService $rcmUserService *
         $rcmUserService = $this->getServiceLocator()->get(

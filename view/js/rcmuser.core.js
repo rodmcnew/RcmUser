@@ -79,6 +79,10 @@ angular.module('rcmuserCore', [])
 
                                 self.alerts.add(data);
                             }
+                        } else {
+
+                            $log.log('Result object not returned: ');
+                            $log.log(data);
                         }
 
                         if ((typeof(onSuccess) === 'function')) {
@@ -128,6 +132,23 @@ angular.module('rcmuserCore', [])
         }
 
         return RcmUserResult;
+
+    })
+    .factory('RcmUser', function (rolePropertyId) {
+
+        var RcmUser = function(){
+
+            var self = this;
+
+            self.username = '';
+            self.password = null;
+            self.state = 'disabled';
+            self.email = null;
+            self.name = null;
+            self.properties = {};
+        }
+
+        return RcmUser;
 
     })
     .factory('RcmResults', function () {

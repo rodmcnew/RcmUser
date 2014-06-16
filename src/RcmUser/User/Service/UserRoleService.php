@@ -175,6 +175,22 @@ class UserRoleService
     }
 
     /**
+     * getSavableRoles
+     *
+     * @param array $roles roles
+     *
+     * @return array
+     */
+    public function parseSavableRoles($roles = array())
+    {
+        $defaultRolesResult = $this->getDefaultUserRoleIds();
+
+        $defaultRoles = $defaultRolesResult->getData();
+
+        return array_diff($roles, $defaultRoles);
+    }
+
+    /**
      * isDefaultGuestRole
      *
      * @param array $roleId role id
@@ -194,28 +210,6 @@ class UserRoleService
     }
 
     /**
-     * isDefaultGuestRoles
-     *
-     * @param array $roleIds role ids
-     *
-     * @return bool
-     */
-    public function isDefaultGuestRoles($roleIds)
-    {
-        $defaultGuestRoles = $this->getDefaultUserRoleIds()->getData();
-
-        foreach($defaultGuestRoles as $roleId){
-
-            if(!in_array($roleId, $roleIds)){
-
-                return false;
-            }
-        }
-
-        return true;
-    }
-
-    /**
      * isDefaultUserRole
      *
      * @param array $roleId role id
@@ -227,33 +221,6 @@ class UserRoleService
         $defaultUserRoles = $this->getDefaultUserRoleIds()->getData();
 
         return in_array($roleId, $defaultUserRoles);
-    }
-
-    /**
-     * isDefaultUserRoles
-     *
-     * @param array $roleIds role ids
-     *
-     * @return bool
-     */
-    public function isDefaultUserRoles($roleIds)
-    {
-        $defaultUserRoles = $this->getDefaultUserRoleIds()->getData();
-
-        if (count($defaultUserRoles) !== count($roleIds)) {
-
-            return false;
-        }
-
-        foreach ($defaultUserRoles as $roleId) {
-
-            if (!in_array($roleId, $roleIds)) {
-
-                return false;
-            }
-        }
-
-        return true;
     }
 
     /**
@@ -275,40 +242,6 @@ class UserRoleService
     }
 
     /**
-     * validateAddRoles
-     *
-     * @param User  $user  user
-     * @param array $roles roles
-     *
-     * @return Result
-     */
-    public function validateAddRoles(User $user, $roles)
-    {
-        $result = new Result(
-            null,
-            Result::CODE_SUCCESS
-        );
-
-        foreach($roles as $key => $roleId){
-
-            $can = $this->canAddRole($user, $roleId);
-            if (!$can) {
-
-                $result->setCode(Result::CODE_FAIL);
-                $result->setMessage(
-                    "Role ({$roleId}) is retricted and cannot be added."
-                );
-
-                unset($roles[$key]);
-            }
-        }
-
-        $result->setData($roles);
-
-        return $result;
-    }
-
-    /**
      * canRemove role
      *
      * @param User   $user   user
@@ -319,40 +252,6 @@ class UserRoleService
     public function canRemoveRole(User $user, $roleId)
     {
         return true;
-    }
-
-    /**
-     * validateRemoveRoles
-     *
-     * @param User  $user  user
-     * @param array $roles roles
-     *
-     * @return Result
-     */
-    public function validateRemoveRoles(User $user, $roles)
-    {
-        $result = new Result(
-            null,
-            Result::CODE_SUCCESS
-        );
-
-        foreach($roles as $key => $roleId){
-
-            $can = $this->canRemoveRole($user, $roleId);
-            if (!$can) {
-
-                $result->setCode(Result::CODE_FAIL);
-                $result->setMessage(
-                    "Role ({$roleId}) is retricted and cannot be removed."
-                );
-
-                unset($roles[$key]);
-            }
-        }
-
-        $result->setData($roles);
-
-        return $result;
     }
 
     /**
@@ -409,13 +308,7 @@ class UserRoleService
      */
     public function createRoles(User $user, $roles = array())
     {
-
-        $result = $this->validateAddRoles($user, $roles);
-
-        if(!$result->isSuccess()){
-
-            return $result;
-        }
+        $roles = $this->parseSavableRoles($roles);
 
         return $this->getUserRolesDataMapper()->create($user, $roles);
     }
@@ -443,12 +336,7 @@ class UserRoleService
      */
     public function updateRoles(User $user, $roles = array())
     {
-        $result = $this->validateAddRoles($user, $roles);
-
-        if(!$result->isSuccess()){
-
-            return $result;
-        }
+        $roles = $this->parseSavableRoles($roles);
 
         return $this->getUserRolesDataMapper()->update($user, $roles);
     }
@@ -464,14 +352,9 @@ class UserRoleService
      */
     public function deleteRoles(User $user, $roles = array())
     {
-        $result = $this->validateRemoveRoles($user, $roles);
+        $roles = $this->parseSavableRoles($roles);
 
-        if(!$result->isSuccess()){
-
-            return $result;
-        }
-
-        return $this->getUserRolesDataMapper()->delete($user);
+        return $this->getUserRolesDataMapper()->delete($user, $roles);
     }
 
     /**

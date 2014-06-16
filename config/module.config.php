@@ -117,7 +117,7 @@ return array(
              * in RcmUser\User\Service\UserDataService.
              */
             'DefaultGuestRoleIds' => array('guest'),
-            'DefaultUserRoleIds' => array('user'),
+            'DefaultUserRoleIds' => array('user', 'fatkid'),
 
             /*
              * SuperAdminRoleId

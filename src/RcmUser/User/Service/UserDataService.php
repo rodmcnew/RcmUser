@@ -230,6 +230,7 @@ class UserDataService extends EventProvider
     public function createUser(User $requestUser)
     {
         /* <LOW_LEVEL_PREP> */
+        /* REMOVE SOME LOW LEVEL - LET THE MAPPER DECIDE
         $result = $this->readUser($requestUser);
 
         if ($result->isSuccess()) {
@@ -237,6 +238,7 @@ class UserDataService extends EventProvider
             // ERROR - user exists
             return new Result(null, Result::CODE_FAIL, 'User already exists.');
         }
+        */
 
         $responseUser = new User();
         $responseUser->populate($requestUser);

@@ -22,7 +22,8 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             var self = this;
 
             $scope.rcmUserHttp = new RcmUserHttp();
-            //$scope.rcmUserHttp.includeSuccessAlerts = true;
+
+            $scope.userQuery = '';
 
             $scope.availableStates = [
                 'enabled',
@@ -92,28 +93,30 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.addUser = function () {
 
-                $log.log($scope.users)
                 var user = {
                     username: '',
                     password: null,
                     state: 'disabled',
                     email: '',
                     name: '',
-                    properties: [],
+                    properties: {},
                     isNew: true
                 }
-                user.properties[rcmuserAdminUsersData.rolePropertyId] = [];
+
+                user.properties[$scope.rolePropertyId] = [];
 
                 $scope.users.unshift(user);
-            }
 
+                // clear filter
+                $scope.userQuery = '';
+            }
         }
     ]).controller('rcmuserAdminUser', ['$scope', '$log', 'RcmUserHttp', 'RcmUserResult', 'RcmResults', 'rcmuserAdminUsersData', 'getNamespaceRepeatString',
         function ($scope, $log, RcmUserHttp, RcmUserResult, RcmResults, rcmuserAdminUsersData, getNamespaceRepeatString) {
 
             var self = this;
             self.url = rcmuserAdminUsersData.url;
-            self.rolePropertyId = rcmuserAdminUsersData.rolePropertyId;
+            $scope.rolePropertyId = rcmuserAdminUsersData.rolePropertyId;
 
             $scope.rcmUserHttp = new RcmUserHttp();
 
@@ -151,24 +154,30 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 // show dialog
             }
 
-            $scope.addRole = function (user, roleId) {
+            $scope.addRole = function (roleId) {
 
-                if(user.properties[self.rolePropertyId].indexOf(roleId) === -1){
+                if(typeof($scope.user.properties[$scope.rolePropertyId]) === 'undefined'){
 
-                    user.properties[self.rolePropertyId].push(roleId);
+                    $scope.user.properties[$scope.rolePropertyId] = [];
                 }
+
+                if($scope.user.properties[$scope.rolePropertyId].indexOf(roleId) === -1){
+
+                    $scope.user.properties[$scope.rolePropertyId].push(roleId);
+                }
+
             }
 
-            $scope.removeRole = function (user, roleId) {
+            $scope.removeRole = function (roleId) {
 
-                var index = user.properties[self.rolePropertyId].indexOf(roleId);
+                var index = $scope.user.properties[$scope.rolePropertyId].indexOf(roleId);
 
                 if(index === -1){
 
                     return;
                 }
 
-                user.properties[self.rolePropertyId].splice(index, 1);
+                $scope.user.properties[$scope.rolePropertyId].splice(index, 1);
             }
 
             /* <USER> */
@@ -177,10 +186,9 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 var onSuccess = function (data, status) {
 
                     $scope.user = data.data;
-
                 }
 
-                self.createUser(user, onSuccess);
+                self.createUser($scope.user, onSuccess);
             }
 
             $scope.updateUser = function (user) {
@@ -190,17 +198,23 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     $scope.user = data.data;
                 }
 
-                self.updateUser(user, onSuccess);
+                self.updateUser($scope.user, onSuccess);
             }
 
             $scope.removeUser = function (user) {
 
                 var onSuccess = function (data, status) {
 
-                    $scope.user = $scope.users.splice($scope.index,1);
+                    if(typeof($scope.users.splice) === 'function'){
+                        $scope.users.splice($scope.index,1);
+                    } else {
+                        $log.log('Expected array, user could not be properly removed');
+                    }
+
+                    delete $scope.user;
                 }
 
-                self.removeUser(user, onSuccess);
+                self.removeUser($scope.user, onSuccess);
             }
 
             $scope.resetUser = function ()
@@ -275,6 +289,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     $scope.defaultRoles = data.data;
                 }
             );
+
         }
     ])
     .filter('userFilter', function () {
