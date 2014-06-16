@@ -18,6 +18,8 @@
 namespace RcmUser\Controller;
 
 use RcmUser\JsonForm;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
@@ -64,6 +66,28 @@ class UserController extends AbstractActionController
 
         /* User *
         var_dump($this->rcmUserGetCurrentUser());
+        /* */
+
+        /** @var \RcmUser\User\Service\UserDataService $userDataService *
+        $userDataService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserDataService'
+        );
+
+        //$result = $userDataService->getAllUsers();
+
+        //var_dump($result);
+
+        $user = new User();
+        $user->setUsername('MeToorr');
+        $user->setPassword('123123123');
+        $rolsProp = new UserRoleProperty();
+        $rolsProp->setRole('customer');
+        $rolsProp->setRole('user');
+        $user->setProperty(UserRoleProperty::PROPERTY_KEY, $rolsProp);
+
+        $userRes = $userDataService->createUser($user);
+
+        var_dump($userRes);
         /* */
 
         /** @var \RcmUser\Service\RcmUserService $rcmUserService *

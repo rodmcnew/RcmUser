@@ -46,6 +46,11 @@ class UserDataService extends EventProvider
     protected $userDataMapper;
 
     /**
+     * @var array
+     */
+    protected $validUserStates = array();
+
+    /**
      * @var string|null $defaultUserState
      */
     protected $defaultUserState = null;
@@ -70,6 +75,31 @@ class UserDataService extends EventProvider
     public function getUserDataMapper()
     {
         return $this->userDataMapper;
+    }
+
+    /**
+     * setValidUserStates
+     *
+     * @param $validUserStates
+     *
+     * @return void
+     */
+    public function setValidUserStates($validUserStates)
+    {
+        if(!in_array(User::STATE_DISABLED, $validUserStates)){
+            $validUserStates[] = User::STATE_DISABLED;
+        }
+        $this->validUserStates = $validUserStates;
+    }
+
+    /**
+     * getValidUserStates
+     *
+     * @return array
+     */
+    public function getValidUserStates()
+    {
+        return $this->validUserStates;
     }
 
     /**
@@ -200,6 +230,7 @@ class UserDataService extends EventProvider
     public function createUser(User $requestUser)
     {
         /* <LOW_LEVEL_PREP> */
+        /* REMOVE SOME LOW LEVEL - LET THE MAPPER DECIDE
         $result = $this->readUser($requestUser);
 
         if ($result->isSuccess()) {
@@ -207,6 +238,7 @@ class UserDataService extends EventProvider
             // ERROR - user exists
             return new Result(null, Result::CODE_FAIL, 'User already exists.');
         }
+        */
 
         $responseUser = new User();
         $responseUser->populate($requestUser);

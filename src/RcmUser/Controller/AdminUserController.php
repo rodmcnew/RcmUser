@@ -46,7 +46,7 @@ class AdminUserController extends AbstractAdminController
     public function indexAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration')) {
+        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
             return $this->getNotAllowedResponse();
         }
 

@@ -108,9 +108,13 @@ class DoctrineUserDataMapper
     public function fetchAll(
         $options = array()
     ) {
-        $users = $this->getEntityManager()
-            ->getRepository($this->getEntityClass())
-            ->findAll();
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
+            'WHERE user.state != ?2'
+        );
+        $query->setParameter(2, self::USER_DELETED_STATE);
+
+        $users = $query->getResult();
 
         return new \RcmUser\Result($users);
     }
@@ -248,7 +252,8 @@ class DoctrineUserDataMapper
         $this->getEntityManager()->persist($responseUser);
         $this->getEntityManager()->flush();
 
-        // @todo unset password $responseUser->setPassword(null);
+        // @todo verify with read
+        // $readResult = $this->read($responseUser, $responseUser);
 
         return new Result($responseUser);
     }
@@ -393,7 +398,7 @@ class DoctrineUserDataMapper
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'User cannot be deleted (disabled), id required for delete.'
+                'User cannot be deleted, id required for delete.'
             );
         }
 
