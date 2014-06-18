@@ -228,7 +228,7 @@ class Result implements \JsonSerializable
     {
         if (!$this->isSuccess()) {
 
-            throw new RcmUserResultException($this->getMessage());
+            throw new RcmUserResultException($this->getMessagesString());
         }
     }
 

@@ -128,7 +128,6 @@ class UserRoleService
      */
     public function getAllUserRoles()
     {
-
         return $this->getUserRolesDataMapper()->fetchAll();
     }
 
