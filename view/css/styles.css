@@ -10,49 +10,54 @@
 
 .accordion-inner {
 }
-.accordion-body[class*="in collapse"]{ overflow:visible;}
-.accordion-body.in:hover { overflow:visible; }
-.accordion-body.in { overflow:visible; }
+
+.accordion-body[class*="in collapse"] {
+    overflow: visible;
+}
+
+.accordion-body.in:hover {
+    overflow: visible;
+}
+
+.accordion-body.in {
+    overflow: visible;
+}
 
 .panel-group .panel {
     overflow: visible;
 }
 
 /* <loader> */
-.spinner {
+.loading {
+    display: none;
+
+    -webkit-animation: spin 1s linear infinite;
+    -moz-animation: spin 1s linear infinite;
+    animation: spin 1s linear infinite;
+}
+
+@-moz-keyframes spin {
+    100% {
+        -moz-transform: rotate(360deg);
+    }
+}
+
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+    }
+}
+
+.loading.active {
     display: inline-block;
-    opacity: 0;
-    width: 0;
-
-    -webkit-transition: opacity 0.25s, width 0.25s;
-    -moz-transition: opacity 0.25s, width 0.25s;
-    -o-transition: opacity 0.25s, width 0.25s;
-    transition: opacity 0.25s, width 0.25s;
-}
-
-.has-spinner.active {
-    cursor:progress;
-}
-
-.has-spinner.active .spinner {
-    opacity: 1;
     width: auto; /* fix for unknown width elements */
-}
-
-.has-spinner.btn-mini.active .spinner {
-    width: 10px;
-}
-
-.has-spinner.btn-small.active .spinner {
-    width: 13px;
-}
-
-.has-spinner.btn.active .spinner {
-    width: 16px;
-}
-
-.has-spinner.btn-large.active .spinner {
-    width: 19px;
 }
 /* </loader> */
 
@@ -63,33 +68,38 @@
 .rcmuser .alert {
     word-wrap: break-word;
 }
+
 .rcmuser .alert ul {
     padding-left: 1em;
 }
+
 .rcmuser .alert .glyphicon {
     font-size: 1.5em;
     padding-right: 1em;
 }
+
 .rcmuser .alert .alert-header {
     padding-bottom: .5em;
 }
+
 .rcmuser .alert .alert-messages {
 
 }
+
 .rcmuser .btn-group-vertical button {
     margin-bottom: .2em;
 }
-/* </ALERT> */
 
-.rcmuser .modal-body
-{
+/* </ALERT> */
+.rcmuser .modal-body {
     max-height: none;
     overflow: visible;
 }
+
 .rcmuser a.nostyle,
 .rcmuser a.nostyle:hover,
 .rcmuser a.nostyle:visited,
-.rcmuser a.nostyle:link ,
+.rcmuser a.nostyle:link,
 .rcmuser a.nostyle:active {
     color: #000;
     text-decoration: none;
@@ -106,15 +116,15 @@
     text-decoration: none;
 }
 
-.rcmuser label{
+.rcmuser label {
     font-weight: bold;
 }
 
-.rcmuser.title{
+.rcmuser.title {
     font-weight: bold;
 }
 
-.rcmuser .modal-title{
+.rcmuser .modal-title {
     font-weight: bold;
 }
 
@@ -122,7 +132,7 @@
     margin-bottom: .5em;
 }
 
-.rcmuser .list-dropdown{
+.rcmuser .list-dropdown {
     overflow: visible;
     position: relative;
 }
@@ -138,11 +148,13 @@
     text-decoration: none;
 }
 
-.rcmuser .list-dropdown .list-group{
+.rcmuser .list-dropdown .list-group {
 
-    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6); -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102, 175, 233, .6);
+    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
     position: absolute;
 }
+
 /******</GENERAL>*******/
 
 /******<ADMIN_ACL>*******/
@@ -150,7 +162,7 @@
 
 }
 
-.rcmuser .admin-acl .roleId{
+.rcmuser .admin-acl .roleId {
     border: 0;
     color: #000;
     font-size: 1.3em;
@@ -173,7 +185,7 @@
     padding: 0 0 .5em 0;
 }
 
-.rcmuser .admin-acl .ruleTitle{
+.rcmuser .admin-acl .ruleTitle {
     color: #000;
     font-size: 1.3em;
     font-weight: bold;
@@ -193,11 +205,11 @@
     font-size: 1.1em;
     font-weight: bold;
 }
-.rcmuser .admin-acl .resource-privilege{
+
+.rcmuser .admin-acl .resource-privilege {
     color: #000;
     font-size: 1em;
     font-weight: bold;
-    text-transform: capitalize;
 }
 
 .rcmuser .admin-acl-resource-section {
@@ -207,16 +219,17 @@
     padding: .5em 0em .5em 0em;
 }
 
-.rcmuser .admin-acl-resource-footer{
+.rcmuser .admin-acl-resource-footer {
     padding: .5em 0em .5em 0em;
 }
+
 /******</ADMIN_ACL>*******/
 
 /******<ADMIN_USER>*******/
-.rcmuser .admin-users {}
+.rcmuser .admin-users {
+}
 
-.useraccordion .panel-default > .panel-heading
-{
+.useraccordion .panel-default > .panel-heading {
     color: #333333;
     background-color: #FFFFFF;
     background-image: none;
@@ -225,15 +238,17 @@
     border-bottom-color: #dddddd;
     border-left-color-value: #dddddd;
 }
-.rcmuser .admin-users .user
-{
+
+.rcmuser .admin-users .user {
     border-bottom: .1em solid #DDDDDD;
     margin: 0 0 .5em 0;
     padding: 0 0 .5em 0;
 }
+
 .rcmuser .admin-acl .userDetails {
     padding: 0 0 .5em 0;
 }
+
 .rcmuser .admin-users .user-username {
     font-weight: bold;
 }
@@ -242,11 +257,11 @@
     font-weight: normal;
 }
 
-.rcmuser .admin-users .user_roles
-{
+.rcmuser .admin-users .user_roles {
     border: .1em solid #dddddd;
     border-radius: .5em;
     padding-top: 1em;
     padding-bottom: 1em;
 }
+
 /******</ADMIN_USER>*******/

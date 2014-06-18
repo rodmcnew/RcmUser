@@ -117,7 +117,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
             'create',
             'delete',
             'update_credentials',
-            'create_credentials',
         );
 
         /* parent resource */
