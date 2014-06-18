@@ -52,6 +52,11 @@ class Result implements \JsonSerializable
     const DEFAULT_KEY = 0;
 
     /**
+     * @var string $messageDelimiter
+     */
+    protected $messageDelimiter = ' | ';
+
+    /**
      * @var int
      */
     protected $code = 1;
@@ -137,6 +142,16 @@ class Result implements \JsonSerializable
     }
 
     /**
+     * getMessagesString
+     *
+     * @return array
+     */
+    public function getMessagesString()
+    {
+        return implode($this->messageDelimiter, $this->messages);
+    }
+
+    /**
      * setMessage
      *
      * @param string $value value
@@ -211,7 +226,7 @@ class Result implements \JsonSerializable
      */
     public function throwFailure()
     {
-        if(!$this->isSuccess()){
+        if (!$this->isSuccess()) {
 
             throw new RcmUserResultException($this->getMessage());
         }
