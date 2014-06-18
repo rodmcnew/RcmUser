@@ -17,6 +17,8 @@
 
 namespace RcmUser;
 
+use RcmUser\Exception\RcmUserResultException;
+
 
 /**
  * Class Result
@@ -199,6 +201,20 @@ class Result implements \JsonSerializable
         }
 
         return false;
+    }
+
+    /**
+     * throwFailure
+     *
+     * @return void
+     * @throws Exception\RcmUserResultException
+     */
+    public function throwFailure()
+    {
+        if(!$this->isSuccess()){
+
+            throw new RcmUserResultException($this->getMessage());
+        }
     }
 
     /**
