@@ -115,7 +115,7 @@ class DoctrineAclRoleDataMapper
 
         $result = new Result($roles);
 
-        if(empty($roles)){
+        if (empty($roles)) {
             $result->setMessage('No roles found,');
         }
 
@@ -136,7 +136,7 @@ class DoctrineAclRoleDataMapper
 
         $result = new Result($roles);
 
-        if(empty($roles)){
+        if (empty($roles)) {
             $result->setMessage('No roles found,');
         }
 
@@ -157,7 +157,7 @@ class DoctrineAclRoleDataMapper
 
         $result = new Result($roles);
 
-        if(empty($roles)){
+        if (empty($roles)) {
             $result->setMessage('No roles found,');
         }
 

@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * LogEntry.php
  *
  * LogEntry
@@ -18,7 +18,7 @@
 namespace RcmUser\Log\Entity;
 
 
- /**
+/**
  * Class LogEntry
  *
  * LogEntry
@@ -34,7 +34,8 @@ namespace RcmUser\Log\Entity;
  * @link      https://github.com/reliv
  */
 
-class LogEntry {
+class LogEntry
+{
 
     /**
      * @var string $type
@@ -52,31 +53,34 @@ class LogEntry {
     protected $extra = '';
 
     /**
-     * @var string $dateTimeUtc dateTimeUtc
+     * @var \DateTime $dateTimeUtc dateTimeUtc
      */
     protected $dateTimeUtc = '';
 
     /**
-     * @param string $dateTimeUtc dateTimeUtc
-     * @param string $type        type
-     * @param string $message     message
-     * @param string $extra       extra
+     * __construct
+     *
+     * @param \DateTime $dateTimeUtc dateTimeUtc
+     * @param string    $type        type
+     * @param string    $message     message
+     * @param string    $extra       extra
      */
-    function __construct($dateTimeUtc, $type, $message, $extra = ''){
-
+    function __construct(\DateTime $dateTimeUtc, $type, $message, $extra = '')
+    {
         $this->setDateTimeUtc($dateTimeUtc);
         $this->setType($type);
         $this->setMessage($message);
         $this->setExtra($extra);
     }
+
     /**
      * setDateTimeUtc
      *
-     * @param string $dateTimeUtc dateTimeUtc
+     * @param \DateTime $dateTimeUtc dateTimeUtc
      *
      * @return void
      */
-    public function setDateTimeUtc($dateTimeUtc)
+    public function setDateTimeUtc(\DateTime $dateTimeUtc)
     {
         $this->dateTimeUtc = $dateTimeUtc;
     }
@@ -84,7 +88,7 @@ class LogEntry {
     /**
      * getDateTimeUtc
      *
-     * @return string
+     * @return \DateTime
      */
     public function getDateTimeUtc()
     {
@@ -100,9 +104,10 @@ class LogEntry {
      */
     public function setExtra($extra)
     {
-        if(empty($extra)){
+        if (empty($extra)) {
 
             $this->extra = '';
+
             return;
         }
 

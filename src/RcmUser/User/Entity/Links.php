@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * Links.php
  *
  * Links
@@ -18,7 +18,7 @@
 namespace RcmUser\User\Entity;
 
 
- /**
+/**
  * Class Links
  *
  * Links
@@ -34,7 +34,8 @@ namespace RcmUser\User\Entity;
  * @link      https://github.com/reliv
  */
 
-class Links implements \JsonSerializable {
+class Links implements \JsonSerializable
+{
 
     protected $links = array();
 
@@ -51,7 +52,7 @@ class Links implements \JsonSerializable {
     /**
      * addLink
      *
-     * @param Link $link
+     * @param Link $link link object
      *
      * @return void
      */

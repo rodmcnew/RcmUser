@@ -157,7 +157,7 @@ class AdminApiUserController extends AbstractAdminApiController
             //$data = json_decode($this->getRequest()->getContent());
             $currentUser = $this->rcmUserGetCurrentUser();
 
-            if($id == $currentUser->getId()){
+            if ($id == $currentUser->getId()) {
 
                 return new Result(
                     $id,
@@ -182,7 +182,7 @@ class AdminApiUserController extends AbstractAdminApiController
     /**
      * update
      *
-     * @param mixed $id
+     * @param mixed $id   user id
      * @param mixed $data user array
      *
      * @return array|mixed

@@ -37,6 +37,9 @@ use Zend\Log\LoggerInterface;
  */
 class Logger implements LoggerInterface
 {
+    /**
+     * @var int $logLevel
+     */
     protected $logLevel = \Zend\Log\Logger::ERR;
 
     /**
@@ -78,7 +81,7 @@ class Logger implements LoggerInterface
      *
      * @return mixed
      */
-    public function getLevel($type)
+    protected function getLevel($type)
     {
         if (defined('\Zend\Log\Logger::' . $type)) {
 
@@ -119,16 +122,18 @@ class Logger implements LoggerInterface
     protected function log($type, $message, $extra = array())
     {
         if ($this->canLog($type)) {
-            // no logging
-            return $this;
+
+            // override with logging logic here
         }
 
         return $this;
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * emerg
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */
@@ -138,8 +143,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * alert
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */
@@ -149,8 +156,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * crit
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */
@@ -160,8 +169,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * err
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */
@@ -171,8 +182,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * warn
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */
@@ -182,8 +195,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * notice
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */
@@ -193,8 +208,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * info
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */
@@ -204,8 +221,10 @@ class Logger implements LoggerInterface
     }
 
     /**
-     * @param string            $message
-     * @param array|Traversable $extra
+     * debug
+     *
+     * @param string            $message message
+     * @param array|Traversable $extra   extra
      *
      * @return LoggerInterface
      */

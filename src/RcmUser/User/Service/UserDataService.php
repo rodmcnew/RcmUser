@@ -80,13 +80,13 @@ class UserDataService extends EventProvider
     /**
      * setValidUserStates
      *
-     * @param $validUserStates
+     * @param array $validUserStates array of valid user states
      *
      * @return void
      */
     public function setValidUserStates($validUserStates)
     {
-        if(!in_array(User::STATE_DISABLED, $validUserStates)){
+        if (!in_array(User::STATE_DISABLED, $validUserStates)) {
             $validUserStates[] = User::STATE_DISABLED;
         }
         $this->validUserStates = $validUserStates;

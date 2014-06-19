@@ -108,7 +108,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * add
      *
-     * @param User    $user      user
+     * @param User   $user      user
      * @param string $aclRoleId aclRoleId
      *
      * @return Result
@@ -122,7 +122,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * remove
      *
-     * @param User    $user      user
+     * @param User   $user      user
      * @param string $aclRoleId aclRoleId
      *
      * @return Result
@@ -177,7 +177,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * delete
      *
-     * @param User $user user
+     * @param User  $user  user
      * @param array $roles roles
      *
      * @return Result
@@ -208,7 +208,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
 
         $availableRoles = $this->getAvailableRoles();
 
-        if(!in_array($role, $availableRoles)) {
+        if (!in_array($role, $availableRoles)) {
 
             return false;
         }

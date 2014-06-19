@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * UserPropertyInterface.php
  *
  * UserPropertyInterface
@@ -18,7 +18,7 @@
 namespace RcmUser\User\Entity;
 
 
- /**
+/**
  * Interface UserPropertyInterface
  *
  * UserPropertyInterface
@@ -34,7 +34,8 @@ namespace RcmUser\User\Entity;
  * @link      https://github.com/reliv
  */
 
-interface UserPropertyInterface extends \JsonSerializable{
+interface UserPropertyInterface extends \JsonSerializable
+{
 
     /**
      * populate

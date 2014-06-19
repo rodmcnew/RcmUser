@@ -58,7 +58,7 @@ class UserRoleProperty implements UserPropertyInterface
     /**
      * setRoles
      *
-     * @param $roles
+     * @param array $roles array of Role Ids
      *
      * @return void
      */
@@ -86,7 +86,7 @@ class UserRoleProperty implements UserPropertyInterface
      */
     public function setRole($roleId)
     {
-        if(!$this->hasRole($roleId)){
+        if (!$this->hasRole($roleId)) {
 
             $this->roles[] = $roleId;
         }
@@ -104,7 +104,7 @@ class UserRoleProperty implements UserPropertyInterface
     {
         $key = array_search($roleId, $this->roles);
 
-        if(!$key){
+        if ($key === false) {
             return $default;
         }
 

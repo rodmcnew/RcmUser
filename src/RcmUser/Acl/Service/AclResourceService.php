@@ -332,8 +332,7 @@ class AclResourceService
             return null;
         }
 
-        if (!($this->resourceProviders[$providerId] instanceof
-            ResourceProviderInterface)
+        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
         ) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
                 $this->resourceProviders[$providerId],
@@ -498,10 +497,10 @@ class AclResourceService
             $parent = $aclResources[$parentId];
 
             $ns = $this->createNamespaceId(
-                    $parent,
-                    $aclResources,
-                    $nsChar
-                ) . $nsChar . $ns;
+                $parent,
+                $aclResources,
+                $nsChar
+            ) . $nsChar . $ns;
         }
 
         return $ns;

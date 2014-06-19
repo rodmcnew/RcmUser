@@ -182,7 +182,7 @@ class Result implements \JsonSerializable
     }
 
     /**
-     * setData
+     * setData - valid data format
      *
      * @param mixed $data data
      *
@@ -194,7 +194,7 @@ class Result implements \JsonSerializable
     }
 
     /**
-     * getData
+     * getData - should always return valid data format, even is not success
      *
      * @return mixed
      */
@@ -219,7 +219,7 @@ class Result implements \JsonSerializable
     }
 
     /**
-     * throwFailure
+     * throwFailure - throw exception if not isSuccess
      *
      * @return void
      * @throws Exception\RcmUserResultException

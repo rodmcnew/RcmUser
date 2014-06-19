@@ -17,11 +17,27 @@
 
 namespace RcmUser\Test;
 
+use RcmUser\Exception\RcmUserResultException;
 use RcmUser\Result;
 use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../Zf2TestCase.php';
 
+/**
+ * Class ResultTest
+ *
+ * ResultTest
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ */
 class ResultTest extends Zf2TestCase
 {
     /**
@@ -53,6 +69,35 @@ class ResultTest extends Zf2TestCase
         $this->assertTrue($result->getMessage(1) === 'message 2', 'Message 2 not returned.');
 
         $this->assertTrue($result->getMessage('nope', 'not_found') === 'not_found', 'Message unset default not returned.');
+
+        $this->assertTrue(is_string($result->getMessagesString()), 'Massages not returned as string');
+
+        $this->assertJson(json_encode($result), 'Json not returned');
+
+        $result->setCode(Result::CODE_SUCCESS);
+
+        try{
+            // this should NOT throw
+            $result->throwFailure();
+
+        }catch(RcmUserResultException $e){
+
+            $this->fail("Exception thrown incorrectly");
+            return;
+        }
+
+        $result->setCode(Result::CODE_FAIL);
+
+        try{
+            $result->throwFailure();
+
+        }catch(RcmUserResultException $e){
+
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserResultException', $e);
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
     }
 
     /**
@@ -64,7 +109,7 @@ class ResultTest extends Zf2TestCase
      */
     public function testIsSuccess()
     {
-        $result = new Result();
+        $result = new Result(null, Result::CODE_SUCCESS, array('Test Message'));
         $data = 'SOMEDATA';
 
         $result->setCode(Result::CODE_SUCCESS);
@@ -74,6 +119,18 @@ class ResultTest extends Zf2TestCase
         $result->setCode(Result::CODE_FAIL);
 
         $this->assertFalse($result->isSuccess(), 'Success returned.');
+    }
+
+    /**
+     * testConstruct
+     *
+     * @return void
+     */
+    public function testConstruct()
+    {
+        $result = new Result();
+
+        $result->__construct(null, Result::CODE_SUCCESS, array('Test Message'));
     }
 }
  

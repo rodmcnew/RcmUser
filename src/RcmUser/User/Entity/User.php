@@ -125,7 +125,9 @@ class User implements UserInterface, \JsonSerializable
     public function setUsername($username)
     {
         $username = (string) $username;
+
         if (empty($username)) {
+
             $username = null;
         }
         $this->username = $username;
@@ -204,6 +206,7 @@ class User implements UserInterface, \JsonSerializable
     {
         $email = (string) $email;
         if (empty($email)) {
+
             $email = null;
         }
         $this->email = $email;
@@ -230,6 +233,7 @@ class User implements UserInterface, \JsonSerializable
     {
         $name = (string) $name;
         if (empty($name)) {
+
             $name = null;
         }
         $this->name = $name;
@@ -255,6 +259,7 @@ class User implements UserInterface, \JsonSerializable
     public function setProperties($properties)
     {
         if (empty($properties)) {
+
             $properties = array();
         }
         $this->properties = $properties;
@@ -281,7 +286,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setProperty($propertyId, $value)
     {
-        if(!$this->isValidPropertyId($propertyId)){
+        if (!$this->isValidPropertyId($propertyId)) {
 
             throw new RcmUserException("Property Id is invald: {$propertyId}");
         }

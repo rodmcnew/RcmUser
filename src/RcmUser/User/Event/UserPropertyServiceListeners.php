@@ -76,7 +76,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         $data = $e->getParam('data');
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
-        if($propertyNameSpace !== $thisPropertyNameSpace){
+        if ($propertyNameSpace !== $thisPropertyNameSpace) {
 
             return false;
         }
@@ -86,7 +86,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         try {
 
             $property->populate($data);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             return new \RcmUser\Result(
                 $property,
@@ -112,7 +112,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         $propertyNameSpace = $e->getParam('propertyNameSpace');
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
-        if($propertyNameSpace !== $thisPropertyNameSpace){
+        if ($propertyNameSpace !== $thisPropertyNameSpace) {
 
             return false;
         }
@@ -129,8 +129,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
     }
 
     /**
-     * @todo
-     * onGetUserPropertyIsAllowed
+     * onGetUserPropertyIsAllowed @todo
      *
      * @param Event $e e
      *
@@ -142,7 +141,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         $propertyNameSpace = $e->getParam('propertyNameSpace');
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
-        if($propertyNameSpace !== $thisPropertyNameSpace){
+        if ($propertyNameSpace !== $thisPropertyNameSpace) {
 
             return false;
         }

@@ -100,8 +100,7 @@ class AuthorizeService
      */
     public function setAclRoleDataMapper(
         AclRoleDataMapperInterface $aclRoleDataMapper
-    )
-    {
+    ) {
         $this->aclRoleDataMapper = $aclRoleDataMapper;
     }
 
@@ -124,8 +123,7 @@ class AuthorizeService
      */
     public function setAclRuleDataMapper(
         AclRuleDataMapperInterface $aclRuleDataMapper
-    )
-    {
+    ) {
         $this->aclRuleDataMapper = $aclRuleDataMapper;
     }
 
@@ -426,8 +424,8 @@ class AuthorizeService
     }
 
     /**
-     * @deprecated
-     * parseResource
+     * parseResource @deprecated
+     *
      * This allows use to parse our dot notation for nested resources
      * which is used when a missing resource can inherit.
      *
