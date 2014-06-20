@@ -268,7 +268,7 @@ class DoctrineAclRuleDataMapper
      */
     public function update(AclRule $aclRule)
     {
-        // todo write me
+        // @todo write update method
         parent::update($aclRule);
     }
 
@@ -299,7 +299,6 @@ class DoctrineAclRuleDataMapper
             Result::CODE_SUCCESS
         );
     }
-
 
     /**
      * getValidInstance

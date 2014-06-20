@@ -136,10 +136,9 @@ class DbUserDataPreparer implements UserDataPreparerInterface
      * @param User $existingUser   existingUser
      *
      * @return bool
-     */
+
     public function isValidCredential(User $credentialUser, User $existingUser)
     {
-
         $existingHash = $existingUser->getPassword();
 
         $credential = $credentialUser->getPassword();
@@ -148,6 +147,7 @@ class DbUserDataPreparer implements UserDataPreparerInterface
 
         return $isValid;
     }
+     */
 
     /**
      * buildId
@@ -156,7 +156,6 @@ class DbUserDataPreparer implements UserDataPreparerInterface
      */
     public function buildId()
     {
-
         return $this->guidv4();
     }
 

@@ -22,7 +22,6 @@ use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\DoctrineAclRole;
 use RcmUser\Db\DoctrineMapperInterface;
-use RcmUser\Exception\RcmUserException;
 use RcmUser\Result;
 
 /**
@@ -50,7 +49,7 @@ class DoctrineAclRoleDataMapper
     protected $entityManager;
 
     /**
-     * @var
+     * @var string $entityClass
      */
     protected $entityClass;
 
@@ -73,7 +72,6 @@ class DoctrineAclRoleDataMapper
      */
     public function getEntityManager()
     {
-
         return $this->entityManager;
     }
 
@@ -108,7 +106,8 @@ class DoctrineAclRoleDataMapper
     {
         $query = $this->getEntityManager()->createQuery(
             'SELECT role FROM ' . $this->getEntityClass() . ' role ' .
-            'INDEX BY role.roleId'
+            'INDEX BY role.roleId ' .
+            'ORDER BY role.roleId'
         );
 
         $roles = $query->getResult();
@@ -190,9 +189,18 @@ class DoctrineAclRoleDataMapper
             );
         }
 
-        // @todo if error, fail with null
-        $this->getEntityManager()->persist($aclRole);
-        $this->getEntityManager()->flush();
+        try {
+
+            $this->getEntityManager()->persist($aclRole);
+            $this->getEntityManager()->flush();
+        } catch(\Exception $e) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Acl Role could not be created: ' . var_export($aclRole, true)
+            );
+        }
 
         return new Result($aclRole);
     }
@@ -234,6 +242,9 @@ class DoctrineAclRoleDataMapper
      */
     public function update(AclRole $aclRole)
     {
+        $result = $this->getValidInstance($aclRole);
+        $aclRole = $result->getData();
+
         $result = $this->read($aclRole);
 
         if (!$result->isSuccess()) {
@@ -241,9 +252,9 @@ class DoctrineAclRoleDataMapper
             return $result;
         }
 
-        $aclRole = $result->getData();
+        $existingAclRole = $result->getData();
 
-        if (empty($aclRole)) {
+        if (empty($existingAclRole)) {
 
             return new Result(
                 null,
@@ -252,12 +263,21 @@ class DoctrineAclRoleDataMapper
             );
         }
 
-        $this->getEntityManager()->merge($aclRole);
-        $this->getEntityManager()->flush();
+        try {
 
-        // @todo validate action
+            $this->getEntityManager()->merge($aclRole);
+            $this->getEntityManager()->flush();
+        } catch(\Exception $e) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Acl Role could not be updated: ' . var_export($aclRole, true)
+            );
+        }
+
         return new Result(
-            null,
+            $aclRole,
             Result::CODE_SUCCESS,
             'Successfully updated ' . $aclRole->getRoleId()
         );
@@ -330,10 +350,18 @@ class DoctrineAclRoleDataMapper
             return $result;
         }
 
-        $this->getEntityManager()->remove($aclRole);
-        $this->getEntityManager()->flush();
+        try {
 
-        // @todo validate action results
+            $this->getEntityManager()->remove($aclRole);
+            $this->getEntityManager()->flush();
+        } catch(\Exception $e) {
+
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'Acl Role could not be deleted: ' . var_export($aclRole, true)
+            );
+        }
 
         return new Result(
             null,

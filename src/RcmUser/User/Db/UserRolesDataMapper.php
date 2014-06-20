@@ -18,7 +18,6 @@
 namespace RcmUser\User\Db;
 
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
 

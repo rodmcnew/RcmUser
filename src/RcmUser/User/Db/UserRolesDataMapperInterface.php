@@ -50,7 +50,7 @@ interface UserRolesDataMapperInterface
      *
      * @param array $options options
      *
-     * @return mixed
+     * @return Result
      */
     public function fetchAll($options = array());
 

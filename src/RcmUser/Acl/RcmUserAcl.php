@@ -134,7 +134,8 @@ class RcmUserAcl extends Acl
                             $resource, null, null
                         ))
                     ) {
-                        echo "\n3: " .var_export(Acl::TYPE_ALLOW === $ruleTypeAllPrivileges, true);
+                        echo "\n3: " .
+                        var_export(Acl::TYPE_ALLOW === $ruleTypeAllPrivileges, true);
                         return $this->getAccessType($ruleTypeAllPrivileges);
                     }
                 }

@@ -40,12 +40,27 @@ interface AclRoleDataMapperInterface
     /**
      * fetchSuperAdminRoleId
      *
+     * RETURN DATA FORMAT:
+     *    -- success
+     *    '{roleId}'
+     *
+     *    -- fail
+     *    null
+     *
      * @return Result
      */
     public function fetchSuperAdminRoleId();
 
     /**
      * fetchGuestRoleId
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    '{roleId}'
+     *
+     *    -- fail
+     *    null
      *
      * @return Result
      */
@@ -54,12 +69,32 @@ interface AclRoleDataMapperInterface
     /**
      * fetchDefaultGuestRoleIds
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *    *    0 => '{roleId}',
+     *    );
+     *
+     *    -- fail
+     *    array()
+     *
      * @return Result
      */
     public function fetchDefaultGuestRoleIds();
 
     /**
      * fetchDefaultUserRoleIds
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *    *    0 => '{roleId}',
+     *    );
+     *
+     *    -- fail
+     *    array()
      *
      * @return Result
      */
@@ -68,12 +103,32 @@ interface AclRoleDataMapperInterface
     /**
      * fetchAll
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *    *    '{roleId}' => RcmUser\Acl\Entity\AclRole,
+     *    );
+     *
+     *    -- fail
+     *    array()
+     *
      * @return Result
      */
     public function fetchAll();
 
     /**
      * fetchByRoleId
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\Acl\Entity\AclRole
+     *
+     *    -- fail
+     *    null
+     *
+     * DEFAULT ORDER BY: roleId
      *
      * @param string $roleId roleId
      *
@@ -84,6 +139,16 @@ interface AclRoleDataMapperInterface
     /**
      * fetchByParentRoleId
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *    *    0 =>  RcmUser\Acl\Entity\AclRole
+     *    );
+     *
+     *    -- fail
+     *    array()
+     *
      * @param int $parentRoleId parent id
      *
      * @return Result
@@ -92,6 +157,13 @@ interface AclRoleDataMapperInterface
 
     /**
      * create
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\Acl\Entity\AclRole
+     *
+     *    -- fail
+     *    null
      *
      * @param AclRole $aclRole acl role
      *
@@ -101,6 +173,13 @@ interface AclRoleDataMapperInterface
 
     /**
      * read
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\Acl\Entity\AclRole
+     *
+     *    -- fail
+     *    null
      *
      * @param AclRole $aclRole acl role
      *
@@ -110,6 +189,13 @@ interface AclRoleDataMapperInterface
 
     /**
      * update
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\Acl\Entity\AclRole
+     *
+     *    -- fail
+     *    null
      *
      * @param AclRole $aclRole acl role
      *
@@ -119,6 +205,13 @@ interface AclRoleDataMapperInterface
 
     /**
      * delete
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    null
+     *
+     *    -- fail
+     *    null
      *
      * @param AclRole $aclRole acl role
      *

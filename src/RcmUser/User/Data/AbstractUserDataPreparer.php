@@ -39,7 +39,6 @@ use Zend\Crypt\Password\PasswordInterface;
  */
 class AbstractUserDataPreparer implements UserDataPreparerInterface
 {
-
     /**
      * prepareUserCreate
      *

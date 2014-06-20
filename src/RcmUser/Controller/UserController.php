@@ -17,7 +17,10 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\AclRule;
 use RcmUser\JsonForm;
+use RcmUser\User\Entity\ReadOnlyUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -123,6 +126,35 @@ class UserController extends AbstractActionController
 
         $logger->info('TEST', array('SOMETEST', 'DATA'));
 
+        //*/
+
+
+        /**
+         * @var \RcmUser\Acl\Db\DoctrineAclRoleDataMapper $aclRoleDataMapper
+         *
+        $aclRoleDataMapper = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclRoleDataMapper'
+        );
+
+        $aclRole = new AclRole('testme');
+        var_export($aclRoleDataMapper->delete($aclRole));
+        //*/
+
+        /**
+         * @var \RcmUser\Acl\Db\DoctrineAclRuleDataMapper $aclRuleDataMapper
+         *
+        $aclRuleDataMapper = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclRuleDataMapper'
+        );
+        echo '<pre>';
+
+        $rule = new AclRule();
+        $rule->setRule('allow');
+        $rule->setResourceId('pages');
+        $rule->setRoleId('user');
+        var_export($aclRuleDataMapper->create($rule));
+
+        echo '</pre>';
         //*/
 
         return $test;

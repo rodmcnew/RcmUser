@@ -39,7 +39,6 @@ use RcmUser\User\Entity\User;
  */
 class UserPropertyService extends EventProvider
 {
-
     /**
      * getUserProperty
      *
