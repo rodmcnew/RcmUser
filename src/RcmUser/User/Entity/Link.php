@@ -17,6 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
+use RcmUser\Exception\RcmUserException;
+
 
 /**
  * Class Link

@@ -19,7 +19,9 @@ namespace RcmUser\Test\User\Db;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+use RcmUser\Result;
 use RcmUser\User\Db\UserRolesDataMapper;
+use RcmUser\User\Entity\User;
 
 /**
  * Class UserRolesDataMapperTest
@@ -51,6 +53,8 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
     {
         $this->roles = array('someroles');
 
+        $rolsResult = new Result($this->roles);
+
         $this->aclRoleDataMapper = $this->getMockBuilder(
             'RcmUser\Acl\Db\AclRoleDataMapperInterface'
         )
@@ -59,7 +63,7 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
 
         $this->aclRoleDataMapper->expects($this->any())
             ->method('fetchAll')
-            ->will($this->returnValue($this->roles));
+            ->will($this->returnValue($rolsResult));
 
 
         $this->userRolesDataMapper
@@ -81,10 +85,13 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
             $this->userRolesDataMapper->getAclRoleDataMapper()
         );
 
+        // this also re-gets to test the cache bit.
         $this->assertEquals(
             $this->roles,
             $this->userRolesDataMapper->getAvailableRoles()
         );
+
+
     }
 
     /**
@@ -96,12 +103,147 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchAll()
     {
-        $result = $this->userDataMapper->fetchAll(
+        $result = $this->userRolesDataMapper->fetchAll(
             $this->user,
             'roleId'
         );
     }
 
-    
+    /**
+     * testAdd
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testAdd()
+    {
+        $result = $this->userRolesDataMapper->add(
+            $this->user,
+            'roleId'
+        );
+    }
+
+    /**
+     * testAdd
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testRemove()
+    {
+        $result = $this->userRolesDataMapper->remove(
+            $this->user,
+            'roleId'
+        );
+    }
+
+    /**
+     * testCreate
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testCreate()
+    {
+        $result = $this->userRolesDataMapper->create(
+            $this->user,
+            $this->roles
+        );
+    }
+
+    /**
+     * testRead
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testRead()
+    {
+        $result = $this->userRolesDataMapper->read(
+            $this->user
+        );
+    }
+
+    /**
+     * testUpdate
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testUpdate()
+    {
+        $result = $this->userRolesDataMapper->update(
+            $this->user,
+            $this->roles
+        );
+    }
+
+    /**
+     * testDelete
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testDelete()
+    {
+        $result = $this->userRolesDataMapper->delete(
+            $this->user,
+            $this->roles
+        );
+    }
+
+    /**
+     * testCan
+     *
+     * @return void
+     */
+    public function testCan()
+    {
+        $user = new User();
+        $badRole = 'NOPE';
+
+        $this->assertFalse(
+            $this->userRolesDataMapper->canAdd(
+                $user,
+                $badRole
+            )
+        );
+
+        $this->assertFalse(
+            $this->userRolesDataMapper->canRemove(
+                $user,
+                $badRole
+            )
+        );
+
+        $user->setId('123123');
+
+        $this->assertFalse(
+            $this->userRolesDataMapper->canAdd(
+                $user,
+                $badRole
+            )
+        );
+
+        $this->assertTrue(
+            $this->userRolesDataMapper->canAdd(
+                $user,
+                $this->roles[0]
+            )
+        );
+
+        $this->assertTrue(
+            $this->userRolesDataMapper->canRemove(
+                $user,
+                $this->roles[0]
+            )
+        );
+    }
 }
  
