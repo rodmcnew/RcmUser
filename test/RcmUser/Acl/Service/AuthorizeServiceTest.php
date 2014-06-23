@@ -49,17 +49,6 @@ class AuthorizeServiceTest extends Zf2TestCase {
 
     public function buildAuthorizeService()
     {
-        /*
-        $this->authorize = $this->getMockBuilder(
-            'RcmUser\Acl\Service\AuthorizeService'
-        )
-            ->disableOriginalConstructor()
-            ->getMock();
-        $this->authorize->expects($this->any())
-            ->method('isAllowed')
-            ->will($this->returnValue(true));
-        */
-        $this->authorizeService = new AuthorizeService();
 
         $aclResourceService = $this->getMockBuilder(
             'RcmUser\Acl\Service\AclResourceService'
@@ -68,39 +57,49 @@ class AuthorizeServiceTest extends Zf2TestCase {
             ->getMock();
 
 
-        $aclRoleDataMapper = $this->getMockBuilder(
-            'RcmUser\Acl\Db\AclRoleDataMapper'
+        $aclDataService = $this->getMockBuilder(
+            'RcmUser\Acl\Service\AclDataService'
         )
             ->disableOriginalConstructor()
             ->getMock();
 
-        $aclRoleDataMapper->expects($this->any())
-        ->method('fetchAll')
-        ->will($this->returnValue(new Result(array('data' => 'here'), Result::CODE_SUCCESS, 'Message')));
+        $aclDataService->expects($this->any())
+        ->method('getNamespacedRoles')
+        ->will($this->returnValue(
+                    new Result(
+                        array('data' => 'here'),
+                        Result::CODE_SUCCESS,
+                        'Message'
+                    )
+                ));
 
+        $aclDataService->expects($this->any())
+            ->method('getSuperAdminRoleId')
+            ->will($this->returnValue('admin'));
 
-        $aclRuleDataMapper =  $this->getMockBuilder(
-            'RcmUser\Acl\Db\AclRuleDataMapper'
-        )
-            ->disableOriginalConstructor()
-            ->getMock();
+        $aclDataService->expects($this->any())
+            ->method('getAllRules')
+            ->will($this->returnValue(array()));
 
+        $aclDataService->expects($this->any())
+            ->method('getRulesByResource')
+            ->will($this->returnValue(array()));
 
-        $this->authorizeService->setAclResourceService($aclResourceService);
-        $this->authorizeService->setAclRoleDataMapper($aclRoleDataMapper);
-        $this->authorizeService->setAclRuleDataMapper($aclRuleDataMapper);
+        $this->authorizeService = new AuthorizeService(
+            $aclResourceService,
+            $aclDataService
+        );
     }
 
     public function testGetSet(){
 
         $this->buildAuthorizeService();
 
+        /** @var AuthorizeService $authServ */
         $authServ = $this->getAuthorizeService();
 
-        $result = $authServ->getAclResourceService();
-        $this->assertInstanceOf('\RcmUser\Acl\Service\AclResourceService', $result, "Getter or Setter failed");
-        $this->assertInstanceOf('\RcmUser\Acl\Db\AclRoleDataMapper', $authServ->getAclRoleDataMapper(), "Getter or Setter failed");
-        $this->assertInstanceOf('\RcmUser\Acl\Db\AclRuleDataMapper', $authServ->getAclRuleDataMapper(), "Getter or Setter failed");
+        $this->assertInstanceOf('\RcmUser\Acl\Service\AclResourceService', $authServ->getAclResourceService());
+        $this->assertInstanceOf('\RcmUser\Acl\Service\AclDataService', $authServ->getAclDataService());
 
     }
 

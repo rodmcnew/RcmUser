@@ -17,8 +17,6 @@
 
 namespace RcmUser\Acl\Service;
 
-use RcmUser\Acl\Db\AclRoleDataMapperInterface;
-use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
@@ -91,31 +89,11 @@ class AuthorizeService
     /**
      * getAclResourceService
      *
-     * @return AclResourceService
+     * @return AclDataService
      */
     public function getAclDataService()
     {
         return $this->aclDataService;
-    }
-
-    /**
-     * getAclRoleDataMapper
-     *
-     * @return AclRoleDataMapperInterface
-     */
-    public function getAclRoleDataMapper()
-    {
-        return $this->aclDataService->getAclRoleDataMapper();
-    }
-
-    /**
-     * getAclRuleDataMapper
-     *
-     * @return AclRuleDataMapperInterface
-     */
-    public function getAclRuleDataMapper()
-    {
-        return $this->aclDataService->getAclRuleDataMapper();
     }
 
     /**
@@ -125,7 +103,7 @@ class AuthorizeService
      */
     public function getSuperAdminRoleId()
     {
-        return $this->getAclRoleDataMapper()->fetchSuperAdminRoleId();
+        return $this->getAclDataService()->getSuperAdminRoleId();
     }
 
     /**
@@ -135,7 +113,7 @@ class AuthorizeService
      */
     public function getRoles()
     {
-        $result = $this->aclDataService->getNamespacedRoles();
+        $result = $this->getAclDataService()->getNamespacedRoles();
 
         if (!$result->isSuccess()) {
 
@@ -176,7 +154,7 @@ class AuthorizeService
     public function getRules($resources = null)
     {
         if (empty($resources)) {
-            $result = $this->getAclRuleDataMapper()->fetchAll();
+            $result = $this->getAclDataService()->getAllRules();
 
             if (!$result->isSuccess()) {
 
@@ -190,7 +168,7 @@ class AuthorizeService
 
         foreach ($resources as $resourceId => $resource) {
 
-            $result = $this->getAclRuleDataMapper()->fetchByResource(
+            $result = $this->getAclDataService()->getRulesByResource(
                 $resource->getResourceId()
             );
 
