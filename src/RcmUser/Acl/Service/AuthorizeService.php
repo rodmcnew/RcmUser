@@ -60,25 +60,22 @@ class AuthorizeService
     protected $aclResourceService;
 
     /**
-     * @var AclRoleDataMapperInterface $aclRoleDataMapper
+     * @var AclDataService $aclDataService
      */
-    protected $aclRoleDataMapper;
+    protected $aclDataService;
 
     /**
-     * @var AclRuleDataMapperInterface $aclRuleDataMapper
-     */
-    protected $aclRuleDataMapper;
-
-    /**
-     * setAclResourceService
+     * __construct
      *
      * @param AclResourceService $aclResourceService aclResourceService
-     *
-     * @return void
+     * @param AclDataService     $aclDataService     aclDataService
      */
-    public function setAclResourceService(AclResourceService $aclResourceService)
-    {
+    public function __construct(
+        AclResourceService $aclResourceService,
+        AclDataService $aclDataService
+    ) {
         $this->aclResourceService = $aclResourceService;
+        $this->aclDataService = $aclDataService;
     }
 
     /**
@@ -92,16 +89,13 @@ class AuthorizeService
     }
 
     /**
-     * setAclRoleDataMapper
+     * getAclResourceService
      *
-     * @param AclRoleDataMapperInterface $aclRoleDataMapper aclRoleDataMapper
-     *
-     * @return void
+     * @return AclResourceService
      */
-    public function setAclRoleDataMapper(
-        AclRoleDataMapperInterface $aclRoleDataMapper
-    ) {
-        $this->aclRoleDataMapper = $aclRoleDataMapper;
+    public function getAclDataService()
+    {
+        return $this->aclDataService;
     }
 
     /**
@@ -111,20 +105,7 @@ class AuthorizeService
      */
     public function getAclRoleDataMapper()
     {
-        return $this->aclRoleDataMapper;
-    }
-
-    /**
-     * setAclRuleDataMapper
-     *
-     * @param AclRuleDataMapperInterface $aclRuleDataMapper aclRuleDataMapper
-     *
-     * @return void
-     */
-    public function setAclRuleDataMapper(
-        AclRuleDataMapperInterface $aclRuleDataMapper
-    ) {
-        $this->aclRuleDataMapper = $aclRuleDataMapper;
+        return $this->aclDataService->getAclRoleDataMapper();
     }
 
     /**
@@ -134,7 +115,7 @@ class AuthorizeService
      */
     public function getAclRuleDataMapper()
     {
-        return $this->aclRuleDataMapper;
+        return $this->aclDataService->getAclRuleDataMapper();
     }
 
     /**
@@ -144,7 +125,7 @@ class AuthorizeService
      */
     public function getSuperAdminRoleId()
     {
-        return $this->aclRoleDataMapper->fetchSuperAdminRoleId();
+        return $this->getAclRoleDataMapper()->fetchSuperAdminRoleId();
     }
 
     /**
@@ -154,7 +135,7 @@ class AuthorizeService
      */
     public function getRoles()
     {
-        $result = $this->aclRoleDataMapper->fetchAll();
+        $result = $this->aclDataService->getNamespacedRoles();
 
         if (!$result->isSuccess()) {
 
@@ -195,7 +176,7 @@ class AuthorizeService
     public function getRules($resources = null)
     {
         if (empty($resources)) {
-            $result = $this->aclRuleDataMapper->fetchAll();
+            $result = $this->getAclRuleDataMapper()->fetchAll();
 
             if (!$result->isSuccess()) {
 
@@ -209,7 +190,7 @@ class AuthorizeService
 
         foreach ($resources as $resourceId => $resource) {
 
-            $result = $this->aclRuleDataMapper->fetchByResource(
+            $result = $this->getAclRuleDataMapper()->fetchByResource(
                 $resource->getResourceId()
             );
 
@@ -387,14 +368,23 @@ class AuthorizeService
 
         } catch (\Exception $e) {
             // @todo - report this error or log
-            throw new RcmUserException(
+            $message =                 '<pre>' .
                 'AuthorizeService->isAllowed failed to check: ' .
                 "providerId: {$providerId} " .
                 "resourceId: {$resourceId} " .
                 'privilege: ' . var_export($privilege, true) . ' ' .
                 'user id: ' . $user->getId() . ' ' .
+                //'user roles: ' . var_export($userRoles, true) . ' ' .
+                //'acl roles: ' . var_export(
+                //    $this->getAcl($resourceId, $providerId)->getRoles(), true
+                //) . ' ' .
+                //'defined roles: ' . var_export($this->getRoles() , true) . ' ' .
                 'Acl failed with error: ' .
-                $e->getMessage()
+                $e->getMessage() .
+                '</pre>';
+            //echo($message);
+            throw new RcmUserException(
+                $message
             );
         }
 

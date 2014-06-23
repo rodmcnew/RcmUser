@@ -106,8 +106,7 @@ class DoctrineAclRoleDataMapper
     {
         $query = $this->getEntityManager()->createQuery(
             'SELECT role FROM ' . $this->getEntityClass() . ' role ' .
-            'INDEX BY role.roleId ' .
-            'ORDER BY role.roleId'
+            'INDEX BY role.roleId '
         );
 
         $roles = $query->getResult();
