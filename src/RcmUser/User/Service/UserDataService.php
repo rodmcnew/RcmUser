@@ -245,7 +245,8 @@ class UserDataService extends EventProvider
 
         $requestUser = new ReadOnlyUser($requestUser);
 
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState($this->getDefaultUserState());
         }
         /* </LOW_LEVEL_PREP> */
@@ -374,7 +375,8 @@ class UserDataService extends EventProvider
         }
 
         /* <LOW_LEVEL_PREP> */
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState($this->getDefaultUserState());
         }
         /* </LOW_LEVEL_PREP> */
@@ -402,7 +404,8 @@ class UserDataService extends EventProvider
     {
         /* <LOW_LEVEL_PREP> */
         // require id
-        if (empty($requestUser->getId())) {
+        $id = $requestUser->getId();
+        if (empty($id)) {
 
             return new Result(
                 null,
@@ -432,7 +435,8 @@ class UserDataService extends EventProvider
 
         $requestUser = new ReadOnlyUser($requestUser);
 
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState($this->getDefaultUserState());
         }
         /* </LOW_LEVEL_PREP> */
@@ -505,7 +509,8 @@ class UserDataService extends EventProvider
     {
         /* <LOW_LEVEL_PREP> */
         // require id
-        if (empty($requestUser->getId())) {
+        $id = $requestUser->getId();
+        if (empty($id)) {
 
             return new Result(
                 null,

@@ -84,7 +84,8 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         $responseUser->setPassword(
             $this->getEncryptor()->create($requestUser->getPassword())
         );
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState(User::STATE_DISABLED);
         }
 

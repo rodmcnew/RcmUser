@@ -208,14 +208,16 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         }
 
         // @todo make sure this is a valid check for all cases
-        if (!empty($user->getId())
+        $id = $user->getId();
+        if (!empty($id)
             && $user->getId() === $sessUser->getId()
         ) {
 
             return true;
         }
 
-        if (!empty($user->getUsername())
+        $username = $user->getUsername();
+        if (!empty($username)
             && $user->getUsername() === $sessUser->getUsername()
         ) {
 

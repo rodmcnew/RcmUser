@@ -411,7 +411,8 @@ class UserRoleService
             return $roles;
         }
 
-        if (empty($user->getId())) {
+        $id = $user->getId();
+        if (empty($id)) {
 
             $roles = $this->getDefaultGuestRoleIds()->getData();
         } else {

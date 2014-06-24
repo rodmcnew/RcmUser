@@ -481,7 +481,8 @@ class User implements UserInterface, \JsonSerializable
         $properties = $user->getProperties();
         foreach ($properties as $key => $property) {
 
-            if (empty($this->getProperty($key))) {
+            $userProperty = $this->getProperty($key);
+            if (empty($userProperty)) {
                 $this->setProperty($key, $property);
             }
         }

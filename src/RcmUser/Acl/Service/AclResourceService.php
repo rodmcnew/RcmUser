@@ -572,7 +572,8 @@ class AclResourceService
             );
         }
 
-        if (empty($resource->getProviderId())) {
+        $resourceProviderId = $resource->getProviderId();
+        if (empty($resourceProviderId)) {
 
             $resource->setProviderId($providerId);
         }
