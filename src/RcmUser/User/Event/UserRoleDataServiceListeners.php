@@ -68,7 +68,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     /**
      * setUserRoleService
      *
-     * @param UserRoleService $userRoleService
+     * @param UserRoleService $userRoleService userRoleService
      *
      * @return void
      */
@@ -115,7 +115,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         $users = $result->getData();
 
-        foreach($users as &$user){
+        foreach ($users as &$user) {
 
             $readResult = $this->getUserRoleService()->readRoles($user);
 
@@ -253,7 +253,11 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         if (!$createResult->isSuccess()) {
 
-            return new Result($responseUser, Result::CODE_FAIL, $createResult->getMessages());
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $createResult->getMessages()
+            );
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -380,7 +384,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             return new Result(
                 $responseUser,
                 Result::CODE_FAIL,
-                $updateResult->getMessages());
+                $updateResult->getMessages()
+            );
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);

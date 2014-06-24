@@ -17,7 +17,10 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\AclRule;
 use RcmUser\JsonForm;
+use RcmUser\User\Entity\ReadOnlyUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Mvc\Controller\AbstractActionController;
@@ -52,21 +55,23 @@ class UserController extends AbstractActionController
             'dumpUser' => false,
         );
 
-        /** @var \RcmUser\Acl\Service\AclDataService $aclDS /
-         $aclDS = $this->getServiceLocator()->get('RcmUser\Acl\AclDataService');
-         var_dump($aclDS->getAllRules());
-         /* */
+        /** @var \RcmUser\Acl\Service\AclDataService $aclDS *
+        $aclDS = $this->getServiceLocator()->get('RcmUser\Acl\AclDataService');
+        var_dump($aclDS->getAllRules());
+        //*/
 
         /** @var \RcmUser\User\Service\UserRoleService $userRoleService *
-         $userRoleService = $this->getServiceLocator()->get(
-         'RcmUser\User\Service\UserRoleService'
-         );
-         var_dump($userRoleService->getAllUserRoles());
-         /* */
+        $userRoleService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserRoleService'
+        );
+        var_dump($userRoleService->getAllUserRoles());
+        //*/
 
         /* User *
+
         var_dump($this->rcmUserGetCurrentUser());
-        /* */
+
+        * ******** */
 
         /** @var \RcmUser\User\Service\UserDataService $userDataService *
         $userDataService = $this->getServiceLocator()->get(
@@ -88,7 +93,7 @@ class UserController extends AbstractActionController
         $userRes = $userDataService->createUser($user);
 
         var_dump($userRes);
-        /* */
+        //*/
 
         /** @var \RcmUser\Service\RcmUserService $rcmUserService *
         $rcmUserService = $this->getServiceLocator()->get(
@@ -99,6 +104,7 @@ class UserController extends AbstractActionController
             'admin',
             '\Rcm\Acl\ResourceProvider'
         );
+        //*/
         /** @var \RcmUser\User\Entity\User $currentUser *
         $currentUser = $rcmUserService->getIdentity(null);
 
@@ -111,24 +117,45 @@ class UserController extends AbstractActionController
         $updatedSessUser = $rcmUserService->getIdentity(null);
 
         var_dump($updatedSessUser);
-        /* */
+        //*/
 
-        /** @var \RcmUser\Log\DoctrineLogger $logger *
+        /* @var \RcmUser\Log\DoctrineLogger $logger *
         $logger = $this->getServiceLocator()->get(
             'RcmUser\Log\Logger'
         );
 
-        $logger->info('TEST', array('SOMETEST','DATA'));
-        /* */
+        $logger->info('TEST', array('SOMETEST', 'DATA'));
 
-        //var_export($this->getServiceLocator()->getCanonicalNames());
-        /** @var \Zend\Log\WriterPluginManager $LogWriterManager */
-        //$LogWriterManager = $this->getServiceLocator()->get('LogWriterManager');
-        //print_r($LogWriterManager->getServiceLocator());
+        //*/
 
-        /** @var \Zend\Log\ProcessorPluginManager $LogProcessorManager */
-        //$LogProcessorManager = $this->getServiceLocator()->get('LogProcessorManager');
-        //print_r($LogProcessorManager);
+
+        /**
+         * @var \RcmUser\Acl\Db\DoctrineAclRoleDataMapper $aclRoleDataMapper
+         *
+        $aclRoleDataMapper = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclRoleDataMapper'
+        );
+
+        $aclRole = new AclRole('testme');
+        var_export($aclRoleDataMapper->delete($aclRole));
+        //*/
+
+        /**
+         * @var \RcmUser\Acl\Db\DoctrineAclRuleDataMapper $aclRuleDataMapper
+         *
+        $aclRuleDataMapper = $this->getServiceLocator()->get(
+            'RcmUser\Acl\AclRuleDataMapper'
+        );
+        echo '<pre>';
+
+        $rule = new AclRule();
+        $rule->setRule('allow');
+        $rule->setResourceId('pages');
+        $rule->setRoleId('user');
+        var_export($aclRuleDataMapper->create($rule));
+
+        echo '</pre>';
+        //*/
 
         return $test;
     }

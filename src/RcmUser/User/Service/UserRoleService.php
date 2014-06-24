@@ -48,7 +48,7 @@ class UserRoleService
     /**
      * __construct
      *
-     * @param UserRolesDataMapperInterface $userRolesDataMapper
+     * @param UserRolesDataMapperInterface $userRolesDataMapper Valid data mapper
      */
     public function __construct(
         UserRolesDataMapperInterface $userRolesDataMapper
@@ -128,7 +128,6 @@ class UserRoleService
      */
     public function getAllUserRoles()
     {
-
         return $this->getUserRolesDataMapper()->fetchAll();
     }
 
@@ -226,8 +225,8 @@ class UserRoleService
     /**
      * canAdd role
      *
-     * @param User   $user
-     * @param string $aclRoleId
+     * @param User   $user      User to add role to
+     * @param string $aclRoleId Role Id
      *
      * @return bool
      */
@@ -344,8 +343,8 @@ class UserRoleService
     /**
      * deleteRoles
      *
-     * @param User $user user
-     * @param array $roles roles
+     * @param User  $user  user
+     * @param array $roles array of Role Ids
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
@@ -412,7 +411,8 @@ class UserRoleService
             return $roles;
         }
 
-        if (empty($user->getId())) {
+        $id = $user->getId();
+        if (empty($id)) {
 
             $roles = $this->getDefaultGuestRoleIds()->getData();
         } else {

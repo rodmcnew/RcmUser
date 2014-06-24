@@ -43,12 +43,32 @@ interface AclRuleDataMapperInterface
     /**
      * fetchAll
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *       1 => RcmUser\Acl\Entity\AclRule
+     *    )
+     *
+     *    -- fail
+     *    array()
+     *
      * @return Result
      */
     public function fetchAll();
 
     /**
      * fetchByRole
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *       0 => RcmUser\Acl\Entity\AclRule
+     *    )
+     *
+     *    -- fail
+     *    array()
      *
      * @param mixed $roleId role id
      *
@@ -59,6 +79,16 @@ interface AclRuleDataMapperInterface
     /**
      * fetchByRule
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *       0 => RcmUser\Acl\Entity\AclRule
+     *    )
+     *
+     *    -- fail
+     *    array()
+     *
      * @param AclRule $rule rule
      *
      * @return Result
@@ -67,6 +97,16 @@ interface AclRuleDataMapperInterface
 
     /**
      * fetchByResource
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *       1 => RcmUser\Acl\Entity\AclRule
+     *    )
+     *
+     *    -- fail
+     *    array()
      *
      * @param string $resourceId resourceId
      *
@@ -77,6 +117,14 @@ interface AclRuleDataMapperInterface
     /**
      * create
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\Acl\Entity\AclRule
+     *
+     *    -- fail
+     *    null
+     *
      * @param AclRule $aclRule acl rule
      *
      * @return Result
@@ -85,6 +133,14 @@ interface AclRuleDataMapperInterface
 
     /**
      * read
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\Acl\Entity\AclRule
+     *
+     *    -- fail
+     *    null
      *
      * @param AclRule $aclRule acl rule
      *
@@ -95,6 +151,14 @@ interface AclRuleDataMapperInterface
     /**
      * update
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\Acl\Entity\AclRule
+     *
+     *    -- fail
+     *    null
+     *
      * @param AclRule $aclRule acl rule
      *
      * @return Result
@@ -103,6 +167,14 @@ interface AclRuleDataMapperInterface
 
     /**
      * delete
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    null
+     *
+     *    -- fail
+     *    null
      *
      * @param AclRule $aclRule acl rule
      *

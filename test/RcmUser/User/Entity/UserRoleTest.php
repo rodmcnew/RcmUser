@@ -111,5 +111,35 @@ class UserRoleTest extends Zf2TestCase
 
         $this->fail("Expected exception not thrown");
     }
+
+    /**
+     * testJson
+     *
+     * @covers \RcmUser\User\Entity\UserRole::jsonSerialize
+     *
+     * @return void
+     */
+    public function testJson()
+    {
+        $userRole = new UserRole();
+
+        $id = 123;
+        $roleId = 234;
+        $userId = '456';
+
+        $userRole->setId($id);
+        $userRole->setRoleId($roleId);
+        $userRole->setUserId($userId);
+
+        $obj = $userRole->jsonSerialize();
+
+        $json = json_encode($obj);
+
+        $this->assertJson($json);
+
+        $json = json_encode($userRole);
+
+        $this->assertJson($json);
+    }
 }
  

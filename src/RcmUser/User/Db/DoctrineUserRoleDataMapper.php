@@ -181,7 +181,7 @@ class DoctrineUserRoleDataMapper
      */
     public function remove(User $user, $aclRoleId)
     {
-        if(!$this->canRemove($user, $aclRoleId)){
+        if (!$this->canRemove($user, $aclRoleId)) {
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -194,11 +194,11 @@ class DoctrineUserRoleDataMapper
         $userRoles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
         )->findBy(
-                array(
-                    'userId' => $userId,
-                    'roleId' => $aclRoleId,
-                )
-            );
+            array(
+                'userId' => $userId,
+                'roleId' => $aclRoleId,
+            )
+        );
 
         foreach ($userRoles as $userRole) {
 

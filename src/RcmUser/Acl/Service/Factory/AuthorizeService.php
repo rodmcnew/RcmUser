@@ -38,7 +38,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class AuthorizeService implements FactoryInterface
 {
-
     /**
      * createService
      *
@@ -51,17 +50,14 @@ class AuthorizeService implements FactoryInterface
         $aclResourceService = $serviceLocator->get(
             'RcmUser\Acl\Service\AclResourceService'
         );
-        $aclRoleDataMapper = $serviceLocator->get(
-            'RcmUser\Acl\AclRoleDataMapper'
-        );
-        $aclRuleDataMapper = $serviceLocator->get(
-            'RcmUser\Acl\AclRuleDataMapper'
+        $aclDataService = $serviceLocator->get(
+            'RcmUser\Acl\AclDataService'
         );
 
-        $service = new \RcmUser\Acl\Service\AuthorizeService();
-        $service->setAclResourceService($aclResourceService);
-        $service->setAclRoleDataMapper($aclRoleDataMapper);
-        $service->setAclRuleDataMapper($aclRuleDataMapper);
+        $service = new \RcmUser\Acl\Service\AuthorizeService(
+            $aclResourceService,
+            $aclDataService
+        );
 
         return $service;
     }

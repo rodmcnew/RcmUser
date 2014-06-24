@@ -43,7 +43,7 @@ interface UserDataMapperInterface
      *
      * @param array $options options
      *
-     * @return mixed
+     * @return \RcmUser\User\Result
      */
     public function fetchAll(
         $options = array()
