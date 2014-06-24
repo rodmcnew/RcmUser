@@ -229,7 +229,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            array()
+            new UserRoleProperty(array())
         );
 
         $userRoleProperty = $this->buildValidUserRoleProperty(
@@ -322,9 +322,12 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $existingUser = $e->getParam('existingUser');
 
         /* VALIDATE */
-        $aclRoles = $responseUser->getProperty(
-            $this->getUserPropertyKey()
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            new UserRoleProperty(array())
         );
+
+        $aclRoles = $userRoleProperty->getRoles();
 
         if (!empty($aclRoles)) {
 
@@ -356,7 +359,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            array()
+            new UserRoleProperty(array())
         );
 
         $userRoleProperty = $this->buildValidUserRoleProperty(
