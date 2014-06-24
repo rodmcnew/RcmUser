@@ -53,13 +53,16 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
         //$aclRuleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRuleDataMapper');
 
         $valueMap = array(
+            array('RcmUser\Config'),
             array('RcmUser\Acl\AclRoleDataMapper', 'RcmUser\Acl\AclRoleDataMapper'),
             array('RcmUser\Acl\AclRuleDataMapper', 'RcmUser\Acl\AclRuleDataMapper'),
-            array('RcmUser\Acl\Config')
+            array('RcmUser\Acl\Config'),
+            array('RcmUser\Acl\Service\AclResourceService'),
+            array('RcmUser\Acl\AclDataService'),
         );
 
         $this->mockServiceLocator = $this->getMockBuilder(
-            '\Zend\Crypt\Password\PasswordInterface'
+            '\Zend\ServiceManager\ServiceLocatorInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
