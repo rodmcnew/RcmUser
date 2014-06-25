@@ -98,6 +98,26 @@ return array(
                         */
                     ),
                 ),
+
+                'email' => array(
+                    'name' => 'email',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'Zend\Filter\StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'Zend\Validator\EmailAddress'),
+                    ),
+                ),
+                'name' => array(
+                    'name' => 'name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'Zend\Filter\StringTrim'),
+                    ),
+                    'validators' => array(
+                    ),
+                ),
             ),
         ),
 

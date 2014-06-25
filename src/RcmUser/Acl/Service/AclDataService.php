@@ -109,12 +109,7 @@ class AclDataService
     {
         $result = $this->getAllRoles();
 
-        if (!$result->isSuccess()) {
-
-            return $result;
-        }
-
-        $data = $result->getData();
+        return $result->getData();
     }
 
     /**

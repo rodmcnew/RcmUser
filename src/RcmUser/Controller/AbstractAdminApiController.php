@@ -63,6 +63,11 @@ class AbstractAdminApiController extends AbstractRestfulController
     public function getNotAllowedResponse()
     {
         $response = $this->getResponse();
+        $response->getHeaders()->addHeaders(
+            array(
+                'Content-Type' => 'application/json'
+            )
+        );
         $response->setStatusCode(Response::STATUS_CODE_401);
         $result = new Result(
             null,

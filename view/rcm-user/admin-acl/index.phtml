@@ -25,8 +25,10 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                         <label for="rule">Rule: </label>
                         <select class="form-control" name="rule" ng-model="ruleData.rule" required="true">
                             <option selected="true" value="allow">allow</option>
+                            <!-- @todo Implement when ready
                             <option value="deny">deny (unstable)</option>
-                            <!--<option value="ignore">ignore</option>-->
+                            <option value="ignore">ignore</option>
+                            -->
                         </select>
                     </div>
                     <div class="form-group">
@@ -182,7 +184,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
             </div>
             <div class="modal-body">
                 <div rcm-alerts rcm-results="rcmUserHttp.alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
-                <!-- @todo creat me
+                <!-- @todo create me
                 <form name="editRoleForm" role="form">
                     <div class="form-group">
                         <label for="roleId">Role Id: </label>
@@ -307,9 +309,11 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                     </div>
                 </div>
                 <div class="">
+                    <!-- @todo Implement when ready
                     <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-edit"></i> edit role
                     </button>
+                    -->
                     <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)" ng-disabled="rcmUserHttp.loading" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-minus"></i> remove role
                     </button>
@@ -340,9 +344,11 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 
                             <div class="col-sm-3">
                                 <div class="btn-group-vertical">
+                                    <!-- @todo Implement when ready
                                     <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRule('sm', ruleData)">
                                         <i class="glyphicon glyphicon-edit"></i> edit rule
                                     </button>
+                                    -->
                                     <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])" ng-disabled="rcmUserHttp.loading">
                                         <i class="glyphicon glyphicon-minus"></i> remove rule
                                     </button>
