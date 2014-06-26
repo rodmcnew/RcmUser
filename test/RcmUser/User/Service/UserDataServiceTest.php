@@ -20,7 +20,7 @@ namespace RcmUser\Test\User\Service;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 use Zend\EventManager\EventManager;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';

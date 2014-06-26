@@ -37,6 +37,7 @@ use RcmUser\Config\Config;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Db\AclRoleDataMapper
  */
 class AclRoleDataMapperTest extends \PHPUnit_Framework_TestCase
 {

@@ -18,10 +18,26 @@
 namespace RcmUser\Test\Authentication\Service\Factory;
 
 use RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../../Zf2TestCase.php';
 
+/**
+ * Class UserAuthenticationServiceListenersTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\Authentication\Service\Factory
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners
+ */
 class UserAuthenticationServiceListenersTest extends Zf2TestCase
 {
     /**

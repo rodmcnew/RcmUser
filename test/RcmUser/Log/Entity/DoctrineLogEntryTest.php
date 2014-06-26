@@ -33,6 +33,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * covers    \RcmUser\Log\DoctrineLogEntry
  */
 class DoctrineLogEntryTest extends \PHPUnit_Framework_TestCase {
 

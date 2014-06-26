@@ -29,8 +29,9 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  *
  * PHP version 5
  *
+ * @covers    \RcmUser\User\Entity\User
  */
-class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
+class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
     public function setUp()
     {

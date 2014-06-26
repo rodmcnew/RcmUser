@@ -14,10 +14,9 @@
  * @version   GIT: <git_id>
  * @link      https://github.com/reliv
  */
-namespace RcmUser;
+namespace RcmUser\Test;
 
 use RcmUser\Config\Config;
-use Zend\ServiceManager\ServiceLocatorInterface;
 
 require_once dirname(__FILE__) . '/Bootstrap.php';
 
@@ -47,6 +46,16 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
      * @var array $mockServices
      */
     public $mockServices;
+
+    /**
+     * @var \Zend\Mvc\Controller\ControllerManager $mockControllerManager
+     */
+    public $mockControllerManager;
+
+    /**
+     * @var \Zend\View\HelperPluginManager $mockHelperPluginManager
+     */
+    public $mockHelperPluginManager;
 
     /**
      * @var array $valueMap
@@ -356,7 +365,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
     /**
      * getValueMap
      *
-     * @return void
+     * @return array
      */
     public function getValueMap()
     {
@@ -378,7 +387,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
     /**
      * getMockServiceLocator
      *
-     * @return void
+     * @return \Zend\ServiceManager\ServiceLocatorInterface
      */
     public function getMockServiceLocator()
     {
@@ -400,4 +409,53 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
         return $this->mockServiceLocator;
     }
 
+    /**
+     * getMockControllerManager
+     *
+     * @return \Zend\Mvc\Controller\ControllerManager
+     */
+    public function getMockControllerManager()
+    {
+        if (isset($this->mockControllerManager)) {
+
+            return $this->mockControllerManager;
+        }
+
+        $this->mockControllerManager = $this->getMockBuilder(
+            '\Zend\Mvc\Controller\ControllerManager'
+        )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->mockControllerManager->expects($this->any())
+            ->method('getServiceLocator')
+            ->will($this->returnValue($this->getMockServiceLocator()));
+
+        return $this->mockControllerManager;
+    }
+
+    /**
+     * getMockViewManager
+     *
+     * @return \Zend\View\HelperPluginManager
+     */
+    public function getMockHelperPluginManager()
+    {
+        if (isset($this->mockHelperPluginManager)) {
+
+            return $this->mockHelperPluginManager;
+        }
+
+        $this->mockHelperPluginManager = $this->getMockBuilder(
+            '\Zend\View\HelperPluginManager'
+        )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->mockHelperPluginManager->expects($this->any())
+            ->method('getServiceLocator')
+            ->will($this->returnValue($this->getMockServiceLocator()));
+
+        return $this->mockHelperPluginManager;
+    }
 }

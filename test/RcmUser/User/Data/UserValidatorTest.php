@@ -38,6 +38,7 @@ use Zend\InputFilter\Factory;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Data\UserValidator
  */
 class UserValidatorTest extends \PHPUnit_Framework_TestCase
 {

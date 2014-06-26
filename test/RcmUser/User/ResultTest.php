@@ -20,10 +20,26 @@ namespace RcmUser\Test\User;
 
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
+/**
+ * Class ResultTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\User
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Result
+ */
 class ResultTest extends Zf2TestCase
 {
     /**

@@ -19,10 +19,26 @@ namespace RcmUser\Test\Provider;
 
 use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
+/**
+ * Class RcmUserAclResourceProviderTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\Provider\RcmUserAclResourceProvider
+ */
 class RcmUserAclResourceProviderTest extends Zf2TestCase
 {
 

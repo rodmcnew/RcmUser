@@ -37,6 +37,7 @@ use RcmUser\User\Entity\User;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Db\UserRolesDataMapper
  */
 class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
 {

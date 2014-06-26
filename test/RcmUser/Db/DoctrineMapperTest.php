@@ -21,6 +21,22 @@ require_once __DIR__ . '/../../Zf2TestCase.php';
 
 use RcmUser\Db\DoctrineMapper;
 
+/**
+ * Class DoctrineMapperTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\Db\DoctrineMapper
+ */
 class DoctrineMapperTest extends \PHPUnit_Framework_TestCase {
 
     public function testSetGet()

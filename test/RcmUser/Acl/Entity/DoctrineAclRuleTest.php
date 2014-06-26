@@ -18,7 +18,7 @@
 namespace RcmUser\Test\Acl\Entity;
 
 use RcmUser\Acl\Entity\DoctrineAclRule;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -35,7 +35,8 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @copyright ${YEAR} Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @link      https://github.com/
+ * @covers    \RcmUser\Acl\Entity\DoctrineAclRule
  */
 class DoctrineAclRuleTest extends Zf2TestCase
 {

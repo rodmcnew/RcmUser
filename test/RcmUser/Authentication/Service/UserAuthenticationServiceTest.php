@@ -19,7 +19,7 @@ namespace RcmUser\Test\Authentication\Service;
 
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 use Zend\Authentication\Result;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
@@ -163,6 +163,11 @@ class UserAuthenticationServiceTest extends Zf2TestCase
     public function testSetIdentity()
     {
         $result = $this->getUserAuthenticationServiceUserResult()->getIdentity();
+    }
+
+    public function testHasIdentity()
+    {
+        $result = $this->getUserAuthenticationService()->hasIdentity();
     }
 
     public function testSetGetIdentity()

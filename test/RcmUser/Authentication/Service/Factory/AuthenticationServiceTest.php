@@ -18,7 +18,7 @@
 namespace RcmUser\Test\Authentication\Service\Factory;
 
 use RcmUser\Authentication\Service\Factory\AuthenticationService;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../../Zf2TestCase.php';
 
@@ -36,6 +36,7 @@ require_once __DIR__ . '/../../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Authentication\Service\Factory\AuthenticationService
  */
 class AuthenticationServiceTest extends Zf2TestCase {
     /**

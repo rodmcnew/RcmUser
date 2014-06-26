@@ -39,6 +39,13 @@ The User class has the properties of:
 - state
  - State is used to provide a tag for the users state.
  - There is only one state provided ('disabled'), any other state my be created and utilized as needed.
+- email
+ - An email address
+ - Validations may be set in the config
+ - By default this is not required to be unique
+- name
+ - Validations may be set in the config
+ - A display name
 - properties
  - An aggregation of arbitrary properties
  - These can be injected into the User object by using event listeners for the User data events or the property events.
@@ -46,11 +53,120 @@ The User class has the properties of:
 
  By default, there is a ACL roles property injected for the User.  This property is the one which is used by this module's ACL.
 
-#### User DataMapper ####
+#### Controller Plugins and View Helpers ####
 
-The UserDataMapper is an adapter used to populate the User object and store the user data.
-By default this module uses the DoctrineUserDataMapper.
-Any data mapper can be written and configured so that the User may be stored based on your requirements.
+#### RcmUserService ####
+
+RcmUserService is a high level service.  It acts as a facade to some lower level services.  RcmUserService contains general use PHP APIs that a develop might need regularly.
+
+##### Data Methods #####
+
+- getUser(User $user)
+ - Returns a user from the data source based on the data in the provided User object (User::id and User::username)
+
+- userExists(User $user)
+ - Returns true if the user exists in the data source
+
+- readUser(User $user, $includeResult = true)
+ - Returns a Result object containing the a User object if user is found, null if not found.
+ - Returns the User object or null if $includeResult == false
+
+- createUser(User $user, $includeResult = true)
+ - Returns a Result object containing the a User object if user is created with a success message.
+ - Returns the User object if $includeResult == false
+
+- updateUser(User $user, $includeResult = true)
+ - Returns a Result object containing the a User object if user is updated with a success message.
+ - Returns the User object if $includeResult == false
+  - $user = {request user object}
+  - $includeResult = {if true, will return Result Object containing code, message and data (User)}
+
+- deleteUser(User $user, $includeResult = true)
+ - Returns a Result object containing the an  empty User object if user is updated with a success message.
+ - Returns the User object if $includeResult == false
+ - $user = {request user object}
+ - $includeResult = {if true, will return Result Object containing code, message and data (User)}
+
+- getUserProperty(User $user, $propertyNameSpace, $default = null, $refresh = false)
+ - OnDemand loading of a user property.  I a way of populating User::property using events.
+ - Some user properties are not loaded with the user to increase speed.  Use this method to load these properties.
+ - $user = {request user object}
+ - $propertyNameSpace = {unique id of the requested property}
+ - $default = {return value if property not set}
+ - $refresh = {will force retrieval of property, even if it is already set}
+
+- getCurrentUserProperty($propertyNameSpace, $default = null, $refresh = false)
+ - OnDemand loading of a CURRENT user property.  I a way of populating User::property using events.
+ - Some user properties are not loaded with the user to increase speed.  Use this method to load these properties.
+ - $propertyNameSpace = {unique id of the requested property}
+ - $default = {return value if property not set}
+ - $refresh = {will force retrieval of property, even if it is already set}
+
+##### Authentication Methods #####
+
+- validateCredentials(User $user)
+ - Allows the validation of user credentials (username and password) without creating an auth session.
+ - Helpful for doing non-login authentication checks.
+ - $user = {request user object}
+
+- authenticate(User $user)
+ - Creates auth session (logs in user) if credetials provided in the User object are valid.
+ - $user = {request user object}
+
+- clearIdentity()
+ - Clears auth session (logs out user)
+
+- hasIdentity()
+ - Check if any User is auth'ed (logged in)
+
+- isIdentity(User $user)
+ - Check if the requested user in the user that is currently in the auth session
+ - $user = {request user object}
+
+- setIdentity(User $user)
+ - Force a User into the auth'd session.
+ - WARNING: this by-passes the authentication process and should only be used with extreme caution
+ - $user = {request user object}
+
+- refreshIdentity()
+ - Will reload the current User that is Auth'd into the auth'd session.
+ - Is a way of refreshing the session user without log-out, then log-in
+
+- getIdentity($default = null)
+ - Get the current User (logged in User) from Auth'd session or returns $default is there is no User Auth'd
+ - $default = {return this value if no User is auth'd}
+
+##### Access Control Methods #####
+
+- isAllowed($resourceId, $privilege = null, $providerId = null)
+ - Check if the current Auth'd User has access to a resource with a privilege provided by provider id.
+ - This is use to validate a users access based on their role and the rules set by ACL
+ - $resourceId = {a string resource id as defined by a resource provider (may be another module)}
+ - $privilege = {a privilege of the resource to check access against for this User},
+ - $providerId = {unique identifier of the provider of the resource and privilege definition}
+
+- isUserAllowed($resourceId, $privilege = null, $providerId = null, $user = null)
+ - Check if the requested User has access to a resource with a privilege provided by provider id.
+ - This is use to validate a users access based on their role and the rules set by ACL
+ - $resourceId = {a string resource id as defined by a resource provider (may be another module)}
+ - $privilege = {a privilege of the resource to check access against for this User},
+ - $providerId = {unique identifier of the provider of the resource and privilege definition}
+ - $user = {request user object}
+
+##### Utilities #####
+
+- buildNewUser()
+ - Factory method to build new User object populated with defaults from event listeners
+
+- buildUser(User $user)
+ - Populate a User with defaults from event listeners
+ - $user = {request user object}
+
+#### DataMappers ####
+
+The UserMappers are adapters used to populate and store the user data.
+By default this module uses the Doctrine DataMappers.
+Any data mapper can be written and configured so that data may be stored based on your requirements.
 
 ### Authentication ###
 
@@ -69,11 +185,6 @@ This module uses the ZF2 Authentication libraries.  This requires it to provide:
 
 This module wraps resources in a root schema and provides data mappers for storage of roles and rules.
 This module also provides a service, controller plug-in and view helper for isAllowed (rcmUserIsAllowed for plug-in and helper)
-
-One additional feature that is provided is inheriting of resources when the resource is not found.
-To do this we need to provide the resource ('PAGE_X') and its parent ('PAGES).
-We accomplish this by passing 'PAGES.PAGE_X' to isAllowed().
-Our isAllowed override allows the checking of 'PAGE_X' first and if it is not found, we check 'PAGES'.
 
 Requirements
 ------------
@@ -112,387 +223,485 @@ Configuration
 return array(
 
     'RcmUser' => array(
-        'User\Config' => array(
+       'User\Config' => array(
 
-            /*
-             * DefaultUserState
-             * Used in:
-             *  RcmUser\User\Service\UserDataService
-             *
-             * This is the default user state that will
-             * be set on create/update if none is set.
-             */
-            'DefaultUserState' => 'enabled',
+           /*
+            * ValidUserStates
+            * Used for UI
+            */
+           'ValidUserStates' => array(
+               'disabled', // **REQUIRED for User entity**
+               'enabled',
+           ),
 
-            /*
-             * Encryptor.passwordCost
-             * Used in:
-             *  RcmUser\User\Encryptor
-             *
-             * This should only be changed if you know what you are doing.
-             */
-            'Encryptor.passwordCost' => 14,
+           /*
+            * DefaultUserState
+            * Used in:
+            *  RcmUser\User\Service\UserDataService
+            *
+            * This is the default user state that will
+            * be set on create/update if none is set.
+            */
+           'DefaultUserState' => 'enabled',
 
-            /*
-             * InputFilter
-             * Used in:
-             *  RcmUser\User\Db\UserDataMapper
-             *
-             * This input filter will be applied
-             * to the User object on create and save.
-             */
-            'InputFilter' => array(
+           /*
+            * Encryptor.passwordCost
+            * Used in:
+            *  RcmUser\User\Encryptor
+            *
+            * This should only be changed if you know what you are doing.
+            */
+           'Encryptor.passwordCost' => 14,
 
-                'username' => array(
-                    'name' => 'username',
-                    'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
-                            'name' => 'StringLength',
-                            'options' => array(
-                                'encoding' => 'UTF-8',
-                                'min' => 3,
-                                'max' => 100,
-                            ),
-                        ),
-                    ),
-                ),
+           /*
+            * InputFilter
+            * Used in:
+            *  RcmUser\User\Db\UserDataMapper
+            *
+            * This input filter will be applied
+            * to the User object on create and save.
+            */
+           'InputFilter' => array(
 
-                'password' => array(
-                    'name' => 'password',
-                    'required' => true,
-                    'filters' => array(),
-                    'validators' => array(
-                        array(
-                            'name' => 'StringLength',
-                            'options' => array(
-                                'encoding' => 'UTF-8',
-                                'min' => 6,
-                                'max' => 100,
-                            ),
-                        ),
-                        /*
-                        array(
-                            'name' => 'Regex',
-                            'options' => array(
-                                'pattern' => '^(?=.*\d)(?=.*[a-zA-Z])$'
-                            ),
-                        ),
-                        */
-                    ),
-                ),
-            ),
-        ),
+               'username' => array(
+                   'name' => 'username',
+                   'required' => true,
+                   'filters' => array(
+                       array('name' => 'StringTrim'),
+                   ),
+                   'validators' => array(
+                       array(
+                           'name' => 'StringLength',
+                           'options' => array(
+                               'encoding' => 'UTF-8',
+                               'min' => 3,
+                               'max' => 100,
+                           ),
+                       ),
+                   ),
+               ),
 
-        'Auth\Config' => array(
-            'ObfuscatePasswordOnAuth' => true,
-        ),
+               'password' => array(
+                   'name' => 'password',
+                   'required' => true,
+                   'filters' => array(),
+                   'validators' => array(
+                       array(
+                           'name' => 'StringLength',
+                           'options' => array(
+                               'encoding' => 'UTF-8',
+                               'min' => 6,
+                               'max' => 100,
+                           ),
+                       ),
+                       /*
+                       array(
+                           'name' => 'Regex',
+                           'options' => array(
+                               'pattern' => '^(?=.*\d)(?=.*[a-zA-Z])$'
+                           ),
+                       ),
+                       */
+                   ),
+               ),
 
-        'Acl\Config' => array(
+               'email' => array(
+                   'name' => 'email',
+                   'required' => true,
+                   'filters'  => array(
+                       array('name' => 'Zend\Filter\StringTrim'),
+                   ),
+                   'validators' => array(
+                       array('name' => 'Zend\Validator\EmailAddress'),
+                   ),
+               ),
+               'name' => array(
+                   'name' => 'name',
+                   'required' => true,
+                   'filters'  => array(
+                       array('name' => 'Zend\Filter\StringTrim'),
+                   ),
+                   'validators' => array(
+                   ),
+               ),
+           ),
+       ),
 
-            /*
-             * DefaultGuestRoleIds and DefaultUserRoleIds
-             * Used by:
-             *  RcmUser\Acl\EventListeners
-             *
-             * These event listeners inject the ACL roles property
-             * for a user on the user data events
-             * in RcmUser\User\Service\UserDataService.
-             */
-            'DefaultGuestRoleIds' => array('guest'),
-            'DefaultUserRoleIds' => array('user'),
+       'Auth\Config' => array(
+           'ObfuscatePasswordOnAuth' => true,
+       ),
 
-            /*
-             * SuperAdminRoleId
-             *
-             * If this is set, this role will get full permissions always
-             * Basically over-rides standard permission handling
-             */
-            'SuperAdminRoleId' => 'admin',
+       'Acl\Config' => array(
 
-            /*
-             * ResourceProviders
-             * Used in:
-             *  RcmUser\Acl\Service\AclResourceService
-             *
-             * This aggregates resources that may be injected by any module,
-             * this module wraps the resources
-             * in a core resource with common privileges.
-             *
-             * Format for each value of this array is:
-             * 'MyResourceName(Will be top level of resource)' =>
-             * 'MyResource/ResourceProvider(ResourceProviderInterface)',
-             */
-            'ResourceProviders' => array(
-                /*
-                 * RcmUserAccess
-                 * This module inject some of this module's resources.
-                 */
-                'rcmuser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
-            ),
-        ),
+           /*
+            * DefaultGuestRoleIds and DefaultUserRoleIds
+            * Used by:
+            *  RcmUser\Acl\EventListeners
+            *
+            * These event listeners inject the ACL roles property
+            * for a user on the user data events
+            * in RcmUser\User\Service\UserDataService.
+            */
+           'DefaultGuestRoleIds' => array('guest'),
+           'DefaultUserRoleIds' => array('user'),
+
+           /*
+            * SuperAdminRoleId
+            *
+            * If this is set, this role will get full permissions always
+            * Basically over-rides standard permission handling
+            */
+           'SuperAdminRoleId' => 'admin',
+
+           /**
+            * @todo work this out
+            */
+           'GuestRoleId' => 'guest',
+
+           /*
+            * ResourceProviders
+            * Used in:
+            *  RcmUser\Acl\Service\AclResourceService
+            *
+            * This aggregates resources that may be injected by any module,
+            * this module wraps the resources
+            * in a root resource with common privileges.
+            *
+            * IMPORTANT:
+            * - Parent resources must be first in the resource array
+            * - It is not possible to share parent or child resources
+            *   between different providers
+            *
+            * Format for each value of this array is:
+            *
+            * 'ProviderId(module namespace without back-slashes)' =>
+            * 'MyResource/ResourceProvider(extents ResourceProvider)'
+            *
+            * OR
+            *
+            * ProviderId(usually module namespace)' => array(
+            *     'resourceId' => 'some-resource'
+            *     'parentResourceId' => null // Or a parent resourceId if needed
+            *     'privileges' => array('privilege1', 'privilege2', 'etc...'),
+            *     'name' => 'Human readable or translatable name',
+            *     'description' => 'Human readable or translatable description',
+            * )
+            */
+           'ResourceProviders' => array(
+
+               /*
+                * RcmUserAccess
+                * This module inject some of this module's resources.
+                * Also example of a Resource provider
+                */
+               'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+
+               /* example of resource providers as array *
+               'RcmUser.TEST' => array(
+                   'TESTONE' => array(
+                       'resourceId' => 'TESTONE',
+                       'parentResourceId' => null,
+                       'privileges' => array(
+                           'read',
+                           'update',
+                           'create',
+                           'delete',
+                           'execute',
+                       ),
+                       'name' => 'Test resource one.',
+                       'description' => 'test resource one desc.',
+                   ),
+                   'TESTTWO' => array(
+                       'resourceId' => 'TESTTWO',
+                       'parentResourceId' => 'TESTONE',
+                       'privileges' => array(
+                           'read',
+                           'update',
+                           'create',
+                           'delete',
+                           'execute',
+                       ),
+                       'name' => 'Test resource two.',
+                       'description' => 'test resource two desc.',
+                   )
+               ),
+               /* - example */
+           ),
+       ),
     ),
 
     'service_manager' => array(
-        'factories' => array(
-            /*
-             * Config
-             */
-            'RcmUser\Config' => 'RcmUser\Service\Factory\Config',
-            'RcmUser\User\Config' => 'RcmUser\User\Service\Factory\Config',
-            'RcmUser\Auth\Config' => 'RcmUser\Authentication\Service\Factory\Config',
-            'RcmUser\Acl\Config' => 'RcmUser\Acl\Service\Factory\Config',
+       'factories' => array(
+           /*
+            * Config
+            */
+           'RcmUser\Config' => 'RcmUser\Service\Factory\Config',
+           'RcmUser\User\Config' => 'RcmUser\User\Service\Factory\Config',
+           'RcmUser\Auth\Config' => 'RcmUser\Authentication\Service\Factory\Config',
+           'RcmUser\Acl\Config' => 'RcmUser\Acl\Service\Factory\Config',
 
-            /* ************************************** */
-            /* USER ********************************* */
-            /* ************************************** */
+           /* ************************************** */
+           /* USER ********************************* */
+           /* ************************************** */
 
-            /*
-             * UserDataService - Core User data access service
-             * Required *
-             *
-             * This service exposes basic CRUD operations for the User objects.
-             */
-            'RcmUser\User\Service\UserDataService' =>
-                'RcmUser\User\Service\Factory\UserDataService',
-            /*
-             * UserPropertyService
-             * - Allows user properties to be set by event listeners
-             * Required *
-             *
-             * This service allows User properties
-             * to be loaded on demand using event listeners.
-             * This helps reduce the size of the User object
-             * as non-essential properties may be loaded when needed.
-             */
-            'RcmUser\User\Service\UserPropertyService' =>
-                'RcmUser\User\Service\Factory\UserPropertyService',
-            /*
-             * UserDataMapper - Data source adapter
-             * Required for:
-             *  RcmUser\User\Service\UserDataService
-             *
-             * This is a DataMapper adapter that is used
-             * to abstract the data storage method.
-             * This may be configured to use a custom data mapper
-             * for unique storage requirements.
-             */
-            'RcmUser\User\UserDataMapper' =>
-                'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
+           /*
+            * UserDataService - Core User data access service
+            * Required *
+            *
+            * This service exposes basic CRUD operations for the User objects.
+            */
+           'RcmUser\User\Service\UserDataService' =>
+               'RcmUser\User\Service\Factory\UserDataService',
+           /*
+            * UserPropertyService
+            * - Allows user properties to be set by event listeners
+            * Required *
+            *
+            * This service allows User properties
+            * to be loaded on demand using event listeners.
+            * This helps reduce the size of the User object
+            * as non-essential properties may be loaded when needed.
+            */
+           'RcmUser\User\Service\UserPropertyService' =>
+               'RcmUser\User\Service\Factory\UserPropertyService',
 
-            /* ---------------------------- */
-            /*
-             * UserRolesDataMapper
-             * Required for (ACL user property):
-             *  RcmUser\User\Event\UserRoleDataServiceListeners
-             *
-             * This is a DataMapper adapter that is used
-             * to abstract the data storage method.
-             * This may be configured to use a custom data mapper
-             * for unique storage requirements.
-             */
-            'RcmUser\User\UserRolesDataMapper' =>
-                'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
+           /*
+            * UserRoleService - Core User Role data access service
+            * Required *
+            *
+            * This service exposes basic CRUD operations for the User roles.
+            */
+           'RcmUser\User\Service\UserRoleService' =>
+               'RcmUser\User\Service\Factory\UserRoleService',
 
-            /* - Validations - */
-            /*
-             * UserValidator - Validates User object data on create and update
-             * Required for:
-             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
-             *
-             * Uses the InputFilter value from the config by default.
-             * This may be configured to use a custom UserValidator as required.
-             */
-            'RcmUser\User\Data\UserValidator' =>
-                'RcmUser\User\Service\Factory\UserValidator',
+           /*
+            * UserDataMapper - Data source adapter
+            * Required for:
+            *  RcmUser\User\Service\UserDataService
+            *
+            * This is a DataMapper adapter that is used
+            * to abstract the data storage method.
+            * This may be configured to use a custom data mapper
+            * for unique storage requirements.
+            */
+           'RcmUser\User\UserDataMapper' =>
+               'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
 
-            /* - Data Prep - */
-            /*
-             * Encryptor
-             * Required for:
-             *  RcmUser\User\Data\DbUserDataPreparer
-             *  RcmUser\Authentication\Adapter\UserAdapter
-             *
-             * Used for encrypting/hashing passwords by default.
-             * May not be required depending
-             * on the DbUserDataPreparer and UserAdapter that is being used.
-             */
-            'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
-            /*
-             * UserDataPreparer
-             * Required for:
-             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
-             *
-             * Used by default to prepare data for DB storage.
-             * By default, encrypts passwords and creates id (UUID)
-             * This may be configured to use a custom UserDataPreparer as required
-             */
-            'RcmUser\User\Data\UserDataPreparer' =>
-                'RcmUser\User\Service\Factory\DbUserDataPreparer',
+           /* ---------------------------- */
+           /*
+            * UserRolesDataMapper
+            * Required for (ACL user property):
+            *  RcmUser\User\Event\UserRoleDataServiceListeners
+            *
+            * This is a DataMapper adapter that is used
+            * to abstract the data storage method.
+            * This may be configured to use a custom data mapper
+            * for unique storage requirements.
+            */
+           'RcmUser\User\UserRolesDataMapper' =>
+               'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
 
-            /*
-             * UserDataServiceListeners
-             * Required
-             *  to validate, prepare and save (CRUD) User:
-             *
-             * Requires: RcmUser\User\UserDataMapper
-             *
-             * Creates event listeners that use the UserValidator
-             * to do validation checks on User create and update.
-             */
-            'RcmUser\User\UserDataServiceListeners' =>
-                'RcmUser\User\Service\Factory\UserDataServiceListeners',
+           /* - Validations - */
+           /*
+            * UserValidator - Validates User object data on create and update
+            * Required for:
+            *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
+            *
+            * Uses the InputFilter value from the config by default.
+            * This may be configured to use a custom UserValidator as required.
+            */
+           'RcmUser\User\Data\UserValidator' =>
+               'RcmUser\User\Service\Factory\UserValidator',
 
-            /*
-             * UserRoleDataServiceListeners
-             * Required for (User Acl Property populating):
-             */
-            'RcmUser\User\UserRoleDataServiceListeners' =>
-                'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
+           /* - Data Prep - */
+           /*
+            * Encryptor
+            * Required for:
+            *  RcmUser\User\Data\DbUserDataPreparer
+            *  RcmUser\Authentication\Adapter\UserAdapter
+            *
+            * Used for encrypting/hashing passwords by default.
+            * May not be required depending
+            * on the DbUserDataPreparer and UserAdapter that is being used.
+            */
+           'RcmUser\User\Encryptor' => 'RcmUser\User\Service\Factory\Encryptor',
+           /*
+            * UserDataPreparer
+            * Required for:
+            *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
+            *
+            * Used by default to prepare data for DB storage.
+            * By default, encrypts passwords and creates id (UUID)
+            * This may be configured to use a custom UserDataPreparer as required
+            */
+           'RcmUser\User\Data\UserDataPreparer' =>
+               'RcmUser\User\Service\Factory\DbUserDataPreparer',
 
-            /* ************************************** */
-            /* AUTH ********************************* */
-            /* ************************************** */
-            /*
-             * UserAuthenticationService
-             * Required *
-             *
-             * Wraps events, actions are preformed in event listeners
-             * so that any auth provider may do auth logic.
-             */
-            'RcmUser\Authentication\Service\UserAuthenticationService' =>
-                'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
+           /*
+            * UserDataServiceListeners
+            * Required
+            *  to validate, prepare and save (CRUD) User:
+            *
+            * Requires: RcmUser\User\UserDataMapper
+            *
+            * Creates event listeners that use the UserValidator
+            * to do validation checks on User create and update.
+            */
+           'RcmUser\User\UserDataServiceListeners' =>
+               'RcmUser\User\Service\Factory\UserDataServiceListeners',
 
-            /* ---------------------------- */
-            /*
-             * UserAdapter (requires Encryptor)
-             * Required for (Auth):
-             *  RcmUser\Authentication\Service\AuthenticationService
-             *
-             * By default this auth Adapter uses the Encryptor
-             * to validate a users credentials
-             * This may be configured to use a custom auth Adapter as required
-             */
-            'RcmUser\Authentication\Adapter' =>
-                'RcmUser\Authentication\Service\Factory\Adapter',
-            /*
-             * UserSession
-             * Required for (Auth):
-             *  RcmUser\Authentication\Service\AuthenticationService
-             *
-             * By default this module uses the default session container for storage
-             * This may be configured to use a custom Storage object as required
-             */
-            'RcmUser\Authentication\Storage' =>
-                'RcmUser\Authentication\Service\Factory\Storage',
-            /*
-             * AuthenticationService
-             * Required for:
-             *  RcmUser\Authentication\EventListeners
-             *
-             * By default this module uses the default Adapter and Storage
-             * to do authentication
-             * This may be configure to use custom AuthenticationService as required
-             */
-            'RcmUser\Authentication\AuthenticationService' =>
-                'RcmUser\Authentication\Service\Factory\AuthenticationService',
-            /*
-             * EventListeners
-             * Used for listening for auth related events:
-             *
-             * By default this module listens for the events
-             * from UserAuthenticationService to do authentication
-             * This may be configured to use custom event listeners
-             * or disabled if not required
-             */
-            'RcmUser\Authentication\UserAuthenticationServiceListeners' =>
-                'RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners',
+           /*
+            * UserRoleDataServiceListeners
+            * Required for (User Acl Property populating):
+            */
+           'RcmUser\User\UserRoleDataServiceListeners' =>
+               'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
 
-            /* ************************************** */
-            /* ACL ********************************** */
-            /* ************************************** */
+           /* ************************************** */
+           /* AUTH ********************************* */
+           /* ************************************** */
+           /*
+            * UserAuthenticationService
+            * Required *
+            *
+            * Wraps events, actions are preformed in event listeners
+            * so that any auth provider may do auth logic.
+            */
+           'RcmUser\Authentication\Service\UserAuthenticationService' =>
+               'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
 
-            /*
-             * AclResourceService
-             * Used by:
-             *  RcmUser\Acl\Provider\BjyResourceProvider
-             *
-             * Exposes this module's resource aggregation methods
-             */
-            'RcmUser\Acl\Service\AclResourceService' =>
-                'RcmUser\Acl\Service\Factory\AclResourceService',
+           /* ---------------------------- */
+           /*
+            * UserAdapter (requires Encryptor)
+            * Required for (Auth):
+            *  RcmUser\Authentication\Service\AuthenticationService
+            *
+            * By default this auth Adapter uses the Encryptor
+            * to validate a users credentials
+            * This may be configured to use a custom auth Adapter as required
+            */
+           'RcmUser\Authentication\Adapter' =>
+               'RcmUser\Authentication\Service\Factory\Adapter',
+           /*
+            * UserSession
+            * Required for (Auth):
+            *  RcmUser\Authentication\Service\AuthenticationService
+            *
+            * By default this module uses the default session container for storage
+            * This may be configured to use a custom Storage object as required
+            */
+           'RcmUser\Authentication\Storage' =>
+               'RcmUser\Authentication\Service\Factory\Storage',
+           /*
+            * AuthenticationService
+            * Required for:
+            *  RcmUser\Authentication\EventListeners
+            *
+            * By default this module uses the default Adapter and Storage
+            * to do authentication
+            * This may be configure to use custom AuthenticationService as required
+            */
+           'RcmUser\Authentication\AuthenticationService' =>
+               'RcmUser\Authentication\Service\Factory\AuthenticationService',
+           /*
+            * EventListeners
+            * Used for listening for auth related events:
+            *
+            * By default this module listens for the events
+            * from UserAuthenticationService to do authentication
+            * This may be configured to use custom event listeners
+            * or disabled if not required
+            */
+           'RcmUser\Authentication\UserAuthenticationServiceListeners' =>
+               'RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners',
 
-            /*
-             * AuthorizeService (ACL)
-             * Used by:
-             *  RcmUserService
-             *  ControllerPluginRcmUserIsAllowed
-             *  ViewHelperRcmUserIsAllowed
-             *
-             * Exposes the ACL isAllowed method
-             */
-            'RcmUser\Acl\Service\AuthorizeService' =>
-                'RcmUser\Acl\Service\Factory\AuthorizeService',
-            /*
-             * AclRoleDataMapper
-             * Required for:
-             *  BjyRoleProvider
-             * This data mapper adapter allows this module
-             * to read roles from a data source
-             * This may be configured to use a custom data mapper if required
-             */
-            'RcmUser\Acl\AclRoleDataMapper' =>
-                'RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper',
-            /*
-             * AclRuleDataMapper
-             * Required for:
-             * This data mapper adapter allows this module
-             * to read rules from a data source
-             * This may be configured to use a custom data mapper if required
-             */
-            'RcmUser\Acl\AclRuleDataMapper' =>
-                'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
+           /* ************************************** */
+           /* ACL ********************************** */
+           /* ************************************** */
 
-            /*
-             * AclDataService
-             * Required for accessing mappers
-             * This is designed to expose a simple facade
-             * for use in displaying and updating ACL data
-             * in views
-             */
-            'RcmUser\Acl\AclDataService' =>
-                'RcmUser\Acl\Service\Factory\AclDataService',
+           /*
+            * AclResourceService
+            * Used by:
+            *  RcmUser\Acl\Provider\BjyResourceProvider
+            *
+            * Exposes this module's resource aggregation methods
+            */
+           'RcmUser\Acl\Service\AclResourceService' =>
+               'RcmUser\Acl\Service\Factory\AclResourceService',
 
-            /* ************************************** */
-            /* CORE ********************************* */
-            /* ************************************** */
-            /*
-             * Main service facade
-             * Uses:
-             *  UserDataService
-             *  UserPropertyService
-             *  UserAuthenticationService
-             *  AuthorizeService
-             */
-            'RcmUser\Service\RcmUserService' =>
-                'RcmUser\Service\Factory\RcmUserService',
+           /*
+            * AuthorizeService (ACL)
+            * Used by:
+            *  RcmUserService
+            *  ControllerPluginRcmUserIsAllowed
+            *  ViewHelperRcmUserIsAllowed
+            *
+            * Exposes the ACL isAllowed method
+            */
+           'RcmUser\Acl\Service\AuthorizeService' =>
+               'RcmUser\Acl\Service\Factory\AuthorizeService',
+           /*
+            * AclRoleDataMapper
+            * Required
+            * This data mapper adapter allows this module
+            * to read roles from a data source
+            * This may be configured to use a custom data mapper if required
+            */
+           'RcmUser\Acl\AclRoleDataMapper' =>
+               'RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper',
+           /*
+            * AclRuleDataMapper
+            * Required for:
+            * This data mapper adapter allows this module
+            * to read rules from a data source
+            * This may be configured to use a custom data mapper if required
+            */
+           'RcmUser\Acl\AclRuleDataMapper' =>
+               'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
 
-            /*
-             * Provides the Access Resources for this Module to ACL
-             * Required *
-             */
-            'RcmUser\Provider\RcmUserAclResourceProvider' =>
-                'RcmUser\Service\Factory\RcmUserAclResourceProvider',
+           /*
+            * AclDataService
+            * Required for accessing mappers
+            * This is designed to expose a simple facade
+            * for use in displaying and updating ACL data
+            * in views
+            */
+           'RcmUser\Acl\AclDataService' =>
+               'RcmUser\Acl\Service\Factory\AclDataService',
 
-            /*
-             * Event Aggregation
-             * Required *
-             */
-            'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
-        ),
+           /* ************************************** */
+           /* CORE ********************************* */
+           /* ************************************** */
+           /*
+            * Main service facade
+            * Uses:
+            *  UserDataService
+            *  UserPropertyService
+            *  UserAuthenticationService
+            *  AuthorizeService
+            */
+           'RcmUser\Service\RcmUserService' =>
+               'RcmUser\Service\Factory\RcmUserService',
+
+           /*
+            * Provides the Access Resources for this Module to ACL
+            * Required *
+            */
+           'RcmUser\Provider\RcmUserAclResourceProvider' =>
+               'RcmUser\Service\Factory\RcmUserAclResourceProvider',
+
+           /*
+            * Event Aggregation
+            * Required *
+            */
+           'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
+
+           /*
+            * Logging
+            * Required *
+            */
+           'RcmUser\Log\Logger' => 'RcmUser\Service\Factory\DoctrineLogger',
+       ),
     ),
 
     /*

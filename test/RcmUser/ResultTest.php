@@ -19,7 +19,7 @@ namespace RcmUser\Test;
 
 use RcmUser\Exception\RcmUserResultException;
 use RcmUser\Result;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../Zf2TestCase.php';
 
@@ -37,6 +37,7 @@ require_once __DIR__ . '/../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Result
  */
 class ResultTest extends Zf2TestCase
 {
