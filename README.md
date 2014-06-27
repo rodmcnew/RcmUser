@@ -50,7 +50,12 @@ Features
 There are a limited amount of included HTML views/pages.
 
 Views are designed using Twitter Boostrap and AngularJS.
-
+            /**
+             * RcmUserAdminApiUserRoles
+             * API for listing, creating and deleting user roles as a group
+             *
+             * @api
+             */
 Views are design to be mostly independent of the framework (MVC move to Angular and data is deliver VIA REST/JSON API).
 
 #### Available Views ####
@@ -188,7 +193,7 @@ RcmUserService is a high level service/facade that exposes many useful methods f
 - setIdentity(User $user)
  - Force a User into the auth'd session.
  - $user = {request user object}
- > WARNING: this by-passes the authentication process and should only be used with extreme caution
+ - WARNING: this by-passes the authentication process and should only be used with extreme caution
 
 - refreshIdentity()
  - Will reload the current User that is Auth'd into the auth'd session.
@@ -268,17 +273,17 @@ Resources and Privileges:
 - rcmuser
 
  - rcmuser-user-administration
-  - read
-  - update
-  - create
-  - delete
-  - update_credentials
+      - read
+      - update
+      - create
+      - delete
+      - update_credentials
 
  - rcmuser-acl-administration
-  - read
-  - update
-  - create
-  - delete
+      - read
+      - update
+      - create
+      - delete
 
 Requirements
 ------------
