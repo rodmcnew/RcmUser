@@ -574,6 +574,11 @@ return array(
     'router' => array(
         'routes' => array(
             // GENERAL
+            /**
+             * RcmUser - TESTING ONLY
+             *
+             * @view
+             */
             'RcmUser' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -589,6 +594,12 @@ return array(
                 ),
             ),
             // ADMIN GENERAL
+            /**
+             * RcmUserAdminCss
+             * General Admin CSS
+             *
+             * @view CSS
+             */
             'RcmUserAdminCss' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -601,6 +612,11 @@ return array(
                 ),
             ),
             // ADMIN ACL
+            /**
+             * RcmUserAdminAcl
+             * View for creating and editing roles and rule
+             *
+             */
             'RcmUserAdminAcl' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -613,6 +629,10 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminAclJs
+             * JavaScript for RcmUserAdminAcl
+             */
             'RcmUserAdminAclJs' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -625,6 +645,9 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiAclResources
+             * Get resources
+             *
              * @api
              */
             'RcmUserAdminApiAclResources' => array(
@@ -641,6 +664,9 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiAclRulesByRoles
+             * Returns Roles and the related Rules
+             *
              * @api
              */
             'RcmUserAdminApiAclRulesByRoles' => array(
@@ -657,6 +683,9 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiAclRule
+             * Return rules and exposes create and delete
+             *
              * @api
              */
             'RcmUserAdminApiAclRule' => array(
@@ -673,6 +702,8 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiAclRole
+             * Return roles and exposes create and delete
              * @api
              */
             'RcmUserAdminApiAclRole' => array(
@@ -689,6 +720,8 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiAclDefaultUserRole
+             * Return default User roles
              * @api
              */
             'RcmUserAdminApiAclDefaultUserRole' => array(
@@ -705,6 +738,10 @@ return array(
                 ),
             ),
             // ADMIN USERS
+            /**
+             * RcmUserAdminUsers
+             * View for creating and editing users
+             */
             'RcmUserAdminUsers' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -716,6 +753,10 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminUserJs
+             * JavaScript for RcmUserAdminUsers
+             */
             'RcmUserAdminUserJs' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -728,6 +769,9 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiUser
+             * API for creating and editing users
+             *
              * @api
              */
             'RcmUserAdminApiUser' => array(
@@ -744,6 +788,9 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiUserValidUserStates
+             * API to get list of valid user states
+             *
              * @api
              */
             'RcmUserAdminApiUserValidUserStates' => array(
@@ -785,6 +832,9 @@ return array(
             ),
             */
             /**
+             * RcmUserAdminApiUserRoles
+             * API for listing, creating and deleting user roles as a group
+             *
              * @api
              */
             'RcmUserAdminApiUserRoles' => array(
@@ -801,6 +851,9 @@ return array(
                 ),
             ),
             /**
+             * RcmUserAdminApiUserRoles
+             * API creating and deleting an individual user role
+             *
              * @api
              */
             'RcmUserAdminApiUserRole' => array(
