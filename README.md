@@ -301,11 +301,11 @@ Installation
 
 ### Manual Install ###
 
-- Download from GitHub
+- Download or clone from GitHub into your ZF2 skeleton app
 - Configure module
 - Run install.sql (as needed)
 
-### Composer ###
+### Composer Install ###
 
 @future
 

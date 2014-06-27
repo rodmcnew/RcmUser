@@ -319,7 +319,7 @@ class DoctrineUserDataMapper
 
             // error, cannot update
             return new Result(
-                null,
+                $responseUser,
                 Result::CODE_FAIL,
                 'User cannot be updated, id required for update.'
             );
@@ -339,7 +339,7 @@ class DoctrineUserDataMapper
 
                 // ERROR - user exists
                 return new Result(
-                    null,
+                    $responseUser,
                     Result::CODE_FAIL,
                     'User could not be prepared, duplicate username.'
                 );
@@ -396,7 +396,7 @@ class DoctrineUserDataMapper
 
             // error, cannot update
             return new Result(
-                null,
+                $responseUser,
                 Result::CODE_FAIL,
                 'User cannot be deleted, id required for delete.'
             );

@@ -41,12 +41,32 @@ interface UserRolesDataMapperInterface
     /**
      * getAvailableRoles
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *        {roleId}' => RcmUser\Acl\Entity\AclRole,
+     *    );
+     *
+     *    -- fail
+     *    array()
+     *
      * @return array
      */
     public function getAvailableRoles();
 
     /**
      * fetchAll
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *        0 => RcmUser\User\Entity\UserRole
+     *    );
+     *
+     *    -- fail
+     *    array()
      *
      * @param array $options options
      *
@@ -56,6 +76,14 @@ interface UserRolesDataMapperInterface
 
     /**
      * add
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    role Id
+     *
+     *    -- fail
+     *    null
      *
      * @param User   $user      user
      * @param string $aclRoleId aclRoleId
@@ -67,6 +95,14 @@ interface UserRolesDataMapperInterface
     /**
      * remove
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    role Id
+     *
+     *    -- fail
+     *    null
+     *
      * @param User   $user      user
      * @param string $aclRoleId aclRoleId
      *
@@ -76,6 +112,16 @@ interface UserRolesDataMapperInterface
 
     /**
      * create
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *        0 => RoleId,
+     *    );
+     *
+     *    -- fail
+     *    array()
      *
      * @param User  $user  user
      * @param array $roles roles
@@ -87,6 +133,16 @@ interface UserRolesDataMapperInterface
     /**
      * read
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *        0 => RoleId,
+     *    );
+     *
+     *    -- fail
+     *    array()
+     *
      * @param User $user user
      *
      * @return Result
@@ -95,6 +151,18 @@ interface UserRolesDataMapperInterface
 
     /**
      * update
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success (updated role id list)
+     *    array (
+     *        0 => RoleId,
+     *    );
+     *
+     *    -- fail (updated role id list)
+     *    array (
+     *        0 => RoleId,
+     *    );
      *
      * @param User  $user  user
      * @param array $roles roles
@@ -105,6 +173,18 @@ interface UserRolesDataMapperInterface
 
     /**
      * delete
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success (updated role id list)
+     *    array (
+     *        0 => RoleId,
+     *    );
+     *
+     *    -- fail (updated role id list)
+     *    array (
+     *        0 => RoleId,
+     *    );
      *
      * @param User  $user  user
      * @param array $roles roles

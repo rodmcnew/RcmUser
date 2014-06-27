@@ -141,8 +141,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function setAuthorizeService(
         AuthorizeService $authorizeService
-    )
-    {
+    ) {
         $this->authorizeService = $authorizeService;
     }
 
@@ -275,13 +274,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * getUserProperty
-     * OnDemand loading of a user property.  I a way of populating User::property using events.
-     * Some user properties are not loaded with the user to increase speed.  Use this method to load these properties.
+     * OnDemand loading of a user property.
+     * Is a way of populating User::property using events.
+     * Some user properties are not loaded with the user to increase speed.
+     * Use this method to load these properties.
      *
      * @param User   $user              request user object
      * @param string $propertyNameSpace unique id of the requested property
      * @param mixed  $default           return value if property not set
-     * @param bool   $refresh           will force retrieval of property, even if it is already set
+     * @param bool   $refresh           will force retrieval of property
      *
      * @return mixed
      */
@@ -504,7 +505,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * getCurrentUser
-     * @alias getIdentity
+     *  - @alias getIdentity
      *
      * @param mixed $default default
      *

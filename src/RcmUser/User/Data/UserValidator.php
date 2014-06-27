@@ -172,7 +172,7 @@ class UserValidator implements UserValidatorInterface
 
         $inputs = $this->getUserInputFilterConfig();
 
-        foreach($this->validatableFields as $field){
+        foreach ($this->validatableFields as $field) {
 
             $getMethod = 'get' . ucfirst($field);
 
@@ -212,7 +212,7 @@ class UserValidator implements UserValidatorInterface
 
         $inputs = $this->getUserInputFilterConfig();
 
-        foreach($this->validatableFields as $field){
+        foreach ($this->validatableFields as $field) {
 
             if (isset($inputs[$field])
             ) {
@@ -235,13 +235,15 @@ class UserValidator implements UserValidatorInterface
     /**
      * validateUser
      *
-     * @param User                 $requestUser  requestUser
-     * @param InputFilterInterface $inputFilter  inputFilter
+     * @param User                 $requestUser requestUser
+     * @param InputFilterInterface $inputFilter inputFilter
      *
      * @return Result
      */
-    public function validateUser(User $requestUser, InputFilterInterface $inputFilter)
-    {
+    public function validateUser(
+        User $requestUser,
+        InputFilterInterface $inputFilter
+    ) {
         $validUser = new User();
         $validUser->populate($requestUser);
         $inputFilter->setData($validUser);
@@ -265,7 +267,7 @@ class UserValidator implements UserValidatorInterface
 
                 $errs = $error->getMessages();
 
-                foreach($errs as $key => $val){
+                foreach ($errs as $key => $val) {
                     $result->setMessage(
                         $msg .= "$val ({$key})"
                     );

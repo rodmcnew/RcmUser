@@ -90,7 +90,7 @@ interface AclRoleDataMapperInterface
      *
      *    -- success
      *    array (
-     *    *    0 => '{roleId}',
+     *        0 => '{roleId}',
      *    );
      *
      *    -- fail
@@ -107,7 +107,7 @@ interface AclRoleDataMapperInterface
      *
      *    -- success
      *    array (
-     *    *    '{roleId}' => RcmUser\Acl\Entity\AclRole,
+     *        {roleId}' => RcmUser\Acl\Entity\AclRole,
      *    );
      *
      *    -- fail
