@@ -90,6 +90,7 @@ class UserDataServiceListeners
 
         return $this->getUserDataMapper()->fetchAll($options);
     }
+
     /**
      * onCreateUser
      *
@@ -119,11 +120,12 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onCreateUserFail($e)
     {
         //@todo do delete?
     }
+     */
 
     /**
      * onReadUser
@@ -185,11 +187,12 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onUpdateUserFail($e)
     {
         // @todo revert?
     }
+     */
 
     /**
      * onDeleteUser
@@ -221,9 +224,10 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onDeleteUserFail($e)
     {
         // @todo restore?
     }
+     */
 } 

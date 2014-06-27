@@ -151,7 +151,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -167,7 +167,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -183,7 +183,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -199,7 +199,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -215,7 +215,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -231,7 +231,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -279,14 +279,11 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      *
      * @param Event $e e
      *
-     * @return Result
+     * @return User|null
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function onGetIdentity($e)
     {
-        return new Result(
-            null,
-            Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
-        );
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
     }
 } 

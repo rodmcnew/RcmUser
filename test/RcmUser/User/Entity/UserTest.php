@@ -142,6 +142,19 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     }
 
     /**
+     * testInvalidUserState
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testInvalidUserState()
+    {
+        $user = new User();
+        $user->setState("<invalid>alert('user')</invalid>");
+    }
+
+    /**
      * testIsEnabled
      *
      * @covers \RcmUser\User\Entity\User::isEnabled
