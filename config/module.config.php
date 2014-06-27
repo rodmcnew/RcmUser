@@ -72,6 +72,17 @@ return array(
                                 'max' => 100,
                             ),
                         ),
+                        // Help protect from XSS
+                        array(
+                            'name' => 'Regex',
+                            'options' => array(
+                                'pattern' => "/^[a-zA-Z0-9-_@'.]+$/",
+                                //'pattern' => "/[<>]/",
+                                'messageTemplates' => array(
+                                    \Zend\Validator\Regex::NOT_MATCH => "Username can only contain letters, numbers and charactors: . - _ @ '."
+                                )
+                            ),
+                        ),
                     ),
                 ),
 
@@ -103,6 +114,7 @@ return array(
                     'name' => 'email',
                     'required' => true,
                     'filters'  => array(
+                        array('name' => 'Zend\Filter\StripTags'), // Help protect from XSS
                         array('name' => 'Zend\Filter\StringTrim'),
                     ),
                     'validators' => array(
@@ -113,6 +125,7 @@ return array(
                     'name' => 'name',
                     'required' => true,
                     'filters'  => array(
+                        array('name' => 'Zend\Filter\StripTags'), // Help protect from XSS
                         array('name' => 'Zend\Filter\StringTrim'),
                     ),
                     'validators' => array(
