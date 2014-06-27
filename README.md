@@ -49,7 +49,7 @@ Features
 
 There are a limited amount of included HTML views/pages.
 
-Views are designed using Twitter Boostrap and AngularJS.
+Views are designed using Twitter Bootstrap and AngularJS.
             /**
              * RcmUserAdminApiUserRoles
              * API for listing, creating and deleting user roles as a group
@@ -177,7 +177,7 @@ RcmUserService is a high level service/facade that exposes many useful methods f
  - $user = {request user object}
 
 - authenticate(User $user)
- - Creates auth session (logs in user) if credetials provided in the User object are valid.
+ - Creates auth session (logs in user) if credentials provided in the User object are valid.
  - $user = {request user object}
 
 - clearIdentity()
@@ -220,7 +220,7 @@ RcmUserService is a high level service/facade that exposes many useful methods f
  - $providerId = {unique identifier of the provider of the resource and privilege definition}
  - $user = {request user object}
 
-##### Utilitie Methods #####
+##### Utility Methods #####
 
 - buildNewUser()
  - Factory method to build new User object populated with defaults from event listeners
@@ -296,7 +296,7 @@ Optional based on configuration
 - doctrine 2.x
 - mysql 5.6.x (not tested on lesser versions)
 
-View
+View dependencies
 - AngularJs (https://angularjs.org/)
 - Bootstrap (http://getbootstrap.com/)
 - UI Bootstrap (http://angular-ui.github.io/bootstrap/)
