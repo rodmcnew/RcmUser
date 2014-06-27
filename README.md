@@ -6,20 +6,56 @@ Introduction
 
 The main goal of this module is to expose a simple and configurable user object as well as the services related to user storage, access control and authentication.
 
-@future Provide user managment html/ajax interface
+@future composer based install
+@future More REST/JSON APIs
+@future Additional Views:
+        my profile
+        login
+        reset password
+@future User property links on user edit/profile pages:
+        As User when I access a user profile edit page
+        I should see a list of links or tabs to other profile data
+        So I can have quick access to all my user properties
+@future Logging of actions for security audits
+@future DB Optimization
+@future Translation of Result messages
+@future Translation of other page content
+@future Assign multiple privileges when creating a rule on ACL Administration pages
+@future Protection of default and special roles
+        As an ACL Administrator
+        I should not be able to delete super admin, guest or default roles
+        So that rules for default roles will not be removed
+@future Full Deny rule support
+@future Pagination for DataMappers
+@future Guest User features (maybe)
 
 Features
 --------
 
-### RcmUserService ###
+### UI ###
 
-The RcmUserService facade exposes all of the useful methods for manipulating a User object.
+There are a limited amount of included HTML views/pages.
+Views are designed using Twitter Boostrap and AngularJS.
+Views are design to be mostly independent of the framework (MVC move to Angular and data is deliver VIA REST/JSON API).
 
-- Methods for basic create, read, update, delete
-- Methods for accessing User->properties on demand (properties that are only populated as needed)
-- Methods for doing authentication of user (log in, log out, credential checks)
-- Methods for checking user access (ACL)
-- Other utility and helpful methods are also provided
+#### Available Views ####
+
+- RcmUserAdminAcl:
+ - View for creating and editing roles and rules
+ - Requires access to resource: rcmuser-acl-administration
+
+- RcmUserAdminUsers:
+ - View for administrating User data
+ - Requires access to resource: rcmuser-user-administration
+
+#### REST/JSON APIs ####
+
+This module exposes several APIs for user administration.
+The APIs are not comprehensive, but they do allow for some user and ACL management.
+The admin APIs require access rules to be set in order to access (@see ACL section).
+
+For a complete list of the APIs, please see the RcmUser/config/module.config.php file, routes section.
+API standard return is a result object containing a code, message and the data.
 
 ### User ###
 
@@ -31,21 +67,27 @@ The User class has the properties of:
 
 - id
  - A unique identifier, by default this is generated on create by the DbUserDataPreparer.
+
 - username
  - A unique username.
+
 - password
  - A password, by default this is hashed by the Encryptor on create/update by the DbUserDataPreparer.
  - The Auth UserAdapter also uses the same Encryptor to authenticate password.
+
 - state
  - State is used to provide a tag for the users state.
  - There is only one state provided ('disabled'), any other state my be created and utilized as needed.
+
 - email
  - An email address
  - Validations may be set in the config
  - By default this is not required to be unique
+
 - name
- - Validations may be set in the config
  - A display name
+ - Validations may be set in the config
+
 - properties
  - An aggregation of arbitrary properties
  - These can be injected into the User object by using event listeners for the User data events or the property events.
@@ -53,11 +95,16 @@ The User class has the properties of:
 
  By default, there is a ACL roles property injected for the User.  This property is the one which is used by this module's ACL.
 
-#### Controller Plugins and View Helpers ####
+### RcmUserService ###
 
-#### RcmUserService ####
+RcmUserService is a high level service/facade that exposes many useful methods for manipulating a User object.
 
-RcmUserService is a high level service.  It acts as a facade to some lower level services.  RcmUserService contains general use PHP APIs that a develop might need regularly.
+- PHP APIs that a developer might need regularly
+- Methods for basic create, read, update, delete
+- Methods for accessing User->properties on demand (properties that are only populated as needed)
+- Methods for doing authentication of user (log in, log out, credential checks)
+- Methods for checking user access (ACL)
+- Other utility and helpful methods are also provided
 
 ##### Data Methods #####
 
@@ -125,8 +172,8 @@ RcmUserService is a high level service.  It acts as a facade to some lower level
 
 - setIdentity(User $user)
  - Force a User into the auth'd session.
- - WARNING: this by-passes the authentication process and should only be used with extreme caution
  - $user = {request user object}
+ > WARNING: this by-passes the authentication process and should only be used with extreme caution
 
 - refreshIdentity()
  - Will reload the current User that is Auth'd into the auth'd session.
@@ -153,7 +200,7 @@ RcmUserService is a high level service.  It acts as a facade to some lower level
  - $providerId = {unique identifier of the provider of the resource and privilege definition}
  - $user = {request user object}
 
-##### Utilities #####
+##### Utilitie Methods #####
 
 - buildNewUser()
  - Factory method to build new User object populated with defaults from event listeners
@@ -167,6 +214,17 @@ RcmUserService is a high level service.  It acts as a facade to some lower level
 The UserMappers are adapters used to populate and store the user data.
 By default this module uses the Doctrine DataMappers.
 Any data mapper can be written and configured so that data may be stored based on your requirements.
+
+> NOTE: If you decide to write you own data mappers, you may find the implementation test (W.I.P.) in RcmUser/test/ImplementationTest helpful.
+> The implementation test is NOT to be run in PROD as it creates and destroys data.
+
+#### Controller Plugins and View Helpers ####
+
+- rcmUserIsAllowed($resourceId, $privilege = null, $providerId = null) (plugin and helper)
+ - Alias of RcmUserService::getIdentity()
+
+- rcmUserGetCurrentUser($default = null) (plugin and helper)
+ - Alias of RcmUserService::getIdentity()
 
 ### Authentication ###
 
@@ -185,6 +243,27 @@ This module uses the ZF2 Authentication libraries.  This requires it to provide:
 
 This module wraps resources in a root schema and provides data mappers for storage of roles and rules.
 This module also provides a service, controller plug-in and view helper for isAllowed (rcmUserIsAllowed for plug-in and helper)
+
+This module also creates some ACL resources that are used to allow access to APIs and Views provided in this Module.
+
+ProviderId:
+- RcmUser
+
+Resources and Privileges:
+- rcmuser
+
+ - rcmuser-user-administration
+  - read
+  - update
+  - create
+  - delete
+  - update_credentials
+
+ - rcmuser-acl-administration
+  - read
+  - update
+  - create
+  - delete
 
 Requirements
 ------------
@@ -210,8 +289,6 @@ Installation
 - Download from GitHub
 - Configure module
 - Run install.sql (as needed)
-
-@future composer based install
 
 Configuration
 -------------

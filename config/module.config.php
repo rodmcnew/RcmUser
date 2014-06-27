@@ -624,6 +624,9 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * @api
+             */
             'RcmUserAdminApiAclResources' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -637,6 +640,9 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * @api
+             */
             'RcmUserAdminApiAclRulesByRoles' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -650,6 +656,9 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * @api
+             */
             'RcmUserAdminApiAclRule' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -663,6 +672,9 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * @api
+             */
             'RcmUserAdminApiAclRole' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -676,6 +688,9 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * @api
+             */
             'RcmUserAdminApiAclDefaultUserRole' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -712,7 +727,9 @@ return array(
                     ),
                 ),
             ),
-
+            /**
+             * @api
+             */
             'RcmUserAdminApiUser' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -726,6 +743,9 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * @api
+             */
             'RcmUserAdminApiUserValidUserStates' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -764,6 +784,9 @@ return array(
                 ),
             ),
             */
+            /**
+             * @api
+             */
             'RcmUserAdminApiUserRoles' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -777,7 +800,9 @@ return array(
                     ),
                 ),
             ),
-
+            /**
+             * @api
+             */
             'RcmUserAdminApiUserRole' => array(
                 'type' => 'Segment',
                 'options' => array(
