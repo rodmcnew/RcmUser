@@ -50,12 +50,7 @@ Features
 There are a limited amount of included HTML views/pages.
 
 Views are designed using Twitter Bootstrap and AngularJS.
-            /**
-             * RcmUserAdminApiUserRoles
-             * API for listing, creating and deleting user roles as a group
-             *
-             * @api
-             */
+
 Views are design to be mostly independent of the framework (MVC move to Angular and data is deliver VIA REST/JSON API).
 
 #### Available Views ####
@@ -241,7 +236,7 @@ Any data mapper can be written and configured so that data may be stored based o
 #### Controller Plugins and View Helpers ####
 
 - rcmUserIsAllowed($resourceId, $privilege = null, $providerId = null) (plugin and helper)
- - Alias of RcmUserService::getIdentity()
+ - Alias of RcmUserService::isAllowed()
 
 - rcmUserGetCurrentUser($default = null) (plugin and helper)
  - Alias of RcmUserService::getIdentity()
@@ -309,6 +304,10 @@ Installation
 - Download from GitHub
 - Configure module
 - Run install.sql (as needed)
+
+### Composer ###
+
+@future
 
 Configuration
 -------------
