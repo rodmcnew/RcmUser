@@ -107,7 +107,7 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
      */
     public function testGetResource()
     {
-        $resource = $this->rcmUserAclResourceProvider->getResource('rcmuser');
+        $resource = $this->rcmUserAclResourceProvider->getResource(RcmUserAclResourceProvider::RESOURCE_ID_ROOT);
 
         $this->assertTrue(($resource instanceof AclResource), 'AclResource not returned.');
     }

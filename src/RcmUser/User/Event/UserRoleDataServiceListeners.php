@@ -188,24 +188,24 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      * @param Event $e e
      *
      * @return Result
-    public function onBeforeCreateUser($e)
-    {
-        $requestUser = $e->getParam('requestUser');
-        $responseUser = $e->getParam('responseUser');
+        public function onBeforeCreateUser($e)
+        {
+            $requestUser = $e->getParam('requestUser');
+            $responseUser = $e->getParam('responseUser');
 
-        /* VALIDATE //
-        $aclRoles = $responseUser->getProperty(
-            $this->getUserPropertyKey()
-        );
+            // VALIDATE //
+            $aclRoles = $responseUser->getProperty(
+                $this->getUserPropertyKey()
+            );
 
-        if (!empty($aclRoles)) {
+            if (!empty($aclRoles)) {
 
-            // @todo Validation logic here
-            // make sure the role sent in is valid
+                // @todo Validation logic here
+                // make sure the role sent in is valid
+            }
+
+            return new Result($responseUser);
         }
-
-        return new Result($responseUser);
-    }
     */
 
     /**
@@ -315,28 +315,28 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return Result
 
-    public function onBeforeUpdateUser($e)
-    {
-        $requestUser = $e->getParam('requestUser');
-        $responseUser = $e->getParam('responseUser');
-        $existingUser = $e->getParam('existingUser');
+        public function onBeforeUpdateUser($e)
+        {
+            $requestUser = $e->getParam('requestUser');
+            $responseUser = $e->getParam('responseUser');
+            $existingUser = $e->getParam('existingUser');
 
-        /* VALIDATE //*
-        $userRoleProperty = $responseUser->getProperty(
-            $this->getUserPropertyKey(),
-            new UserRoleProperty(array())
-        );
+            // VALIDATE //
+            $userRoleProperty = $responseUser->getProperty(
+                $this->getUserPropertyKey(),
+                new UserRoleProperty(array())
+            );
 
-        $aclRoles = $userRoleProperty->getRoles();
+            $aclRoles = $userRoleProperty->getRoles();
 
-        if (!empty($aclRoles)) {
+            if (!empty($aclRoles)) {
 
-            // @todo Validation logic here
-            // make sure the role sent in is valid
+                // @todo Validation logic here
+                // make sure the role sent in is valid
+            }
+
+            return new Result($responseUser);
         }
-
-        return new Result($responseUser);
-    }
     */
 
     /**

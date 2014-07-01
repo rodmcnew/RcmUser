@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\Result;
 use RcmUser\User\Entity\User;
 
@@ -47,7 +48,10 @@ class AdminApiUserRoleController extends AbstractAdminApiController
     public function get($userId)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -82,7 +86,10 @@ class AdminApiUserRoleController extends AbstractAdminApiController
     public function create($data)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'create')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'create'
+        )) {
             return $this->getNotAllowedResponse();
         }
         /** @var \RcmUser\User\Service\UserRoleService $userRoleService */
@@ -141,7 +148,10 @@ class AdminApiUserRoleController extends AbstractAdminApiController
     public function delete($data)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'delete')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'delete'
+        )) {
             return $this->getNotAllowedResponse();
         }
 

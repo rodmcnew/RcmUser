@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Http\Response;
@@ -48,7 +49,10 @@ class AdminJsController extends AbstractAdminController
     public function adminAclAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -88,7 +92,10 @@ class AdminJsController extends AbstractAdminController
     public function adminUsersAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -133,7 +140,10 @@ class AdminJsController extends AbstractAdminController
     public function adminUserRolesAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 

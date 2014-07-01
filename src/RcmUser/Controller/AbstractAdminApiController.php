@@ -48,8 +48,10 @@ class AbstractAdminApiController extends AbstractRestfulController
      *
      * @return mixed
      */
-    public function isAllowed($resourceId = 'rcmuser', $privilege = null)
-    {
+    public function isAllowed(
+        $resourceId = RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
+        $privilege = null
+    ) {
         return $this->rcmUserIsAllowed(
             $resourceId, $privilege, RcmUserAclResourceProvider::PROVIDER_ID
         );

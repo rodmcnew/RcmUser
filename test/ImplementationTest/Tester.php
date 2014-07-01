@@ -17,6 +17,7 @@
 
 namespace RcmUser\ImplementationTest;
 
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -398,7 +399,7 @@ class Tester implements ServiceLocatorAwareInterface
             $testUserId = $user->getId();
         }
 
-        $resource = self::parseParam($params, 'resource', 'rcmuser');
+        $resource = self::parseParam($params, 'resource', RcmUserAclResourceProvider::RESOURCE_ID_ROOT);
         $privilege = self::parseParam($params, 'privilege', '');
 
         $user->setPassword($password);
@@ -431,11 +432,11 @@ class Tester implements ServiceLocatorAwareInterface
         /* ACL VALUES */
         $tester->addMessage(
             "ACL Roles: " .
-            json_encode($tester->authorizeService->getAcl('rcmuser', 'RcmUser')->getRoles(), true)
+            json_encode($tester->authorizeService->getAcl(RcmUserAclResourceProvider::RESOURCE_ID_ROOT, 'RcmUser')->getRoles(), true)
         );
         $tester->addMessage(
             "ACL Resources: " .
-            json_encode($tester->authorizeService->getAcl('rcmuser', 'RcmUser')->getResources(), true)
+            json_encode($tester->authorizeService->getAcl(RcmUserAclResourceProvider::RESOURCE_ID_ROOT, 'RcmUser')->getResources(), true)
         );
 
         /* ACL CHECK *

@@ -20,9 +20,11 @@ namespace RcmUser\Controller;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 use RcmUser\JsonForm;
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\User\Entity\ReadOnlyUser;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
+use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 
 /**
@@ -49,6 +51,24 @@ class UserTestController extends AbstractActionController
      */
     public function indexAction()
     {
+
+        $isAllowed = $this->rcmUserIsAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
+            null,
+            RcmUserAclResourceProvider::PROVIDER_ID
+        );
+
+        if (!$isAllowed) {
+
+            $response = $this->getResponse();
+            $response->setStatusCode(Response::STATUS_CODE_401);
+            $response->setContent(
+                $response->renderStatusLine()
+            );
+
+            return $response;
+        }
+
         $test = array(
             'userController' => $this,
             'doTest' => false,
