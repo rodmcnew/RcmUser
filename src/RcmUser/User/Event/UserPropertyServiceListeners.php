@@ -49,7 +49,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      */
     protected $listenerMethods
         = array(
-            'onGetUserPropertyLinks' => 'getUserPropertyLinks',
+            //'onGetUserPropertyLinks' => 'getUserPropertyLinks',
             'onPopulateUserProperty' => 'populateUserProperty',
         );
 

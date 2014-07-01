@@ -58,19 +58,4 @@ class AdminAclController extends AbstractAdminController
 
         return $this->buildView($viewArr);
     }
-
-    /**
-     * buildView
-     *
-     * @param array $viewArr viewArr
-     *
-     * @return ViewModel
-     */
-    protected function buildView($viewArr = array())
-    {
-        $view = new ViewModel($viewArr);
-
-        return $view;
-    }
-
 } 

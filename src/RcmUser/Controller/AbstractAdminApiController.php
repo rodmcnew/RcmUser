@@ -82,7 +82,7 @@ class AbstractAdminApiController extends AbstractRestfulController
     }
 
     /**
-     * getExceptionResponse
+     * getExceptionResponse @todo Return generic message and log exception
      *
      * @param \Exception $e e
      *
