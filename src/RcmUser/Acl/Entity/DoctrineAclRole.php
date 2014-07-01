@@ -19,8 +19,6 @@ namespace RcmUser\Acl\Entity;
 
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * DoctrineAclRole
@@ -75,10 +73,17 @@ class DoctrineAclRole extends AclRole
      * @todo This can probably be made to work
      * -- Needs to accept null value if this is in the root of the tree
      * -- needs to only nest the parent, not the whole parent tree
-     * OneToOne(targetEntity="DoctrineAclRole")
-     * JoinColumn(name="parentRoleId", referencedColumnName="roleId")
+     * ORM\ManyToOne(targetEntity="DoctrineAclRole", inversedBy="children")
+     * ORM\JoinColumn(name="parentRoleId", referencedColumnName="roleId")
+     *       , onDelete="SET NULL"
      **/
     protected $parentRole;
+
+    /**
+     * ORM\OneToMany(targetEntity="DoctrineAclRole", mappedBy="parentRole")
+     * ORM\OrderBy({"lft" = "ASC"})
+     */
+    protected $children;
 
     /**
      * setId

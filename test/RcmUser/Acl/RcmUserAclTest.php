@@ -45,8 +45,8 @@ class RcmUserAclTest extends Zf2TestCase {
         $acl->deny('guest', 'someresource');
         $acl->allow('member', 'someresource');
 
-        echo "\n*** RESULT: " .
-        var_export($acl->getAccess('someUser', 'someresource'), true);
+        //echo "\n*** RESULT: " .
+        //var_export($acl->getAccess('someUser', 'someresource'), true);
     }
 
 }

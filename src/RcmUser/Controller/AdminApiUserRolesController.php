@@ -129,8 +129,8 @@ class AdminApiUserRolesController extends AbstractAdminApiController
     /**
      * update PUT
      *
-     * @param string $userId   User id
-     * @param array  $roles Updated roles
+     * @param string $userId User id
+     * @param array  $roles  Updated roles
      *
      * @return array|mixed
      */

@@ -17,6 +17,8 @@
 
 namespace RcmUser;
 
+use RcmUser\Exception\RcmUserResultException;
+
 
 /**
  * Class Result
@@ -48,6 +50,11 @@ class Result implements \JsonSerializable
      * @var int DEFAULT_KEY
      */
     const DEFAULT_KEY = 0;
+
+    /**
+     * @var string $messageDelimiter
+     */
+    protected $messageDelimiter = ' | ';
 
     /**
      * @var int
@@ -135,6 +142,16 @@ class Result implements \JsonSerializable
     }
 
     /**
+     * getMessagesString
+     *
+     * @return array
+     */
+    public function getMessagesString()
+    {
+        return implode($this->messageDelimiter, $this->messages);
+    }
+
+    /**
      * setMessage
      *
      * @param string $value value
@@ -165,7 +182,7 @@ class Result implements \JsonSerializable
     }
 
     /**
-     * setData
+     * setData - valid data format
      *
      * @param mixed $data data
      *
@@ -177,7 +194,7 @@ class Result implements \JsonSerializable
     }
 
     /**
-     * getData
+     * getData - should always return valid data format, even is not success
      *
      * @return mixed
      */
@@ -199,6 +216,20 @@ class Result implements \JsonSerializable
         }
 
         return false;
+    }
+
+    /**
+     * throwFailure - throw exception if not isSuccess
+     *
+     * @return void
+     * @throws Exception\RcmUserResultException
+     */
+    public function throwFailure()
+    {
+        if (!$this->isSuccess()) {
+
+            throw new RcmUserResultException($this->getMessagesString());
+        }
     }
 
     /**

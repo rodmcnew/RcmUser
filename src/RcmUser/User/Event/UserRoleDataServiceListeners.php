@@ -68,7 +68,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     /**
      * setUserRoleService
      *
-     * @param UserRoleService $userRoleService
+     * @param UserRoleService $userRoleService userRoleService
      *
      * @return void
      */
@@ -115,7 +115,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         $users = $result->getData();
 
-        foreach($users as &$user){
+        foreach ($users as &$user) {
 
             $readResult = $this->getUserRoleService()->readRoles($user);
 
@@ -229,7 +229,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            array()
+            new UserRoleProperty(array())
         );
 
         $userRoleProperty = $this->buildValidUserRoleProperty(
@@ -253,7 +253,11 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         if (!$createResult->isSuccess()) {
 
-            return new Result($responseUser, Result::CODE_FAIL, $createResult->getMessages());
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $createResult->getMessages()
+            );
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -318,9 +322,12 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $existingUser = $e->getParam('existingUser');
 
         /* VALIDATE */
-        $aclRoles = $responseUser->getProperty(
-            $this->getUserPropertyKey()
+        $userRoleProperty = $responseUser->getProperty(
+            $this->getUserPropertyKey(),
+            new UserRoleProperty(array())
         );
+
+        $aclRoles = $userRoleProperty->getRoles();
 
         if (!empty($aclRoles)) {
 
@@ -352,7 +359,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            array()
+            new UserRoleProperty(array())
         );
 
         $userRoleProperty = $this->buildValidUserRoleProperty(
@@ -380,7 +387,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             return new Result(
                 $responseUser,
                 Result::CODE_FAIL,
-                $updateResult->getMessages());
+                $updateResult->getMessages()
+            );
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);

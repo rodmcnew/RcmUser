@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * AclPrivilege.php
  *
  * AclPrivilege
@@ -35,7 +35,6 @@ use RcmUser\Exception\RcmUserException;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
 class AclPrivilege implements \JsonSerializable, \IteratorAggregate
 {
 
@@ -70,7 +69,7 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     {
         $privileges = $this->preparePrivileges($privileges);
 
-        foreach($privileges as $privilege){
+        foreach ($privileges as $privilege) {
 
             $this->setPrivilege($privilege);
         }
@@ -96,7 +95,7 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
      */
     public function setPrivilege($privilege)
     {
-        $privilege = strtolower((string) $privilege);
+        $privilege = strtolower((string)$privilege);
 
         if (!$this->isValidPrivilege($privilege)) {
 
@@ -105,7 +104,11 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
             );
         }
 
-        $this->privileges = $privilege;
+        $key = array_search($privilege, $this->privileges);
+
+        if ($key === false) {
+            $this->privileges[] = $privilege;
+        }
     }
 
     /**
@@ -118,11 +121,11 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
      */
     public function getPrivilege($privilege, $default = null)
     {
-        $privilege = strtolower((string) $privilege);
+        $privilege = strtolower((string)$privilege);
 
         $key = array_search($privilege, $this->privileges);
 
-        if(!$key){
+        if ($key === false) {
             return $default;
         }
 
@@ -148,15 +151,15 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     /**
      * preparePrivileges
      *
-     * @param $privileges
+     * @param array $privileges privileges
      *
      * @return array|string
      */
     public function preparePrivileges($privileges)
     {
-        if(!is_array($privileges)){
+        if (!is_array($privileges)) {
 
-            $privileges = (string) $privileges;
+            $privileges = (string)$privileges;
 
             $privileges = explode(
                 self::PRIV_DELIMITER,
@@ -175,6 +178,7 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     public function jsonSerialize()
     {
         $privileges = $this->getPrivileges();
+
         return $privileges;
     }
 
@@ -186,6 +190,7 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     public function getIterator()
     {
         $privileges = $this->getPrivileges();
+
         return new \ArrayIterator($privileges);
     }
 
@@ -197,6 +202,7 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     public function __toString()
     {
         $privileges = $this->getPrivileges();
+
         return implode(self::PRIV_DELIMITER, $privileges);
     }
 } 

@@ -31,16 +31,23 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
      */
     public $rcmUserAclResourceProvider;
 
+    public function setUp()
+    {
+        $this->rcmUserAclResourceProvider = new RcmUserAclResourceProvider();
+    }
+
     /**
-     * buildRcmUserAclResourceProvider
+     * testBuildRcmUserAclResourceProvider
      *
      * @return RcmUserAclResourceProvider
      */
-    public function buildRcmUserAclResourceProvider()
+    public function testBuildRcmUserAclResourceProvider()
     {
         $this->rcmUserAclResourceProvider = new RcmUserAclResourceProvider();
 
-        return $this->rcmUserAclResourceProvider;
+        $resources = $this->rcmUserAclResourceProvider->getResources();
+
+        $this->assertTrue(is_array($resources));
     }
 
     /**
@@ -50,7 +57,6 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
      */
     public function testGetSet()
     {
-        $this->buildRcmUserAclResourceProvider();
 
         $providerId = 'test';
 
@@ -70,7 +76,6 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
      */
     public function testGetResources()
     {
-        $this->buildRcmUserAclResourceProvider();
 
         $resources = $this->rcmUserAclResourceProvider->getResources();
 
@@ -86,8 +91,6 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
      */
     public function testGetResource()
     {
-        $this->buildRcmUserAclResourceProvider();
-
         $resource = $this->rcmUserAclResourceProvider->getResource('rcmuser');
 
         $this->assertTrue(($resource instanceof AclResource), 'AclResource not returned.');

@@ -141,8 +141,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function setAuthorizeService(
         AuthorizeService $authorizeService
-    )
-    {
+    ) {
         $this->authorizeService = $authorizeService;
     }
 
@@ -209,14 +208,16 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         }
 
         // @todo make sure this is a valid check for all cases
-        if (!empty($user->getId())
+        $id = $user->getId();
+        if (!empty($id)
             && $user->getId() === $sessUser->getId()
         ) {
 
             return true;
         }
 
-        if (!empty($user->getUsername())
+        $username = $user->getUsername();
+        if (!empty($username)
             && $user->getUsername() === $sessUser->getUsername()
         ) {
 
@@ -293,8 +294,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    )
-    {
+    ) {
         return $this->getUserPropertyService()->getUserProperty(
             $user,
             $propertyNameSpace,
@@ -316,8 +316,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
-    )
-    {
+    ) {
         $user = $this->getIdentity();
 
         if (empty($user)) {
@@ -509,8 +508,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $privilege = null,
         $providerId = null,
         $user = null
-    )
-    {
+    ) {
         if (!($user instanceof User)) {
 
             return false;

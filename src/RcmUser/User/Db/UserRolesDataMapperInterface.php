@@ -50,15 +50,15 @@ interface UserRolesDataMapperInterface
      *
      * @param array $options options
      *
-     * @return mixed
+     * @return Result
      */
     public function fetchAll($options = array());
 
     /**
      * add
      *
-     * @param User    $user      user
-     * @param string  $aclRoleId aclRoleId
+     * @param User   $user      user
+     * @param string $aclRoleId aclRoleId
      *
      * @return Result
      */
@@ -67,7 +67,7 @@ interface UserRolesDataMapperInterface
     /**
      * remove
      *
-     * @param User    $user      user
+     * @param User   $user      user
      * @param string $aclRoleId aclRoleId
      *
      * @return Result
@@ -106,7 +106,7 @@ interface UserRolesDataMapperInterface
     /**
      * delete
      *
-     * @param User $user user
+     * @param User  $user  user
      * @param array $roles roles
      *
      * @return Result

@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * Links.php
  *
  * Links
@@ -18,7 +18,7 @@
 namespace RcmUser\User\Entity;
 
 
- /**
+/**
  * Class Links
  *
  * Links
@@ -33,10 +33,23 @@ namespace RcmUser\User\Entity;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
+class Links implements \JsonSerializable, \IteratorAggregate
+{
 
-class Links implements \JsonSerializable {
-
+    /**
+     * @var array $links
+     */
     protected $links = array();
+
+    /**
+     * __construct
+     *
+     * @param array $links
+     */
+    public function __construct($links = array())
+    {
+        $this->links = $links;
+    }
 
     /**
      * getLinks
@@ -51,13 +64,25 @@ class Links implements \JsonSerializable {
     /**
      * addLink
      *
-     * @param Link $link
+     * @param Link $link link object
      *
      * @return void
      */
     public function addLink(Link $link)
     {
         $this->links[] = $link;
+    }
+
+    /**
+     * getIterator
+     *
+     * @return \ArrayIterator|\Traversable
+     */
+    public function getIterator()
+    {
+        $links = $this->getLinks();
+
+        return new \ArrayIterator($links);
     }
 
     /**

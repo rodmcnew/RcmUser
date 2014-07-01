@@ -17,6 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
+use RcmUser\Exception\RcmUserException;
+
 
 /**
  * Class Link
@@ -56,7 +58,7 @@ class Link implements \JsonSerializable
     /**
      * setHelp
      *
-     * @param string $help
+     * @param string $help help info
      *
      * @return void
      */
@@ -78,7 +80,7 @@ class Link implements \JsonSerializable
     /**
      * setTitle
      *
-     * @param string $title
+     * @param string $title title of link
      *
      * @return void
      */
@@ -100,7 +102,7 @@ class Link implements \JsonSerializable
     /**
      * setType
      *
-     * @param string $type
+     * @param string $type type
      *
      * @return void
      */
@@ -122,7 +124,7 @@ class Link implements \JsonSerializable
     /**
      * setUrl
      *
-     * @param string $url
+     * @param string $url URL
      *
      * @return void
      */
@@ -151,17 +153,26 @@ class Link implements \JsonSerializable
         return $this;
     }
 
+    /**
+     * populate
+     *
+     * @param array|Link $data data to populate this object with
+     *
+     * @return void
+     * @throws RcmUserException
+     */
     public function populate($data = array())
     {
-        if($data instanceof Link){
+        if ($data instanceof Link) {
             $this->setType($data->getType());
             $this->setTitle($data->getTitle());
             $this->setUrl($data->getUrl());
             $this->setHelp($data->getHelp());
+
             return;
         }
 
-        if(is_array($data)){
+        if (is_array($data)) {
             if (isset($data['type'])) {
                 $this->setType($data['type']);
             }
@@ -174,6 +185,7 @@ class Link implements \JsonSerializable
             if (isset($data['help'])) {
                 $this->setHelp($data['help']);
             }
+
             return;
         }
 

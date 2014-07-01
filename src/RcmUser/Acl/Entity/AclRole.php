@@ -61,12 +61,12 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     /**
      * Sets the Role identifier
      *
-     * @param string $roleId
+     * @param string $roleId role Id
      */
     public function __construct($roleId = null)
     {
-        if($roleId !== null){
-            $this->roleId = (string) $roleId;
+        if ($roleId !== null) {
+            $this->roleId = (string)$roleId;
         }
     }
 
@@ -81,7 +81,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     public function setRoleId($roleId)
     {
         // set to lowercase to avoid overlaps
-        $roleId = strtolower((string) $roleId);
+        $roleId = strtolower((string)$roleId);
 
         if (!$this->isValidRoleId($roleId)) {
 
@@ -117,7 +117,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     public function setParentRoleId($parentRoleId)
     {
         // set to lowercase to avoid overlaps
-        $parentRoleId = strtolower((string) $parentRoleId);
+        $parentRoleId = strtolower((string)$parentRoleId);
 
         if (!$this->isValidRoleId($parentRoleId)) {
 
@@ -130,9 +130,9 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
             $parentRoleId = null;
         }
 
-        if(!empty($this->parentRole)){
+        if (!empty($this->parentRole)) {
 
-            if($this->parentRole->getRoleId() != $parentRoleId){
+            if ($this->parentRole->getRoleId() != $parentRoleId) {
 
                 $this->parentRole = null;
             }
@@ -243,7 +243,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
             $this->setDescription($data->getDescription());
             $this->setParentRoleId($data->getParentRoleId());
             $parentRole = $data->getParentRole();
-            if(!empty($parentRole)){
+            if (!empty($parentRole)) {
                 $this->setParentRole($parentRole);
             }
 
