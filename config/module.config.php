@@ -536,9 +536,9 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            // GENERAL
-            'RcmUser\Controller\User' =>
-                'RcmUser\Controller\UserController',
+            // TESTING
+            'RcmUser\Controller\UserTestController' =>
+                'RcmUser\Controller\UserTestController',
             // ADMIN GENERAL
             'RcmUser\Controller\AdminJsController' =>
                 'RcmUser\Controller\AdminJsController',
@@ -588,7 +588,7 @@ return array(
         'routes' => array(
             // GENERAL
             /**
-             * RcmUser - TESTING ONLY
+             * TEST CONTROLLER - TESTING ONLY
              *
              * @view
              */
@@ -596,12 +596,12 @@ return array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/rcmuser',
+                    'route' => '/rcmusertest',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'RcmUser\Controller\User',
+                        'controller' => 'RcmUser\Controller\UserTestController',
                         'action' => 'index',
                     ),
                 ),

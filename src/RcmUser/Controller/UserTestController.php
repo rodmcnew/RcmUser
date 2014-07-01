@@ -40,7 +40,7 @@ use Zend\Mvc\Controller\AbstractActionController;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserController extends AbstractActionController
+class UserTestController extends AbstractActionController
 {
     /**
      * indexAction
