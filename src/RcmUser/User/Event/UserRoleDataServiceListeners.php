@@ -52,10 +52,10 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             'onGetAllUsersSuccess' => 'getAllUsersSuccess',
 
             'onBuildUser' => 'buildUser',
-            'onBeforeCreateUser' => 'beforeCreateUser',
+            //'onBeforeCreateUser' => 'beforeCreateUser',
             'onCreateUserSuccess' => 'createUserSuccess',
             'onReadUserSuccess' => 'readUserSuccess',
-            'onBeforeUpdateUser' => 'beforeUpdateUser',
+            //'onBeforeUpdateUser' => 'beforeUpdateUser',
             'onUpdateUserSuccess' => 'updateUserSuccess',
             'onDeleteUserSuccess' => 'deleteUserSuccess',
         );
