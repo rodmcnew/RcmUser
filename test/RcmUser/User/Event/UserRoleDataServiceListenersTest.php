@@ -19,6 +19,7 @@ namespace RcmUser\Test\User\Event;
 
 use RcmUser\Result;
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Event\UserRoleDataServiceListeners;
 
@@ -55,16 +56,16 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
     public function buildEventManager()
     {
         //
-        $this->eventManagerInterface = $this->getMockBuilder(
+        $this->mockEventManagerInterface = $this->getMockBuilder(
             '\Zend\EventManager\EventManagerInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('getSharedManager')
-            ->will($this->returnValue($this->eventManagerInterface));
+            ->will($this->returnValue($this->mockEventManagerInterface));
 
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('detach')
             ->will($this->returnValue(true));
     }
@@ -78,15 +79,24 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
      */
     public function buildUserRoleService($case = 'success')
     {
-        if ($case == 'success') {
+        switch ($case) {
+
+        case 'fail_service' :
+        case 'failAll_service' :
+
             $this->mockRoles = array('SOME', 'ROLES');
+            $this->mockDefaultRoles = array('DEFAULT', 'ROLES');
+            $this->mockResult = new Result(array(), Result::CODE_FAIL);
+            $this->mockDefaultResult = new Result($this->mockDefaultRoles);
+            break;
+        default :
+
+            $this->mockRoles = array('SOME', 'ROLES');
+            $this->mockDefaultRoles = array('DEFAULT', 'ROLES');
             $this->mockResult = new Result($this->mockRoles);
-            $this->mockDefaultResult = new Result(array('DEFAULT', 'ROLES'));
-        } else {
-
-
+            $this->mockDefaultResult = new Result($this->mockDefaultRoles);
+            break;
         }
-
 
         //
         $this->userRoleService = $this->getMockBuilder(
@@ -162,38 +172,55 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
 
     public function buildEvent($case = 'success')
     {
-        if($case == 'success'){
-            $this->eventReturn = array(
-                array('result', null, array(new User('123'))),
+        switch ($case) {
+
+        case 'fail_event':
+
+            $this->mockEventReturn = array(
+                array(
+                    'result', null, new \RcmUser\User\Result(null, Result::CODE_FAIL)
+                ),
                 array('data', null, new UserRoleProperty(array('SOME', 'ROLES'))),
                 array('requestUser', null, new User('123')),
                 array('responseUser', null, new User('123')),
                 array('existingUser', null, new User('123'))
             );
-        } else {
+            break;
 
-            
+        case 'successAll':
+        case 'failAll_service':
+            $this->mockEventReturn = array(
+                array('result', null, new Result(array(new User('123'))))
+            );
+            break;
+
+        default :
+
+            $this->mockEventReturn = array(
+                array('result', null, new \RcmUser\User\Result(new User('123'))),
+                array('data', null, new UserRoleProperty(array('SOME', 'ROLES'))),
+                array('requestUser', null, new User('123')),
+                array('responseUser', null, new User('123')),
+                array('existingUser', null, new User('123'))
+            );
+            break;
         }
 
-        $this->event = $this->getMockBuilder(
+        $this->buildUserRoleService($case);
+
+        $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->event->expects($this->any())
+        $this->mockEvent->expects($this->any())
             ->method('getParam')
             ->will(
                 $this->returnValueMap(
-                    $this->eventReturn
+                    $this->mockEventReturn
                 )
             );
-
-        //
-        //$this->buildEventManager();
-
-        //
-        $this->buildUserRoleService();
 
         //
         $this->userRoleDataServiceListeners = new UserRoleDataServiceListeners();
@@ -205,7 +232,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
 
     public function testSetGet()
     {
-        $this->buildSuccessCase();
+        $this->buildEvent('success');
 
         $this->userRoleDataServiceListeners->setUserRoleService(
             $this->userRoleService
@@ -222,5 +249,258 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
     }
 
+    public function testSuccess()
+    {
+        $this->buildEvent('successAll');
+
+        $result = $this->userRoleDataServiceListeners->onGetAllUsersSuccess(
+            $this->mockEvent
+        );
+
+        $this->assertInstanceOf(
+            '\RcmUser\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+
+        $this->buildEvent('success');
+
+        $result = $this->userRoleDataServiceListeners->onBuildUser(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onCreateUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onReadUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onUpdateUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onDeleteUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+    }
+
+    /**
+     * testFail1
+     *
+     * @return void
+     */
+    public function testFailEvent()
+    {
+        $this->buildEvent('fail_event');
+
+        $result = $this->userRoleDataServiceListeners->onGetAllUsersSuccess(
+            $this->mockEvent
+        );
+
+        $this->assertInstanceOf(
+            '\RcmUser\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onBuildUser(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onCreateUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onReadUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onUpdateUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onDeleteUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+    }
+
+    public function testFail2()
+    {
+        $this->buildEvent('failAll_service');
+
+        $result = $this->userRoleDataServiceListeners->onGetAllUsersSuccess(
+            $this->mockEvent
+        );
+
+        $this->assertInstanceOf(
+            '\RcmUser\Result',
+            $result
+        );
+
+        $this->buildEvent('fail_service');
+
+        $result = $this->userRoleDataServiceListeners->onBuildUser(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertTrue(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onCreateUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onReadUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onUpdateUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+
+        $result = $this->userRoleDataServiceListeners->onDeleteUserSuccess(
+            $this->mockEvent
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\User\Result',
+            $result
+        );
+        $this->assertFalse(
+            $result->isSuccess()
+        );
+    }
+
+    public function testUtilities()
+    {
+        $this->buildEvent('success');
+
+        $result = $this->userRoleDataServiceListeners->removeDefaultUserRoleIds(
+            $this->mockRoles
+        );
+
+        $this->assertEquals(
+            array('SOME'),
+            $result
+        );
+
+        $result = $this->userRoleDataServiceListeners->buildUserRoleProperty(
+            $this->mockRoles
+        );
+
+        $this->assertInstanceOf(
+            'RcmUser\User\Entity\UserRoleProperty',
+            $result
+        );
+
+        $result = $this->userRoleDataServiceListeners->buildValidRoles(
+            new User('123'),
+            $this->mockRoles
+        );
+
+        $this->assertTrue(
+            is_array($result)
+        );
+    }
 }
  

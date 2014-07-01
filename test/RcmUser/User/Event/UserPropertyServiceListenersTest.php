@@ -109,17 +109,17 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
             array('user', null, new User('123'))
         );
 
-        $this->event = $this->getMockBuilder(
+        $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->event->expects($this->any())
+        $this->mockEvent->expects($this->any())
             ->method('getParam')
             ->will(
                 $this->returnValueMap(
-                    $this->eventReturn
+                    $this->mockEventReturn
                 )
             );
 
@@ -132,23 +132,23 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
 
     public function buildFailCase2()
     {
-        $this->eventReturn = array(
+        $this->mockEventReturn = array(
             array('propertyNameSpace', null, UserRoleProperty::PROPERTY_KEY),
             array('data', null, 'NOPE'),
             array('user', null, new User('123'))
         );
 
-        $this->event = $this->getMockBuilder(
+        $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->event->expects($this->any())
+        $this->mockEvent->expects($this->any())
             ->method('getParam')
             ->will(
                 $this->returnValueMap(
-                    $this->eventReturn
+                    $this->mockEventReturn
                 )
             );
 
@@ -171,10 +171,10 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         );
 
         $result = $this->userPropertyServiceListeners->onPopulateUserProperty(
-            $this->event
+            $this->mockEvent
         );
 
-        var_dump($this->event->getParam('propertyNameSpace'));
+        var_dump($this->mockEvent->getParam('propertyNameSpace'));
 
         $this->assertInstanceOf(
             '\RcmUser\Result',
@@ -184,10 +184,10 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         $this->buildFailCase1();
 
         $result = $this->userPropertyServiceListeners->onPopulateUserProperty(
-            $this->event
+            $this->mockEvent
         );
 
-        var_dump($this->event->getParam('propertyNameSpace'));
+        var_dump($this->mockEvent->getParam('propertyNameSpace'));
 
         $this->assertFalse(
             $result
@@ -197,7 +197,7 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
 
 
         $result = $this->userPropertyServiceListeners->onPopulateUserProperty(
-            $this->event
+            $this->mockEvent
         );
         $this->assertInstanceOf(
             '\RcmUser\Result',

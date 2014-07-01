@@ -54,28 +54,28 @@ class UserDataServiceListenersTest extends Zf2TestCase
      */
     public function setUp()
     {
-        $this->event = $this->getMockBuilder(
+        $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->event->expects($this->any())
+        $this->mockEvent->expects($this->any())
             ->method('getParam')
             ->will($this->returnValue(
                     new User('1231')
                 ));
 
         //
-        $this->eventManagerInterface = $this->getMockBuilder(
+        $this->mockEventManagerInterface = $this->getMockBuilder(
             '\Zend\EventManager\EventManagerInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('getSharedManager')
-            ->will($this->returnValue($this->eventManagerInterface));
+            ->will($this->returnValue($this->mockEventManagerInterface));
 
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('detach')
             ->will($this->returnValue(true));
     }
@@ -179,31 +179,31 @@ class UserDataServiceListenersTest extends Zf2TestCase
     {
         $this->buildSuccessCase();
 
-        $result = $this->userDataServiceListeners->onGetAllUsers($this->event);
+        $result = $this->userDataServiceListeners->onGetAllUsers($this->mockEvent);
 
         $this->assertTrue(
             $result->isSuccess()
         );
 
-        $result = $this->userDataServiceListeners->onCreateUser($this->event);
+        $result = $this->userDataServiceListeners->onCreateUser($this->mockEvent);
 
         $this->assertTrue(
             $result->isSuccess()
         );
 
-        $result = $this->userDataServiceListeners->onReadUser($this->event);
+        $result = $this->userDataServiceListeners->onReadUser($this->mockEvent);
 
         $this->assertTrue(
             $result->isSuccess()
         );
 
-        $result = $this->userDataServiceListeners->onUpdateUser($this->event);
+        $result = $this->userDataServiceListeners->onUpdateUser($this->mockEvent);
 
         $this->assertTrue(
             $result->isSuccess()
         );
 
-        $result = $this->userDataServiceListeners->onDeleteUser($this->event);
+        $result = $this->userDataServiceListeners->onDeleteUser($this->mockEvent);
 
         $this->assertTrue(
             $result->isSuccess()

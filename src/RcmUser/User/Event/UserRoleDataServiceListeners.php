@@ -102,7 +102,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \Rcm\Result
+     * @return Result
      */
     public function onGetAllUsersSuccess($e)
     {
@@ -125,7 +125,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             } else {
 
                 $result->setMessage(
-                    'Could not read user roles: ' . $readResult->getMessages()
+                    'Could not read user roles: ' . $readResult->getMessage()
                 );
 
                 $roles = array();
@@ -153,7 +153,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Result
+     * @return Result
      */
     public function onBuildUser($e)
     {
@@ -187,14 +187,13 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Result
-     */
+     * @return Result
     public function onBeforeCreateUser($e)
     {
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
 
-        /* VALIDATE */
+        /* VALIDATE //
         $aclRoles = $responseUser->getProperty(
             $this->getUserPropertyKey()
         );
@@ -207,13 +206,14 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         return new Result($responseUser);
     }
+    */
 
     /**
      * onCreateUserSuccess
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Result
+     * @return Result
      */
     public function onCreateUserSuccess($e)
     {
@@ -269,7 +269,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Result
+     * @return Result
      */
     public function onReadUserSuccess($e)
     {
@@ -313,15 +313,15 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Result
-     */
+     * @return Result
+
     public function onBeforeUpdateUser($e)
     {
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
         $existingUser = $e->getParam('existingUser');
 
-        /* VALIDATE */
+        /* VALIDATE //*
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
             new UserRoleProperty(array())
@@ -337,13 +337,14 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         return new Result($responseUser);
     }
+    */
 
     /**
      * onUpdateUserSuccess
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Db\Result|Result
+     * @return Result
      */
     public function onUpdateUserSuccess($e)
     {
@@ -399,7 +400,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @param Event $e e
      *
-     * @return \RcmUser\User\Db\Result|Result
+     * @return Result
      */
     public function onDeleteUserSuccess($e)
     {

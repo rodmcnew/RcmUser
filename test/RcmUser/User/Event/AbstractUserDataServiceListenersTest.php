@@ -52,22 +52,22 @@ class AbstractUserDataServiceListenersTest extends Zf2TestCase {
      */
     public function setUp()
     {
-        $this->event = $this->getMockBuilder(
+        $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->eventManagerInterface = $this->getMockBuilder(
+        $this->mockEventManagerInterface = $this->getMockBuilder(
             '\Zend\EventManager\EventManagerInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('getSharedManager')
-            ->will($this->returnValue($this->eventManagerInterface));
+            ->will($this->returnValue($this->mockEventManagerInterface));
 
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('detach')
             ->will($this->returnValue(true));
 
@@ -77,74 +77,74 @@ class AbstractUserDataServiceListenersTest extends Zf2TestCase {
 
     public function testAttachDetach()
     {
-        $this->abstractUserDataServiceListeners->attach($this->eventManagerInterface);
+        $this->abstractUserDataServiceListeners->attach($this->mockEventManagerInterface);
 
-        $this->abstractUserDataServiceListeners->detach($this->eventManagerInterface);
+        $this->abstractUserDataServiceListeners->detach($this->mockEventManagerInterface);
     }
 
     public function testMethods()
     {
-        $result = $this->abstractUserDataServiceListeners->onBeforeGetAllUsers($this->event);
+        $result = $this->abstractUserDataServiceListeners->onBeforeGetAllUsers($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onGetAllUsers($this->event);
+        $result = $this->abstractUserDataServiceListeners->onGetAllUsers($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onGetAllUsersFail($this->event);
+        $result = $this->abstractUserDataServiceListeners->onGetAllUsersFail($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onGetAllUsersSuccess($this->event);
+        $result = $this->abstractUserDataServiceListeners->onGetAllUsersSuccess($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onBuildUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onBuildUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onBeforeCreateUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onBeforeCreateUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onCreateUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onCreateUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onCreateUserFail($this->event);
+        $result = $this->abstractUserDataServiceListeners->onCreateUserFail($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onCreateUserSuccess($this->event);
+        $result = $this->abstractUserDataServiceListeners->onCreateUserSuccess($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onBeforeReadUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onBeforeReadUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onReadUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onReadUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onReadUserFail($this->event);
+        $result = $this->abstractUserDataServiceListeners->onReadUserFail($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onReadUserSuccess($this->event);
+        $result = $this->abstractUserDataServiceListeners->onReadUserSuccess($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onBeforeUpdateUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onBeforeUpdateUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onUpdateUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onUpdateUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onUpdateUserFail($this->event);
+        $result = $this->abstractUserDataServiceListeners->onUpdateUserFail($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onUpdateUserSuccess($this->event);
+        $result = $this->abstractUserDataServiceListeners->onUpdateUserSuccess($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onBeforeDeleteUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onBeforeDeleteUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onDeleteUser($this->event);
+        $result = $this->abstractUserDataServiceListeners->onDeleteUser($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onDeleteUserFail($this->event);
+        $result = $this->abstractUserDataServiceListeners->onDeleteUserFail($this->mockEvent);
         $this->assertFalse($result->isSuccess());
 
-        $result = $this->abstractUserDataServiceListeners->onDeleteUserSuccess($this->event);
+        $result = $this->abstractUserDataServiceListeners->onDeleteUserSuccess($this->mockEvent);
         $this->assertFalse($result->isSuccess());
     }
 }
