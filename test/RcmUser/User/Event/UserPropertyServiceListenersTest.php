@@ -47,7 +47,7 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
      */
     public $userPropertyServiceListeners;
 
-    public $event;
+    public $mockEvent;
 
 
     /**
@@ -58,39 +58,39 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
     public function buildEventManager()
     {
         //
-        $this->eventManagerInterface = $this->getMockBuilder(
+        $this->mockEventManagerInterface = $this->getMockBuilder(
             '\Zend\EventManager\EventManagerInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('getSharedManager')
-            ->will($this->returnValue($this->eventManagerInterface));
+            ->will($this->returnValue($this->mockEventManagerInterface));
 
-        $this->eventManagerInterface->expects($this->any())
+        $this->mockEventManagerInterface->expects($this->any())
             ->method('detach')
             ->will($this->returnValue(true));
     }
 
     public function buildSuccessCase()
     {
-        $this->eventReturn = array(
+        $this->mockEventReturn = array(
             array('propertyNameSpace', null, UserRoleProperty::PROPERTY_KEY),
             array('data', null, new UserRoleProperty(array('SOME', 'ROLES'))),
             array('user', null, new User('123'))
         );
 
-        $this->event = $this->getMockBuilder(
+        $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->event->expects($this->any())
+        $this->mockEvent->expects($this->any())
             ->method('getParam')
             ->will(
                 $this->returnValueMap(
-                    $this->eventReturn
+                    $this->mockEventReturn
                 )
             );
 
@@ -103,7 +103,7 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
 
     public function buildFailCase1()
     {
-        $this->eventReturn = array(
+        $this->mockEventReturn = array(
             array('propertyNameSpace', null, 'NOPE'),
             array('data', null, new UserRoleProperty(array('SOME', 'ROLES'))),
             array('user', null, new User('123'))
@@ -174,7 +174,7 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
 
-        var_dump($this->mockEvent->getParam('propertyNameSpace'));
+        //var_dump($this->mockEvent->getParam('propertyNameSpace'));
 
         $this->assertInstanceOf(
             '\RcmUser\Result',
