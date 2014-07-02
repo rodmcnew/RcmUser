@@ -332,6 +332,7 @@ class AclResourceService
             return null;
         }
 
+        // @codingStandardsIgnoreStart
         if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
         ) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
@@ -339,6 +340,7 @@ class AclResourceService
                 $providerId
             );
         }
+        // @codingStandardsIgnoreEnd
 
         return $this->resourceProviders[$providerId];
     }

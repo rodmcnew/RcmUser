@@ -119,8 +119,8 @@ class AdminApiUserController extends AbstractAdminApiController
     {
         // ACCESS CHECK
         if (!$this->isAllowed(
-            RcmUserAclResourceProvider::RESOURCE_ID_USER
-            , 'create'
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'create'
         )) {
             return $this->getNotAllowedResponse();
         }
