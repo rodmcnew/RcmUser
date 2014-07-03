@@ -36,6 +36,7 @@ use RcmUser\View\Helper\RcmUserIsAllowed;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\View\Helper\RcmUserIsAllowed
  */
 class RcmUserIsAllowedTest extends \PHPUnit_Framework_TestCase {
 

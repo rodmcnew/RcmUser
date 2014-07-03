@@ -72,6 +72,17 @@ return array(
                                 'max' => 100,
                             ),
                         ),
+                        // Help protect from XSS
+                        array(
+                            'name' => 'Regex',
+                            'options' => array(
+                                'pattern' => "/^[a-zA-Z0-9-_@'.]+$/",
+                                //'pattern' => "/[<>]/",
+                                'messageTemplates' => array(
+                                    \Zend\Validator\Regex::NOT_MATCH => "Username can only contain letters, numbers and charactors: . - _ @ '."
+                                )
+                            ),
+                        ),
                     ),
                 ),
 
@@ -96,6 +107,28 @@ return array(
                             ),
                         ),
                         */
+                    ),
+                ),
+
+                'email' => array(
+                    'name' => 'email',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'Zend\Filter\StripTags'), // Help protect from XSS
+                        array('name' => 'Zend\Filter\StringTrim'),
+                    ),
+                    'validators' => array(
+                        array('name' => 'Zend\Validator\EmailAddress'),
+                    ),
+                ),
+                'name' => array(
+                    'name' => 'name',
+                    'required' => true,
+                    'filters'  => array(
+                        array('name' => 'Zend\Filter\StripTags'), // Help protect from XSS
+                        array('name' => 'Zend\Filter\StringTrim'),
+                    ),
+                    'validators' => array(
                     ),
                 ),
             ),
@@ -503,9 +536,9 @@ return array(
 
     'controllers' => array(
         'invokables' => array(
-            // GENERAL
-            'RcmUser\Controller\User' =>
-                'RcmUser\Controller\UserController',
+            // TESTING
+            'RcmUser\Controller\UserTestController' =>
+                'RcmUser\Controller\UserTestController',
             // ADMIN GENERAL
             'RcmUser\Controller\AdminJsController' =>
                 'RcmUser\Controller\AdminJsController',
@@ -554,21 +587,32 @@ return array(
     'router' => array(
         'routes' => array(
             // GENERAL
+            /**
+             * TEST CONTROLLER - TESTING ONLY
+             *
+             * @view
+             */
             'RcmUser' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/rcmuser',
+                    'route' => '/rcmusertest',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                     ),
                     'defaults' => array(
-                        'controller' => 'RcmUser\Controller\User',
+                        'controller' => 'RcmUser\Controller\UserTestController',
                         'action' => 'index',
                     ),
                 ),
             ),
             // ADMIN GENERAL
+            /**
+             * RcmUserAdminCss
+             * General Admin CSS
+             *
+             * @view CSS
+             */
             'RcmUserAdminCss' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -581,6 +625,11 @@ return array(
                 ),
             ),
             // ADMIN ACL
+            /**
+             * RcmUserAdminAcl
+             * View for creating and editing roles and rule
+             *
+             */
             'RcmUserAdminAcl' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -593,6 +642,10 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminAclJs
+             * JavaScript for RcmUserAdminAcl
+             */
             'RcmUserAdminAclJs' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -604,6 +657,12 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminApiAclResources
+             * Get resources
+             *
+             * @api
+             */
             'RcmUserAdminApiAclResources' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -617,6 +676,12 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminApiAclRulesByRoles
+             * Returns Roles and the related Rules
+             *
+             * @api
+             */
             'RcmUserAdminApiAclRulesByRoles' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -630,6 +695,12 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminApiAclRule
+             * Return rules and exposes create and delete
+             *
+             * @api
+             */
             'RcmUserAdminApiAclRule' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -643,6 +714,11 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminApiAclRole
+             * Return roles and exposes create and delete
+             * @api
+             */
             'RcmUserAdminApiAclRole' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -656,6 +732,11 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminApiAclDefaultUserRole
+             * Return default User roles
+             * @api
+             */
             'RcmUserAdminApiAclDefaultUserRole' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -670,6 +751,10 @@ return array(
                 ),
             ),
             // ADMIN USERS
+            /**
+             * RcmUserAdminUsers
+             * View for creating and editing users
+             */
             'RcmUserAdminUsers' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -681,6 +766,10 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminUserJs
+             * JavaScript for RcmUserAdminUsers
+             */
             'RcmUserAdminUserJs' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -692,7 +781,12 @@ return array(
                     ),
                 ),
             ),
-
+            /**
+             * RcmUserAdminApiUser
+             * API for creating and editing users
+             *
+             * @api
+             */
             'RcmUserAdminApiUser' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -706,6 +800,12 @@ return array(
                     ),
                 ),
             ),
+            /**
+             * RcmUserAdminApiUserValidUserStates
+             * API to get list of valid user states
+             *
+             * @api
+             */
             'RcmUserAdminApiUserValidUserStates' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -744,6 +844,12 @@ return array(
                 ),
             ),
             */
+            /**
+             * RcmUserAdminApiUserRoles
+             * API for listing, creating and deleting user roles as a group
+             *
+             * @api
+             */
             'RcmUserAdminApiUserRoles' => array(
                 'type' => 'Segment',
                 'options' => array(
@@ -757,7 +863,12 @@ return array(
                     ),
                 ),
             ),
-
+            /**
+             * RcmUserAdminApiUserRoles
+             * API creating and deleting an individual user role
+             *
+             * @api
+             */
             'RcmUserAdminApiUserRole' => array(
                 'type' => 'Segment',
                 'options' => array(

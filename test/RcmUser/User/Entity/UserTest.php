@@ -29,8 +29,9 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  *
  * PHP version 5
  *
+ * @covers    \RcmUser\User\Entity\User
  */
-class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
+class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -138,6 +139,19 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $this->fail("Expected exception not thrown");
 
+    }
+
+    /**
+     * testInvalidUserState
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testInvalidUserState()
+    {
+        $user = new User();
+        $user->setState("<invalid>alert('user')</invalid>");
     }
 
     /**

@@ -36,6 +36,7 @@ use RcmUser\View\Helper\RcmUserBuildHtmlHead;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\View\Helper\RcmUserBuildHtmlHead
  */
 class RcmUserBuildHtmlHeadTest extends \PHPUnit_Framework_TestCase
 {

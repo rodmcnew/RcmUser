@@ -114,7 +114,7 @@ class UserDataMapper implements UserDataMapperInterface
     /**
      * fetchById
      *
-     * @param mixed $id  user id
+     * @param mixed $id user id
      *
      * @return Result
      * @throws RcmUserException

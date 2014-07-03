@@ -35,6 +35,7 @@ use RcmUser\Log\Logger;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Log\Logger
  */
 class LoggerTest extends \PHPUnit_Framework_TestCase {
 

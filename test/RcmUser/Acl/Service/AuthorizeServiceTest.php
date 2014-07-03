@@ -19,7 +19,7 @@ namespace RcmUser\Test\Acl\Service;
 
 use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Result;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';

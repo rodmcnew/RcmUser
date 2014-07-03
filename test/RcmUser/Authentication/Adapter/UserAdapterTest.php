@@ -21,7 +21,7 @@ namespace RcmUser\Test\Authentication\Adapter;
 use RcmUser\Authentication\Adapter\UserAdapter;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -39,6 +39,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Authentication\Adapter\UserAdapter
  */
 class UserAdapterTest extends Zf2TestCase
 {

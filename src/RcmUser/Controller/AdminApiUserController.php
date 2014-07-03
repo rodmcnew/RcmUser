@@ -18,6 +18,7 @@
 namespace RcmUser\Controller;
 
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
@@ -48,7 +49,10 @@ class AdminApiUserController extends AbstractAdminApiController
      */
     public function getList()
     {
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -78,7 +82,10 @@ class AdminApiUserController extends AbstractAdminApiController
     public function get($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -111,7 +118,10 @@ class AdminApiUserController extends AbstractAdminApiController
     public function create($data)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'create')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'create'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -144,7 +154,10 @@ class AdminApiUserController extends AbstractAdminApiController
     public function delete($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'delete')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'delete'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -190,7 +203,10 @@ class AdminApiUserController extends AbstractAdminApiController
     public function update($id, $data)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'update')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'update'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -205,7 +221,7 @@ class AdminApiUserController extends AbstractAdminApiController
 
             // NO PASSWORD change ALLOWED?
             $isAllowChangeCreds = $this->isAllowed(
-                'rcmuser-user-administration',
+                RcmUserAclResourceProvider::RESOURCE_ID_USER,
                 'update_credentials'
             );
             if (!$isAllowChangeCreds) {

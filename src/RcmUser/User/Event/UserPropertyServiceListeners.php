@@ -49,7 +49,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      */
     protected $listenerMethods
         = array(
-            'onGetUserPropertyLinks' => 'getUserPropertyLinks',
+            //'onGetUserPropertyLinks' => 'getUserPropertyLinks',
             'onPopulateUserProperty' => 'populateUserProperty',
         );
 
@@ -100,12 +100,12 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
     }
 
     /**
-     * onGetUserPropertyLinks
+     * onGetUserPropertyLinks @todo
      *
      * @param Event $e e
      *
      * @return \RcmUser\Result
-     */
+     *
     public function onGetUserPropertyLinks($e)
     {
         $user = $e->getParam('user');
@@ -127,6 +127,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
 
         return new Result($links);
     }
+     */
 
     /**
      * onGetUserPropertyIsAllowed @todo
@@ -134,7 +135,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      * @param Event $e e
      *
      * @return bool
-     */
+     *
     public function onGetUserPropertyIsAllowed($e)
     {
         $user = $e->getParam('user');
@@ -148,6 +149,5 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
 
         return false;
     }
-
-
+     */
 } 

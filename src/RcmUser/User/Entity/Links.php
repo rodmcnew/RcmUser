@@ -37,14 +37,14 @@ class Links implements \JsonSerializable, \IteratorAggregate
 {
 
     /**
-     * @var array $links
+     * @var array $links List of links
      */
     protected $links = array();
 
     /**
      * __construct
      *
-     * @param array $links
+     * @param array $links List of links
      */
     public function __construct($links = array())
     {

@@ -48,7 +48,7 @@ class AuthenticationService extends \Zend\Authentication\AuthenticationService
     {
         $storage = $this->getStorage();
 
-        $storage->write($identity);
+        return $storage->write($identity);
     }
 
 } 

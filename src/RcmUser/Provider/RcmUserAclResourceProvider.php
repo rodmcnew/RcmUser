@@ -44,6 +44,21 @@ class RcmUserAclResourceProvider extends ResourceProvider
     const PROVIDER_ID = 'RcmUser';
 
     /**
+     * @var string RESOURCE_ID_ROOT
+     */
+    const RESOURCE_ID_ROOT = 'rcmuser';
+
+    /**
+     * @var string RESOURCE_ID_ACL
+     */
+    const RESOURCE_ID_ACL = 'rcmuser-acl-administration';
+
+    /**
+     * @var string RESOURCE_ID_USER
+     */
+    const RESOURCE_ID_USER = 'rcmuser-user-administration';
+
+    /**
      * default resources  - rcm user needs these,
      * however descriptions added on construct in the factory
      *
@@ -120,33 +135,43 @@ class RcmUserAclResourceProvider extends ResourceProvider
         );
 
         /* parent resource */
-        $this->resources['rcmuser'] = new AclResource(
-            'rcmuser'
+        $this->resources[self::RESOURCE_ID_ROOT] = new AclResource(
+            self::RESOURCE_ID_ROOT
         );
-        $this->resources['rcmuser']->setName('RCM User');
-        $this->resources['rcmuser']->setDescription('All RCM user access.');
-        $this->resources['rcmuser']->setPrivileges($privileges);
-
-        /* user edit */
-        $this->resources['rcmuser-user-administration'] = new AclResource(
-            'rcmuser-user-administration',
-            'rcmuser',
-            $userPrivileges
+        $this->resources[self::RESOURCE_ID_ROOT]->setName(
+            'RCM User'
         );
-        $this->resources['rcmuser-user-administration']
-            ->setName('User Administration');
-        $this->resources['rcmuser-user-administration']
-            ->setDescription('Allows the editing of user data.');
-
-        /* access and roles */
-        $this->resources['rcmuser-acl-administration'] = new AclResource(
-            'rcmuser-acl-administration',
-            'rcmuser',
+        $this->resources[self::RESOURCE_ID_ROOT]->setDescription(
+            'All RCM user access.'
+        );
+        $this->resources[self::RESOURCE_ID_ROOT]->setPrivileges(
             $privileges
         );
-        $this->resources['rcmuser-acl-administration']
-            ->setName('Role and Access Administration');
-        $this->resources['rcmuser-acl-administration']
-            ->setDescription('Allows the editing of user access and role data.');
+
+        /* user edit */
+        $this->resources[self::RESOURCE_ID_USER] = new AclResource(
+            self::RESOURCE_ID_USER,
+            self::RESOURCE_ID_ROOT,
+            $userPrivileges
+        );
+        $this->resources[self::RESOURCE_ID_USER]->setName(
+            'User Administration'
+        );
+        $this->resources[self::RESOURCE_ID_USER]->setDescription(
+            'Allows the editing of user data.'
+        );
+
+        /* access and roles */
+        $this->resources[self::RESOURCE_ID_ACL] = new AclResource(
+            self::RESOURCE_ID_ACL,
+            self::RESOURCE_ID_ROOT,
+            $privileges
+        );
+        $this->resources[self::RESOURCE_ID_ACL]->setName(
+            'Role and Access Administration'
+        );
+        $this->resources[self::RESOURCE_ID_ACL]->setDescription(
+            'Allows the editing of user access and role data.'
+        );
     }
 } 

@@ -22,6 +22,22 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
 use RcmUser\Acl\Db\DoctrineAclRoleDataMapper;
 use RcmUser\Config\Config;
 
+/**
+ * Class DoctrineAclRoleDataMapperTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\Acl\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Db\DoctrineAclRoleDataMapper
+ */
 class DoctrineAclRoleDataMapperTest extends \PHPUnit_Framework_TestCase {
 
     /**

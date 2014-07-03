@@ -22,6 +22,22 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
 use RcmUser\User\Entity\User;
 use RcmUser\View\Helper\RcmUserGetCurrentUser;
 
+/**
+ * Class RcmUserGetCurrentUserTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\View\Helper
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\View\Helper\RcmUserGetCurrentUser
+ */
 class RcmUserGetCurrentUserTest extends \PHPUnit_Framework_TestCase {
     /**
      * test
