@@ -84,7 +84,8 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         $responseUser->setPassword(
             $this->getEncryptor()->create($requestUser->getPassword())
         );
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState(User::STATE_DISABLED);
         }
 
@@ -136,10 +137,9 @@ class DbUserDataPreparer implements UserDataPreparerInterface
      * @param User $existingUser   existingUser
      *
      * @return bool
-     */
+
     public function isValidCredential(User $credentialUser, User $existingUser)
     {
-
         $existingHash = $existingUser->getPassword();
 
         $credential = $credentialUser->getPassword();
@@ -148,6 +148,7 @@ class DbUserDataPreparer implements UserDataPreparerInterface
 
         return $isValid;
     }
+     */
 
     /**
      * buildId
@@ -156,7 +157,6 @@ class DbUserDataPreparer implements UserDataPreparerInterface
      */
     public function buildId()
     {
-
         return $this->guidv4();
     }
 

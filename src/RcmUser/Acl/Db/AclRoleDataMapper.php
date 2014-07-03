@@ -40,10 +40,16 @@ use RcmUser\Result;
  */
 class AclRoleDataMapper implements AclRoleDataMapperInterface
 {
-
+    /**
+     * @var null|\RcmUser\Config\Config $config
+     */
     protected $config = null;
 
-
+    /**
+     * __construct
+     *
+     * @param Config $config config
+     */
     public function __construct(Config $config)
     {
         $this->config = $config;
@@ -57,11 +63,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchSuperAdminRoleId()
     {
-        if(!empty($this->config)){
-            return new Result($this->config->get('SuperAdminRoleId', null));
-        }
-
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+         return new Result($this->config->get('SuperAdminRoleId', null));
     }
 
     /**
@@ -72,11 +74,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchGuestRoleId()
     {
-        if(!empty($this->config)){
-            return new Result($this->config->get('GuestRoleId', null));
-        }
-
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        return new Result($this->config->get('GuestRoleId', null));
     }
 
     /**
@@ -87,11 +85,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchDefaultGuestRoleIds()
     {
-        if(!empty($this->config)){
-            return new Result($this->config->get('DefaultGuestRoleIds', array()));
-        }
-
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        return new Result($this->config->get('DefaultGuestRoleIds', array()));
     }
 
     /**
@@ -102,11 +96,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchDefaultUserRoleIds()
     {
-        if(!empty($this->config)){
-            return new Result($this->config->get('DefaultUserRoleIds', array()));
-        }
-
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        return new Result($this->config->get('DefaultUserRoleIds', array()));
     }
 
     /**

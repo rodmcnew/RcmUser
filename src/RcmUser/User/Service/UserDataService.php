@@ -46,6 +46,11 @@ class UserDataService extends EventProvider
     protected $userDataMapper;
 
     /**
+     * @var array
+     */
+    protected $validUserStates = array();
+
+    /**
      * @var string|null $defaultUserState
      */
     protected $defaultUserState = null;
@@ -70,6 +75,31 @@ class UserDataService extends EventProvider
     public function getUserDataMapper()
     {
         return $this->userDataMapper;
+    }
+
+    /**
+     * setValidUserStates
+     *
+     * @param array $validUserStates array of valid user states
+     *
+     * @return void
+     */
+    public function setValidUserStates($validUserStates)
+    {
+        if (!in_array(User::STATE_DISABLED, $validUserStates)) {
+            $validUserStates[] = User::STATE_DISABLED;
+        }
+        $this->validUserStates = $validUserStates;
+    }
+
+    /**
+     * getValidUserStates
+     *
+     * @return array
+     */
+    public function getValidUserStates()
+    {
+        return $this->validUserStates;
     }
 
     /**
@@ -200,6 +230,7 @@ class UserDataService extends EventProvider
     public function createUser(User $requestUser)
     {
         /* <LOW_LEVEL_PREP> */
+        /* REMOVE SOME LOW LEVEL - LET THE MAPPER DECIDE
         $result = $this->readUser($requestUser);
 
         if ($result->isSuccess()) {
@@ -207,13 +238,15 @@ class UserDataService extends EventProvider
             // ERROR - user exists
             return new Result(null, Result::CODE_FAIL, 'User already exists.');
         }
+        */
 
         $responseUser = new User();
         $responseUser->populate($requestUser);
 
         $requestUser = new ReadOnlyUser($requestUser);
 
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState($this->getDefaultUserState());
         }
         /* </LOW_LEVEL_PREP> */
@@ -342,7 +375,8 @@ class UserDataService extends EventProvider
         }
 
         /* <LOW_LEVEL_PREP> */
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState($this->getDefaultUserState());
         }
         /* </LOW_LEVEL_PREP> */
@@ -370,7 +404,8 @@ class UserDataService extends EventProvider
     {
         /* <LOW_LEVEL_PREP> */
         // require id
-        if (empty($requestUser->getId())) {
+        $id = $requestUser->getId();
+        if (empty($id)) {
 
             return new Result(
                 null,
@@ -400,7 +435,8 @@ class UserDataService extends EventProvider
 
         $requestUser = new ReadOnlyUser($requestUser);
 
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState($this->getDefaultUserState());
         }
         /* </LOW_LEVEL_PREP> */
@@ -473,7 +509,8 @@ class UserDataService extends EventProvider
     {
         /* <LOW_LEVEL_PREP> */
         // require id
-        if (empty($requestUser->getId())) {
+        $id = $requestUser->getId();
+        if (empty($id)) {
 
             return new Result(
                 null,

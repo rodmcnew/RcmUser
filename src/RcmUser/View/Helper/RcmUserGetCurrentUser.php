@@ -58,7 +58,7 @@ class RcmUserGetCurrentUser extends AbstractHelper
     /**
      * __invoke
      *
-     * @param mixed $default
+     * @param mixed $default default
      *
      * @return null|\RcmUser\User\Entity\User
      */

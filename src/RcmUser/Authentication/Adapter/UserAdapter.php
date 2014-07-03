@@ -115,7 +115,7 @@ class UserAdapter extends AbstractAdapter
     /**
      * getEncryptor
      *
-     * @return mixed
+     * @return PasswordInterface
      */
     public function getEncryptor()
     {

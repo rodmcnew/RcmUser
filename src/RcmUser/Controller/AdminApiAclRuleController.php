@@ -18,6 +18,8 @@
 namespace RcmUser\Controller;
 
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use RcmUser\Result;
 use Zend\View\Model\JsonModel;
 
 /**
@@ -47,7 +49,10 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     public function get($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -64,10 +69,14 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     public function create($data)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration', 'create')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'create'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
+        /** @var \RcmUser\Acl\Service\AclDataService $aclDataService */
         $aclDataService = $this->getServiceLocator()->get(
             'RcmUser\Acl\AclDataService'
         );
@@ -95,7 +104,10 @@ class AdminApiAclRuleController extends AbstractAdminApiController
     public function delete($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration', 'delete')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'delete'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -104,8 +116,8 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         );
 
         try {
-
-            $data = json_decode(urldecode($id), true);
+            $data = json_decode($this->getRequest()->getContent(), true);
+            //$data = json_decode(urldecode($id), true);
 
             $aclRule = new AclRule();
             $aclRule->populate($data);

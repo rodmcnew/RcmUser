@@ -24,7 +24,7 @@ use RcmUser\Service\RcmUserService;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Service\UserDataService;
 use RcmUser\User\Service\UserPropertyService;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
 
@@ -251,24 +251,24 @@ class RcmUserServiceTest extends Zf2TestCase
         // test for not found
     }
 
-    public function testIsSessUser()
+    public function testIsIdentity()
     {
         $user = $this->getNewUser('A');
         $user->setId(null);
 
-        $result = $this->getRcmUserService()->isSessUser($user);
+        $result = $this->getRcmUserService()->isIdentity($user);
 
         $this->assertTrue($result, 'User did not match by username.');
 
         $user->setId('A_id');
 
-        $result = $this->getRcmUserService()->isSessUser($user);
+        $result = $this->getRcmUserService()->isIdentity($user);
 
         $this->assertTrue($result, 'User did not match by id.');
 
         $user2 = new User();
 
-        $result = $this->getRcmUserService()->isSessUser($user2);
+        $result = $this->getRcmUserService()->isIdentity($user2);
 
         $this->assertFalse($result, 'User matched but should not have.');
     }

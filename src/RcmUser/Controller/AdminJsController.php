@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Http\Response;
@@ -48,27 +49,23 @@ class AdminJsController extends AbstractAdminController
     public function adminAclAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
-        $aclResourceService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\Service\AclResourceService'
-        );
         /** @var $aclDataService \RcmUser\Acl\Service\AclDataService */
         $aclDataService = $this->getServiceLocator()->get(
             'RcmUser\Acl\AclDataService'
         );
 
-        $resources = $aclResourceService->getResourcesWithNamespace();
-        $rolesResult = $aclDataService->getRulesByRoles();
         $superAdminRoleId = $aclDataService->getSuperAdminRoleId()->getData();
         $guestRoleId = $aclDataService->getGuestRoleId()->getData();
 
         $viewModel = new ViewModel(
             array(
-                'resources' => $resources,
-                'rolesResult' => $rolesResult,
                 'superAdminRoleId' => $superAdminRoleId,
                 'guestRoleId' => $guestRoleId,
             )
@@ -95,7 +92,10 @@ class AdminJsController extends AbstractAdminController
     public function adminUsersAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -109,20 +109,12 @@ class AdminJsController extends AbstractAdminController
             'RcmUser\Acl\AclDataService'
         );
 
-        $userResult = $userDataService->getAllUsers(array());
-
         $rolePropertyId = UserRoleProperty::PROPERTY_KEY;
 
-        $rolesResult = $aclDataService->getNamespacedRoles();
-
-        $defaultRolesResult = $aclDataService->getDefaultUserRoleIds();
 
         $viewModel = new ViewModel(
             array(
-                'usersResult' => $userResult,
                 'rolePropertyId' => $rolePropertyId,
-                'roles' => $rolesResult->getData(),
-                'defaultRoles' => $defaultRolesResult->getData(),
             )
         );
 
@@ -148,25 +140,15 @@ class AdminJsController extends AbstractAdminController
     public function adminUserRolesAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
-        /** @var \RcmUser\User\Service\UserDataService $userDataService */
-        $userDataService = $this->getServiceLocator()->get(
-            'RcmUser\User\Service\UserDataService'
-        );
-
-        $userId = $this->getEvent()->getRouteMatch()->getParam('userId');
-        // @todo clean input
-
-        $user = new User($userId);
-        $result = $userDataService->read($user);
-
         $viewModel = new ViewModel(
-            array(
-                'userResult' => $result
-            )
+            array()
         );
 
         $viewModel->setTemplate('js/rcmuser.admin.user.role.app.js');

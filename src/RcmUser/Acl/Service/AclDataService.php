@@ -109,12 +109,7 @@ class AclDataService
     {
         $result = $this->getAllRoles();
 
-        if (!$result->isSuccess()) {
-
-            return $result;
-        }
-
-        $data = $result->getData();
+        return $result->getData();
     }
 
     /**
@@ -216,7 +211,7 @@ class AclDataService
 
         // some roles should not be deleted, like super admin and guest
         $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
-        if($roleId == $superAdminRoleId){
+        if ($roleId == $superAdminRoleId) {
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -225,7 +220,7 @@ class AclDataService
         }
 
         $guestRoleId = $this->getGuestRoleId()->getData();
-        if($roleId == $guestRoleId){
+        if ($roleId == $guestRoleId) {
             return new Result(
                 null,
                 Result::CODE_FAIL,

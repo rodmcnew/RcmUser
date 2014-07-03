@@ -19,10 +19,26 @@ namespace RcmUser\Test\User\Entity;
 
 use RcmUser\User\Entity\ReadOnlyUser;
 use RcmUser\User\Entity\User;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class ReadOnlyUserTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Entity\ReadOnlyUser
+ */
 class ReadOnlyUserTest extends Zf2TestCase
 {
 
@@ -58,6 +74,9 @@ class ReadOnlyUserTest extends Zf2TestCase
         $user->setId('id');
         $user->setUsername('username');
         $user->setPassword('password');
+        $user->setState('disabled');
+        $user->setName('name');
+        $user->setEmail('test@example.com');
         $user->setProperties(array('A'=>'something'));
 
         return new ReadOnlyUser($user);
@@ -121,6 +140,36 @@ class ReadOnlyUserTest extends Zf2TestCase
     {
         $roUser = $this->buildReadOnlyUser();
         $roUser->setState('234');
+    }
+
+    /**
+     * testSetEmail
+     *
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setEmail
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
+     * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
+     *
+     * @return void
+     */
+    public function testSetEmail()
+    {
+        $roUser = $this->buildReadOnlyUser();
+        $roUser->setEmail('234@example.com');
+    }
+
+    /**
+     * testSetName
+     *
+     * @covers \RcmUser\User\Entity\ReadOnlyUser::setName
+     * @covers \RcmUser\Exception\RcmUserReadOnlyException
+     * @expectedException \RcmUser\Exception\RcmUserReadOnlyException
+     *
+     * @return void
+     */
+    public function testSetName()
+    {
+        $roUser = $this->buildReadOnlyUser();
+        $roUser->setName('noope');
     }
 
     /**

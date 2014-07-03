@@ -332,14 +332,15 @@ class AclResourceService
             return null;
         }
 
-        if (!($this->resourceProviders[$providerId] instanceof
-            ResourceProviderInterface)
+        // @codingStandardsIgnoreStart
+        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
         ) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
                 $this->resourceProviders[$providerId],
                 $providerId
             );
         }
+        // @codingStandardsIgnoreEnd
 
         return $this->resourceProviders[$providerId];
     }
@@ -498,10 +499,10 @@ class AclResourceService
             $parent = $aclResources[$parentId];
 
             $ns = $this->createNamespaceId(
-                    $parent,
-                    $aclResources,
-                    $nsChar
-                ) . $nsChar . $ns;
+                $parent,
+                $aclResources,
+                $nsChar
+            ) . $nsChar . $ns;
         }
 
         return $ns;
@@ -573,7 +574,8 @@ class AclResourceService
             );
         }
 
-        if (empty($resource->getProviderId())) {
+        $resourceProviderId = $resource->getProviderId();
+        if (empty($resourceProviderId)) {
 
             $resource->setProviderId($providerId);
         }

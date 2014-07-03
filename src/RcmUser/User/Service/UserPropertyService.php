@@ -39,7 +39,6 @@ use RcmUser\User\Entity\User;
  */
 class UserPropertyService extends EventProvider
 {
-
     /**
      * getUserProperty
      *
@@ -92,9 +91,10 @@ class UserPropertyService extends EventProvider
             array('propertyNameSpace' => $propertyNameSpace, 'data' => $data),
             function ($result) {
 
-                if($result instanceof Result){
+                if ($result instanceof Result) {
                     return $result->isSuccess();
                 }
+
                 return false;
             }
         );
@@ -108,9 +108,8 @@ class UserPropertyService extends EventProvider
     }
 
     /**
-     * @todo
      * getUserPropertyLinks
-     * Get a link to an edit page for this user
+     * Get a link to an edit page for this user todo - write this
      *
      * @param User   $user              user
      * @param string $propertyNameSpace propertyNameSpace
@@ -127,9 +126,10 @@ class UserPropertyService extends EventProvider
             array('user' => $user, 'propertyNameSpace' => $propertyNameSpace),
             function ($result) {
 
-                if($result instanceof Result){
+                if ($result instanceof Result) {
                     return $result->isSuccess();
                 }
+
                 return false;
             }
         );
@@ -143,10 +143,9 @@ class UserPropertyService extends EventProvider
     }
 
     /**
-     * @todo
      * getUserPropertyIsAllowed
      * Check access for a user to a property
-     * If no results returned
+     * If no results returned todo - write this
      *
      * @param User   $user              user
      * @param string $propertyNameSpace propertyNameSpace
@@ -163,9 +162,10 @@ class UserPropertyService extends EventProvider
             array('user' => $user, 'propertyNameSpace' => $propertyNameSpace),
             function ($result) {
 
-                if($result instanceof Result){
+                if ($result instanceof Result) {
                     return $result->isSuccess();
                 }
+
                 return false;
             }
         );

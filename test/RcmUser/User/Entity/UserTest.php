@@ -17,6 +17,7 @@
 
 namespace RcmUser\Test\User\Entity;
 
+use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
@@ -28,8 +29,9 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  *
  * PHP version 5
  *
+ * @covers    \RcmUser\User\Entity\User
  */
-class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
+class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -50,6 +52,8 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $user->setUsername($prefix . '_username');
         $user->setPassword($prefix . '_password');
         $user->setState($prefix . '_state');
+        $user->setEmail($prefix . '@example.com');
+        $user->setName($prefix . '_name');
         $user->setProperties(array('property1', $prefix . '_property1'));
         $user->setProperty('property2', $prefix . '_property2');
 
@@ -75,13 +79,45 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $user->setUsername($value);
         $this->assertEquals($value, $user->getUsername(), 'Setter or getter failed.');
 
+        $value = '';
+        $user->setUsername($value);
+        $this->assertNull($user->getUsername(), 'Setter or getter failed.');
+
         $value = 'passwordxxx';
         $user->setPassword($value);
         $this->assertEquals($value, $user->getPassword(), 'Setter or getter failed.');
 
+        $value = '';
+        $user->setPassword($value);
+        $this->assertNull($user->getPassword(), 'Setter or getter failed.');
+
         $value = 'statexxx';
         $user->setState($value);
         $this->assertEquals($value, $user->getState(), 'Setter or getter failed.');
+
+        $value = '';
+        $user->setState($value);
+        $this->assertNull($user->getState(), 'Setter or getter failed.');
+
+        $value = 'xxx@example.com';
+        $user->setEmail($value);
+        $this->assertEquals($value, $user->getEmail(), 'Setter or getter failed.');
+
+        $value = '';
+        $user->setEmail($value);
+        $this->assertNull($user->getEmail(), 'Setter or getter failed.');
+
+        $value = 'namesxxx';
+        $user->setName($value);
+        $this->assertEquals($value, $user->getName(), 'Setter or getter failed.');
+
+        $value = '';
+        $user->setName($value);
+        $this->assertNull($user->getName(), 'Setter or getter failed.');
+
+        $value = null;
+        $user->setProperties($value);
+        $this->assertTrue(is_array($user->getProperties()), 'Setter or getter failed.');
 
         $pvalue = array('Y' => 'propertyYYY');
         $value = 'propertyXXX';
@@ -91,6 +127,31 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $this->assertEquals($value, $user->getProperty('X'), 'Setter or getter failed.');
         $this->assertArrayHasKey('Y', $user->getProperties(), 'Setter or getter failed.');
         $this->assertTrue($user->getProperty('nope', 'not_found') === 'not_found', 'Setter or getter failed.');
+
+        try{
+            $user->setProperty('N*P#_^^^^', 'something');
+
+        }catch(RcmUserException $e){
+
+            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            return;
+        }
+
+        $this->fail("Expected exception not thrown");
+
+    }
+
+    /**
+     * testInvalidUserState
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testInvalidUserState()
+    {
+        $user = new User();
+        $user->setState("<invalid>alert('user')</invalid>");
     }
 
     /**

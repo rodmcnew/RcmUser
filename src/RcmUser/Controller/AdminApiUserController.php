@@ -18,6 +18,7 @@
 namespace RcmUser\Controller;
 
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
@@ -48,7 +49,10 @@ class AdminApiUserController extends AbstractAdminApiController
      */
     public function getList()
     {
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -78,7 +82,10 @@ class AdminApiUserController extends AbstractAdminApiController
     public function get($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -111,11 +118,30 @@ class AdminApiUserController extends AbstractAdminApiController
     public function create($data)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'create')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'create'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
-        return $this->getJsonResponse(null);
+        /** @var \RcmUser\User\Service\UserDataService $userDataService */
+        $userDataService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserDataService'
+        );
+
+        try {
+            // Build user from request
+            $user = $this->buildUser($data);
+
+            $result = $userDataService->createUser($user);
+
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
     }
 
     /**
@@ -128,25 +154,10 @@ class AdminApiUserController extends AbstractAdminApiController
     public function delete($id)
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'delete')) {
-            return $this->getNotAllowedResponse();
-        }
-
-        return $this->getJsonResponse(null);
-    }
-
-    /**
-     * update
-     *
-     * @param mixed $id
-     * @param mixed $data user array
-     *
-     * @return array|mixed
-     */
-    public function update($id, $data)
-    {
-        // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'update')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'delete'
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -155,8 +166,106 @@ class AdminApiUserController extends AbstractAdminApiController
             'RcmUser\User\Service\UserDataService'
         );
 
-        // Populate user
+        try {
+            //$data = json_decode($this->getRequest()->getContent());
+            $currentUser = $this->rcmUserGetCurrentUser();
 
+            if ($id == $currentUser->getId()) {
+
+                return new Result(
+                    $id,
+                    Result::CODE_FAIL,
+                    "Cannot delete yourself."
+                );
+            }
+
+            // Build user from request
+            $user = new user($id);
+
+            $result = $userDataService->deleteUser($user);
+
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
+    }
+
+    /**
+     * update
+     *
+     * @param mixed $id   user id
+     * @param mixed $data user array
+     *
+     * @return array|mixed
+     */
+    public function update($id, $data)
+    {
+        // ACCESS CHECK
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'update'
+        )) {
+            return $this->getNotAllowedResponse();
+        }
+
+        /** @var \RcmUser\User\Service\UserDataService $userDataService */
+        $userDataService = $this->getServiceLocator()->get(
+            'RcmUser\User\Service\UserDataService'
+        );
+
+        try {
+            // Build user from request
+            $user = $this->buildUser($data);
+
+            // NO PASSWORD change ALLOWED?
+            $isAllowChangeCreds = $this->isAllowed(
+                RcmUserAclResourceProvider::RESOURCE_ID_USER,
+                'update_credentials'
+            );
+            if (!$isAllowChangeCreds) {
+
+                if ($user->getPassword() !== null) {
+
+                    $result = new Result(
+                        $user,
+                        Result::CODE_FAIL,
+                        "Not allowed to change username and password."
+                    );
+
+                    return $this->getJsonResponse($result);
+                }
+
+                $user->setUsername(null);
+            }
+
+            $result = $userDataService->updateUser($user);
+
+            if ($user->getUsername() === null) {
+
+                $result->setMessage(
+                    'Username was not update, was not allowed or empty.'
+                );
+            }
+
+        } catch (\Exception $e) {
+
+            return $this->getExceptionResponse($e);
+        }
+
+        return $this->getJsonResponse($result);
+    }
+
+    /**
+     * buildUser
+     *
+     * @param array $data data
+     *
+     * @return void
+     */
+    protected function buildUser($data)
+    {
         $user = new User();
         $user->populate($data, array('properties'));
 
@@ -172,32 +281,6 @@ class AdminApiUserController extends AbstractAdminApiController
             $user->setProperty(UserRoleProperty::PROPERTY_KEY, $userRoleProperty);
         }
 
-        // NO PASSWORD change ALLOWED?
-        if (!$this->isAllowed('rcmuser-user-administration', 'update_credentials')) {
-
-            if ($user->getPassword() !== null) {
-
-                $result = new Result(
-                    $user,
-                    Result::CODE_FAIL,
-                    "Not allowed to change username and password."
-                );
-
-                return $this->getJsonResponse($result);
-            }
-
-            $user->setUsername(null);
-        }
-
-        $result = $userDataService->updateUser($user);
-
-        if($user->getUsername() === null){
-
-            $result->setMessage(
-                'Username was not update, was not allowed or empty.'
-            );
-        }
-
-        return $this->getJsonResponse($result);
+        return $user;
     }
 } 

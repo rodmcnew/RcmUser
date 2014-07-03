@@ -2,7 +2,6 @@
 return array(
     'modules' => array(
         // RcmUser dependencies
-        // @deprecated 'BjyAuthorize',
         'RcmUser',
     ),
     'module_listener_options' => array(
@@ -13,7 +12,7 @@ return array(
             './vendor',
             './vendor/zend',
             './vendor/reliv/',
-            // @deprecated './vendor/bjyoungblood/',
+            './vendor/phpunit/',
         ),
     ),
 );

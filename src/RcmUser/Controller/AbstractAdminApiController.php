@@ -48,8 +48,10 @@ class AbstractAdminApiController extends AbstractRestfulController
      *
      * @return mixed
      */
-    public function isAllowed($resourceId = 'rcmuser', $privilege = null)
-    {
+    public function isAllowed(
+        $resourceId = RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
+        $privilege = null
+    ) {
         return $this->rcmUserIsAllowed(
             $resourceId, $privilege, RcmUserAclResourceProvider::PROVIDER_ID
         );
@@ -63,6 +65,11 @@ class AbstractAdminApiController extends AbstractRestfulController
     public function getNotAllowedResponse()
     {
         $response = $this->getResponse();
+        $response->getHeaders()->addHeaders(
+            array(
+                'Content-Type' => 'application/json'
+            )
+        );
         $response->setStatusCode(Response::STATUS_CODE_401);
         $result = new Result(
             null,
@@ -75,7 +82,7 @@ class AbstractAdminApiController extends AbstractRestfulController
     }
 
     /**
-     * getExceptionResponse
+     * getExceptionResponse @todo Return generic message and log exception
      *
      * @param \Exception $e e
      *

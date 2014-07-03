@@ -17,6 +17,7 @@
 namespace RcmUser\User\Db;
 
 
+use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Data\UserDataPreparerInterface;
 use RcmUser\User\Data\UserValidatorInterface;
 use RcmUser\User\Entity\User;
@@ -113,7 +114,7 @@ class UserDataMapper implements UserDataMapperInterface
     /**
      * fetchById
      *
-     * @param mixed $id id
+     * @param mixed $id user id
      *
      * @return Result
      * @throws RcmUserException

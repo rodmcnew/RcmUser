@@ -17,6 +17,7 @@
 
 namespace RcmUser\Controller;
 
+use RcmUser\Provider\RcmUserAclResourceProvider;
 use Zend\Http\Response;
 use Zend\View\Model\JsonModel;
 
@@ -48,7 +49,10 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
     {
 
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'read'
+        )) {
             return $this->getNotAllowedResponse();
         }
 

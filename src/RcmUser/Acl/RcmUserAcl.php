@@ -25,7 +25,7 @@ use Zend\Permissions\Acl\Role\RoleInterface;
 /**
  * Class RcmUserAcl
  *
- * RcmUserAcl
+ * RcmUserAcl @todo
  *
  * PHP version 5
  *
@@ -70,12 +70,12 @@ class RcmUserAcl extends Acl
     /**
      * getAccess
      *
-     * @param  RoleInterface|string     $role
-     * @param  ResourceInterface|string $resource
-     * @param  string                   $privilege
+     * @param RoleInterface|string     $role      role
+     * @param ResourceInterface|string $resource  resource
+     * @param string                   $privilege privilege
      *
      * @return string
-     */
+     *
     public function getAccess($role = null, $resource = null, $privilege = null)
     {
         // reset role & resource to null
@@ -134,7 +134,8 @@ class RcmUserAcl extends Acl
                             $resource, null, null
                         ))
                     ) {
-                        echo "\n3: " .var_export(Acl::TYPE_ALLOW === $ruleTypeAllPrivileges, true);
+                        echo "\n3: " .
+                        var_export(Acl::TYPE_ALLOW === $ruleTypeAllPrivileges, true);
                         return $this->getAccessType($ruleTypeAllPrivileges);
                     }
                 }
@@ -184,7 +185,14 @@ class RcmUserAcl extends Acl
             } while (true); // loop terminates at 'allResources' pseudo-parent
         }
     }
-
+    */
+    /**
+     * getAccessType
+     *
+     * @param string $ruleType ruleType
+     *
+     * @return string
+     */
     public function getAccessType($ruleType)
     {
         if (Acl::TYPE_DENY === $ruleType) {

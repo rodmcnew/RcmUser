@@ -108,11 +108,11 @@ class DoctrineUserRoleDataMapper
      */
     public function fetchAll($options = array())
     {
-        $users = $this->getEntityManager()
+        $roles = $this->getEntityManager()
             ->getRepository($this->getEntityClass())
             ->findAll();
 
-        return new Result($users);
+        return new Result($roles);
     }
 
     /**
@@ -181,7 +181,7 @@ class DoctrineUserRoleDataMapper
      */
     public function remove(User $user, $aclRoleId)
     {
-        if(!$this->canRemove($user, $aclRoleId)){
+        if (!$this->canRemove($user, $aclRoleId)) {
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -194,11 +194,11 @@ class DoctrineUserRoleDataMapper
         $userRoles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
         )->findBy(
-                array(
-                    'userId' => $userId,
-                    'roleId' => $aclRoleId,
-                )
-            );
+            array(
+                'userId' => $userId,
+                'roleId' => $aclRoleId,
+            )
+        );
 
         foreach ($userRoles as $userRole) {
 
@@ -230,7 +230,7 @@ class DoctrineUserRoleDataMapper
         if (empty($userId)) {
 
             return new Result(
-                null,
+                array(),
                 Result::CODE_FAIL,
                 'User id required to get user roles.'
             );
@@ -242,7 +242,7 @@ class DoctrineUserRoleDataMapper
         if (!empty($currentRoles)) {
 
             return new Result(
-                $currentRolesResult->getData(),
+                array(),
                 Result::CODE_FAIL,
                 'Roles already exist for user: ' . $user->getId()
             );
@@ -301,7 +301,7 @@ class DoctrineUserRoleDataMapper
         if (empty($userId)) {
 
             return new Result(
-                null,
+                array(),
                 Result::CODE_FAIL,
                 'User id required to get user roles.'
             );
@@ -444,13 +444,44 @@ class DoctrineUserRoleDataMapper
             $curRoles
         );
 
-        $resultInfo = array(
-            'added' => $addedRoles,
-            'removed' => $removedRoles,
-            'ignored' => $ignored,
+        /*
+        $resultInfo = json_encode(
+            array(
+                'added' => $addedRoles,
+                'removed' => $removedRoles,
+                'ignored' => $ignored,
+            )
+        );
+        */
+
+        $resultInfo = '';
+
+        $resultInfo
+            .= (
+            !empty($addedRoles)
+            ?
+            ' - Added: ' . implode(', ', $addedRoles) . ' '
+            :
+            ''
+        );
+        $resultInfo
+            .= (
+            !empty($removedRoles)
+            ?
+            ' - Removed: ' . implode(', ', $removedRoles) . ' '
+            :
+            ''
+        );
+        $resultInfo
+            .= (
+            !empty($ignored)
+            ?
+            ' - Ignored: ' . implode(', ', $ignored) . ' '
+            :
+            ''
         );
 
-        $returnResult->setMessage(json_encode($resultInfo));
+        $returnResult->setMessage($resultInfo);
 
         return $returnResult;
     }
@@ -485,6 +516,10 @@ class DoctrineUserRoleDataMapper
                     $removeResult->getMessage()
                 );
                 $result->setData($failed);
+            } else {
+                $result->setMessage(
+                    "Removed role {$roleId}"
+                );
             }
         }
 

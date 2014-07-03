@@ -47,8 +47,16 @@ class DoctrineLogger extends Logger
      */
     protected $entityManager;
 
-    public function __construct(EntityManager $entityManager, $logLevel = Logger::LEVEL_ERR)
-    {
+    /**
+     * __construct
+     *
+     * @param EntityManager $entityManager entityManager
+     * @param int           $logLevel      logLevel
+     */
+    public function __construct(
+        EntityManager $entityManager,
+        $logLevel = \Zend\Log\Logger::ERR
+    ) {
         $this->entityManager = $entityManager;
         $this->setLogLevel($logLevel);
     }
@@ -64,7 +72,7 @@ class DoctrineLogger extends Logger
      */
     public function log($type, $message, $extra = array())
     {
-        if(!$this->canLog($type)){
+        if (!$this->canLog($type)) {
 
             return $this;
         }

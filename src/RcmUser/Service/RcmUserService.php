@@ -141,8 +141,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function setAuthorizeService(
         AuthorizeService $authorizeService
-    )
-    {
+    ) {
         $this->authorizeService = $authorizeService;
     }
 
@@ -160,8 +159,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * getUser
+     * returns a user from the data source
+     * based on the data in the provided User object (User::id and User::username)
      *
-     * @param User $user user
+     * @param User $user request user object
      *
      * @return null|User
      */
@@ -180,8 +181,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * userExists
+     * returns true if the user exists in the data source
      *
-     * @param User $user user
+     * @param User $user request user object
      *
      * @return bool
      */
@@ -192,113 +194,108 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         return $result->isSuccess();
     }
 
-    /**
-     * isSessUser
-     *
-     * @param User $user user
-     *
-     * @return bool
-     */
-    public function isSessUser(User $user)
-    {
-        $sessUser = $this->getIdentity();
-
-        if (empty($sessUser)) {
-
-            return false;
-        }
-
-        // @todo make sure this is a valid check for all cases
-        if (!empty($user->getId())
-            && $user->getId() === $sessUser->getId()
-        ) {
-
-            return true;
-        }
-
-        if (!empty($user->getUsername())
-            && $user->getUsername() === $sessUser->getUsername()
-        ) {
-
-            return true;
-        }
-
-        return false;
-    }
-
     /* CRUD HELPERS ***********************************/
 
     /**
      * readUser
      *
-     * @param User $user user
+     * @param User $user          request user object
+     * @param bool $includeResult If true, will return data in result object
      *
-     * @return Result
+     * @return Result|User|null
      */
-    public function readUser(User $user)
+    public function readUser(User $user, $includeResult = true)
     {
-        return $this->getUserDataService()->readUser($user);
+        $result = $this->getUserDataService()->readUser($user);
+
+        if ($includeResult) {
+            return $result;
+        } else {
+            return $result->getData();
+        }
     }
 
     /**
      * createUser
      *
-     * @param User $user user
+     * @param User $user          request user object
+     * @param bool $includeResult If true, will return data in result object
      *
-     * @return Result
+     * @return Result|User|null
      */
-    public function createUser(User $user)
+    public function createUser(User $user, $includeResult = true)
     {
-        return $this->getUserDataService()->createUser($user);
+        $result = $this->getUserDataService()->createUser($user);
+
+        if ($includeResult) {
+            return $result;
+        } else {
+            return $result->getData();
+        }
     }
 
     /**
      * updateUser
      *
-     * @param User $user user
+     * @param User $user          request user object
+     * @param bool $includeResult If true, will return data in result object
      *
-     * @return Result
+     * @return Result|User|null
      */
-    public function updateUser(User $user)
+    public function updateUser(User $user, $includeResult = true)
     {
-        return $this->getUserDataService()->updateUser($user);
+        $result = $this->getUserDataService()->updateUser($user);
+        if ($includeResult) {
+            return $result;
+        } else {
+            return $result->getData();
+        }
     }
 
     /**
      * deleteUser
      *
-     * @param User $user user
+     * @param User $user          request user object
+     * @param bool $includeResult If true, will return data in result object
      *
-     * @return Result
+     * @return Result|User|null
      */
-    public function deleteUser(User $user)
+    public function deleteUser(User $user, $includeResult = true)
     {
-        return $this->getUserDataService()->deleteUser($user);
+        $result = $this->getUserDataService()->deleteUser($user);
+        if ($includeResult) {
+            return $result;
+        } else {
+            return $result->getData();
+        }
     }
 
     /* PROPERTY HELPERS *******************************/
 
     /**
      * getUserProperty
+     * OnDemand loading of a user property.
+     * Is a way of populating User::property using events.
+     * Some user properties are not loaded with the user to increase speed.
+     * Use this method to load these properties.
      *
-     * @param User   $user              user
-     * @param string $propertyNameSpace propertyNameSpace
-     * @param mixed  $dflt              dflt
-     * @param bool   $refresh           refresh
+     * @param User   $user              request user object
+     * @param string $propertyNameSpace unique id of the requested property
+     * @param mixed  $default           return value if property not set
+     * @param bool   $refresh           will force retrieval of property
      *
      * @return mixed
      */
     public function getUserProperty(
         User $user,
         $propertyNameSpace,
-        $dflt = null,
+        $default = null,
         $refresh = false
-    )
-    {
+    ) {
         return $this->getUserPropertyService()->getUserProperty(
             $user,
             $propertyNameSpace,
-            $dflt,
+            $default,
             $refresh
         );
     }
@@ -307,25 +304,24 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      * getCurrentUserProperty
      *
      * @param string $propertyNameSpace propertyNameSpace
-     * @param null   $dflt              dflt
+     * @param mixed  $default           return value if property not set
      * @param bool   $refresh           refresh
      *
      * @return mixed
      */
     public function getCurrentUserProperty(
         $propertyNameSpace,
-        $dflt = null,
+        $default = null,
         $refresh = false
-    )
-    {
+    ) {
         $user = $this->getIdentity();
 
         if (empty($user)) {
 
-            return $dflt;
+            return $default;
         }
 
-        return $this->getUserProperty($user, $propertyNameSpace, $dflt, $refresh);
+        return $this->getUserProperty($user, $propertyNameSpace, $default, $refresh);
 
     }
 
@@ -344,8 +340,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * validateCredentials
+     * Allows the validation of user credentials (username and password)
+     * without creating an auth session.
+     * Helpful for doing non-login authentication checks.
      *
-     * @param User $user user
+     * @param User $user request user object
      *
      * @return Result
      */
@@ -356,8 +355,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * authenticate
+     * Creates auth session (logs in user)
+     * if credentials provided in the User object are valid.
      *
-     * @param User $user user
+     * @param User $user request user object
      *
      * @return Result
      */
@@ -368,6 +369,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * clearIdentity
+     * Clears auth session (logs out user)
      *
      * @return void
      */
@@ -378,6 +380,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * hasIdentity
+     * Check if any User is auth'ed (logged in)
      *
      * @return bool
      */
@@ -387,9 +390,49 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * setIdentity
+     * isIdentity
+     * Check if the requested user in the user that is currently in the auth session
      *
-     * @param User $user user
+     * @param User $user request user object
+     *
+     * @return bool
+     */
+    public function isIdentity(User $user)
+    {
+        $sessUser = $this->getIdentity();
+
+        if (empty($sessUser)) {
+
+            return false;
+        }
+
+        // @todo make sure this is a valid check for all cases
+        $id = $user->getId();
+        if (!empty($id)
+            && $user->getId() === $sessUser->getId()
+        ) {
+
+            return true;
+        }
+
+        $username = $user->getUsername();
+        if (!empty($username)
+            && $user->getUsername() === $sessUser->getUsername()
+        ) {
+
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * setIdentity
+     * Force a User into the auth'd session.
+     * - WARNING: this by-passes the authentication process
+     *            and should only be used with extreme caution
+     *
+     * @param User $user request user object
      *
      * @return void
      * @throws \RcmUser\Exception\RcmUserException
@@ -411,6 +454,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * refreshIdentity
+     * Will reload the current User that is Auth'd into the auth'd session.
+     * Is a way of refreshing the session user without log-out, then log-in
      *
      * @return void
      * @throws \RcmUser\Exception\RcmUserException
@@ -445,11 +490,13 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * getIdentity - get logged in user or default
+     * getIdentity
+     * Get the current User (logged in User) from Auth'd session
+     * or returns $default is there is no User Auth'd
      *
-     * @param mixed $default default
+     * @param mixed $default return this value if no User is auth'd
      *
-     * @return mixed|null
+     * @return User|null
      */
     public function getIdentity($default = null)
     {
@@ -458,7 +505,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * getCurrentUser
-     * Get current logged in user or default if no one is logged in
+     *  - @alias getIdentity
      *
      * @param mixed $default default
      *
@@ -471,7 +518,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         return $user;
     }
 
-    //@todo implement guestIdentity and hasIdentity
+    //@todo implement guestIdentity
     // - if getIdentity is empty return guest and save updates in session
     // on login we can sync the guest user or the session user as needed
 
@@ -479,10 +526,14 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * isAllowed
+     * Check if the current Auth'd User has
+     * access to a resource with a privilege provided by provider id.
+     * This is use to validate a users access
+     * based on their role and the rules set by ACL
      *
-     * @param string $resourceId resourceId
-     * @param string $privilege  privilege
-     * @param string $providerId resource providerId
+     * @param string $resourceId a string resource id as defined by a provider
+     * @param string $privilege  privilege of the resource to check
+     * @param string $providerId resource unique identifier of the resource provider
      *
      * @return bool
      */
@@ -495,11 +546,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
     /**
      * isUserAllowed
+     * Check if the current Auth'd User has
+     * access to a resource with a privilege provided by provider id.
+     * This is use to validate a users access
+     * based on their role and the rules set by ACL
      *
-     * @param string $resourceId resourceId
-     * @param string $privilege  privilege
-     * @param string $providerId resource providerId
-     * @param User   $user       user
+     * @param string $resourceId a string resource id as defined by a provider
+     * @param string $privilege  privilege of the resource to check
+     * @param string $providerId resource unique identifier of the resource provider
+     * @param User   $user       request user object
      *
      * @return mixed
      * @throws \RcmUser\Exception\RcmUserException
@@ -509,8 +564,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $privilege = null,
         $providerId = null,
         $user = null
-    )
-    {
+    ) {
         if (!($user instanceof User)) {
 
             return false;
@@ -527,6 +581,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     /* UTILITIES **************************************/
     /**
      * buildNewUser
+     * Factory method to build new User object
+     * populated with defaults from event listeners
      *
      * @return User
      */
@@ -538,9 +594,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
-     * buildUser - build a user populated with defaults from event listeners
+     * buildUser
+     * Populate a User with defaults from event listeners
      *
-     * @param User $user user
+     * @param User $user request user object
      *
      * @return User
      * @throws \RcmUser\Exception\RcmUserException

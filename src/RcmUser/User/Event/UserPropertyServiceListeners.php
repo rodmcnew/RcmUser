@@ -49,7 +49,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      */
     protected $listenerMethods
         = array(
-            'onGetUserPropertyLinks' => 'getUserPropertyLinks',
+            //'onGetUserPropertyLinks' => 'getUserPropertyLinks',
             'onPopulateUserProperty' => 'populateUserProperty',
         );
 
@@ -76,7 +76,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         $data = $e->getParam('data');
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
-        if($propertyNameSpace !== $thisPropertyNameSpace){
+        if ($propertyNameSpace !== $thisPropertyNameSpace) {
 
             return false;
         }
@@ -86,7 +86,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         try {
 
             $property->populate($data);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             return new \RcmUser\Result(
                 $property,
@@ -100,19 +100,19 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
     }
 
     /**
-     * onGetUserPropertyLinks
+     * onGetUserPropertyLinks @todo
      *
      * @param Event $e e
      *
      * @return \RcmUser\Result
-     */
+     *
     public function onGetUserPropertyLinks($e)
     {
         $user = $e->getParam('user');
         $propertyNameSpace = $e->getParam('propertyNameSpace');
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
-        if($propertyNameSpace !== $thisPropertyNameSpace){
+        if ($propertyNameSpace !== $thisPropertyNameSpace) {
 
             return false;
         }
@@ -127,28 +127,27 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
 
         return new Result($links);
     }
+     */
 
     /**
-     * @todo
-     * onGetUserPropertyIsAllowed
+     * onGetUserPropertyIsAllowed @todo
      *
      * @param Event $e e
      *
      * @return bool
-     */
+     *
     public function onGetUserPropertyIsAllowed($e)
     {
         $user = $e->getParam('user');
         $propertyNameSpace = $e->getParam('propertyNameSpace');
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
-        if($propertyNameSpace !== $thisPropertyNameSpace){
+        if ($propertyNameSpace !== $thisPropertyNameSpace) {
 
             return false;
         }
 
         return false;
     }
-
-
+     */
 } 

@@ -125,7 +125,9 @@ class User implements UserInterface, \JsonSerializable
     public function setUsername($username)
     {
         $username = (string) $username;
+
         if (empty($username)) {
+
             $username = null;
         }
         $this->username = $username;
@@ -173,10 +175,17 @@ class User implements UserInterface, \JsonSerializable
      * @param string $state state
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function setState($state)
     {
         $state = (string) $state;
+
+        if (!$this->isValidState($state)) {
+
+            throw new RcmUserException("User state is invalid: {$state}");
+        }
+
         if (empty($state)) {
             $state = null;
         }
@@ -204,6 +213,7 @@ class User implements UserInterface, \JsonSerializable
     {
         $email = (string) $email;
         if (empty($email)) {
+
             $email = null;
         }
         $this->email = $email;
@@ -230,6 +240,7 @@ class User implements UserInterface, \JsonSerializable
     {
         $name = (string) $name;
         if (empty($name)) {
+
             $name = null;
         }
         $this->name = $name;
@@ -255,6 +266,7 @@ class User implements UserInterface, \JsonSerializable
     public function setProperties($properties)
     {
         if (empty($properties)) {
+
             $properties = array();
         }
         $this->properties = $properties;
@@ -281,9 +293,9 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setProperty($propertyId, $value)
     {
-        if(!$this->isValidPropertyId($propertyId)){
+        if (!$this->isValidPropertyId($propertyId)) {
 
-            throw new RcmUserException("Property Id is invald: {$propertyId}");
+            throw new RcmUserException("Property Id is invalid: {$propertyId}");
         }
 
         $this->properties[$propertyId] = $value;
@@ -327,6 +339,22 @@ class User implements UserInterface, \JsonSerializable
     public function isValidPropertyId($propertyId)
     {
         if (preg_match('/[^a-z_\-0-9]/i', $propertyId)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * isValidState
+     *
+     * @param string $state user stateå
+     *
+     * @return bool
+     */
+    public function isValidState($state)
+    {
+        if (preg_match('/[^a-z_\-0-9]/i', $state)) {
             return false;
         }
 
@@ -476,7 +504,8 @@ class User implements UserInterface, \JsonSerializable
         $properties = $user->getProperties();
         foreach ($properties as $key => $property) {
 
-            if (empty($this->getProperty($key))) {
+            $userProperty = $this->getProperty($key);
+            if (empty($userProperty)) {
                 $this->setProperty($key, $property);
             }
         }
