@@ -10,32 +10,31 @@
         "module",
         "zf2"
     ],
-    "homepage": "http://www.reliv.com/",
+    "homepage": "https://github.com/reliv/RcmUser",
     "authors": [
         {
             "name": "Westin Shafer",
             "email": "wshafer@relivinc.com",
-            "homepage": "http://www.reliv.com"
+            "homepage": "https://github.com/reliv"
         },
         {
             "name": "James Jervis",
             "email": "jjervis@relivinc.com",
-            "homepage": "http://www.reliv.com/"
+            "homepage": "https://github.com/reliv"
         },
         {
             "name": "Rod McNew",
             "email": "rmcnew@relivinc.com",
-            "homepage": "http://www.reliv.com/"
+            "homepage": "https://github.com/reliv"
         },
         {
             "name": "Brian Janish",
             "email": "bjanish@relivinc.com",
-            "homepage": "http://www.reliv.com/"
+            "homepage": "https://github.com/reliv"
         }
     ],
     "require": {
-        "php": ">=5.3.3",
-        "bjyoungblood/bjy-authorize": "1.4.*"
+        "php": ">=5.3.3"
     },
     "autoload": {
         "psr-0": {

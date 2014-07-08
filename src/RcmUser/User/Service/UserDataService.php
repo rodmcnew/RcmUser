@@ -41,6 +41,155 @@ use RcmUser\User\Result;
 class UserDataService extends EventProvider
 {
     /**
+     * @var UserDataMapperInterface $userDataMapper
+     */
+    protected $userDataMapper;
+
+    /**
+     * @var array
+     */
+    protected $validUserStates = array();
+
+    /**
+     * @var string|null $defaultUserState
+     */
+    protected $defaultUserState = null;
+
+    /**
+     * setUserDataMapper
+     *
+     * @param UserDataMapperInterface $userDataMapper userDataMapper
+     *
+     * @return void
+     */
+    public function setUserDataMapper(UserDataMapperInterface $userDataMapper)
+    {
+        $this->userDataMapper = $userDataMapper;
+    }
+
+    /**
+     * getUserDataMapper
+     *
+     * @return UserDataMapperInterface
+     */
+    public function getUserDataMapper()
+    {
+        return $this->userDataMapper;
+    }
+
+    /**
+     * setValidUserStates
+     *
+     * @param array $validUserStates array of valid user states
+     *
+     * @return void
+     */
+    public function setValidUserStates($validUserStates)
+    {
+        if (!in_array(User::STATE_DISABLED, $validUserStates)) {
+            $validUserStates[] = User::STATE_DISABLED;
+        }
+        $this->validUserStates = $validUserStates;
+    }
+
+    /**
+     * getValidUserStates
+     *
+     * @return array
+     */
+    public function getValidUserStates()
+    {
+        return $this->validUserStates;
+    }
+
+    /**
+     * setDefaultUserState
+     *
+     * @param string|null $defaultUserState defaultUserState
+     *
+     * @return string|null
+     */
+    public function setDefaultUserState($defaultUserState)
+    {
+        $this->defaultUserState = $defaultUserState;
+    }
+
+    /**
+     * getDefaultUserState
+     *
+     * @return null|string
+     */
+    public function getDefaultUserState()
+    {
+        return $this->defaultUserState;
+    }
+
+    /**
+     * getAllUsers
+     *
+     * @param array $options options
+     *
+     * @return mixed
+     */
+    public function getAllUsers(
+        $options = array()
+    ) {
+        /* @event beforeGetAllUsers */
+        $results = $this->getEventManager()->trigger(
+            'beforeGetAllUsers',
+            $this,
+            array(
+                'options' => $options,
+            ),
+            function ($result) {
+                return !$result->isSuccess();
+            }
+        );
+
+        if ($results->stopped()) {
+
+            return $results->last();
+        }
+
+        /* @event readUser */
+        $results = $this->getEventManager()->trigger(
+            'getAllUsers',
+            $this,
+            array(
+                'options' => $options,
+            ),
+            function ($result) {
+
+                return !$result->isSuccess();
+            }
+        );
+
+        if ($results->stopped()) {
+
+            $result = $results->last();
+            $this->getEventManager()->trigger(
+                'getAllUsersFail',
+                $this,
+                array('result' => $result)
+            );
+
+            return $result;
+        }
+
+        // default result may be changed in success listener
+        $result = $results->last();
+
+        /* @event readUserSuccess */
+        $this->getEventManager()->trigger(
+            'getAllUsersSuccess',
+            $this,
+            array('result' => $result)
+        );
+
+        return $result;
+    }
+
+    /**
      * buildUser - Allows events listeners to set default values for a new
      * user as needed.  Very helpful for creating guest or ambiguous users
      *
@@ -51,12 +200,12 @@ class UserDataService extends EventProvider
     public function buildUser(User $requestUser)
     {
 
-        /* + LOW_LEVEL_PREP */
+        /* <LOW_LEVEL_PREP> */
         $responseUser = new User();
         $responseUser->populate($requestUser);
 
         $requestUser = new ReadOnlyUser($requestUser);
-        /* - LOW_LEVEL_PREP */
+        /* </LOW_LEVEL_PREP> */
 
         /* @event buildUser */
         $results = $this->getEventManager()->trigger(
@@ -80,7 +229,8 @@ class UserDataService extends EventProvider
      */
     public function createUser(User $requestUser)
     {
-        /* + LOW_LEVEL_PREP */
+        /* <LOW_LEVEL_PREP> */
+        /* REMOVE SOME LOW LEVEL - LET THE MAPPER DECIDE
         $result = $this->readUser($requestUser);
 
         if ($result->isSuccess()) {
@@ -88,12 +238,18 @@ class UserDataService extends EventProvider
             // ERROR - user exists
             return new Result(null, Result::CODE_FAIL, 'User already exists.');
         }
+        */
 
         $responseUser = new User();
         $responseUser->populate($requestUser);
 
         $requestUser = new ReadOnlyUser($requestUser);
-        /* - LOW_LEVEL_PREP */
+
+        $state = $responseUser->getState();
+        if (empty($state)) {
+            $responseUser->setState($this->getDefaultUserState());
+        }
+        /* </LOW_LEVEL_PREP> */
 
         /* @event beforeCreateUser */
         $results = $this->getEventManager()->trigger(
@@ -218,6 +374,13 @@ class UserDataService extends EventProvider
             return $result;
         }
 
+        /* <LOW_LEVEL_PREP> */
+        $state = $responseUser->getState();
+        if (empty($state)) {
+            $responseUser->setState($this->getDefaultUserState());
+        }
+        /* </LOW_LEVEL_PREP> */
+
         $result = new Result($responseUser);
 
         /* @event readUserSuccess */
@@ -239,9 +402,10 @@ class UserDataService extends EventProvider
      */
     public function updateUser(User $requestUser)
     {
-        /* + LOW_LEVEL_PREP */
+        /* <LOW_LEVEL_PREP> */
         // require id
-        if (empty($requestUser->getId())) {
+        $id = $requestUser->getId();
+        if (empty($id)) {
 
             return new Result(
                 null,
@@ -271,10 +435,11 @@ class UserDataService extends EventProvider
 
         $requestUser = new ReadOnlyUser($requestUser);
 
-        if (empty($responseUser->getState())) {
+        $state = $responseUser->getState();
+        if (empty($state)) {
             $responseUser->setState($this->getDefaultUserState());
         }
-        /* - LOW_LEVEL_PREP */
+        /* </LOW_LEVEL_PREP> */
 
         /* @event beforeUpdateUser */
         $results = $this->getEventManager()->trigger(
@@ -342,9 +507,10 @@ class UserDataService extends EventProvider
      */
     public function deleteUser(User $requestUser)
     {
-        /* + LOW_LEVEL_PREP */
+        /* <LOW_LEVEL_PREP> */
         // require id
-        if (empty($requestUser->getId())) {
+        $id = $requestUser->getId();
+        if (empty($id)) {
 
             return new Result(
                 null,
@@ -367,7 +533,7 @@ class UserDataService extends EventProvider
         $responseUser->populate($existingUserResult->getUser());
 
         $requestUser = new ReadOnlyUser($requestUser);
-        /* - LOW_LEVEL_PREP */
+        /* </LOW_LEVEL_PREP> */
 
         /* @event beforeDeleteUser */
         $results = $this->getEventManager()->trigger(
@@ -423,4 +589,7 @@ class UserDataService extends EventProvider
 
         return $result;
     }
+
+    /* USERS ******************* */
+
 } 

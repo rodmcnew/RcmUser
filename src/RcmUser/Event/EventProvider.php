@@ -23,7 +23,7 @@ use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
 
 /**
- * EventProvider
+ * Class EventProvider
  *
  * EventProvider
  *
@@ -32,24 +32,24 @@ use Zend\EventManager\EventManager;
  * @category  Reliv
  * @package   RcmUser\Event
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright Copyright (c) 2013, ZF-Commons Contributors
- * @license   License.txt
+ * @copyright 2014 Reliv International
+ * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
 abstract class EventProvider implements EventManagerAwareInterface
 {
     /**
-     * @var EventManagerInterface
+     * @var EventManagerInterface $events
      */
     protected $events;
 
     /**
-     * setEventManager: Set the event manager instance used by this context
+     * setEventManager - Set the event manager instance used by this context
      *
      * @param EventManagerInterface $events events
      *
-     * @return $this|void
+     * @return $this
      */
     public function setEventManager(EventManagerInterface $events)
     {
@@ -62,7 +62,7 @@ abstract class EventProvider implements EventManagerAwareInterface
     }
 
     /**
-     * getEventManager: Lazy-loads an EventManager instance if none registered.
+     * getEventManager - Loads an EventManager instance if none registered.
      *
      * @return EventManagerInterface
      */

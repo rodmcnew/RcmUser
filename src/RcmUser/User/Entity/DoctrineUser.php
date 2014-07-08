@@ -40,7 +40,6 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DoctrineUser extends User
 {
-
     /**
      * @var string $id
      * @ORM\Id
@@ -65,4 +64,16 @@ class DoctrineUser extends User
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $state = User::STATE_DISABLED;
+
+    /**
+     * @var string $email
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     */
+    protected $email;
+
+    /**
+     * @var string $name
+     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     */
+    protected $name;
 } 

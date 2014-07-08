@@ -18,7 +18,7 @@
 namespace RcmUser\Test\Acl\Entity;
 
 use RcmUser\Acl\Entity\DoctrineAclRole;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -36,6 +36,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Entity\DoctrineAclRole
  */
 class DoctrineAclRoleTest extends Zf2TestCase
 {
@@ -51,13 +52,13 @@ class DoctrineAclRoleTest extends Zf2TestCase
         $aclRole = new DoctrineAclRole();
 
         $id = 123;
-        $parentId = 321;
+        $parentRoleId = '321';
 
         $aclRole->setId($id);
-        $aclRole->setParentId($parentId);
+        $aclRole->setParentRoleId($parentRoleId);
 
         $this->assertTrue(
-            $aclRole->getParentId() === $parentId,
+            $aclRole->getParentRoleId() === $parentRoleId,
             'Setter or getter failed.'
         );
         $this->assertTrue(

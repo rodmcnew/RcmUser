@@ -40,21 +40,21 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class DoctrineUserRole extends UserRole
 {
-
     /**
      * @var integer $id
      * @ORM\Id
      * @ORM\Column(type="integer", unique=true, nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
     /**
      * @var string $userId
-     * @ORM\Column(type="integer",nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $userId;
     /**
      * @var string $roleId
-     * @ORM\Column(type="integer",nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $roleId;
 } 

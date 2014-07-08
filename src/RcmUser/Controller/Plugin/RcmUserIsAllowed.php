@@ -16,7 +16,8 @@
  */
 namespace RcmUser\Controller\Plugin;
 
-use RcmUser\Acl\Service\UserAuthorizeService;
+use RcmUser\Acl\Service\AuthorizeService;
+use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
@@ -39,31 +40,47 @@ class RcmUserIsAllowed extends AbstractPlugin
 {
 
     /**
-     * @var \RcmUser\Acl\Service\UserAuthorizeService
+     * @var AuthorizeService $authorizeService
      */
-    protected $userAuthorizeService;
+    protected $authorizeService;
+
+    /**
+     * @var UserAuthenticationService $userAuthService
+     */
+    protected $userAuthService;
 
     /**
      * __construct
      *
-     * @param UserAuthorizeService $userAuthorizeService userAuthorizeService
+     * @param AuthorizeService          $authorizeService authorizeService
+     * @param UserAuthenticationService $userAuthService  userAuthService
      */
-    public function __construct(UserAuthorizeService $userAuthorizeService)
-    {
-        $this->userAuthorizeService = $userAuthorizeService;
+    public function __construct(
+        AuthorizeService $authorizeService,
+        UserAuthenticationService $userAuthService
+    ) {
+        $this->authorizeService = $authorizeService;
+        $this->userAuthService = $userAuthService;
     }
 
     /**
      * __invoke
      *
-     * @param string $resource  resource
-     * @param string $privilege privilege
-     * @param User   $user      user
+     * @param string $resourceId resourceId
+     * @param string $privilege  privilege
+     * @param string $providerId providerId
      *
      * @return bool
      */
-    public function __invoke($resource, $privilege = null, User $user = null)
+    public function __invoke($resourceId, $privilege = null, $providerId = null)
     {
-        return $this->userAuthorizeService->isAllowed($resource, $privilege, $user);
+        $user = $this->userAuthService->getIdentity();
+
+        return $this->authorizeService->isAllowed(
+            $resourceId,
+            $privilege,
+            $providerId,
+            $user
+        );
     }
 }

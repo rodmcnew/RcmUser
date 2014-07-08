@@ -19,7 +19,7 @@ namespace RcmUser\Test\Authentication\Service;
 
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 use Zend\Authentication\Result;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
@@ -158,19 +158,38 @@ class UserAuthenticationServiceTest extends Zf2TestCase
     public function testClearIdentity()
     {
         $result = $this->getUserAuthenticationService()->clearIdentity();
-
-        $this->assertTrue($result, 'True not returned.');
     }
 
-    public function testGetIdentity()
+    public function testSetIdentity()
     {
         $result = $this->getUserAuthenticationServiceUserResult()->getIdentity();
+    }
+
+    public function testHasIdentity()
+    {
+        $result = $this->getUserAuthenticationService()->hasIdentity();
+    }
+
+    public function testSetGetIdentity()
+    {
+        /**
+         * @var Result $result
+         */
+        $user = $this->getUserAuthenticationServiceUserResult()->getIdentity();
 
         $this->assertInstanceOf(
             '\RcmUser\User\Entity\User',
-            $result,
+            $user,
             'Result is not User.'
         );
+
+        $user->setUsername('NEW_USER_NAME!');
+
+        $this->getUserAuthenticationServiceUserResult()->setIdentity($user);
+
+        $newuser = $this->getUserAuthenticationServiceUserResult()->getIdentity();
+
+        $this->assertEquals('NEW_USER_NAME!', $newuser->getUsername());
     }
 }
  

@@ -20,8 +20,10 @@ namespace RcmUser\User\Data;
 
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
+use Zend\InputFilter\BaseInputFilter;
 use Zend\InputFilter\Factory;
 use Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilterInterface;
 
 /**
  * Class UserValidator
@@ -46,14 +48,42 @@ class UserValidator implements UserValidatorInterface
     protected $userInputFilterConfig;
 
     /**
-     * @var string $userInputFilterClass
+     * @var InputFilterInterface $userInputFilter
      */
-    protected $userInputFilterClass = 'Zend\InputFilter\InputFilter\InputFilter';
+    protected $userInputFilter;
 
     /**
      * @var Factory $userInputFilterFactory
      */
     protected $userInputFilterFactory;
+
+    /**
+     * @var array $validatableFields
+     */
+    protected $validatableFields = array(
+        'username',
+        'password',
+        'state',
+        'email',
+        'name',
+    );
+
+    /**
+     * __construct
+     *
+     * @param Factory              $userInputFilterFactory InputFilterFactory
+     * @param InputFilterInterface $userInputFilter        InputFilterClass
+     * @param array                $userInputFilterConfig  Config array
+     */
+    public function __construct(
+        Factory $userInputFilterFactory,
+        InputFilterInterface $userInputFilter,
+        $userInputFilterConfig = array()
+    ) {
+        $this->setUserInputFilterFactory($userInputFilterFactory);
+        $this->setUserInputFilter($userInputFilter);
+        $this->setUserInputFilterConfig($userInputFilterConfig);
+    }
 
     /**
      * setUserInputFilterConfig
@@ -80,25 +110,14 @@ class UserValidator implements UserValidatorInterface
     /**
      * setUserInputFilterClass
      *
-     * @param string $userInputFilterClass userInputFilterClass
+     * @param InputFilterInterface $userInputFilter userInputFilter
      *
      * @return void
      */
-    public function setUserInputFilterClass(
-        $userInputFilterClass = 'Zend\InputFilter\InputFilter'
+    public function setUserInputFilter(
+        InputFilterInterface $userInputFilter
     ) {
-        $this->userInputFilterClass = $userInputFilterClass;
-    }
-
-    /**
-     * getUserInputFilterClass
-     *
-     * @return string
-     */
-    public function getUserInputFilterClass()
-    {
-        // @todo throw error if not defined
-        return $this->userInputFilterClass;
+        $this->userInputFilter = $userInputFilter;
     }
 
     /**
@@ -108,10 +127,7 @@ class UserValidator implements UserValidatorInterface
      */
     public function getUserInputFilter()
     {
-
-        $class = $this->getUserInputFilterClass();
-
-        return new $class();
+        return $this->userInputFilter;
     }
 
     /**
@@ -156,25 +172,27 @@ class UserValidator implements UserValidatorInterface
 
         $inputs = $this->getUserInputFilterConfig();
 
-        if ($requestUser->getUsername() !== $existingUser->getUsername()
-            && isset($inputs['username'])
-        ) {
+        foreach ($this->validatableFields as $field) {
 
-            $inputFilter->add(
-                $factory->createInput($inputs['username']), 'username'
-            );
+            $getMethod = 'get' . ucfirst($field);
+
+            if ($requestUser->$getMethod() !== $existingUser->$getMethod()
+                && isset($inputs[$field])
+            ) {
+
+                $inputFilter->add(
+                    $factory->createInput($inputs[$field]), $field
+                );
+            }
         }
 
-        if ($requestUser->getPassword() !== $existingUser->getPassword()
-            && isset($inputs['password'])
-        ) {
+        $validateResult = $this->validateUser($requestUser, $inputFilter);
 
-            $inputFilter->add(
-                $factory->createInput($inputs['password']), 'password'
-            );
-        }
+        $responseUser->populate($validateResult->getUser());
 
-        return $this->validateUser($responseUser, $inputFilter);
+        $validateResult->setData($responseUser);
+
+        return $validateResult;
     }
 
     /**
@@ -194,43 +212,66 @@ class UserValidator implements UserValidatorInterface
 
         $inputs = $this->getUserInputFilterConfig();
 
-        $inputFilter->add($factory->createInput($inputs['username']), 'username');
+        foreach ($this->validatableFields as $field) {
 
-        $inputFilter->add($factory->createInput($inputs['password']), 'password');
+            if (isset($inputs[$field])
+            ) {
 
-        return $this->validateUser($responseUser, $inputFilter);
+                $inputFilter->add(
+                    $factory->createInput($inputs[$field]), $field
+                );
+            }
+        }
 
+        $validateResult = $this->validateUser($requestUser, $inputFilter);
+
+        $responseUser->populate($validateResult->getUser());
+
+        $validateResult->setData($responseUser);
+
+        return $validateResult;
     }
 
     /**
      * validateUser
      *
-     * @param User        $responseUser responseUser
-     * @param InputFilter $inputFilter  inputFilter
+     * @param User                 $requestUser requestUser
+     * @param InputFilterInterface $inputFilter inputFilter
      *
      * @return Result
      */
-    public function validateUser(User $responseUser, InputFilter $inputFilter)
-    {
-
-        $inputFilter->setData($responseUser);
+    public function validateUser(
+        User $requestUser,
+        InputFilterInterface $inputFilter
+    ) {
+        $validUser = new User();
+        $validUser->populate($requestUser);
+        $inputFilter->setData($validUser);
 
         if ($inputFilter->isValid()) {
 
-            $responseUser->populate($inputFilter->getValues());
+            $validUser->populate($inputFilter->getValues());
 
-            return new Result($responseUser);
+            return new Result($validUser);
         } else {
 
             $result = new Result(
-                $responseUser,
+                $validUser,
                 Result::CODE_FAIL,
                 'User input not valid'
             );
 
-            foreach ($inputFilter->getInvalidInput() as $key => $error) {
+            foreach ($inputFilter->getInvalidInput() as $error) {
 
-                $result->setMessage($key, $error->getMessages());
+                $msg = $error->getName() . ': ';
+
+                $errs = $error->getMessages();
+
+                foreach ($errs as $key => $val) {
+                    $result->setMessage(
+                        $msg .= "$val ({$key})"
+                    );
+                }
             }
 
             return $result;

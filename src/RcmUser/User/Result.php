@@ -35,35 +35,24 @@ use RcmUser\User\Entity\User;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class Result
+class Result extends \RcmUser\Result
 {
-
     /**
-     * int
+     * @var int CODE_SUCCESS
      */
     const CODE_SUCCESS = 1;
     /**
-     * int
+     * @var int CODE_FAIL
      */
     const CODE_FAIL = 0;
 
     /**
-     * string
-     */
-    const DEFAULT_KEY = '_default';
-
-    /**
-     * @var int
+     * @var int $code
      */
     protected $code = 1;
 
     /**
-     * @var null
-     */
-    protected $user = null;
-
-    /**
-     * @var array
+     * @var array $messages
      */
     protected $messages = array();
 
@@ -82,90 +71,11 @@ class Result
 
         if (!is_array($messages)) {
 
-            $messages = array(self::DEFAULT_KEY => (string)$messages);
-        }
-
-        $this->setMessages($messages);
-    }
-
-    /**
-     * setCode
-     *
-     * @param int $code code
-     *
-     * @return void
-     */
-    public function setCode($code)
-    {
-        $this->code = $code;
-    }
-
-    /**
-     * getCode
-     *
-     * @return int
-     */
-    public function getCode()
-    {
-        return $this->code;
-    }
-
-    /**
-     * setMessages
-     *
-     * @param array $messages messages
-     *
-     * @return void
-     */
-    public function setMessages($messages)
-    {
-        $this->messages = $messages;
-    }
-
-    /**
-     * getMessages
-     *
-     * @return array
-     */
-    public function getMessages()
-    {
-        return $this->messages;
-    }
-
-    /**
-     * setMessage
-     *
-     * @param string $key   key
-     * @param mixed  $value value
-     *
-     * @return void
-     */
-    public function setMessage($key = null, $value = null)
-    {
-        if ($key === null) {
-            $this->messages[self::DEFAULT_KEY] = $value;
+            $this->setMessage((string)$messages);
         } else {
-            $this->messages[$key] = $value;
+
+            $this->setMessages($messages);
         }
-    }
-
-    /**
-     * getMessage
-     *
-     * @param string $key   key
-     * @param mixed  $deflt deflt
-     *
-     * @return mixed
-     */
-    public function getMessage($key = self::DEFAULT_KEY, $deflt = null)
-    {
-
-        if (array_key_exists($key, $this->messages)) {
-
-            return $this->messages[$key];
-        }
-
-        return $deflt;
     }
 
     /**
@@ -177,7 +87,7 @@ class Result
      */
     public function setUser($user)
     {
-        $this->user = $user;
+        $this->setData($user);
     }
 
     /**
@@ -187,7 +97,7 @@ class Result
      */
     public function getUser()
     {
-        return $this->user;
+        return $this->getData();
     }
 
     /**
@@ -197,8 +107,9 @@ class Result
      */
     public function isSuccess()
     {
-
-        if ($this->getCode() >= self::CODE_SUCCESS && ($this->user instanceof User)) {
+        if ($this->getCode() >= self::CODE_SUCCESS
+            && ($this->data instanceof User)
+        ) {
 
             return true;
         }

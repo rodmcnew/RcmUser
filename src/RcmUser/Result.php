@@ -17,6 +17,8 @@
 
 namespace RcmUser;
 
+use RcmUser\Exception\RcmUserResultException;
+
 
 /**
  * Class Result
@@ -33,22 +35,26 @@ namespace RcmUser;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class Result
+class Result implements \JsonSerializable
 {
 
     /**
-     * int
+     * @var int CODE_SUCCESS
      */
     const CODE_SUCCESS = 1;
     /**
-     * int
+     * @var int CODE_FAIL
      */
     const CODE_FAIL = 0;
+    /**
+     * @var int DEFAULT_KEY
+     */
+    const DEFAULT_KEY = 0;
 
     /**
-     * string
+     * @var string $messageDelimiter
      */
-    const DEFAULT_KEY = '_default';
+    protected $messageDelimiter = ' | ';
 
     /**
      * @var int
@@ -68,7 +74,7 @@ class Result
     /**
      * __construct
      *
-     * @param null  $data     data
+     * @param mixed $data     data
      * @param int   $code     code
      * @param array $messages messages
      */
@@ -80,10 +86,15 @@ class Result
 
         if (!is_array($messages)) {
 
-            $messages = array(self::DEFAULT_KEY => (string)$messages);
-        }
+            $message = (string)$messages;
+            if (!empty($message)) {
 
-        $this->setMessages($messages);
+                $this->setMessage($message);
+            }
+        } else {
+
+            $this->setMessages($messages);
+        }
     }
 
     /**
@@ -131,43 +142,47 @@ class Result
     }
 
     /**
+     * getMessagesString
+     *
+     * @return array
+     */
+    public function getMessagesString()
+    {
+        return implode($this->messageDelimiter, $this->messages);
+    }
+
+    /**
      * setMessage
      *
-     * @param string $key   key
-     * @param mixed  $value value
+     * @param string $value value
      *
      * @return void
      */
-    public function setMessage($key = null, $value = null)
+    public function setMessage($value = null)
     {
-        if ($key === null) {
-            $this->messages[self::DEFAULT_KEY] = $value;
-        } else {
-            $this->messages[$key] = $value;
-        }
+        $this->messages[] = $value;
     }
 
     /**
      * getMessage
      *
-     * @param string $key   key
-     * @param mixed  $deflt deflt
+     * @param int   $key     key
+     * @param mixed $default default
      *
-     * @return mixed
+     * @return null|mixed
      */
-    public function getMessage($key = self::DEFAULT_KEY, $deflt = null)
+    public function getMessage($key = self::DEFAULT_KEY, $default = null)
     {
-
-        if (array_key_exists($key, $this->messages)) {
+        if (isset($this->messages[$key])) {
 
             return $this->messages[$key];
         }
 
-        return $deflt;
+        return $default;
     }
 
     /**
-     * setData
+     * setData - valid data format
      *
      * @param mixed $data data
      *
@@ -179,7 +194,7 @@ class Result
     }
 
     /**
-     * getData
+     * getData - should always return valid data format, even is not success
      *
      * @return mixed
      */
@@ -195,12 +210,40 @@ class Result
      */
     public function isSuccess()
     {
-
         if ($this->getCode() >= self::CODE_SUCCESS) {
 
             return true;
         }
 
         return false;
+    }
+
+    /**
+     * throwFailure - throw exception if not isSuccess
+     *
+     * @return void
+     * @throws Exception\RcmUserResultException
+     */
+    public function throwFailure()
+    {
+        if (!$this->isSuccess()) {
+
+            throw new RcmUserResultException($this->getMessagesString());
+        }
+    }
+
+    /**
+     * jsonSerialize
+     *
+     * @return \stdClass
+     */
+    public function jsonSerialize()
+    {
+        $obj = new \stdClass();
+        $obj->code = $this->getCode();
+        $obj->messages = $this->getMessages();
+        $obj->data = $this->getData();
+
+        return $obj;
     }
 } 

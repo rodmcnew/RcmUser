@@ -37,7 +37,6 @@ use RcmUser\User\Entity\User;
  */
 interface UserDataPreparerInterface
 {
-
     /**
      * prepareUserCreate
      *

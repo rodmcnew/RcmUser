@@ -68,6 +68,16 @@ class User implements UserInterface, \JsonSerializable
     protected $state = null;
 
     /**
+     * @var string $email
+     */
+    protected $email = null;
+
+    /**
+     * @var string $name Display name
+     */
+    protected $name = null;
+
+    /**
      * Property data injected by external sources
      *
      * @var array $properties
@@ -114,6 +124,12 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setUsername($username)
     {
+        $username = (string) $username;
+
+        if (empty($username)) {
+
+            $username = null;
+        }
         $this->username = $username;
     }
 
@@ -136,6 +152,10 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setPassword($password)
     {
+        $password = (string) $password;
+        if (empty($password)) {
+            $password = null;
+        }
         $this->password = $password;
     }
 
@@ -155,9 +175,20 @@ class User implements UserInterface, \JsonSerializable
      * @param string $state state
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function setState($state)
     {
+        $state = (string) $state;
+
+        if (!$this->isValidState($state)) {
+
+            throw new RcmUserException("User state is invalid: {$state}");
+        }
+
+        if (empty($state)) {
+            $state = null;
+        }
         $this->state = $state;
     }
 
@@ -172,6 +203,60 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * setEmail
+     *
+     * @param string $email valid email
+     *
+     * @return void
+     */
+    public function setEmail($email)
+    {
+        $email = (string) $email;
+        if (empty($email)) {
+
+            $email = null;
+        }
+        $this->email = $email;
+    }
+
+    /**
+     * getEmail
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * setName
+     *
+     * @param string $name Display name
+     *
+     * @return void
+     */
+    public function setName($name)
+    {
+        $name = (string) $name;
+        if (empty($name)) {
+
+            $name = null;
+        }
+        $this->name = $name;
+    }
+
+    /**
+     * getName
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
      * setProperties
      *
      * @param array $properties properties
@@ -180,6 +265,10 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setProperties($properties)
     {
+        if (empty($properties)) {
+
+            $properties = array();
+        }
         $this->properties = $properties;
     }
 
@@ -196,32 +285,38 @@ class User implements UserInterface, \JsonSerializable
     /**
      * setProperty
      *
-     * @param string $key key
-     * @param mixed  $val val
+     * @param string $propertyId propertyId
+     * @param mixed  $value      value
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function setProperty($key, $val)
+    public function setProperty($propertyId, $value)
     {
-        $this->properties[$key] = $val;
+        if (!$this->isValidPropertyId($propertyId)) {
+
+            throw new RcmUserException("Property Id is invalid: {$propertyId}");
+        }
+
+        $this->properties[$propertyId] = $value;
     }
 
     /**
      * getProperty
      *
-     * @param string $key key
-     * @param null   $def def
+     * @param string $propertyId propertyId
+     * @param null   $default    default if not found
      *
      * @return null
      */
-    public function getProperty($key, $def = null)
+    public function getProperty($propertyId, $default = null)
     {
-        if (array_key_exists($key, $this->properties)) {
+        if (array_key_exists($propertyId, $this->properties)) {
 
-            return $this->properties[$key];
+            return $this->properties[$propertyId];
         }
 
-        return $def;
+        return $default;
     }
 
     /**
@@ -232,6 +327,38 @@ class User implements UserInterface, \JsonSerializable
     public function isEnabled()
     {
         return $this->getState() !== self::STATE_DISABLED;
+    }
+
+    /**
+     * isValidPropertyId
+     *
+     * @param string $propertyId propertyId
+     *
+     * @return bool
+     */
+    public function isValidPropertyId($propertyId)
+    {
+        if (preg_match('/[^a-z_\-0-9]/i', $propertyId)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * isValidState
+     *
+     * @param string $state user stateå
+     *
+     * @return bool
+     */
+    public function isValidState($state)
+    {
+        if (preg_match('/[^a-z_\-0-9]/i', $state)) {
+            return false;
+        }
+
+        return true;
     }
 
     /**
@@ -259,6 +386,12 @@ class User implements UserInterface, \JsonSerializable
             if (!in_array('state', $exclude)) {
                 $this->setState($data->getState());
             }
+            if (!in_array('email', $exclude)) {
+                $this->setEmail($data->getEmail());
+            }
+            if (!in_array('name', $exclude)) {
+                $this->setName($data->getName());
+            }
             if (!in_array('properties', $exclude)) {
                 $this->setProperties($data->getProperties());
             }
@@ -280,7 +413,14 @@ class User implements UserInterface, \JsonSerializable
             if (isset($data['state']) && !in_array('state', $exclude)) {
                 $this->setState($data['state']);
             }
+            if (isset($data['email']) && !in_array('email', $exclude)) {
+                $this->setEmail($data['email']);
+            }
+            if (isset($data['name']) && !in_array('name', $exclude)) {
+                $this->setName($data['name']);
+            }
             if (isset($data['properties']) && !in_array('properties', $exclude)) {
+                // @todo we need to try to populate the correct objects here?
                 $this->setProperties($data['properties']);
             }
 
@@ -315,6 +455,8 @@ class User implements UserInterface, \JsonSerializable
         $obj->password
             = self::PASSWORD_OBFUSCATE; // Might be better way to obfuscate
         $obj->state = $this->getState();
+        $obj->email = $this->getEmail();
+        $obj->name = $this->getName();
         $obj->properties = $this->getProperties();
 
         return $obj;
@@ -349,10 +491,21 @@ class User implements UserInterface, \JsonSerializable
             $this->setState($user->getState());
         }
 
+        if ($this->getEmail() === null) {
+
+            $this->setEmail($user->getEmail());
+        }
+
+        if ($this->getName() === null) {
+
+            $this->setName($user->getName());
+        }
+
         $properties = $user->getProperties();
         foreach ($properties as $key => $property) {
 
-            if (empty($this->getProperty($key))) {
+            $userProperty = $this->getProperty($key);
+            if (empty($userProperty)) {
                 $this->setProperty($key, $property);
             }
         }

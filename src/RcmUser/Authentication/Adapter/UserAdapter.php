@@ -57,13 +57,6 @@ class UserAdapter extends AbstractAdapter
     protected $user;
 
     /**
-     * @var bool
-     * Force returned user to hide password,
-     * can cause issues is return object is meant to be saved.
-     */
-    protected $obfuscatePassword = true;
-
-    /**
      * setUser
      *
      * @param User $user user
@@ -83,28 +76,6 @@ class UserAdapter extends AbstractAdapter
     public function getUser()
     {
         return $this->user;
-    }
-
-    /**
-     * setObfuscatePassword
-     *
-     * @param bool $obfuscatePassword obfuscatePassword
-     *
-     * @return void
-     */
-    public function setObfuscatePassword($obfuscatePassword)
-    {
-        $this->obfuscatePassword = (boolean)$obfuscatePassword;
-    }
-
-    /**
-     * getObfuscatePassword
-     *
-     * @return bool
-     */
-    public function getObfuscatePassword()
-    {
-        return $this->obfuscatePassword;
     }
 
     /**
@@ -144,7 +115,7 @@ class UserAdapter extends AbstractAdapter
     /**
      * getEncryptor
      *
-     * @return mixed
+     * @return PasswordInterface
      */
     public function getEncryptor()
     {
@@ -197,11 +168,6 @@ class UserAdapter extends AbstractAdapter
 
         $isValid = $this->getEncryptor()->verify($credential, $existingHash);
         if ($isValid) {
-
-            if ($this->getObfuscatePassword()) {
-
-                $existingUser->setPassword(User::PASSWORD_OBFUSCATE);
-            }
 
             $result = new Result(
                 Result::SUCCESS,

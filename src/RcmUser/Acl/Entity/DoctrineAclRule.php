@@ -18,8 +18,6 @@
 namespace RcmUser\Acl\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\JoinColumn;
 
 /**
  * DoctrineAclRule
@@ -46,20 +44,15 @@ class DoctrineAclRule extends AclRule
      * @var integer
      * @ORM\id
      * @ORM\Column(type="integer", unique=true, nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
-     * @var integer
-     * @ORM\Column(type="integer", nullable=false)
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $roleId;
-
-    /**
-     * @OneToOne(targetEntity="DoctrineAclRole")
-     * @JoinColumn(name="roleId", referencedColumnName="id")
-     **/
-    protected $role;
 
     /**
      * @var string
@@ -71,36 +64,13 @@ class DoctrineAclRule extends AclRule
      * @var string
      * @ORM\Column(type="string", length=255, nullable=false)
      */
-    protected $resource;
+    protected $resourceId;
 
     /**
      * @var string
-     * @ORM\Column(type="string", length=255, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $privilege;
-
-
-    /**
-     * setRoleId
-     *
-     * @param int $roleId role id
-     *
-     * @return void
-     */
-    public function setRoleId($roleId)
-    {
-        $this->roleId = $roleId;
-    }
-
-    /**
-     * getRoleId
-     *
-     * @return int
-     */
-    public function getRoleId()
-    {
-        return $this->roleId;
-    }
 
     /**
      * setId

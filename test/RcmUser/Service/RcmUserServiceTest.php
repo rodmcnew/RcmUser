@@ -17,14 +17,14 @@
 
 namespace RcmUser\Test\Service;
 
-use RcmUser\Acl\Service\UserAuthorizeService;
+use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Config\Config;
 use RcmUser\Service\RcmUserService;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Service\UserDataService;
 use RcmUser\User\Service\UserPropertyService;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
 
@@ -45,7 +45,7 @@ class RcmUserServiceTest extends Zf2TestCase
     public $userDataService;
     public $userPropertyService;
     public $userAuthService;
-    public $userAuthorizeService;
+    public $authorizeService;
 
 
 
@@ -94,7 +94,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $userDataService = new UserDataService();
         $userPropertyService = new UserPropertyService();
         $userAuthService = new UserAuthenticationService();
-        $userAuthorizeService = new UserAuthorizeService($config, $serviceLocator);
+        $authorizeService = new AuthorizeService($config, $serviceLocator);
         */
 
         $this->userDataService = $this->getMockBuilder(
@@ -151,12 +151,12 @@ class RcmUserServiceTest extends Zf2TestCase
             ->will($this->returnValue($user));
 
         /////
-        $this->userAuthorizeService = $this->getMockBuilder(
-            '\RcmUser\Acl\Service\UserAuthorizeService'
+        $this->authorizeService = $this->getMockBuilder(
+            '\RcmUser\Acl\Service\AuthorizeService'
         )
             ->disableOriginalConstructor()
             ->getMock();
-        $this->userAuthorizeService->expects($this->any())
+        $this->authorizeService->expects($this->any())
             ->method('isAllowed')
             ->will($this->returnValue(true));
 
@@ -164,7 +164,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $this->rcmUserService->setUserDataService($this->userDataService);
         $this->rcmUserService->setUserPropertyService($this->userPropertyService);
         $this->rcmUserService->setUserAuthService($this->userAuthService);
-        $this->rcmUserService->setUserAuthorizeService($this->userAuthorizeService);
+        $this->rcmUserService->setAuthorizeService($this->authorizeService);
 
     }
 
@@ -213,16 +213,16 @@ class RcmUserServiceTest extends Zf2TestCase
         );
     }
 
-    public function testSetGetUserAuthorizeService()
+    public function testSetGetAuthorizeService()
     {
         $rcmUserService = new RcmUserService();
 
-        $rcmUserService->setUserAuthorizeService($this->userAuthorizeService);
+        $rcmUserService->setAuthorizeService($this->authorizeService);
 
-        $service = $rcmUserService->getUserAuthorizeService();
+        $service = $rcmUserService->getAuthorizeService();
 
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\UserAuthorizeService',
+            '\RcmUser\Acl\Service\AuthorizeService',
             $service,
             'Getter or setter failed.'
         );
@@ -251,24 +251,24 @@ class RcmUserServiceTest extends Zf2TestCase
         // test for not found
     }
 
-    public function testIsSessUser()
+    public function testIsIdentity()
     {
         $user = $this->getNewUser('A');
         $user->setId(null);
 
-        $result = $this->getRcmUserService()->isSessUser($user);
+        $result = $this->getRcmUserService()->isIdentity($user);
 
         $this->assertTrue($result, 'User did not match by username.');
 
         $user->setId('A_id');
 
-        $result = $this->getRcmUserService()->isSessUser($user);
+        $result = $this->getRcmUserService()->isIdentity($user);
 
         $this->assertTrue($result, 'User did not match by id.');
 
         $user2 = new User();
 
-        $result = $this->getRcmUserService()->isSessUser($user2);
+        $result = $this->getRcmUserService()->isIdentity($user2);
 
         $this->assertFalse($result, 'User matched but should not have.');
     }

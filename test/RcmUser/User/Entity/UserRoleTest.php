@@ -19,7 +19,7 @@ namespace RcmUser\Test\User\Entity;
 
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\UserRole;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -37,6 +37,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Entity\UserRole
  */
 class UserRoleTest extends Zf2TestCase
 {
@@ -110,6 +111,36 @@ class UserRoleTest extends Zf2TestCase
         }
 
         $this->fail("Expected exception not thrown");
+    }
+
+    /**
+     * testJson
+     *
+     * @covers \RcmUser\User\Entity\UserRole::jsonSerialize
+     *
+     * @return void
+     */
+    public function testJson()
+    {
+        $userRole = new UserRole();
+
+        $id = 123;
+        $roleId = 234;
+        $userId = '456';
+
+        $userRole->setId($id);
+        $userRole->setRoleId($roleId);
+        $userRole->setUserId($userId);
+
+        $obj = $userRole->jsonSerialize();
+
+        $json = json_encode($obj);
+
+        $this->assertJson($json);
+
+        $json = json_encode($userRole);
+
+        $this->assertJson($json);
     }
 }
  

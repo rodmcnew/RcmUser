@@ -43,27 +43,11 @@ class UserDataServiceListeners
     protected $priority = -1;
     protected $listenerMethods
         = array(
-            //'onBuildUser' => 'buildUser',
-
-            //'onBeforeCreateUser' => 'beforeCreateUser',
+            'onGetAllUsers' => 'getAllUsers',
             'onCreateUser' => 'createUser',
-            //'onCreateUserFail' => 'createUserFail',
-            //'onCreateUserSuccess' => 'createUserSuccess',
-
-            //'onBeforeReadUser' => 'beforeReadUser',
             'onReadUser' => 'readUser',
-            //'onReadUserFail' => 'readUserFail',
-            //'onReadUserSuccess' => 'readUserSuccess',
-
-            //'onBeforeUpdateUser' => 'beforeUpdateUser',
             'onUpdateUser' => 'updateUser',
-            //'onUpdateUserFail' => 'updateUserFail',
-            //'onUpdateUserSuccess' => 'updateUserSuccess',
-
-            //'onBeforeDeleteUser' => 'beforeDeleteUser',
             'onDeleteUser' => 'deleteUser',
-            //'onDeleteUserFail' => 'deleteUserFail',
-            //'onDeleteUserSuccess' => 'deleteUserSuccess',
         );
 
     /**
@@ -91,6 +75,20 @@ class UserDataServiceListeners
     public function getUserDataMapper()
     {
         return $this->userDataMapper;
+    }
+
+    /**
+     * onGetAllUsers
+     *
+     * @param Event $e e
+     *
+     * @return \RcmUser\User\Result
+     */
+    public function onGetAllUsers($e)
+    {
+        $options = $e->getParam('options');
+
+        return $this->getUserDataMapper()->fetchAll($options);
     }
 
     /**
@@ -122,11 +120,12 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onCreateUserFail($e)
     {
         //@todo do delete?
     }
+     */
 
     /**
      * onReadUser
@@ -188,11 +187,12 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onUpdateUserFail($e)
     {
         // @todo revert?
     }
+     */
 
     /**
      * onDeleteUser
@@ -224,9 +224,10 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onDeleteUserFail($e)
     {
         // @todo restore?
     }
+     */
 } 

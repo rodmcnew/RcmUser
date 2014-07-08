@@ -18,6 +18,8 @@
 namespace RcmUser\Authentication\Event;
 
 
+use RcmUser\Authentication\Service\AuthenticationService;
+use RcmUser\Exception\RcmUserException;
 use Zend\Authentication\Result;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
@@ -40,26 +42,26 @@ use Zend\EventManager\ListenerAggregateInterface;
 class AbstractAuthServiceListeners implements ListenerAggregateInterface
 {
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
+     * @var array $listeners
      */
     protected $listeners = array();
     /**
-     * @var string
+     * @var string $id
      */
     protected $id = 'RcmUser\Authentication\Service\UserAuthenticationService';
 
     /**
-     * @var int
+     * @var int $priority
      */
     protected $priority = 1;
 
     /**
-     * @var AuthenticationService
+     * @var AuthenticationService $authService
      */
     protected $authService;
 
     /**
-     * @var array
+     * @var array $listenerMethods
      */
     protected $listenerMethods
         = array(
@@ -72,18 +74,20 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
             'onAuthenticateFail' => 'authenticateFail',
 
             'onClearIdentity' => 'clearIdentity',
+            'onHasIdentity' => 'hasIdentity',
+            'onSetIdentity' => 'setIdentity',
             'onGetIdentity' => 'getIdentity',
         );
 
     /**
      * setAuthService
      *
-     * @param \Zend\Authentication\AuthenticationService $authService authService
+     * @param AuthenticationService $authService authService
      *
      * @return void
      */
     public function setAuthService(
-        \Zend\Authentication\AuthenticationService $authService
+        AuthenticationService $authService
     ) {
         $this->authService = $authService;
     }
@@ -147,7 +151,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -163,7 +167,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -179,7 +183,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -195,7 +199,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -211,7 +215,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -227,7 +231,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
+            array('Listener (' . __METHOD__ . ') not defined.')
         );
     }
 
@@ -236,15 +240,38 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      *
      * @param Event $e e
      *
-     * @return Result
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function onClearIdentity($e)
     {
-        return new Result(
-            null,
-            Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
-        );
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
+    }
+
+    /**
+     * onHasIdentity
+     *
+     * @param Event $e e
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function onHasIdentity($e)
+    {
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
+    }
+
+    /**
+     * onSetIdentity
+     *
+     * @param Event $e e
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function onSetIdentity($e)
+    {
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
     }
 
     /**
@@ -252,14 +279,11 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      *
      * @param Event $e e
      *
-     * @return Result
+     * @return User|null
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function onGetIdentity($e)
     {
-        return new Result(
-            null,
-            Result::FAILURE_UNCATEGORIZED,
-            'Listener (' . __METHOD__ . ') not defined.'
-        );
+        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
     }
 } 

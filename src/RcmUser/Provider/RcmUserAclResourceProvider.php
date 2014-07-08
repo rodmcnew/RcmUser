@@ -18,7 +18,8 @@
 namespace RcmUser\Provider;
 
 
-use RcmUser\Acl\Provider\ResourceProviderInterface;
+use RcmUser\Acl\Entity\AclResource;
+use RcmUser\Acl\Provider\ResourceProvider;
 
 /**
  * RcmUserAclResourceProvider
@@ -35,39 +36,142 @@ use RcmUser\Acl\Provider\ResourceProviderInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class RcmUserAclResourceProvider implements ResourceProviderInterface
+class RcmUserAclResourceProvider extends ResourceProvider
 {
-
     /**
-     * @var array
+     * @var string PROVIDER_ID This needs to be the same as the config
      */
-    protected $rcmResources = array(
-            'user-management' => array(),
-            'acl-management' => array(),
-        );
+    const PROVIDER_ID = 'RcmUser';
 
     /**
-     * getAll
+     * @var string RESOURCE_ID_ROOT
+     */
+    const RESOURCE_ID_ROOT = 'rcmuser';
+
+    /**
+     * @var string RESOURCE_ID_ACL
+     */
+    const RESOURCE_ID_ACL = 'rcmuser-acl-administration';
+
+    /**
+     * @var string RESOURCE_ID_USER
+     */
+    const RESOURCE_ID_USER = 'rcmuser-user-administration';
+
+    /**
+     * default resources  - rcm user needs these,
+     * however descriptions added on construct in the factory
+     *
+     * @var array $rcmResources
+     */
+    protected $resources = array();
+
+    /**
+     * __construct
+     *
+     */
+    public function __construct()
+    {
+    }
+
+    /**
+     * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
-     * containing ALL possible resources
+     * containing ALL possible resources including run-time resources
      *
      * @return array
      */
-    public function getAll()
+    public function getResources()
     {
+        if (empty($this->resources)) {
 
-        return $this->rcmResources;
+            $this->buildResources();
+        }
+
+        return $this->resources;
     }
 
-
     /**
-     * getAvailableAtRuntime
+     * getResource
+     * Return the requested resource
+     * Can be used to return resources dynamically.
      *
-     * @return array|mixed
+     * @param string $resourceId resourceId
+     *
+     * @return array
+     * @throws \RcmUser\Exception\RcmUserException
      */
-    public function getAvailableAtRuntime()
+    public function getResource($resourceId)
     {
 
-        return $this->getAll();
+        if (empty($this->resources)) {
+
+            $this->buildResources();
+        }
+
+        return parent::getResource($resourceId);
+    }
+
+    /**
+     * buildResources - build static resources
+     *
+     * @return void
+     */
+    protected function buildResources()
+    {
+        $privileges = array(
+            'read',
+            'update',
+            'create',
+            'delete',
+        );
+
+        $userPrivileges = array(
+            'read',
+            'update',
+            'create',
+            'delete',
+            'update_credentials',
+        );
+
+        /* parent resource */
+        $this->resources[self::RESOURCE_ID_ROOT] = new AclResource(
+            self::RESOURCE_ID_ROOT
+        );
+        $this->resources[self::RESOURCE_ID_ROOT]->setName(
+            'RCM User'
+        );
+        $this->resources[self::RESOURCE_ID_ROOT]->setDescription(
+            'All RCM user access.'
+        );
+        $this->resources[self::RESOURCE_ID_ROOT]->setPrivileges(
+            $privileges
+        );
+
+        /* user edit */
+        $this->resources[self::RESOURCE_ID_USER] = new AclResource(
+            self::RESOURCE_ID_USER,
+            self::RESOURCE_ID_ROOT,
+            $userPrivileges
+        );
+        $this->resources[self::RESOURCE_ID_USER]->setName(
+            'User Administration'
+        );
+        $this->resources[self::RESOURCE_ID_USER]->setDescription(
+            'Allows the editing of user data.'
+        );
+
+        /* access and roles */
+        $this->resources[self::RESOURCE_ID_ACL] = new AclResource(
+            self::RESOURCE_ID_ACL,
+            self::RESOURCE_ID_ROOT,
+            $privileges
+        );
+        $this->resources[self::RESOURCE_ID_ACL]->setName(
+            'Role and Access Administration'
+        );
+        $this->resources[self::RESOURCE_ID_ACL]->setDescription(
+            'Allows the editing of user access and role data.'
+        );
     }
 } 

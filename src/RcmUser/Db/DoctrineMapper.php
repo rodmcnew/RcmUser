@@ -34,7 +34,7 @@ use Doctrine\ORM\EntityManager;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineMapper
+class DoctrineMapper implements DoctrineMapperInterface
 {
     /**
      * @var EntityManager $entityManager
@@ -42,7 +42,7 @@ class DoctrineMapper
     protected $entityManager;
 
     /**
-     * @var
+     * @var string
      */
     protected $entityClass;
 
