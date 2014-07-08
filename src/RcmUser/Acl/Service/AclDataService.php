@@ -21,7 +21,6 @@ use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Config\Config;
 use RcmUser\Result;
 
 
@@ -331,8 +330,11 @@ class AclDataService
      *
      * @return string
      */
-    public function createRoleNamespaceId(AclRole $aclRole, $aclRoles, $nsChar = '.')
-    {
+    public function createRoleNamespaceId(
+        AclRole $aclRole,
+        $aclRoles,
+        $nsChar = '.'
+    ) {
         $parentId = $aclRole->getParentRoleId();
         $ns = $aclRole->getRoleId();
         if (!empty($parentId)) {

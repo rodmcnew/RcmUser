@@ -35,7 +35,6 @@ use RcmUser\Exception\RcmUserException;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
 class Link implements \JsonSerializable
 {
     /**

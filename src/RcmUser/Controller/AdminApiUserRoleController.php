@@ -51,7 +51,8 @@ class AdminApiUserRoleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -89,7 +90,8 @@ class AdminApiUserRoleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'create'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
         /** @var \RcmUser\User\Service\UserRoleService $userRoleService */
@@ -121,7 +123,7 @@ class AdminApiUserRoleController extends AbstractAdminApiController
                 return $this->getJsonResponse($result);
             }
 
-            $newRole = (string) $data['role'];
+            $newRole = (string)$data['role'];
 
             $result = $userRoleService->addRole($user, $newRole);
 
@@ -137,11 +139,11 @@ class AdminApiUserRoleController extends AbstractAdminApiController
     /**
      * delete DELETE
      *
-     * @param string $data User id with role to delete
-     *                     array(
+     * @param string $data   User id with role to delete
+     *                       array(
      *                       "userId" => "{ID}",
      *                       "role" => "{roleId}"
-     *                     )
+     *                       )
      *
      * @return string
      */
@@ -151,7 +153,8 @@ class AdminApiUserRoleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'delete'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -186,7 +189,7 @@ class AdminApiUserRoleController extends AbstractAdminApiController
                 return $this->getJsonResponse($result);
             }
 
-            $deleteRole = (string) $data['role'];
+            $deleteRole = (string)$data['role'];
 
             $result = $userRoleService->removeRole($user, $deleteRole);
 

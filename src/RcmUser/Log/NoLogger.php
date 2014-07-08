@@ -17,8 +17,6 @@
 
 namespace RcmUser\Log;
 
-use Zend\Log\LoggerInterface;
-
 
 /**
  * Class NoLogger

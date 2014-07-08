@@ -103,7 +103,10 @@ class UserDataServiceListeners
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->create($requestUser, $responseUser);
+        $result = $this->getUserDataMapper()->create(
+            $requestUser,
+            $responseUser
+        );
 
         if ($result->isSuccess()) {
 
@@ -122,9 +125,9 @@ class UserDataServiceListeners
      * @return \RcmUser\User\Result|void
 
     public function onCreateUserFail($e)
-    {
-        //@todo do delete?
-    }
+     * {
+     * //@todo do delete?
+     * }
      */
 
     /**
@@ -189,9 +192,9 @@ class UserDataServiceListeners
      * @return \RcmUser\User\Result|void
 
     public function onUpdateUserFail($e)
-    {
-        // @todo revert?
-    }
+     * {
+     * // @todo revert?
+     * }
      */
 
     /**
@@ -207,7 +210,10 @@ class UserDataServiceListeners
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->delete($requestUser, $responseUser);
+        $result = $this->getUserDataMapper()->delete(
+            $requestUser,
+            $responseUser
+        );
 
         if ($result->isSuccess()) {
 
@@ -226,8 +232,8 @@ class UserDataServiceListeners
      * @return \RcmUser\User\Result|void
 
     public function onDeleteUserFail($e)
-    {
-        // @todo restore?
-    }
+     * {
+     * // @todo restore?
+     * }
      */
 } 

@@ -18,7 +18,6 @@
 namespace RcmUser\Acl\Db;
 
 
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 
 /**

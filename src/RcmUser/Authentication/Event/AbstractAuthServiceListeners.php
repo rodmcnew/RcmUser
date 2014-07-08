@@ -68,11 +68,9 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
             'onValidateCredentials' => 'validateCredentials',
             'onValidateCredentialsSuccess' => 'validateCredentialsSuccess',
             'onValidateCredentialsFail' => 'validateCredentialsFail',
-
             'onAuthenticate' => 'authenticate',
             'onAuthenticateSuccess' => 'authenticateSuccess',
             'onAuthenticateFail' => 'authenticateFail',
-
             'onClearIdentity' => 'clearIdentity',
             'onHasIdentity' => 'hasIdentity',
             'onSetIdentity' => 'setIdentity',
@@ -245,7 +243,8 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      */
     public function onClearIdentity($e)
     {
-        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
+        throw new RcmUserException('Listener (' . __METHOD__
+            . ') not defined.');
     }
 
     /**
@@ -258,7 +257,8 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      */
     public function onHasIdentity($e)
     {
-        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
+        throw new RcmUserException('Listener (' . __METHOD__
+            . ') not defined.');
     }
 
     /**
@@ -271,7 +271,8 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      */
     public function onSetIdentity($e)
     {
-        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
+        throw new RcmUserException('Listener (' . __METHOD__
+            . ') not defined.');
     }
 
     /**
@@ -284,6 +285,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      */
     public function onGetIdentity($e)
     {
-        throw new RcmUserException('Listener (' . __METHOD__ . ') not defined.');
+        throw new RcmUserException('Listener (' . __METHOD__
+            . ') not defined.');
     }
 } 

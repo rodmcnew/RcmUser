@@ -17,10 +17,9 @@
 
 namespace RcmUser\Event;
 
-use Traversable;
+use Zend\EventManager\EventManager;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\EventManager;
 
 /**
  * Class EventProvider

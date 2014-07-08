@@ -95,8 +95,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return void
      */
-    public function setUserPropertyService(UserPropertyService $userPropertyService)
-    {
+    public function setUserPropertyService(
+        UserPropertyService $userPropertyService
+    ) {
         $this->userPropertyService = $userPropertyService;
     }
 
@@ -117,8 +118,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return void
      */
-    public function setUserAuthService(UserAuthenticationService $userAuthService)
-    {
+    public function setUserAuthService(
+        UserAuthenticationService $userAuthService
+    ) {
         $this->userAuthService = $userAuthService;
     }
 
@@ -321,7 +323,12 @@ class RcmUserService extends \RcmUser\Event\EventProvider
             return $default;
         }
 
-        return $this->getUserProperty($user, $propertyNameSpace, $default, $refresh);
+        return $this->getUserProperty(
+            $user,
+            $propertyNameSpace,
+            $default,
+            $refresh
+        );
 
     }
 
@@ -444,7 +451,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         if (empty($currentUser) || $user->getId() !== $currentUser->getId()) {
 
             throw new RcmUserException(
-                'SetIdentity expects user to be get same identity as current, ' .
+                'SetIdentity expects user to be get same identity as current, '
+                .
                 'user authenticate to change users.'
             );
         }
@@ -537,11 +545,19 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return bool
      */
-    public function isAllowed($resourceId, $privilege = null, $providerId = null)
-    {
+    public function isAllowed(
+        $resourceId,
+        $privilege = null,
+        $providerId = null
+    ) {
         $user = $this->getIdentity();
 
-        return $this->isUserAllowed($resourceId, $privilege, $providerId, $user);
+        return $this->isUserAllowed(
+            $resourceId,
+            $privilege,
+            $providerId,
+            $user
+        );
     }
 
     /**

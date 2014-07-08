@@ -20,7 +20,6 @@ namespace RcmUser\User\Data;
 
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
-use Zend\Crypt\Password\PasswordInterface;
 
 /**
  * Class AbstractUserDataPreparer

@@ -44,6 +44,7 @@ class UserDataMapperTest extends \PHPUnit_Framework_TestCase
      * @var UserDataMapper $userDataMapper
      */
     public $userDataMapper;
+
     /**
      * setup
      *

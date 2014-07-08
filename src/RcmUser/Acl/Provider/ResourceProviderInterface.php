@@ -17,8 +17,6 @@
 
 namespace RcmUser\Acl\Provider;
 
-use RcmUser\Exception\RcmUserException;
-
 
 /**
  * Interface ResourceProviderInterface

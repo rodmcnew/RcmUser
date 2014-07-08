@@ -38,7 +38,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * @covers \RcmUser\Authentication\Event\UserAuthenticationServiceListeners
+ * @covers    \RcmUser\Authentication\Event\UserAuthenticationServiceListeners
  */
 class UserAuthenticationServiceListenersTest extends Zf2TestCase
 {
@@ -84,7 +84,9 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
             ->getMock();
         $this->adapter->expects($this->any())
             ->method('authenticate')
-            ->will($this->returnValue(new Result(Result::SUCCESS, new User('123'))));
+            ->will(
+                $this->returnValue(new Result(Result::SUCCESS, new User('123')))
+            );
         //
         $this->authenticationService = $this->getMockBuilder(
             '\RcmUser\Authentication\Service\AuthenticationService'
@@ -96,14 +98,19 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
             ->will($this->returnValue($this->adapter));
         $this->authenticationService->expects($this->any())
             ->method('authenticate')
-            ->will($this->returnValue(new Result(Result::SUCCESS, new User('123'))));
+            ->will(
+                $this->returnValue(new Result(Result::SUCCESS, new User('123')))
+            );
         $this->authenticationService->expects($this->any())
             ->method('hasIdentity')
             ->will($this->returnValue(true));
 
 
-        $this->userAuthenticationServiceListeners = new UserAuthenticationServiceListeners();
-        $this->userAuthenticationServiceListeners->setAuthService($this->authenticationService);
+        $this->userAuthenticationServiceListeners
+            = new UserAuthenticationServiceListeners();
+        $this->userAuthenticationServiceListeners->setAuthService(
+            $this->authenticationService
+        );
     }
 
     public function buildFailAuthServ()
@@ -126,28 +133,46 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
 
     public function testMethods()
     {
-        $result = $this->userAuthenticationServiceListeners->onValidateCredentials($this->event);
+        $result
+            = $this->userAuthenticationServiceListeners->onValidateCredentials(
+            $this->event
+        );
 
         $this->assertTrue($result->isValid());
 
-        $result = $this->userAuthenticationServiceListeners->onAuthenticate($this->event);
+        $result = $this->userAuthenticationServiceListeners->onAuthenticate(
+            $this->event
+        );
 
         $this->assertTrue($result->isValid());
 
-        $result = $this->userAuthenticationServiceListeners->onClearIdentity($this->event);
+        $result = $this->userAuthenticationServiceListeners->onClearIdentity(
+            $this->event
+        );
 
-        $result = $this->userAuthenticationServiceListeners->onHasIdentity($this->event);
+        $result = $this->userAuthenticationServiceListeners->onHasIdentity(
+            $this->event
+        );
 
-        $result = $this->userAuthenticationServiceListeners->onSetIdentity($this->event);
+        $result = $this->userAuthenticationServiceListeners->onSetIdentity(
+            $this->event
+        );
 
-        $result = $this->userAuthenticationServiceListeners->onGetIdentity($this->event);
+        $result = $this->userAuthenticationServiceListeners->onGetIdentity(
+            $this->event
+        );
 
         $this->buildFailAuthServ();
 
-        $this->userAuthenticationServiceListeners = new UserAuthenticationServiceListeners();
-        $this->userAuthenticationServiceListeners->setAuthService($this->authenticationService);
+        $this->userAuthenticationServiceListeners
+            = new UserAuthenticationServiceListeners();
+        $this->userAuthenticationServiceListeners->setAuthService(
+            $this->authenticationService
+        );
 
-        $result = $this->userAuthenticationServiceListeners->onGetIdentity($this->event);
+        $result = $this->userAuthenticationServiceListeners->onGetIdentity(
+            $this->event
+        );
     }
 }
  

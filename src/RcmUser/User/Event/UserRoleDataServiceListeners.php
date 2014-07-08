@@ -50,7 +50,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     protected $listenerMethods
         = array(
             'onGetAllUsersSuccess' => 'getAllUsersSuccess',
-
             'onBuildUser' => 'buildUser',
             //'onBeforeCreateUser' => 'beforeCreateUser',
             'onCreateUserSuccess' => 'createUserSuccess',
@@ -188,25 +187,25 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      * @param Event $e e
      *
      * @return Result
-        public function onBeforeCreateUser($e)
-        {
-            $requestUser = $e->getParam('requestUser');
-            $responseUser = $e->getParam('responseUser');
-
-            // VALIDATE //
-            $aclRoles = $responseUser->getProperty(
-                $this->getUserPropertyKey()
-            );
-
-            if (!empty($aclRoles)) {
-
-                // @todo Validation logic here
-                // make sure the role sent in is valid
-            }
-
-            return new Result($responseUser);
-        }
-    */
+    public function onBeforeCreateUser($e)
+     * {
+     * $requestUser = $e->getParam('requestUser');
+     * $responseUser = $e->getParam('responseUser');
+     *
+     * // VALIDATE //
+     * $aclRoles = $responseUser->getProperty(
+     * $this->getUserPropertyKey()
+     * );
+     *
+     * if (!empty($aclRoles)) {
+     *
+     * // @todo Validation logic here
+     * // make sure the role sent in is valid
+     * }
+     *
+     * return new Result($responseUser);
+     * }
+     */
 
     /**
      * onCreateUserSuccess
@@ -315,29 +314,29 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return Result
 
-        public function onBeforeUpdateUser($e)
-        {
-            $requestUser = $e->getParam('requestUser');
-            $responseUser = $e->getParam('responseUser');
-            $existingUser = $e->getParam('existingUser');
-
-            // VALIDATE //
-            $userRoleProperty = $responseUser->getProperty(
-                $this->getUserPropertyKey(),
-                new UserRoleProperty(array())
-            );
-
-            $aclRoles = $userRoleProperty->getRoles();
-
-            if (!empty($aclRoles)) {
-
-                // @todo Validation logic here
-                // make sure the role sent in is valid
-            }
-
-            return new Result($responseUser);
-        }
-    */
+    public function onBeforeUpdateUser($e)
+     * {
+     * $requestUser = $e->getParam('requestUser');
+     * $responseUser = $e->getParam('responseUser');
+     * $existingUser = $e->getParam('existingUser');
+     *
+     * // VALIDATE //
+     * $userRoleProperty = $responseUser->getProperty(
+     * $this->getUserPropertyKey(),
+     * new UserRoleProperty(array())
+     * );
+     *
+     * $aclRoles = $userRoleProperty->getRoles();
+     *
+     * if (!empty($aclRoles)) {
+     *
+     * // @todo Validation logic here
+     * // make sure the role sent in is valid
+     * }
+     *
+     * return new Result($responseUser);
+     * }
+     */
 
     /**
      * onUpdateUserSuccess
@@ -452,7 +451,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function removeDefaultUserRoleIds($roles = array())
     {
-        $defaultRolesResult = $this->getUserRoleService()->getDefaultUserRoleIds();
+        $defaultRolesResult = $this->getUserRoleService()
+            ->getDefaultUserRoleIds();
 
         $defaultRoles = $defaultRolesResult->getData();
 

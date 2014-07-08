@@ -1,46 +1,39 @@
 <?php
 /**
- * DoctrineLogEntryTest.php
+ * Zf2TestCase.php
  *
- * LongDescHere
+ * Zf2TestCase
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\Test\Log\Entity
+ * @package   RcmUser
  * @author    James Jervis <jjervis@relivinc.com>
  * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
  * @version   GIT: <git_id>
  * @link      https://github.com/reliv
  */
+namespace RcmUser;
 
-namespace RcmUser\Test\Log\Entity;
-
-require_once __DIR__ . '/../../../Zf2TestCase.php';
+require_once dirname(__FILE__) . '/../Bootstrap.php';
 
 /**
- * Class DoctrineLogEntryTest
+ * Class Zf2TestCase
  *
- * LongDescHere
+ * Zf2TestCase
  *
  * PHP version 5
  *
  * @category  Reliv
- * @package   RcmUser\Test\Log\Entity
+ * @package   RcmUser
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright ${YEAR} Reliv International
+ * @copyright 2014 Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * covers    \RcmUser\Log\DoctrineLogEntry
  */
-class DoctrineLogEntryTest extends \PHPUnit_Framework_TestCase
+class Zf2TestCase extends \PHPUnit_Framework_TestCase
 {
 
-    public function test()
-    {
-
-    }
 }
- 

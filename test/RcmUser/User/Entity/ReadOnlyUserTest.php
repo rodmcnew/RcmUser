@@ -17,9 +17,9 @@
 
 namespace RcmUser\Test\User\Entity;
 
+use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\ReadOnlyUser;
 use RcmUser\User\Entity\User;
-use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -55,7 +55,7 @@ class ReadOnlyUserTest extends Zf2TestCase
         $user->setId('id');
         $user->setUsername('username');
         $user->setPassword('password');
-        $user->setProperties(array('A'=>'something'));
+        $user->setProperties(array('A' => 'something'));
 
         return new ReadOnlyUser($user);
     }
@@ -77,7 +77,7 @@ class ReadOnlyUserTest extends Zf2TestCase
         $user->setState('disabled');
         $user->setName('name');
         $user->setEmail('test@example.com');
-        $user->setProperties(array('A'=>'something'));
+        $user->setProperties(array('A' => 'something'));
 
         return new ReadOnlyUser($user);
     }

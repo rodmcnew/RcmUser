@@ -53,7 +53,9 @@ class AbstractAdminApiController extends AbstractRestfulController
         $privilege = null
     ) {
         return $this->rcmUserIsAllowed(
-            $resourceId, $privilege, RcmUserAclResourceProvider::PROVIDER_ID
+            $resourceId,
+            $privilege,
+            RcmUserAclResourceProvider::PROVIDER_ID
         );
     }
 

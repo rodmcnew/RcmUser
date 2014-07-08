@@ -95,7 +95,10 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
 
         $resources = $this->rcmUserAclResourceProvider->getResources();
 
-        $this->assertTrue(is_array($resources), 'Array of resources not returned.');
+        $this->assertTrue(
+            is_array($resources),
+            'Array of resources not returned.'
+        );
     }
 
     /**
@@ -107,9 +110,14 @@ class RcmUserAclResourceProviderTest extends Zf2TestCase
      */
     public function testGetResource()
     {
-        $resource = $this->rcmUserAclResourceProvider->getResource(RcmUserAclResourceProvider::RESOURCE_ID_ROOT);
+        $resource = $this->rcmUserAclResourceProvider->getResource(
+            RcmUserAclResourceProvider::RESOURCE_ID_ROOT
+        );
 
-        $this->assertTrue(($resource instanceof AclResource), 'AclResource not returned.');
+        $this->assertTrue(
+            ($resource instanceof AclResource),
+            'AclResource not returned.'
+        );
     }
 }
  

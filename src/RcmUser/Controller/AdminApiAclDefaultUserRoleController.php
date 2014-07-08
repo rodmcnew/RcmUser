@@ -17,10 +17,7 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\Result;
 use Zend\View\Model\JsonModel;
 
 /**
@@ -49,8 +46,10 @@ class AdminApiAclDefaultUserRoleController extends AbstractAdminApiController
     public function getList()
     {
         if (!$this->isAllowed(
-            RcmUserAclResourceProvider::RESOURCE_ID_ACL, 'read'
-        )) {
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'read'
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 

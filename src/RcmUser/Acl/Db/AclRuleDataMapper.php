@@ -46,7 +46,8 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function fetchAll()
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -59,7 +60,8 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function fetchByRole($roleId)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -72,7 +74,8 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function fetchByRule($rule)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -85,7 +88,8 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function fetchByResource($resourceId)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -98,7 +102,8 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function create(AclRule $aclRule)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -111,7 +116,8 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function read(AclRule $aclRule)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -124,7 +130,8 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function update(AclRule $aclRule)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -137,6 +144,7 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      */
     public function delete(AclRule $aclRule)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 } 

@@ -19,7 +19,6 @@ namespace RcmUser\User\Db;
 
 
 use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
 
 /**
  * Interface UserDataMapperInterface

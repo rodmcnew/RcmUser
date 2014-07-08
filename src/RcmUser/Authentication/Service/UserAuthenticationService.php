@@ -95,7 +95,9 @@ class UserAuthenticationService extends EventProvider
          * Result->identity == to user object ($user)
          */
         $results = $this->getEventManager()->trigger(
-            'validateCredentials', $this, array('user' => $user),
+            'validateCredentials',
+            $this,
+            array('user' => $user),
             function ($result) {
                 return $result->isValid();
             }
@@ -164,7 +166,9 @@ class UserAuthenticationService extends EventProvider
          * Result->identity == to user object ($user)
          */
         $results = $this->getEventManager()->trigger(
-            'authenticate', $this, array('user' => $user),
+            'authenticate',
+            $this,
+            array('user' => $user),
             function ($result) {
                 return $result->isValid();
             }

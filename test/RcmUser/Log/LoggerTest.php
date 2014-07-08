@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * LoggerTest.php
  *
  * LongDescHere
@@ -37,7 +37,8 @@ use RcmUser\Log\Logger;
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Log\Logger
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase {
+class LoggerTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * test

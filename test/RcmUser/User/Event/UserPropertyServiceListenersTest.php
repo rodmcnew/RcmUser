@@ -98,7 +98,8 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         $this->buildEventManager();
 
         //
-        $this->userPropertyServiceListeners = new UserPropertyServiceListeners();
+        $this->userPropertyServiceListeners
+            = new UserPropertyServiceListeners();
     }
 
     public function buildFailCase1()
@@ -127,7 +128,8 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         $this->buildEventManager();
 
         //
-        $this->userPropertyServiceListeners = new UserPropertyServiceListeners();
+        $this->userPropertyServiceListeners
+            = new UserPropertyServiceListeners();
     }
 
     public function buildFailCase2()
@@ -156,7 +158,8 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         $this->buildEventManager();
 
         //
-        $this->userPropertyServiceListeners = new UserPropertyServiceListeners();
+        $this->userPropertyServiceListeners
+            = new UserPropertyServiceListeners();
     }
 
     public function test()

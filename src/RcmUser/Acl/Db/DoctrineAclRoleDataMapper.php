@@ -129,7 +129,9 @@ class DoctrineAclRoleDataMapper
      */
     public function fetchByRoleId($roleId)
     {
-        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
+        $roles = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )
             ->findOneBy(array('roleId' => $roleId));
 
         $result = new Result($roles);
@@ -150,7 +152,9 @@ class DoctrineAclRoleDataMapper
      */
     public function fetchByParentRoleId($parentRoleId)
     {
-        $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
+        $roles = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )
             ->findBy(array('parentRoleId' => $parentRoleId));
 
         $result = new Result($roles);
@@ -192,7 +196,7 @@ class DoctrineAclRoleDataMapper
 
             $this->getEntityManager()->persist($aclRole);
             $this->getEntityManager()->flush();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             return new Result(
                 null,
@@ -266,7 +270,7 @@ class DoctrineAclRoleDataMapper
 
             $this->getEntityManager()->merge($aclRole);
             $this->getEntityManager()->flush();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             return new Result(
                 null,
@@ -353,7 +357,7 @@ class DoctrineAclRoleDataMapper
 
             $this->getEntityManager()->remove($aclRole);
             $this->getEntityManager()->flush();
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
 
             return new Result(
                 null,

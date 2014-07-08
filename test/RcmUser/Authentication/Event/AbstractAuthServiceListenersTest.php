@@ -36,7 +36,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * @covers \RcmUser\Authentication\Event\AbstractAuthServiceListeners
+ * @covers    \RcmUser\Authentication\Event\AbstractAuthServiceListeners
  */
 class AbstractAuthServiceListenersTest extends Zf2TestCase
 {
@@ -78,14 +78,20 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->abstractAuthServiceListeners = new AbstractAuthServiceListeners();
-        $this->abstractAuthServiceListeners->setAuthService($this->authenticationService);
+        $this->abstractAuthServiceListeners
+            = new AbstractAuthServiceListeners();
+        $this->abstractAuthServiceListeners->setAuthService(
+            $this->authenticationService
+        );
     }
 
     public function testConstuct()
     {
-        $this->abstractAuthServiceListeners = new AbstractAuthServiceListeners();
-        $this->abstractAuthServiceListeners->setAuthService($this->authenticationService);
+        $this->abstractAuthServiceListeners
+            = new AbstractAuthServiceListeners();
+        $this->abstractAuthServiceListeners->setAuthService(
+            $this->authenticationService
+        );
 
         $this->assertInstanceOf(
             '\RcmUser\Authentication\Service\AuthenticationService',
@@ -95,34 +101,52 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
 
     public function testAttachDetach()
     {
-        $this->abstractAuthServiceListeners->attach($this->eventManagerInterface);
+        $this->abstractAuthServiceListeners->attach(
+            $this->eventManagerInterface
+        );
 
-        $this->abstractAuthServiceListeners->detach($this->eventManagerInterface);
+        $this->abstractAuthServiceListeners->detach(
+            $this->eventManagerInterface
+        );
     }
 
     public function testMethods()
     {
-        $result = $this->abstractAuthServiceListeners->onValidateCredentials($this->event);
+        $result = $this->abstractAuthServiceListeners->onValidateCredentials(
+            $this->event
+        );
 
         $this->assertFalse($result->isValid());
 
-        $result = $this->abstractAuthServiceListeners->onValidateCredentialsSuccess($this->event);
+        $result
+            = $this->abstractAuthServiceListeners->onValidateCredentialsSuccess(
+            $this->event
+        );
 
         $this->assertFalse($result->isValid());
 
-        $result = $this->abstractAuthServiceListeners->onValidateCredentialsFail($this->event);
+        $result
+            = $this->abstractAuthServiceListeners->onValidateCredentialsFail(
+            $this->event
+        );
 
         $this->assertFalse($result->isValid());
 
-        $result = $this->abstractAuthServiceListeners->onAuthenticate($this->event);
+        $result = $this->abstractAuthServiceListeners->onAuthenticate(
+            $this->event
+        );
 
         $this->assertFalse($result->isValid());
 
-        $result = $this->abstractAuthServiceListeners->onAuthenticateSuccess($this->event);
+        $result = $this->abstractAuthServiceListeners->onAuthenticateSuccess(
+            $this->event
+        );
 
         $this->assertFalse($result->isValid());
 
-        $result = $this->abstractAuthServiceListeners->onAuthenticateFail($this->event);
+        $result = $this->abstractAuthServiceListeners->onAuthenticateFail(
+            $this->event
+        );
 
         $this->assertFalse($result->isValid());
     }
@@ -136,7 +160,9 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
      */
     public function testOnClearIdentity()
     {
-        $result = $this->abstractAuthServiceListeners->onClearIdentity($this->event);
+        $result = $this->abstractAuthServiceListeners->onClearIdentity(
+            $this->event
+        );
     }
 
     /**
@@ -148,7 +174,9 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
      */
     public function testOnHasIdentity()
     {
-        $result = $this->abstractAuthServiceListeners->onHasIdentity($this->event);
+        $result = $this->abstractAuthServiceListeners->onHasIdentity(
+            $this->event
+        );
     }
 
     /**
@@ -160,7 +188,9 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
      */
     public function testOnSetIdentity()
     {
-        $result = $this->abstractAuthServiceListeners->onSetIdentity($this->event);
+        $result = $this->abstractAuthServiceListeners->onSetIdentity(
+            $this->event
+        );
     }
 
     /**
@@ -172,7 +202,9 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
      */
     public function testOnGetIdentity()
     {
-        $result = $this->abstractAuthServiceListeners->onGetIdentity($this->event);
+        $result = $this->abstractAuthServiceListeners->onGetIdentity(
+            $this->event
+        );
     }
 }
  

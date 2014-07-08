@@ -17,7 +17,6 @@
 
 namespace RcmUser\Test\Controller;
 
-use RcmUser\Controller\AdminApiAclDefaultUserRoleController;
 use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
@@ -59,7 +58,9 @@ class AdminApiAclDefaultUserRoleControllerTest extends Zf2TestCase
 
         $this->mockData['getServiceLocator'] = $this->getMockServiceLocator();
 
-        return $this->mockData['getJsonResponse'] = json_encode(array('test', 'data'));
+        return $this->mockData['getJsonResponse'] = json_encode(
+            array('test', 'data')
+        );
     }
 
     /**
@@ -124,37 +125,37 @@ class AdminApiAclDefaultUserRoleControllerTest extends Zf2TestCase
  * Class WrapperAdminApiAclDefaultUserRoleController
  *
  * WRAPPER
-
-class WrapperAdminApiAclDefaultUserRoleController extends AdminApiAclDefaultUserRoleController
-{
-
-    public $mockData = array();
-
-    public function __construct($mockData = array())
-    {
-        $this->mockData = $mockData;
-    }
-
-    public function isAllowed(
-        $resourceId = RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
-        $privilege = null
-    ) {
-        return $this->mockData['isAllowed'];
-    }
-
-    public function getResponse()
-    {
-        return $this->mockData['getResponse'];
-    }
-
-    public function getServiceLocator()
-    {
-        return $this->mockData['getServiceLocator'];
-    }
-
-    public function getJsonResponse()
-    {
-        return $this->mockData['getJsonResponse'];
-    }
-}
+ *
+ * class WrapperAdminApiAclDefaultUserRoleController extends AdminApiAclDefaultUserRoleController
+ * {
+ *
+ * public $mockData = array();
+ *
+ * public function __construct($mockData = array())
+ * {
+ * $this->mockData = $mockData;
+ * }
+ *
+ * public function isAllowed(
+ * $resourceId = RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
+ * $privilege = null
+ * ) {
+ * return $this->mockData['isAllowed'];
+ * }
+ *
+ * public function getResponse()
+ * {
+ * return $this->mockData['getResponse'];
+ * }
+ *
+ * public function getServiceLocator()
+ * {
+ * return $this->mockData['getServiceLocator'];
+ * }
+ *
+ * public function getJsonResponse()
+ * {
+ * return $this->mockData['getJsonResponse'];
+ * }
+ * }
  * */

@@ -18,7 +18,6 @@
 namespace RcmUser\User\Data;
 
 
-use RcmUser\User\Db\UserDataMapperInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use Zend\Crypt\Password\PasswordInterface;
@@ -139,15 +138,15 @@ class DbUserDataPreparer implements UserDataPreparerInterface
      * @return bool
 
     public function isValidCredential(User $credentialUser, User $existingUser)
-    {
-        $existingHash = $existingUser->getPassword();
-
-        $credential = $credentialUser->getPassword();
-
-        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
-
-        return $isValid;
-    }
+     * {
+     * $existingHash = $existingUser->getPassword();
+     *
+     * $credential = $credentialUser->getPassword();
+     *
+     * $isValid = $this->getEncryptor()->verify($credential, $existingHash);
+     *
+     * return $isValid;
+     * }
      */
 
     /**

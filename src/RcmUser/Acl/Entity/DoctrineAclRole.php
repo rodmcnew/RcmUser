@@ -17,7 +17,6 @@
 
 namespace RcmUser\Acl\Entity;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

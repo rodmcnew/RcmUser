@@ -20,7 +20,6 @@ namespace RcmUser\Test\Acl\Db;
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\Acl\Db\AclRuleDataMapper;
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 
 /**

@@ -58,6 +58,7 @@ class AdminAclControllerTest extends Zf2TestCase
             ->disableOriginalConstructor()
             ->getMock();
     }
+
     /**
      * buildSuccess
      *
@@ -127,8 +128,7 @@ class WrapperAdminAclController extends AdminAclController
     public function isAllowed(
         $resourceId = RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
         $privilege = null
-    )
-    {
+    ) {
         return $this->mocks['isAllowed'];
     }
 

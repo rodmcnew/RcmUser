@@ -49,8 +49,10 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
     {
         // ACCESS CHECK
         if (!$this->isAllowed(
-            RcmUserAclResourceProvider::RESOURCE_ID_ACL, 'read'
-        )) {
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'read'
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 

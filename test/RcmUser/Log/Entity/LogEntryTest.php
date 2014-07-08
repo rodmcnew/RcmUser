@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * LogEntryTest.php
  *
  * LongDescHere
@@ -37,7 +37,8 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Log\Entity\LogEntry
  */
-class LogEntryTest extends \PHPUnit_Framework_TestCase {
+class LogEntryTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * test
@@ -53,7 +54,7 @@ class LogEntryTest extends \PHPUnit_Framework_TestCase {
         $extra = json_encode(array('test', 'extra'));
 
 
-        $entry = new LogEntry($dateTimeUtc, $type, $message , $extra);
+        $entry = new LogEntry($dateTimeUtc, $type, $message, $extra);
 
         $this->assertEquals(
             $dateTimeUtc,
