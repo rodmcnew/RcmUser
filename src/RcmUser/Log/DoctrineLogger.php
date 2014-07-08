@@ -20,7 +20,6 @@ namespace RcmUser\Log;
 use Doctrine\ORM\EntityManager;
 use RcmUser\Log\Entity\DbLogEntry;
 use RcmUser\Log\Entity\DoctrineLogEntry;
-use RcmUser\Log\Entity\LogEntry;
 use Zend\Log\LoggerInterface;
 
 

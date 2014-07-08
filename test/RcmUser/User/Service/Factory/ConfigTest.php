@@ -17,8 +17,8 @@
 
 namespace RcmUser\Test\User\Service\Factory;
 
-use RcmUser\User\Service\Factory\Config;
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Service\Factory\Config;
 
 require_once __DIR__ . '/../../../../Zf2TestCase.php';
 

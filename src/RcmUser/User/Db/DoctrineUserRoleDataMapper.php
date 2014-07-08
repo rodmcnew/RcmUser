@@ -194,11 +194,11 @@ class DoctrineUserRoleDataMapper
         $userRoles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
         )->findBy(
-            array(
-                'userId' => $userId,
-                'roleId' => $aclRoleId,
-            )
-        );
+                array(
+                    'userId' => $userId,
+                    'roleId' => $aclRoleId,
+                )
+            );
 
         foreach ($userRoles as $userRole) {
 
@@ -255,7 +255,9 @@ class DoctrineUserRoleDataMapper
 
         foreach ($userRoles as $key => $roleId) {
 
-            $aclRoleResult = $this->getAclRoleDataMapper()->fetchByRoleId($roleId);
+            $aclRoleResult = $this->getAclRoleDataMapper()->fetchByRoleId(
+                $roleId
+            );
 
             $aclRole = $aclRoleResult->getData();
 
@@ -308,7 +310,8 @@ class DoctrineUserRoleDataMapper
         }
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT userRole.roleId FROM ' . $this->getEntityClass() . ' userRole ' .
+            'SELECT userRole.roleId FROM ' . $this->getEntityClass()
+            . ' userRole ' .
             'INDEX BY userRole.roleId ' .
             'WHERE userRole.userId = ?1'
         );
@@ -458,7 +461,7 @@ class DoctrineUserRoleDataMapper
 
         $resultInfo
             .= (
-            !empty($addedRoles)
+        !empty($addedRoles)
             ?
             ' - Added: ' . implode(', ', $addedRoles) . ' '
             :
@@ -466,7 +469,7 @@ class DoctrineUserRoleDataMapper
         );
         $resultInfo
             .= (
-            !empty($removedRoles)
+        !empty($removedRoles)
             ?
             ' - Removed: ' . implode(', ', $removedRoles) . ' '
             :
@@ -474,7 +477,7 @@ class DoctrineUserRoleDataMapper
         );
         $resultInfo
             .= (
-            !empty($ignored)
+        !empty($ignored)
             ?
             ' - Ignored: ' . implode(', ', $ignored) . ' '
             :

@@ -60,8 +60,9 @@ class UserDataMapper implements UserDataMapperInterface
      *
      * @return void
      */
-    public function setUserDataPreparer(UserDataPreparerInterface $userDataPreparer)
-    {
+    public function setUserDataPreparer(
+        UserDataPreparerInterface $userDataPreparer
+    ) {
         $this->userDataPreparer = $userDataPreparer;
     }
 
@@ -108,7 +109,8 @@ class UserDataMapper implements UserDataMapperInterface
     public function fetchAll(
         $options = array()
     ) {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -121,7 +123,8 @@ class UserDataMapper implements UserDataMapperInterface
      */
     public function fetchById($id)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -134,7 +137,8 @@ class UserDataMapper implements UserDataMapperInterface
      */
     public function fetchByUsername($username)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -148,7 +152,8 @@ class UserDataMapper implements UserDataMapperInterface
      */
     public function create(User $requestUser, User $responseUser)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -162,7 +167,8 @@ class UserDataMapper implements UserDataMapperInterface
      */
     public function read(User $requestUser, User $responseUser)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -175,9 +181,13 @@ class UserDataMapper implements UserDataMapperInterface
      * @return mixed|Result
      * @throws RcmUserException
      */
-    public function update(User $requestUser, User $responseUser, User $existingUser)
-    {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+    public function update(
+        User $requestUser,
+        User $responseUser,
+        User $existingUser
+    ) {
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -191,7 +201,8 @@ class UserDataMapper implements UserDataMapperInterface
      */
     public function delete(User $requestUser, User $responseUser)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**

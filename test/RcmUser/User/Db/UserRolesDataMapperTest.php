@@ -45,6 +45,7 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
      * @var UserRolesDataMapper $userRolesDataMapper
      */
     public $userRolesDataMapper;
+
     /**
      * setup
      *

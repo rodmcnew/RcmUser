@@ -196,7 +196,8 @@ class AuthorizeService
     public function getResources($resourceId, $providerId = null)
     {
         return $this->getAclResourceService()->getResources(
-            $resourceId, $providerId
+            $resourceId,
+            $providerId
         );
     }
 
@@ -224,7 +225,10 @@ class AuthorizeService
 
             if (!$this->acl->hasResource($resource)) {
 
-                $this->acl->addResource($resource, $resource->getParentResource());
+                $this->acl->addResource(
+                    $resource,
+                    $resource->getParentResource()
+                );
             }
 
             $privileges = $resource->getPrivileges();
@@ -346,7 +350,7 @@ class AuthorizeService
 
         } catch (\Exception $e) {
             // @todo - report this error or log
-            $message =                 '<pre>' .
+            $message = '<pre>' .
                 'AuthorizeService->isAllowed failed to check: ' .
                 "providerId: {$providerId} " .
                 "resourceId: {$resourceId} " .

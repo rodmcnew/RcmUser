@@ -19,7 +19,6 @@ namespace RcmUser\Controller;
 
 use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\Result;
 use Zend\View\Model\JsonModel;
 
 /**
@@ -52,7 +51,8 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -72,7 +72,8 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'create'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -107,7 +108,8 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'delete'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 

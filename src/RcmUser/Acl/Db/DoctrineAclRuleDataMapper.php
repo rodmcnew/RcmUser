@@ -123,7 +123,9 @@ class DoctrineAclRuleDataMapper
      */
     public function fetchByRole($roleId)
     {
-        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
+        $rules = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )
             ->findBy(array('roleId' => $roleId));
 
         return new Result($rules);
@@ -138,7 +140,9 @@ class DoctrineAclRuleDataMapper
      */
     public function fetchByRule($rule = AclRule::RULE_ALLOW)
     {
-        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
+        $rules = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )
             ->findBy(array('rule' => $rule));
 
         return new Result($rules);

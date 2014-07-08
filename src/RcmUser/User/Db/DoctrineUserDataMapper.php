@@ -277,7 +277,10 @@ class DoctrineUserDataMapper
             if ($result->isSuccess()) {
 
                 // we want to populate everything but properties.
-                $responseUser->populate($result->getUser(), array('properties'));
+                $responseUser->populate(
+                    $result->getUser(),
+                    array('properties')
+                );
                 $result->setUser($responseUser);
 
                 return $result;
@@ -293,7 +296,10 @@ class DoctrineUserDataMapper
             if ($result->isSuccess()) {
 
                 // we want to populate everything but properties.
-                $responseUser->populate($result->getUser(), array('properties'));
+                $responseUser->populate(
+                    $result->getUser(),
+                    array('properties')
+                );
                 $result->setUser($responseUser);
             }
 
@@ -312,8 +318,11 @@ class DoctrineUserDataMapper
      *
      * @return \RcmUser\User|Result
      */
-    public function update(User $requestUser, User $responseUser, User $existingUser)
-    {
+    public function update(
+        User $requestUser,
+        User $responseUser,
+        User $existingUser
+    ) {
         /* VALIDATE */
         if (!$this->canUpdate($requestUser)) {
 

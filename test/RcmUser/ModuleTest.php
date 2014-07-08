@@ -7,7 +7,6 @@ require_once __DIR__ . '/../Zf2TestCase.php';
 
 use RcmUser\Module;
 use RcmUser\Test;
-use RcmUser\Test\Zf2TestCase;
 
 /**
  * Class ModuleTest

@@ -51,7 +51,8 @@ class AdminApiUserRolesController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -89,7 +90,8 @@ class AdminApiUserRolesController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'create'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
         /** @var \RcmUser\User\Service\UserRoleService $userRoleService */
@@ -147,7 +149,8 @@ class AdminApiUserRolesController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'update'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -193,14 +196,14 @@ class AdminApiUserRolesController extends AbstractAdminApiController
     /**
      * delete DELETE
      *
-     * @param string $data User id with roles to delete
-     *                     {
-     *                       userId: "{ID}",
-     *                       roles: [
+     * @param string $data            User id with roles to delete
+     *                                {
+     *                                userId: "{ID}",
+     *                                roles: [
      *                                "{roleId1}",
      *                                "{roleId2}"
-     *                              ]
-     *                     }
+     *                                ]
+     *                                }
      *
      * @return string
      */
@@ -210,7 +213,8 @@ class AdminApiUserRolesController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'delete'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 

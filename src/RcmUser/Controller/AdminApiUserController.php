@@ -52,7 +52,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -85,7 +86,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -121,7 +123,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'create'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -157,7 +160,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'delete'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -206,7 +210,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'update'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -278,7 +283,10 @@ class AdminApiUserController extends AbstractAdminApiController
             $roles = $properties[UserRoleProperty::PROPERTY_KEY];
             $userRoleProperty = new UserRoleProperty();
             $userRoleProperty->populate($roles);
-            $user->setProperty(UserRoleProperty::PROPERTY_KEY, $userRoleProperty);
+            $user->setProperty(
+                UserRoleProperty::PROPERTY_KEY,
+                $userRoleProperty
+            );
         }
 
         return $user;

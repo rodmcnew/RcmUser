@@ -93,6 +93,7 @@ class User implements UserInterface, \JsonSerializable
     {
         $this->setId($id);
     }
+
     /**
      * setId
      *
@@ -124,7 +125,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setUsername($username)
     {
-        $username = (string) $username;
+        $username = (string)$username;
 
         if (empty($username)) {
 
@@ -152,7 +153,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setPassword($password)
     {
-        $password = (string) $password;
+        $password = (string)$password;
         if (empty($password)) {
             $password = null;
         }
@@ -179,7 +180,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setState($state)
     {
-        $state = (string) $state;
+        $state = (string)$state;
 
         if (!$this->isValidState($state)) {
 
@@ -211,7 +212,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setEmail($email)
     {
-        $email = (string) $email;
+        $email = (string)$email;
         if (empty($email)) {
 
             $email = null;
@@ -238,7 +239,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setName($name)
     {
-        $name = (string) $name;
+        $name = (string)$name;
         if (empty($name)) {
 
             $name = null;
@@ -419,7 +420,12 @@ class User implements UserInterface, \JsonSerializable
             if (isset($data['name']) && !in_array('name', $exclude)) {
                 $this->setName($data['name']);
             }
-            if (isset($data['properties']) && !in_array('properties', $exclude)) {
+            if (isset($data['properties'])
+                && !in_array(
+                    'properties',
+                    $exclude
+                )
+            ) {
                 // @todo we need to try to populate the correct objects here?
                 $this->setProperties($data['properties']);
             }

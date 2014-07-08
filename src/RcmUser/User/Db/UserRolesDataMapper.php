@@ -101,7 +101,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function fetchAll($options = array())
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -115,7 +116,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function add(User $user, $aclRoleId)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -129,7 +131,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function remove(User $user, $aclRoleId)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -143,7 +146,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function create(User $user, $roles = array())
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -156,7 +160,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function read(User $user)
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -170,7 +175,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function update(User $user, $roles = array())
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
     /**
@@ -184,7 +190,8 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function delete(User $user, $roles = array())
     {
-        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__
+            . " not implemented.");
     }
 
 

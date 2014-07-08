@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * RcmUserIsAllowedTest.php
  *
  * LongDescHere
@@ -38,7 +38,8 @@ use RcmUser\View\Helper\RcmUserIsAllowed;
  * @link      https://github.com/reliv
  * @covers    \RcmUser\View\Helper\RcmUserIsAllowed
  */
-class RcmUserIsAllowedTest extends \PHPUnit_Framework_TestCase {
+class RcmUserIsAllowedTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * test

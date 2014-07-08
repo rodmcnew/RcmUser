@@ -20,9 +20,7 @@ namespace RcmUser\User\Data;
 
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
-use Zend\InputFilter\BaseInputFilter;
 use Zend\InputFilter\Factory;
-use Zend\InputFilter\InputFilter;
 use Zend\InputFilter\InputFilterInterface;
 
 /**
@@ -60,13 +58,14 @@ class UserValidator implements UserValidatorInterface
     /**
      * @var array $validatableFields
      */
-    protected $validatableFields = array(
-        'username',
-        'password',
-        'state',
-        'email',
-        'name',
-    );
+    protected $validatableFields
+        = array(
+            'username',
+            'password',
+            'state',
+            'email',
+            'name',
+        );
 
     /**
      * __construct
@@ -181,7 +180,8 @@ class UserValidator implements UserValidatorInterface
             ) {
 
                 $inputFilter->add(
-                    $factory->createInput($inputs[$field]), $field
+                    $factory->createInput($inputs[$field]),
+                    $field
                 );
             }
         }
@@ -218,7 +218,8 @@ class UserValidator implements UserValidatorInterface
             ) {
 
                 $inputFilter->add(
-                    $factory->createInput($inputs[$field]), $field
+                    $factory->createInput($inputs[$field]),
+                    $field
                 );
             }
         }

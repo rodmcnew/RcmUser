@@ -107,10 +107,10 @@ class AclPrivilegeTest extends Zf2TestCase
 
         $this->assertTrue(is_string($strPriv), "toString failed");
 
-        try{
+        try {
             $privilege->setPrivilege('N*P#_^^^^');
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;

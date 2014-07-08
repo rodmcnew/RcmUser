@@ -18,8 +18,8 @@
 namespace RcmUser\Test\Authentication\Service;
 
 use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\User\Entity\User;
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Entity\User;
 use Zend\Authentication\Result;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
@@ -96,7 +96,8 @@ class UserAuthenticationServiceTest extends Zf2TestCase
 
     public function buildUserAuthenticationServiceUserResult()
     {
-        $this->userAuthenticationServiceUserResult = new UserAuthenticationService();
+        $this->userAuthenticationServiceUserResult
+            = new UserAuthenticationService();
 
         $user = new User();
         $user->setId('123');
@@ -122,20 +123,27 @@ class UserAuthenticationServiceTest extends Zf2TestCase
             ->method('trigger')
             ->will($this->returnValue($responseCollection));
 
-        $this->userAuthenticationServiceUserResult->setEventManager($eventManager);
+        $this->userAuthenticationServiceUserResult->setEventManager(
+            $eventManager
+        );
     }
 
     public function testValidateCredentials()
     {
         $user = new User();
 
-        $result = $this->getUserAuthenticationService()->validateCredentials($user);
+        $result = $this->getUserAuthenticationService()->validateCredentials(
+            $user
+        );
 
         $this->assertInstanceOf(
-            '\Zend\Authentication\Result', $result, 'Incorrect Result returned.'
+            '\Zend\Authentication\Result',
+            $result,
+            'Incorrect Result returned.'
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User', $result->getIdentity(),
+            '\RcmUser\User\Entity\User',
+            $result->getIdentity(),
             'Result did not contain User.'
         );
     }
@@ -147,10 +155,13 @@ class UserAuthenticationServiceTest extends Zf2TestCase
         $result = $this->getUserAuthenticationService()->authenticate($user);
 
         $this->assertInstanceOf(
-            '\Zend\Authentication\Result', $result, 'Incorrect Result returned.'
+            '\Zend\Authentication\Result',
+            $result,
+            'Incorrect Result returned.'
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User', $result->getIdentity(),
+            '\RcmUser\User\Entity\User',
+            $result->getIdentity(),
             'Result did not contain User.'
         );
     }
@@ -162,7 +173,8 @@ class UserAuthenticationServiceTest extends Zf2TestCase
 
     public function testSetIdentity()
     {
-        $result = $this->getUserAuthenticationServiceUserResult()->getIdentity();
+        $result = $this->getUserAuthenticationServiceUserResult()->getIdentity(
+        );
     }
 
     public function testHasIdentity()
@@ -187,7 +199,8 @@ class UserAuthenticationServiceTest extends Zf2TestCase
 
         $this->getUserAuthenticationServiceUserResult()->setIdentity($user);
 
-        $newuser = $this->getUserAuthenticationServiceUserResult()->getIdentity();
+        $newuser = $this->getUserAuthenticationServiceUserResult()->getIdentity(
+        );
 
         $this->assertEquals('NEW_USER_NAME!', $newuser->getUsername());
     }

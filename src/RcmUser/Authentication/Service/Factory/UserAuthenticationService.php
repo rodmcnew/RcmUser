@@ -49,7 +49,8 @@ class UserAuthenticationService implements FactoryInterface
     {
         $config = $serviceLocator->get('RcmUser\Auth\Config');
 
-        $service = new \RcmUser\Authentication\Service\UserAuthenticationService();
+        $service
+            = new \RcmUser\Authentication\Service\UserAuthenticationService();
         $service->setObfuscatePassword(
             $config->get('ObfuscatePasswordOnAuth', false)
         );

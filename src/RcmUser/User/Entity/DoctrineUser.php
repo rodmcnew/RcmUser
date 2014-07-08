@@ -17,7 +17,6 @@
 
 namespace RcmUser\User\Entity;
 
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping as ORM;
 
 /**

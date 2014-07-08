@@ -70,7 +70,10 @@ class AbstractAdminControllerTest extends Zf2TestCase
     public function test()
     {
 
-        $result = $this->controller->isAllowed('someresourceid', 'someprivliege');
+        $result = $this->controller->isAllowed(
+            'someresourceid',
+            'someprivliege'
+        );
         $this->assertTrue($result);
 
         $result = $this->controller->getNotAllowedResponse();
@@ -113,7 +116,8 @@ class WrapperAbstractAdminController extends AbstractAdminController
         return $this->mockData['getResponse'];
     }
 
-    public function buildView($viewArr = array()){
+    public function buildView($viewArr = array())
+    {
 
         return parent::buildView($viewArr);
     }

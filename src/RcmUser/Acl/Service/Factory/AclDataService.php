@@ -46,8 +46,12 @@ class AclDataService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $aclRoleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRoleDataMapper');
-        $aclRuleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRuleDataMapper');
+        $aclRoleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRoleDataMapper'
+        );
+        $aclRuleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRuleDataMapper'
+        );
 
         $service = new \RcmUser\Acl\Service\AclDataService();
         $service->setAclRoleDataMapper($aclRoleDataMapper);

@@ -63,7 +63,10 @@ class UserPropertyService extends EventProvider
             $this->getEventManager()->trigger(
                 __FUNCTION__,
                 $this,
-                array('user' => $user, 'propertyNameSpace' => $propertyNameSpace)
+                array(
+                    'user' => $user,
+                    'propertyNameSpace' => $propertyNameSpace
+                )
             );
         }
 

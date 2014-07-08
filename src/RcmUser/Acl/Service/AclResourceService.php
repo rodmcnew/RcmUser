@@ -232,13 +232,17 @@ class AclResourceService
 
                 foreach ($providerResources as &$resource) {
 
-                    $resource = $this->buildValidAclResource($resource, $providerId);
+                    $resource = $this->buildValidAclResource(
+                        $resource,
+                        $providerId
+                    );
                     $resourceId = $resource->getResourceId();
 
                     if (!isset($this->resources[$resourceId])) {
 
                         $newResources = $this->getResources(
-                            $resourceId, $providerId
+                            $resourceId,
+                            $providerId
                         );
                         $this->resources = $this->resources + $newResources;
                     }
@@ -309,7 +313,11 @@ class AclResourceService
                 $provider->getProviderId()
             );
 
-            return $this->getResourceStack($provider, $parentResource, $resources);
+            return $this->getResourceStack(
+                $provider,
+                $parentResource,
+                $resources
+            );
         }
 
         // set parent root
@@ -333,7 +341,8 @@ class AclResourceService
         }
 
         // @codingStandardsIgnoreStart
-        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
+        if (!($this->resourceProviders[$providerId] instanceof
+            ResourceProviderInterface)
         ) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
                 $this->resourceProviders[$providerId],
@@ -499,10 +508,10 @@ class AclResourceService
             $parent = $aclResources[$parentId];
 
             $ns = $this->createNamespaceId(
-                $parent,
-                $aclResources,
-                $nsChar
-            ) . $nsChar . $ns;
+                    $parent,
+                    $aclResources,
+                    $nsChar
+                ) . $nsChar . $ns;
         }
 
         return $ns;
@@ -631,7 +640,10 @@ class AclResourceService
         if (!($provider instanceof ResourceProviderInterface)) {
 
             throw new RcmUserException(
-                'ResourceProvider is not valid: ' . var_export($providerData, true)
+                'ResourceProvider is not valid: ' . var_export(
+                    $providerData,
+                    true
+                )
             );
         }
 

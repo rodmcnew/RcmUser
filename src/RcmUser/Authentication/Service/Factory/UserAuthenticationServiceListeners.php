@@ -47,7 +47,9 @@ class UserAuthenticationServiceListeners implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $auth = $serviceLocator->get('RcmUser\Authentication\AuthenticationService');
+        $auth = $serviceLocator->get(
+            'RcmUser\Authentication\AuthenticationService'
+        );
 
         $service
             = new \RcmUser\Authentication\Event\UserAuthenticationServiceListeners();

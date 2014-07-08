@@ -18,7 +18,6 @@ namespace RcmUser\Controller\Plugin;
 
 use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\User\Entity\User;
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**

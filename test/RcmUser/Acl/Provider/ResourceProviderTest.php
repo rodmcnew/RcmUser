@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * ResourceProviderTest.php
  *
  * LongDescHere

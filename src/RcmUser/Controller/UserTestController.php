@@ -17,13 +17,8 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\AclRule;
 use RcmUser\JsonForm;
 use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\User\Entity\ReadOnlyUser;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 

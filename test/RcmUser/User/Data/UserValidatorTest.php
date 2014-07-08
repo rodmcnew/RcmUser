@@ -73,7 +73,6 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-
             'password' => array(
                 'name' => 'password',
                 'required' => true,

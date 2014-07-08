@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * RcmUserAclTest.php
  *
  * LongDescHere
@@ -21,8 +21,6 @@ use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\RcmUserAcl;
 use RcmUser\Test\Zf2TestCase;
-use Zend\Permissions\Acl\Resource\GenericResource;
-use Zend\Permissions\Acl\Role\GenericRole;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
@@ -42,9 +40,11 @@ require_once __DIR__ . '/../../Zf2TestCase.php';
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Acl\RcmUserAcl
  */
-class RcmUserAclTest extends Zf2TestCase {
+class RcmUserAclTest extends Zf2TestCase
+{
 
-    public function testGetAccess(){
+    public function testGetAccess()
+    {
 
         $acl = new RcmUserAcl();
 

@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * ResultTest.php
  *
  * TEST
@@ -18,9 +18,9 @@
 namespace RcmUser\Test\User;
 
 
+use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
-use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
@@ -60,17 +60,32 @@ class ResultTest extends Zf2TestCase
         $result->setMessages($messages);
         $result->setMessage('message 2');
 
-        $this->assertTrue($result->getCode() === Result::CODE_SUCCESS, 'Data not returned.');
+        $this->assertTrue(
+            $result->getCode() === Result::CODE_SUCCESS,
+            'Data not returned.'
+        );
         $this->assertTrue($result->getUser() === $user, 'Data not returned.');
 
         $returnedMessages = $result->getMessages();
-        $this->assertTrue(is_array($returnedMessages), 'Messages should be array.');
+        $this->assertTrue(
+            is_array($returnedMessages),
+            'Messages should be array.'
+        );
 
-        $this->assertTrue($returnedMessages[0] === $messages[0], 'Message 1 not returned.');
+        $this->assertTrue(
+            $returnedMessages[0] === $messages[0],
+            'Message 1 not returned.'
+        );
 
-        $this->assertTrue($result->getMessage(1) === 'message 2', 'Message 2 not returned.');
+        $this->assertTrue(
+            $result->getMessage(1) === 'message 2',
+            'Message 2 not returned.'
+        );
 
-        $this->assertTrue($result->getMessage('nope', 'not_found') === 'not_found', 'Message unset default not returned.');
+        $this->assertTrue(
+            $result->getMessage('nope', 'not_found') === 'not_found',
+            'Message unset default not returned.'
+        );
     }
 
     /**

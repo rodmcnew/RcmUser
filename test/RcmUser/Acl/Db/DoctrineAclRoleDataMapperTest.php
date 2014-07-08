@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * DoctrineAclRoleDataMapperTest.php
  *
  * LongDescHere
@@ -20,7 +20,6 @@ namespace RcmUser\Test\Acl\Db;
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\Acl\Db\DoctrineAclRoleDataMapper;
-use RcmUser\Config\Config;
 
 /**
  * Class DoctrineAclRoleDataMapperTest
@@ -38,12 +37,14 @@ use RcmUser\Config\Config;
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Acl\Db\DoctrineAclRoleDataMapper
  */
-class DoctrineAclRoleDataMapperTest extends \PHPUnit_Framework_TestCase {
+class DoctrineAclRoleDataMapperTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * @var DoctrineAclRoleDataMapper $aclRoleDataMapper
      */
     public $aclRoleDataMapper;
+
     /**
      * setUp
      *

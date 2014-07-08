@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * ControllerPluginRcmUserIsAllowedTest.php
  *
  * LongDescHere
@@ -38,7 +38,8 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Service\Factory\ControllerPluginRcmUserIsAllowed
  */
-class ControllerPluginRcmUserIsAllowedTest extends Zf2TestCase {
+class ControllerPluginRcmUserIsAllowedTest extends Zf2TestCase
+{
     /**
      * test
      *

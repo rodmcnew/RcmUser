@@ -57,7 +57,10 @@ class AbstractListener implements ListenerAggregateInterface
     {
         $sharedEvents = $events->getSharedManager();
         $this->listeners[] = $sharedEvents->attach(
-            $this->id, $this->event, array($this, 'onEvent'), $this->priority
+            $this->id,
+            $this->event,
+            array($this, 'onEvent'),
+            $this->priority
         );
     }
 

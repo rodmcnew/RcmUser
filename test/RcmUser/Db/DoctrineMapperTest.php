@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * DoctrineMapperTest.php
  *
  * LongDescHere
@@ -37,7 +37,8 @@ use RcmUser\Db\DoctrineMapper;
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Db\DoctrineMapper
  */
-class DoctrineMapperTest extends \PHPUnit_Framework_TestCase {
+class DoctrineMapperTest extends \PHPUnit_Framework_TestCase
+{
 
     public function testSetGet()
     {
