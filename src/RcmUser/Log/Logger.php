@@ -17,8 +17,8 @@
 
 namespace RcmUser\Log;
 
-use Zend\Log\LoggerInterface;
-
+use
+    Zend\Log\LoggerInterface;
 
 /**
  * Class Logger
@@ -84,7 +84,6 @@ class Logger implements LoggerInterface
     protected function getLevel($type)
     {
         if (defined('\Zend\Log\Logger::' . $type)) {
-
             return constant('\Zend\Log\Logger::' . $type);
         }
 
@@ -119,8 +118,11 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    protected function log($type, $message, $extra = array())
-    {
+    protected function log(
+        $type,
+        $message,
+        $extra = array()
+    ) {
         if ($this->canLog($type)) {
 
             // override with logging logic here
@@ -137,9 +139,15 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function emerg($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function emerg(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
 
     /**
@@ -150,9 +158,15 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function alert($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function alert(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
 
     /**
@@ -163,9 +177,15 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function crit($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function crit(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
 
     /**
@@ -176,9 +196,15 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function err($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function err(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
 
     /**
@@ -189,9 +215,15 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function warn($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function warn(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
 
     /**
@@ -202,9 +234,15 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function notice($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function notice(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
 
     /**
@@ -215,9 +253,15 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function info($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function info(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
 
     /**
@@ -228,8 +272,14 @@ class Logger implements LoggerInterface
      *
      * @return LoggerInterface
      */
-    public function debug($message, $extra = array())
-    {
-        return $this->log(__FUNCTION__, $message, $extra);
+    public function debug(
+        $message,
+        $extra = array()
+    ) {
+        return $this->log(
+            __FUNCTION__,
+            $message,
+            $extra
+        );
     }
-} 
+}

@@ -17,10 +17,14 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use Zend\View\Model\JsonModel;
+use
+    RcmUser\Acl\Entity\AclRole;
+use
+    RcmUser\Acl\Entity\AclRule;
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiAclRoleController
@@ -64,7 +68,6 @@ class AdminApiAclRoleController extends AbstractAdminApiController
 
             $result = $aclDataService->getNamespacedRoles();
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -99,7 +102,6 @@ class AdminApiAclRoleController extends AbstractAdminApiController
             $aclRole->setRoleId((string)$id);
             $result = $aclDataService->readRole($aclRole);
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -134,7 +136,6 @@ class AdminApiAclRoleController extends AbstractAdminApiController
             $aclRole->populate($data);
             $result = $aclDataService->createRole($aclRole);
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -170,10 +171,9 @@ class AdminApiAclRoleController extends AbstractAdminApiController
 
             $result = $aclDataService->deleteRole($aclRole);
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
         return $this->getJsonResponse($result);
     }
-} 
+}

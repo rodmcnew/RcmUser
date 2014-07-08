@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-
-use RcmUser\Exception\RcmUserReadOnlyException;
+use
+    RcmUser\Exception\RcmUserReadOnlyException;
 
 /**
  * Class ReadOnlyUser
@@ -64,7 +64,6 @@ class ReadOnlyUser extends User
     public function setId($id)
     {
         if (!$this->locked) {
-
             return parent::setId($id);
         }
 
@@ -82,7 +81,6 @@ class ReadOnlyUser extends User
     public function setUsername($username)
     {
         if (!$this->locked) {
-
             return parent::setUsername($username);
         }
 
@@ -100,7 +98,6 @@ class ReadOnlyUser extends User
     public function setPassword($password)
     {
         if (!$this->locked) {
-
             return parent::setPassword($password);
         }
 
@@ -118,7 +115,6 @@ class ReadOnlyUser extends User
     public function setState($state)
     {
         if (!$this->locked) {
-
             return parent::setState($state);
         }
 
@@ -136,7 +132,6 @@ class ReadOnlyUser extends User
     public function setEmail($email)
     {
         if (!$this->locked) {
-
             return parent::setEmail($email);
         }
 
@@ -154,7 +149,6 @@ class ReadOnlyUser extends User
     public function setName($name)
     {
         if (!$this->locked) {
-
             return parent::setName($name);
         }
 
@@ -172,7 +166,6 @@ class ReadOnlyUser extends User
     public function setProperties($properties)
     {
         if (!$this->locked) {
-
             return parent::setProperties($properties);
         }
 
@@ -188,8 +181,10 @@ class ReadOnlyUser extends User
      * @return void
      * @throws \RcmUser\Exception\RcmUserReadOnlyException
      */
-    public function setProperty($key, $val)
-    {
+    public function setProperty(
+        $key,
+        $val
+    ) {
         throw new RcmUserReadOnlyException('Object is READ ONLY');
     }
 
@@ -202,16 +197,16 @@ class ReadOnlyUser extends User
      * @return mixed|void
      * @throws \RcmUser\Exception\RcmUserException|RcmUserReadOnlyException
      */
-    public function populate($data, $exclude = array())
-    {
+    public function populate(
+        $data,
+        $exclude = array()
+    ) {
         if (!$this->locked) {
-
             return parent::populate($data);
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
     }
-
 
     /**
      * merge

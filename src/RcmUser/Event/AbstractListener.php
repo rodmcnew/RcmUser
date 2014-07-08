@@ -17,9 +17,10 @@
 
 namespace RcmUser\Event;
 
-
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
+use
+    Zend\EventManager\EventManagerInterface;
+use
+    Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * AbstractListener
@@ -59,7 +60,10 @@ class AbstractListener implements ListenerAggregateInterface
         $this->listeners[] = $sharedEvents->attach(
             $this->id,
             $this->event,
-            array($this, 'onEvent'),
+            array(
+                $this,
+                'onEvent'
+            ),
             $this->priority
         );
     }
@@ -91,4 +95,4 @@ class AbstractListener implements ListenerAggregateInterface
     {
         var_dump($e);
     }
-} 
+}

@@ -17,9 +17,10 @@
 
 namespace RcmUser\Controller;
 
-use Zend\Http\Response;
-use Zend\View\Model\ViewModel;
-
+use
+    Zend\Http\Response;
+use
+    Zend\View\Model\ViewModel;
 
 /**
  * Class AdminCssController
@@ -60,4 +61,4 @@ class AdminCssController extends AbstractAdminController
 
         return $viewModel;
     }
-} 
+}

@@ -17,9 +17,8 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use Zend\Http\Response;
-
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
 
 /**
  * Class AdminAclController
@@ -57,4 +56,4 @@ class AdminAclController extends AbstractAdminController
 
         return $this->buildView($viewArr);
     }
-} 
+}

@@ -17,7 +17,8 @@
 
 namespace RcmUser\Authentication\Service;
 
-use RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\User;
 
 /**
  * AuthenticationService
@@ -50,5 +51,4 @@ class AuthenticationService extends \Zend\Authentication\AuthenticationService
 
         return $storage->write($identity);
     }
-
-} 
+}

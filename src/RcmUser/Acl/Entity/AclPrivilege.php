@@ -17,8 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
-use RcmUser\Exception\RcmUserException;
-
+use
+    RcmUser\Exception\RcmUserException;
 
 /**
  * Class AclPrivilege
@@ -99,12 +99,13 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
 
         if (!$this->isValidPrivilege($privilege)) {
 
-            throw new RcmUserException(
-                "Privilege ({$privilege}) is invalid."
-            );
+            throw new RcmUserException("Privilege ({$privilege}) is invalid.");
         }
 
-        $key = array_search($privilege, $this->privileges);
+        $key = array_search(
+            $privilege,
+            $this->privileges
+        );
 
         if ($key === false) {
             $this->privileges[] = $privilege;
@@ -119,11 +120,16 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
      *
      * @return null
      */
-    public function getPrivilege($privilege, $default = null)
-    {
+    public function getPrivilege(
+        $privilege,
+        $default = null
+    ) {
         $privilege = strtolower((string)$privilege);
 
-        $key = array_search($privilege, $this->privileges);
+        $key = array_search(
+            $privilege,
+            $this->privileges
+        );
 
         if ($key === false) {
             return $default;
@@ -141,7 +147,11 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
      */
     public function isValidPrivilege($privilege)
     {
-        if (preg_match('/[^a-z_\-0-9]/i', $privilege)) {
+        if (preg_match(
+            '/[^a-z_\-0-9]/i',
+            $privilege
+        )
+        ) {
             return false;
         }
 
@@ -203,6 +213,9 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     {
         $privileges = $this->getPrivileges();
 
-        return implode(self::PRIV_DELIMITER, $privileges);
+        return implode(
+            self::PRIV_DELIMITER,
+            $privileges
+        );
     }
-} 
+}

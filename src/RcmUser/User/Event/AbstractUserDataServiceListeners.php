@@ -17,10 +17,12 @@
 
 namespace RcmUser\User\Event;
 
-
-use RcmUser\User\Result;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
+use
+    RcmUser\User\Result;
+use
+    Zend\EventManager\EventManagerInterface;
+use
+    Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * Class AbstractUserDataServiceListeners
@@ -71,7 +73,6 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             'onDeleteUserSuccess' => 'deleteUserSuccess',
         );
 
-
     /**
      * attach
      *
@@ -87,7 +88,10 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             $this->listeners[] = $sharedEvents->attach(
                 $this->id,
                 $event,
-                array($this, $method),
+                array(
+                    $this,
+                    $method
+                ),
                 $this->priority
             );
         }
@@ -444,4 +448,4 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             'Listener (' . __METHOD__ . ') not defined.'
         );
     }
-} 
+}

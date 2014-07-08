@@ -17,8 +17,10 @@
 
 namespace RcmUser\View\Helper;
 
-use RcmUser\Service\RcmUserService;
-use Zend\View\Helper\AbstractHelper;
+use
+    RcmUser\Service\RcmUserService;
+use
+    Zend\View\Helper\AbstractHelper;
 
 /**
  * Class RcmUserGetCurrentUser

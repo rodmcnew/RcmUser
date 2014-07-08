@@ -17,12 +17,16 @@
 
 namespace RcmUser\Acl\Service;
 
-use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Entity\UserRoleProperty;
-use Zend\Permissions\Acl\Acl;
-
+use
+    RcmUser\Acl\Entity\AclRule;
+use
+    RcmUser\Exception\RcmUserException;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\UserRoleProperty;
+use
+    Zend\Permissions\Acl\Acl;
 
 /**
  * Class AuthorizeService
@@ -137,7 +141,6 @@ class AuthorizeService
         $userRoleProperty = $user->getProperty(UserRoleProperty::PROPERTY_KEY);
 
         if (!($userRoleProperty instanceof UserRoleProperty)) {
-
             return array();
         }
 
@@ -178,12 +181,14 @@ class AuthorizeService
                 continue;
             }
 
-            $rules = array_merge($rules, $result->getData());
+            $rules = array_merge(
+                $rules,
+                $result->getData()
+            );
         }
 
         return $rules;
     }
-
 
     /**
      * getResources
@@ -193,8 +198,10 @@ class AuthorizeService
      *
      * @return array
      */
-    public function getResources($resourceId, $providerId = null)
-    {
+    public function getResources(
+        $resourceId,
+        $providerId = null
+    ) {
         return $this->getAclResourceService()->getResources(
             $resourceId,
             $providerId
@@ -209,8 +216,10 @@ class AuthorizeService
      *
      * @return Acl
      */
-    public function getAcl($resourceId, $providerId)
-    {
+    public function getAcl(
+        $resourceId,
+        $providerId
+    ) {
         if (!isset($this->acl)) {
 
             $this->buildAcl();
@@ -219,7 +228,10 @@ class AuthorizeService
         /* resources privileges
             we load the every time so they maybe updated dynamically
         */
-        $resources = $this->getResources($resourceId, $providerId);
+        $resources = $this->getResources(
+            $resourceId,
+            $providerId
+        );
 
         foreach ($resources as $resource) {
 
@@ -238,7 +250,10 @@ class AuthorizeService
                 foreach ($privileges as $privilege) {
                     if (!$this->acl->hasResource($privilege)) {
 
-                        $this->acl->addResource($privilege, $resource);
+                        $this->acl->addResource(
+                            $privilege,
+                            $resource
+                        );
                     }
                 }
             }
@@ -290,7 +305,10 @@ class AuthorizeService
                 continue;
             }
 
-            $this->acl->addRole($role, $role->getParent());
+            $this->acl->addRole(
+                $role,
+                $role->getParent()
+            );
         }
     }
 
@@ -312,7 +330,6 @@ class AuthorizeService
         $user = null
     ) {
         if (!($user instanceof User)) {
-
             return false;
         }
 
@@ -325,14 +342,19 @@ class AuthorizeService
         $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
         if (!empty($superAdminRoleId)
             && is_array($userRoles)
-            && in_array($superAdminRoleId, $userRoles)
+            && in_array(
+                $superAdminRoleId,
+                $userRoles
+            )
         ) {
-
             return true;
         }
 
         try {
-            $acl = $this->getAcl($resourceId, $providerId);
+            $acl = $this->getAcl(
+                $resourceId,
+                $providerId
+            );
 
             foreach ($userRoles as $userRole) {
 
@@ -350,24 +372,19 @@ class AuthorizeService
 
         } catch (\Exception $e) {
             // @todo - report this error or log
-            $message = '<pre>' .
-                'AuthorizeService->isAllowed failed to check: ' .
-                "providerId: {$providerId} " .
-                "resourceId: {$resourceId} " .
-                'privilege: ' . var_export($privilege, true) . ' ' .
-                'user id: ' . $user->getId() . ' ' .
-                //'user roles: ' . var_export($userRoles, true) . ' ' .
+            $message = '<pre>' . 'AuthorizeService->isAllowed failed to check: ' . "providerId: {$providerId} "
+                . "resourceId: {$resourceId} " . 'privilege: ' . var_export(
+                    $privilege,
+                    true
+                ) . ' ' . 'user id: ' . $user->getId() . ' '
+                . //'user roles: ' . var_export($userRoles, true) . ' ' .
                 //'acl roles: ' . var_export(
                 //    $this->getAcl($resourceId, $providerId)->getRoles(), true
                 //) . ' ' .
                 //'defined roles: ' . var_export($this->getRoles() , true) . ' ' .
-                'Acl failed with error: ' .
-                $e->getMessage() .
-                '</pre>';
+                'Acl failed with error: ' . $e->getMessage() . '</pre>';
             //echo($message);
-            throw new RcmUserException(
-                $message
-            );
+            throw new RcmUserException($message);
         }
 
         return false;
@@ -422,7 +439,10 @@ class AuthorizeService
     {
         if (is_string($resource)) {
 
-            $resources = explode(self::RESOURCE_DELIMITER, $resource);
+            $resources = explode(
+                self::RESOURCE_DELIMITER,
+                $resource
+            );
 
             $resources = array_reverse($resources);
 
@@ -431,4 +451,4 @@ class AuthorizeService
 
         return array($resource);
     }
-} 
+}

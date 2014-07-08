@@ -34,4 +34,4 @@ namespace RcmUser\Exception;
  */
 class RcmUserException extends \Exception
 {
-} 
+}

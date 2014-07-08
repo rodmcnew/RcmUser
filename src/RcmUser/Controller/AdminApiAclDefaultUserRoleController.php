@@ -17,8 +17,10 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use Zend\View\Model\JsonModel;
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiAclDefaultUserRoleController
@@ -62,11 +64,9 @@ class AdminApiAclDefaultUserRoleController extends AbstractAdminApiController
 
             $result = $aclDataService->getDefaultUserRoleIds();
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
         return $this->getJsonResponse($result);
     }
-
-} 
+}

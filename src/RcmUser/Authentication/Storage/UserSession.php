@@ -17,8 +17,8 @@
 
 namespace RcmUser\Authentication\Storage;
 
-
-use Zend\Authentication\Storage\Session;
+use
+    Zend\Authentication\Storage\Session;
 
 /**
  * UserSession
@@ -50,6 +50,10 @@ class UserSession extends Session
         $member = 'user',
         SessionManager $manager = null
     ) {
-        parent::__construct($namespace, $member, $manager);
+        parent::__construct(
+            $namespace,
+            $member,
+            $manager
+        );
     }
 }

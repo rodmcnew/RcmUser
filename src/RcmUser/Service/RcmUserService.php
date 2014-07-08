@@ -17,13 +17,20 @@
 
 namespace RcmUser\Service;
 
-use RcmUser\Acl\Service\AuthorizeService;
-use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
-use RcmUser\User\Service\UserDataService;
-use RcmUser\User\Service\UserPropertyService;
+use
+    RcmUser\Acl\Service\AuthorizeService;
+use
+    RcmUser\Authentication\Service\UserAuthenticationService;
+use
+    RcmUser\Exception\RcmUserException;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Result;
+use
+    RcmUser\User\Service\UserDataService;
+use
+    RcmUser\User\Service\UserPropertyService;
 
 //use ZfcUser\Service\User;
 
@@ -174,7 +181,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $result = $this->readUser($user);
 
         if ($result->isSuccess()) {
-
             return $result->getUser();
         }
 
@@ -206,8 +212,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return Result|User|null
      */
-    public function readUser(User $user, $includeResult = true)
-    {
+    public function readUser(
+        User $user,
+        $includeResult = true
+    ) {
         $result = $this->getUserDataService()->readUser($user);
 
         if ($includeResult) {
@@ -225,8 +233,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return Result|User|null
      */
-    public function createUser(User $user, $includeResult = true)
-    {
+    public function createUser(
+        User $user,
+        $includeResult = true
+    ) {
         $result = $this->getUserDataService()->createUser($user);
 
         if ($includeResult) {
@@ -244,8 +254,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return Result|User|null
      */
-    public function updateUser(User $user, $includeResult = true)
-    {
+    public function updateUser(
+        User $user,
+        $includeResult = true
+    ) {
         $result = $this->getUserDataService()->updateUser($user);
         if ($includeResult) {
             return $result;
@@ -262,8 +274,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return Result|User|null
      */
-    public function deleteUser(User $user, $includeResult = true)
-    {
+    public function deleteUser(
+        User $user,
+        $includeResult = true
+    ) {
         $result = $this->getUserDataService()->deleteUser($user);
         if ($includeResult) {
             return $result;
@@ -319,7 +333,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $user = $this->getIdentity();
 
         if (empty($user)) {
-
             return $default;
         }
 
@@ -409,7 +422,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $sessUser = $this->getIdentity();
 
         if (empty($sessUser)) {
-
             return false;
         }
 
@@ -418,7 +430,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         if (!empty($id)
             && $user->getId() === $sessUser->getId()
         ) {
-
             return true;
         }
 
@@ -426,7 +437,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         if (!empty($username)
             && $user->getUsername() === $sessUser->getUsername()
         ) {
-
             return true;
         }
 
@@ -452,8 +462,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
             throw new RcmUserException(
                 'SetIdentity expects user to be get same identity as current, '
-                .
-                'user authenticate to change users.'
+                . 'user authenticate to change users.'
             );
         }
 
@@ -473,7 +482,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $currentUser = $this->getIdentity();
 
         if (empty($currentUser)) {
-
             return null;
         }
 
@@ -489,9 +497,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
         if ($userId != $currentUser->getId()) {
 
-            throw new RcmUserException(
-                'RefreshIdentity expects user to be get same identity as current.'
-            );
+            throw new RcmUserException('RefreshIdentity expects user to be get same identity as current.');
         }
 
         return $this->getUserAuthService()->setIdentity($user);
@@ -582,7 +588,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $user = null
     ) {
         if (!($user instanceof User)) {
-
             return false;
         }
 
@@ -628,15 +633,11 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         }
 
         if ($result->isSuccess() || $result->getUser() == null) {
-
             return $result->getUser();
         } else {
 
             // this should not fail, if it does, something is really wrong
-            throw new RcmUserException(
-                'User could not be built or was not returned'
-            );
+            throw new RcmUserException('User could not be built or was not returned');
         }
     }
-
 }

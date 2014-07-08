@@ -17,8 +17,8 @@
 
 namespace RcmUser\Acl\Db;
 
-
-use RcmUser\Acl\Entity\AclRole;
+use
+    RcmUser\Acl\Entity\AclRole;
 
 /**
  * Interface AclRoleDataMapperInterface
@@ -218,4 +218,4 @@ interface AclRoleDataMapperInterface
      * @return Result
      */
     public function delete(AclRole $aclRole);
-} 
+}

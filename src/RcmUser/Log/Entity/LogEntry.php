@@ -17,7 +17,6 @@
 
 namespace RcmUser\Log\Entity;
 
-
 /**
  * Class LogEntry
  *
@@ -65,8 +64,12 @@ class LogEntry
      * @param string    $message     message
      * @param string    $extra       extra
      */
-    function __construct(\DateTime $dateTimeUtc, $type, $message, $extra = '')
-    {
+    public function __construct(
+        \DateTime $dateTimeUtc,
+        $type,
+        $message,
+        $extra = ''
+    ) {
         $this->setDateTimeUtc($dateTimeUtc);
         $this->setType($type);
         $this->setMessage($message);
@@ -167,4 +170,4 @@ class LogEntry
     {
         return $this->type;
     }
-} 
+}

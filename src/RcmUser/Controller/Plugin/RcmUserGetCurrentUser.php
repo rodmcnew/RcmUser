@@ -16,8 +16,10 @@
  */
 namespace RcmUser\Controller\Plugin;
 
-use RcmUser\Service\RcmUserService;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use
+    RcmUser\Service\RcmUserService;
+use
+    Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
  * RcmUserGetCurrentUser

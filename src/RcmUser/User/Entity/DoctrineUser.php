@@ -17,7 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class DoctrineUser
@@ -75,4 +76,4 @@ class DoctrineUser extends User
      * @ORM\Column(type="string", length=255, unique=true, nullable=true)
      */
     protected $name;
-} 
+}

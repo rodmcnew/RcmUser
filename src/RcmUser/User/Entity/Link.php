@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-use RcmUser\Exception\RcmUserException;
-
+use
+    RcmUser\Exception\RcmUserException;
 
 /**
  * Class Link
@@ -188,10 +188,6 @@ class Link implements \JsonSerializable
             return;
         }
 
-        throw new RcmUserException(
-            'Link data could not be populated, date format not supported'
-        );
+        throw new RcmUserException('Link data could not be populated, date format not supported');
     }
-
-
 }

@@ -17,10 +17,12 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\JsonForm;
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    Zend\Http\Response;
+use
+    Zend\Mvc\Controller\AbstractActionController;
 
 /**
  * UserController

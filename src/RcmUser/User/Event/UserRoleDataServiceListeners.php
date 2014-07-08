@@ -17,11 +17,14 @@
 
 namespace RcmUser\User\Event;
 
-
-use RcmUser\User\Entity\User;
-use RcmUser\User\Entity\UserRoleProperty;
-use RcmUser\User\Result;
-use RcmUser\User\Service\UserRoleService;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\UserRoleProperty;
+use
+    RcmUser\User\Result;
+use
+    RcmUser\User\Service\UserRoleService;
 
 /**
  * UserRoleDataServiceListeners
@@ -108,7 +111,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -219,7 +221,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -251,12 +252,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$createResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $createResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $createResult->getMessages(
+            ));
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -275,7 +272,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -284,12 +280,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $readResult = $this->getUserRoleService()->readRoles($responseUser);
 
         if (!$readResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $readResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $readResult->getMessages(
+            ));
         }
 
         $roles = $readResult->getData();
@@ -350,7 +342,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -383,12 +374,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$updateResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $updateResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $updateResult->getMessages(
+            ));
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -406,7 +393,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -424,12 +410,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$deleteResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $deleteResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $deleteResult->getMessages(
+            ));
         }
 
         $userRoleProperty->setRoles(array());
@@ -451,12 +433,14 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function removeDefaultUserRoleIds($roles = array())
     {
-        $defaultRolesResult = $this->getUserRoleService()
-            ->getDefaultUserRoleIds();
+        $defaultRolesResult = $this->getUserRoleService()->getDefaultUserRoleIds();
 
         $defaultRoles = $defaultRolesResult->getData();
 
-        return array_diff($roles, $defaultRoles);
+        return array_diff(
+            $roles,
+            $defaultRoles
+        );
     }
 
     /**
@@ -479,8 +463,10 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return UserRoleProperty
      */
-    public function buildValidUserRoleProperty(User $user, $roles = array())
-    {
+    public function buildValidUserRoleProperty(
+        User $user,
+        $roles = array()
+    ) {
         return $this->getUserRoleService()->buildValidUserRoleProperty(
             $user,
             $roles
@@ -495,11 +481,13 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return array
      */
-    public function buildValidRoles(User $user, $roles = array())
-    {
+    public function buildValidRoles(
+        User $user,
+        $roles = array()
+    ) {
         return $this->getUserRoleService()->buildValidRoles(
             $user,
             $roles
         );
     }
-} 
+}

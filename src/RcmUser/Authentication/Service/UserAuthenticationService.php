@@ -17,10 +17,12 @@
 
 namespace RcmUser\Authentication\Service;
 
-
-use RcmUser\Event\EventProvider;
-use RcmUser\User\Entity\User;
-use Zend\Authentication\Result;
+use
+    RcmUser\Event\EventProvider;
+use
+    RcmUser\User\Entity\User;
+use
+    Zend\Authentication\Result;
 
 /**
  * UserAuthenticationService
@@ -81,11 +83,7 @@ class UserAuthenticationService extends EventProvider
     {
         /* + LOW_LEVEL_PREP */
         if (!$user->isEnabled()) {
-            return new Result(
-                Result::FAILURE_UNCATEGORIZED,
-                $user,
-                array('User is disabled.')
-            );
+            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
         }
         /* - LOW_LEVEL_PREP */
 
@@ -106,9 +104,7 @@ class UserAuthenticationService extends EventProvider
         $result = $results->last();
 
         if ($result === null) {
-            throw new \Exception(
-                'No auth listener registered or no results returned.'
-            );
+            throw new \Exception('No auth listener registered or no results returned.');
         }
 
         if ($results->stopped()) {
@@ -122,10 +118,9 @@ class UserAuthenticationService extends EventProvider
                 array('result' => $result)
             );
 
-            return new Result(
-                Result::SUCCESS,
-                $this->prepareUser($result->getIdentity())
-            );
+            return new Result(Result::SUCCESS, $this->prepareUser(
+                $result->getIdentity()
+            ));
         }
 
         /*
@@ -152,11 +147,7 @@ class UserAuthenticationService extends EventProvider
     {
         /* + LOW_LEVEL_PREP */
         if (!$user->isEnabled()) {
-            return new Result(
-                Result::FAILURE_UNCATEGORIZED,
-                $user,
-                array('User is disabled.')
-            );
+            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
         }
         /* - LOW_LEVEL_PREP */
 
@@ -177,9 +168,7 @@ class UserAuthenticationService extends EventProvider
         $result = $results->last();
 
         if ($result === null) {
-            throw new \Exception(
-                'No auth listener registered or no results returned.'
-            );
+            throw new \Exception('No auth listener registered or no results returned.');
         }
 
         if ($results->stopped()) {
@@ -193,10 +182,9 @@ class UserAuthenticationService extends EventProvider
                 array('result' => $result)
             );
 
-            return new Result(
-                Result::SUCCESS,
-                $this->prepareUser($result->getIdentity())
-            );
+            return new Result(Result::SUCCESS, $this->prepareUser(
+                $result->getIdentity()
+            ));
         }
 
         /*
@@ -289,7 +277,6 @@ class UserAuthenticationService extends EventProvider
         $user = $results->last();
 
         if (empty($user)) {
-
             return $deflt;
         }
 

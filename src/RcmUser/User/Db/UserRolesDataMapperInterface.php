@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Db;
 
-
-use RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\User;
 
 /**
  * Interface UserRolesDataMapperInterface
@@ -90,7 +90,10 @@ interface UserRolesDataMapperInterface
      *
      * @return Result
      */
-    public function add(User $user, $aclRoleId);
+    public function add(
+        User $user,
+        $aclRoleId
+    );
 
     /**
      * remove
@@ -108,7 +111,10 @@ interface UserRolesDataMapperInterface
      *
      * @return Result
      */
-    public function remove(User $user, $aclRoleId);
+    public function remove(
+        User $user,
+        $aclRoleId
+    );
 
     /**
      * create
@@ -128,7 +134,10 @@ interface UserRolesDataMapperInterface
      *
      * @return Result
      */
-    public function create(User $user, $roles = array());
+    public function create(
+        User $user,
+        $roles = array()
+    );
 
     /**
      * read
@@ -169,7 +178,10 @@ interface UserRolesDataMapperInterface
      *
      * @return Result
      */
-    public function update(User $user, $roles = array());
+    public function update(
+        User $user,
+        $roles = array()
+    );
 
     /**
      * delete
@@ -191,5 +203,8 @@ interface UserRolesDataMapperInterface
      *
      * @return Result
      */
-    public function delete(User $user, $roles = array());
-} 
+    public function delete(
+        User $user,
+        $roles = array()
+    );
+}

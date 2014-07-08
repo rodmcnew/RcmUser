@@ -17,8 +17,10 @@
 
 namespace RcmUser\Authentication\Service\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * UserAuthenticationService
@@ -52,7 +54,10 @@ class UserAuthenticationService implements FactoryInterface
         $service
             = new \RcmUser\Authentication\Service\UserAuthenticationService();
         $service->setObfuscatePassword(
-            $config->get('ObfuscatePasswordOnAuth', false)
+            $config->get(
+                'ObfuscatePasswordOnAuth',
+                false
+            )
         );
 
         return $service;

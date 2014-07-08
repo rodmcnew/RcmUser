@@ -17,7 +17,6 @@
 
 namespace RcmUser\Acl\Provider;
 
-
 /**
  * Interface ResourceProviderInterface
  *
@@ -70,4 +69,4 @@ interface ResourceProviderInterface
      * @return AclResource|array|null
      */
     public function getResource($resourceId);
-} 
+}

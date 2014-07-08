@@ -17,7 +17,6 @@
 
 namespace RcmUser\Acl\Exception;
 
-
 /**
  * RcmUserAclException
  *
@@ -36,4 +35,4 @@ namespace RcmUser\Acl\Exception;
 class RcmUserAclException extends \Exception
 {
 
-} 
+}
