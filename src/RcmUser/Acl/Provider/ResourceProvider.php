@@ -17,7 +17,6 @@
 
 namespace RcmUser\Acl\Provider;
 
-
 /**
  * class ResourceProvider
  *
@@ -78,7 +77,6 @@ class ResourceProvider implements ResourceProviderInterface
         return $this->providerId;
     }
 
-
     /**
      * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
@@ -103,10 +101,9 @@ class ResourceProvider implements ResourceProviderInterface
     public function getResource($resourceId)
     {
         if (isset($this->resources[$resourceId])) {
-
             return $this->resources[$resourceId];
         }
 
         return null;
     }
-} 
+}

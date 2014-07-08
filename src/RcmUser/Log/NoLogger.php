@@ -17,7 +17,6 @@
 
 namespace RcmUser\Log;
 
-
 /**
  * Class NoLogger
  *
@@ -36,4 +35,4 @@ namespace RcmUser\Log;
 class NoLogger extends Logger
 {
 
-} 
+}

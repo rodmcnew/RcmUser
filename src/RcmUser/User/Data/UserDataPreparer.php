@@ -17,9 +17,10 @@
 
 namespace RcmUser\User\Data;
 
-
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Result;
 
 /**
  * Class UserDataPreparer
@@ -72,4 +73,4 @@ class UserDataPreparer implements UserDataPreparerInterface
 
         return new Result($responseUser);
     }
-} 
+}

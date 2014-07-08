@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-use RcmUser\Exception\RcmUserException;
-
+use
+    RcmUser\Exception\RcmUserException;
 
 /**
  * Class UserRoleProperty
@@ -102,9 +102,14 @@ class UserRoleProperty implements UserPropertyInterface
      *
      * @return null
      */
-    public function getRole($roleId, $default = null)
-    {
-        $key = array_search($roleId, $this->roles);
+    public function getRole(
+        $roleId,
+        $default = null
+    ) {
+        $key = array_search(
+            $roleId,
+            $this->roles
+        );
 
         if ($key === false) {
             return $default;
@@ -132,8 +137,11 @@ class UserRoleProperty implements UserPropertyInterface
      */
     public function hasRole($roleId)
     {
-        if ($this->getRole($roleId, false)) {
-
+        if ($this->getRole(
+            $roleId,
+            false
+        )
+        ) {
             return true;
         }
 
@@ -175,8 +183,8 @@ class UserRoleProperty implements UserPropertyInterface
         }
 
         throw new RcmUserException(
-            'Object ' . get_class($this) . ' ' .
-            'could not be populated, date format not supported'
+            'Object ' . get_class($this) . ' '
+            . 'could not be populated, date format not supported'
         );
     }
-} 
+}

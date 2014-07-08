@@ -17,12 +17,16 @@
 
 namespace RcmUser\User\Db;
 
-
-use Doctrine\ORM\EntityManager;
-use RcmUser\Db\DoctrineMapperInterface;
-use RcmUser\User\Entity\DoctrineUser;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
+use
+    Doctrine\ORM\EntityManager;
+use
+    RcmUser\Db\DoctrineMapperInterface;
+use
+    RcmUser\User\Entity\DoctrineUser;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Result;
 
 /**
  * Class DoctrineUserDataMapper
@@ -39,9 +43,7 @@ use RcmUser\User\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineUserDataMapper
-    extends UserDataMapper
-    implements DoctrineMapperInterface
+class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInterface
 {
     const USER_DELETED_STATE = 'deleted';
     /**
@@ -109,10 +111,13 @@ class DoctrineUserDataMapper
         $options = array()
     ) {
         $query = $this->getEntityManager()->createQuery(
-            'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
-            'WHERE user.state != ?2'
+            'SELECT user FROM ' . $this->getEntityClass() . ' user '
+            . 'WHERE user.state != ?2'
         );
-        $query->setParameter(2, self::USER_DELETED_STATE);
+        $query->setParameter(
+            2,
+            self::USER_DELETED_STATE
+        );
 
         $users = $query->getResult();
 
@@ -129,22 +134,22 @@ class DoctrineUserDataMapper
     public function fetchById($id)
     {
         $query = $this->getEntityManager()->createQuery(
-            'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
-            'WHERE user.id = ?1 ' .
-            'AND user.state != ?2'
+            'SELECT user FROM ' . $this->getEntityClass() . ' user '
+            . 'WHERE user.id = ?1 ' . 'AND user.state != ?2'
         );
-        $query->setParameter(1, $id);
-        $query->setParameter(2, self::USER_DELETED_STATE);
+        $query->setParameter(
+            1,
+            $id
+        );
+        $query->setParameter(
+            2,
+            self::USER_DELETED_STATE
+        );
 
         $users = $query->getResult();
 
         if (empty($users) || !isset($users[0])) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User could not be found by id.'
-            );
+            return new Result(null, Result::CODE_FAIL, 'User could not be found by id.');
         }
 
         $user = $users[0];
@@ -165,23 +170,22 @@ class DoctrineUserDataMapper
     public function fetchByUsername($username)
     {
         $query = $this->getEntityManager()->createQuery(
-            'SELECT user FROM ' . $this->getEntityClass() . ' user ' .
-            'WHERE user.username = ?1 ' .
-            'AND user.state != ?2'
+            'SELECT user FROM ' . $this->getEntityClass() . ' user '
+            . 'WHERE user.username = ?1 ' . 'AND user.state != ?2'
         );
-        $query->setParameter(1, $username);
-        $query->setParameter(2, self::USER_DELETED_STATE);
-
+        $query->setParameter(
+            1,
+            $username
+        );
+        $query->setParameter(
+            2,
+            self::USER_DELETED_STATE
+        );
 
         $users = $query->getResult();
 
         if (empty($users) || !isset($users[0])) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User could not be found by username.'
-            );
+            return new Result(null, Result::CODE_FAIL, 'User could not be found by username.');
         }
 
         $user = $users[0];
@@ -200,8 +204,10 @@ class DoctrineUserDataMapper
      *
      * @return \RcmUser\User\Result
      */
-    public function create(User $requestUser, User $responseUser)
-    {
+    public function create(
+        User $requestUser,
+        User $responseUser
+    ) {
         /* VALIDATE */
         $result = $this->getUserValidator()->validateCreateUser(
             $requestUser,
@@ -226,11 +232,7 @@ class DoctrineUserDataMapper
             $responseUser->setState(null);
 
             // ERROR - user exists
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User could not be prepared, duplicate username.'
-            );
+            return new Result(null, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
         }
 
         $result = $this->getUserDataPreparer()->prepareUserCreate(
@@ -254,7 +256,6 @@ class DoctrineUserDataMapper
 
         // @todo verify with read
         // $readResult = $this->read($responseUser, $responseUser);
-
         return new Result($responseUser);
     }
 
@@ -266,8 +267,10 @@ class DoctrineUserDataMapper
      *
      * @return mixed|Result
      */
-    public function read(User $requestUser, User $responseUser)
-    {
+    public function read(
+        User $requestUser,
+        User $responseUser
+    ) {
         $id = $requestUser->getId();
 
         if (!empty($id)) {
@@ -327,11 +330,7 @@ class DoctrineUserDataMapper
         if (!$this->canUpdate($requestUser)) {
 
             // error, cannot update
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                'User cannot be updated, id required for update.'
-            );
+            return new Result($responseUser, Result::CODE_FAIL, 'User cannot be updated, id required for update.');
         }
 
         // USERNAME CHECKS
@@ -347,11 +346,7 @@ class DoctrineUserDataMapper
             if ($dupUser->isSuccess()) {
 
                 // ERROR - user exists
-                return new Result(
-                    $responseUser,
-                    Result::CODE_FAIL,
-                    'User could not be prepared, duplicate username.'
-                );
+                return new Result($responseUser, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
             }
 
             $responseUser->setUsername($requestUsername);
@@ -364,7 +359,6 @@ class DoctrineUserDataMapper
         );
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -376,7 +370,6 @@ class DoctrineUserDataMapper
         );
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -398,17 +391,15 @@ class DoctrineUserDataMapper
      *
      * @return mixed|Result
      */
-    public function delete(User $requestUser, User $responseUser)
-    {
+    public function delete(
+        User $requestUser,
+        User $responseUser
+    ) {
         /* VALIDATE */
         if (!$this->canUpdate($requestUser)) {
 
             // error, cannot update
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                'User cannot be deleted, id required for delete.'
-            );
+            return new Result($responseUser, Result::CODE_FAIL, 'User cannot be deleted, id required for delete.');
         }
 
         /* PREPARE */
@@ -477,22 +468,22 @@ class DoctrineUserDataMapper
     {
         try {
 
-            $usernameArr = json_decode($user->getUsername(), true);
+            $usernameArr = json_decode(
+                $user->getUsername(),
+                true
+            );
         } catch (\Exception $e) {
-
             return null;
         }
 
         if (count($usernameArr) !== 3) {
-
             return null;
         }
 
         if ($usernameArr[1] !== $user->getId()) {
-
             return null;
         }
 
         return $usernameArr[2];
     }
-} 
+}

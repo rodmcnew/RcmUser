@@ -17,9 +17,10 @@
 
 namespace RcmUser\Provider;
 
-
-use RcmUser\Acl\Entity\AclResource;
-use RcmUser\Acl\Provider\ResourceProvider;
+use
+    RcmUser\Acl\Entity\AclResource;
+use
+    RcmUser\Acl\Provider\ResourceProvider;
 
 /**
  * RcmUserAclResourceProvider
@@ -135,9 +136,8 @@ class RcmUserAclResourceProvider extends ResourceProvider
         );
 
         /* parent resource */
-        $this->resources[self::RESOURCE_ID_ROOT] = new AclResource(
-            self::RESOURCE_ID_ROOT
-        );
+        $this->resources[self::RESOURCE_ID_ROOT]
+            = new AclResource(self::RESOURCE_ID_ROOT);
         $this->resources[self::RESOURCE_ID_ROOT]->setName(
             'RCM User'
         );
@@ -149,11 +149,8 @@ class RcmUserAclResourceProvider extends ResourceProvider
         );
 
         /* user edit */
-        $this->resources[self::RESOURCE_ID_USER] = new AclResource(
-            self::RESOURCE_ID_USER,
-            self::RESOURCE_ID_ROOT,
-            $userPrivileges
-        );
+        $this->resources[self::RESOURCE_ID_USER]
+            = new AclResource(self::RESOURCE_ID_USER, self::RESOURCE_ID_ROOT, $userPrivileges);
         $this->resources[self::RESOURCE_ID_USER]->setName(
             'User Administration'
         );
@@ -162,11 +159,8 @@ class RcmUserAclResourceProvider extends ResourceProvider
         );
 
         /* access and roles */
-        $this->resources[self::RESOURCE_ID_ACL] = new AclResource(
-            self::RESOURCE_ID_ACL,
-            self::RESOURCE_ID_ROOT,
-            $privileges
-        );
+        $this->resources[self::RESOURCE_ID_ACL]
+            = new AclResource(self::RESOURCE_ID_ACL, self::RESOURCE_ID_ROOT, $privileges);
         $this->resources[self::RESOURCE_ID_ACL]->setName(
             'Role and Access Administration'
         );
@@ -174,4 +168,4 @@ class RcmUserAclResourceProvider extends ResourceProvider
             'Allows the editing of user access and role data.'
         );
     }
-} 
+}

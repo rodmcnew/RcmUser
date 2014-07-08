@@ -17,11 +17,12 @@
 
 namespace RcmUser\Log;
 
-use Doctrine\ORM\EntityManager;
-use RcmUser\Log\Entity\DbLogEntry;
-use RcmUser\Log\Entity\DoctrineLogEntry;
-use Zend\Log\LoggerInterface;
-
+use
+    Doctrine\ORM\EntityManager;
+use
+    RcmUser\Log\Entity\DoctrineLogEntry;
+use
+    Zend\Log\LoggerInterface;
 
 /**
  * Class DoctrineLogger
@@ -69,10 +70,12 @@ class DoctrineLogger extends Logger
      *
      * @return LoggerInterface
      */
-    public function log($type, $message, $extra = array())
-    {
+    public function log(
+        $type,
+        $message,
+        $extra = array()
+    ) {
         if (!$this->canLog($type)) {
-
             return $this;
         }
         $tz = new \DateTimeZone('UTC');
@@ -87,6 +90,4 @@ class DoctrineLogger extends Logger
 
         return $this;
     }
-
-
-} 
+}

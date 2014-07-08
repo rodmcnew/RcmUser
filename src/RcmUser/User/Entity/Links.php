@@ -17,7 +17,6 @@
 
 namespace RcmUser\User\Entity;
 
-
 /**
  * Class Links
  *
@@ -94,4 +93,4 @@ class Links implements \JsonSerializable, \IteratorAggregate
     {
         return $this->links;
     }
-} 
+}

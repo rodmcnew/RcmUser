@@ -17,9 +17,10 @@
 
 namespace RcmUser\User\Event;
 
-
-use RcmUser\Result;
-use RcmUser\User\Entity\UserRoleProperty;
+use
+    RcmUser\Result;
+use
+    RcmUser\User\Entity\UserRoleProperty;
 
 /**
  * UserPropertyServiceListeners
@@ -75,7 +76,6 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
         if ($propertyNameSpace !== $thisPropertyNameSpace) {
-
             return false;
         }
 
@@ -85,12 +85,10 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
 
             $property->populate($data);
         } catch (\Exception $e) {
-
             return new \RcmUser\Result(
                 $property,
                 Result::CODE_FAIL,
-                'Property failed to populate with error: ' .
-                $e->getMessage()
+                'Property failed to populate with error: ' . $e->getMessage()
             );
         }
 
@@ -148,4 +146,4 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      * return false;
      * }
      */
-} 
+}

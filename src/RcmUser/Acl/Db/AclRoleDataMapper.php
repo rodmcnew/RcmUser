@@ -17,11 +17,14 @@
 
 namespace RcmUser\Acl\Db;
 
-
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Config\Config;
-use RcmUser\Exception\RcmUserException;
-use RcmUser\Result;
+use
+    RcmUser\Acl\Entity\AclRole;
+use
+    RcmUser\Config\Config;
+use
+    RcmUser\Exception\RcmUserException;
+use
+    RcmUser\Result;
 
 /**
  * class AclRoleDataMapper
@@ -63,7 +66,10 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchSuperAdminRoleId()
     {
-        return new Result($this->config->get('SuperAdminRoleId', null));
+        return new Result($this->config->get(
+            'SuperAdminRoleId',
+            null
+        ));
     }
 
     /**
@@ -74,7 +80,10 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchGuestRoleId()
     {
-        return new Result($this->config->get('GuestRoleId', null));
+        return new Result($this->config->get(
+            'GuestRoleId',
+            null
+        ));
     }
 
     /**
@@ -85,7 +94,10 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchDefaultGuestRoleIds()
     {
-        return new Result($this->config->get('DefaultGuestRoleIds', array()));
+        return new Result($this->config->get(
+            'DefaultGuestRoleIds',
+            array()
+        ));
     }
 
     /**
@@ -96,7 +108,10 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchDefaultUserRoleIds()
     {
-        return new Result($this->config->get('DefaultUserRoleIds', array()));
+        return new Result($this->config->get(
+            'DefaultUserRoleIds',
+            array()
+        ));
     }
 
     /**
@@ -107,8 +122,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchAll()
     {
-        throw new RcmUserException("Method " . __METHOD__
-            . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -121,8 +135,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchByRoleId($roleId)
     {
-        throw new RcmUserException("Method " . __METHOD__
-            . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -135,8 +148,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function fetchByParentRoleId($parentRoleId)
     {
-        throw new RcmUserException("Method " . __METHOD__
-            . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -149,8 +161,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function create(AclRole $aclRole)
     {
-        throw new RcmUserException("Method " . __METHOD__
-            . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -163,8 +174,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function read(AclRole $aclRole)
     {
-        throw new RcmUserException("Method " . __METHOD__
-            . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -177,8 +187,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function update(AclRole $aclRole)
     {
-        throw new RcmUserException("Method " . __METHOD__
-            . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
     /**
@@ -191,7 +200,6 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
      */
     public function delete(AclRole $aclRole)
     {
-        throw new RcmUserException("Method " . __METHOD__
-            . " not implemented.");
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
-} 
+}

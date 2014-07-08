@@ -17,9 +17,12 @@
 
 namespace RcmUser\Service\Factory;
 
-use RcmUser\Controller\Plugin\RcmUserIsAllowed;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    RcmUser\Controller\Plugin\RcmUserIsAllowed;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * ControllerPluginRcmUserIsAllowed

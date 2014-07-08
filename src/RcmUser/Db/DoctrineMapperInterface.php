@@ -17,7 +17,8 @@
 
 namespace RcmUser\Db;
 
-use Doctrine\ORM\EntityManager;
+use
+    Doctrine\ORM\EntityManager;
 
 /**
  * DoctrineMapperInterface
@@ -67,5 +68,4 @@ interface DoctrineMapperInterface
      * @return string
      */
     public function getEntityClass();
-
-} 
+}

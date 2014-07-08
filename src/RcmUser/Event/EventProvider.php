@@ -17,9 +17,12 @@
 
 namespace RcmUser\Event;
 
-use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerAwareInterface;
-use Zend\EventManager\EventManagerInterface;
+use
+    Zend\EventManager\EventManager;
+use
+    Zend\EventManager\EventManagerAwareInterface;
+use
+    Zend\EventManager\EventManagerInterface;
 
 /**
  * Class EventProvider
@@ -52,7 +55,10 @@ abstract class EventProvider implements EventManagerAwareInterface
      */
     public function setEventManager(EventManagerInterface $events)
     {
-        $identifiers = array(__CLASS__, get_called_class());
+        $identifiers = array(
+            __CLASS__,
+            get_called_class()
+        );
 
         $events->setIdentifiers($identifiers);
         $this->events = $events;

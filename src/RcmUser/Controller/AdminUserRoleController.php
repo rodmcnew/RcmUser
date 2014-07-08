@@ -17,9 +17,6 @@
 
 namespace RcmUser\Controller;
 
-use Zend\Http\Response;
-
-
 /**
  * Class AdminUserRoleController
  *
@@ -57,4 +54,4 @@ class AdminUserRoleController extends AbstractAdminController
 
         return $this->buildView($viewArr);
     }
-} 
+}

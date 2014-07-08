@@ -17,9 +17,10 @@
 
 namespace RcmUser\Acl\Entity;
 
-use RcmUser\Exception\RcmUserException;
-use Zend\Permissions\Acl\Resource\GenericResource;
-
+use
+    RcmUser\Exception\RcmUserException;
+use
+    Zend\Permissions\Acl\Resource\GenericResource;
 
 /**
  * Class AclResource
@@ -100,9 +101,7 @@ class AclResource extends GenericResource implements \JsonSerializable
 
         if (!$this->isValidResourceId($resourceId) || empty($resourceId)) {
 
-            throw new RcmUserException(
-                "Resource resourceId ({$resourceId}) is invalid."
-            );
+            throw new RcmUserException("Resource resourceId ({$resourceId}) is invalid.");
         }
 
         $this->resourceId = $resourceId;
@@ -145,9 +144,7 @@ class AclResource extends GenericResource implements \JsonSerializable
 
         if (!$this->isValidResourceId($parentResourceId)) {
 
-            throw new RcmUserException(
-                "Resource parentResourceId ({$parentResourceId}) is invalid."
-            );
+            throw new RcmUserException("Resource parentResourceId ({$parentResourceId}) is invalid.");
         }
 
         if (!empty($this->parentResource)) {
@@ -197,13 +194,11 @@ class AclResource extends GenericResource implements \JsonSerializable
     public function getParentResource()
     {
         if (empty($this->parentResource)) {
-
             return $this->getParentResourceId();
         }
 
         return $this->parentResource;
     }
-
 
     /**
      * setPrivileges
@@ -284,7 +279,11 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function isValidResourceId($resourceId)
     {
-        if (preg_match('/[^a-z_\-0-9\.]/i', $resourceId)) {
+        if (preg_match(
+            '/[^a-z_\-0-9\.]/i',
+            $resourceId
+        )
+        ) {
             return false;
         }
 
@@ -336,9 +335,7 @@ class AclResource extends GenericResource implements \JsonSerializable
             return;
         }
 
-        throw new RcmUserException(
-            'Resource data could not be populated, data format not supported'
-        );
+        throw new RcmUserException('Resource data could not be populated, data format not supported');
     }
 
     /**
@@ -358,4 +355,4 @@ class AclResource extends GenericResource implements \JsonSerializable
 
         return $obj;
     }
-} 
+}

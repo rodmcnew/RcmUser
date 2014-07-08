@@ -17,8 +17,8 @@
 
 namespace RcmUser\Log\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
+use
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class DoctrineLogEntry
@@ -71,4 +71,4 @@ class DoctrineLogEntry extends LogEntry
      * @ORM\Column(type="datetime", nullable=false)
      */
     protected $dateTimeUtc = '';
-} 
+}

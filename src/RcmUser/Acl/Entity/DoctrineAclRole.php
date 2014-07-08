@@ -17,7 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
+use
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * DoctrineAclRole
@@ -105,4 +106,4 @@ class DoctrineAclRole extends AclRole
     {
         return $this->id;
     }
-} 
+}

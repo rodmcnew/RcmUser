@@ -17,12 +17,16 @@
 
 namespace RcmUser\Acl\Db;
 
-
-use Doctrine\ORM\EntityManager;
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\DoctrineAclRole;
-use RcmUser\Db\DoctrineMapperInterface;
-use RcmUser\Result;
+use
+    Doctrine\ORM\EntityManager;
+use
+    RcmUser\Acl\Entity\AclRole;
+use
+    RcmUser\Acl\Entity\DoctrineAclRole;
+use
+    RcmUser\Db\DoctrineMapperInterface;
+use
+    RcmUser\Result;
 
 /**
  * DoctrineAclRoleDataMapper
@@ -39,9 +43,9 @@ use RcmUser\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineAclRoleDataMapper
-    extends AclRoleDataMapper
-    implements AclRoleDataMapperInterface, DoctrineMapperInterface
+class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
+    AclRoleDataMapperInterface,
+    DoctrineMapperInterface
 {
     /**
      * @var EntityManager $entityManager
@@ -105,8 +109,8 @@ class DoctrineAclRoleDataMapper
     public function fetchAll()
     {
         $query = $this->getEntityManager()->createQuery(
-            'SELECT role FROM ' . $this->getEntityClass() . ' role ' .
-            'INDEX BY role.roleId '
+            'SELECT role FROM ' . $this->getEntityClass() . ' role '
+            . 'INDEX BY role.roleId '
         );
 
         $roles = $query->getResult();
@@ -131,8 +135,7 @@ class DoctrineAclRoleDataMapper
     {
         $roles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
-        )
-            ->findOneBy(array('roleId' => $roleId));
+        )->findOneBy(array('roleId' => $roleId));
 
         $result = new Result($roles);
 
@@ -154,8 +157,7 @@ class DoctrineAclRoleDataMapper
     {
         $roles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
-        )
-            ->findBy(array('parentRoleId' => $parentRoleId));
+        )->findBy(array('parentRoleId' => $parentRoleId));
 
         $result = new Result($roles);
 
@@ -184,11 +186,13 @@ class DoctrineAclRoleDataMapper
         $existingAclRole = $result->getData();
 
         if ($result->isSuccess() && !empty($existingAclRole)) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Acl Role already exists: ' . var_export($aclRole, true)
+                'Acl Role already exists: ' . var_export(
+                    $aclRole,
+                    true
+                )
             );
         }
 
@@ -197,11 +201,13 @@ class DoctrineAclRoleDataMapper
             $this->getEntityManager()->persist($aclRole);
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Acl Role could not be created: ' . var_export($aclRole, true)
+                'Acl Role could not be created: ' . var_export(
+                    $aclRole,
+                    true
+                )
             );
         }
 
@@ -229,11 +235,7 @@ class DoctrineAclRoleDataMapper
             return $result;
         }
 
-        return new Result(
-            null,
-            Result::CODE_FAIL,
-            'Acl Role could not be read.'
-        );
+        return new Result(null, Result::CODE_FAIL, 'Acl Role could not be read.');
     }
 
     /**
@@ -251,14 +253,12 @@ class DoctrineAclRoleDataMapper
         $result = $this->read($aclRole);
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
         $existingAclRole = $result->getData();
 
         if (empty($existingAclRole)) {
-
             return new Result(
                 null,
                 Result::CODE_SUCCESS,
@@ -271,11 +271,13 @@ class DoctrineAclRoleDataMapper
             $this->getEntityManager()->merge($aclRole);
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Acl Role could not be updated: ' . var_export($aclRole, true)
+                'Acl Role could not be updated: ' . var_export(
+                    $aclRole,
+                    true
+                )
             );
         }
 
@@ -299,14 +301,12 @@ class DoctrineAclRoleDataMapper
         $result = $this->read($aclRole);
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
         $aclRole = $result->getData();
 
         if (empty($aclRole)) {
-
             return new Result(
                 null,
                 Result::CODE_SUCCESS,
@@ -322,8 +322,7 @@ class DoctrineAclRoleDataMapper
         if (!$result->isSuccess()) {
 
             $result->setMessage(
-                'Failed to find child roles for  ' .
-                $aclRole->getRoleId() . '.'
+                'Failed to find child roles for  ' . $aclRole->getRoleId() . '.'
             );
 
             return $result;
@@ -346,8 +345,8 @@ class DoctrineAclRoleDataMapper
         if (!$result->isSuccess()) {
 
             $result->setMessage(
-                'Failed to update child roles for delete of ' .
-                $aclRole->getRoleId() . '.'
+                'Failed to update child roles for delete of ' . $aclRole->getRoleId()
+                . '.'
             );
 
             return $result;
@@ -358,11 +357,13 @@ class DoctrineAclRoleDataMapper
             $this->getEntityManager()->remove($aclRole);
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Acl Role could not be deleted: ' . var_export($aclRole, true)
+                'Acl Role could not be deleted: ' . var_export(
+                    $aclRole,
+                    true
+                )
             );
         }
 
@@ -392,7 +393,6 @@ class DoctrineAclRoleDataMapper
 
         return new Result($aclRole);
     }
-
 
     /**
      * prepareRoles
@@ -424,17 +424,24 @@ class DoctrineAclRoleDataMapper
      *
      * @return string
      */
-    public function createNamespaceId(AclRole $role, $aclRoles)
-    {
+    public function createNamespaceId(
+        AclRole $role,
+        $aclRoles
+    ) {
         $parentRoleId = $role->getParentRoleId();
         $ns = $role->getRoleId();
         if (!empty($parentRoleId)) {
 
             $parent = $aclRoles[$parentRoleId];
 
-            $ns = $this->createNamespaceId($parent, $aclRoles, $ns) . '.' . $ns;
+            $newns = $this->createNamespaceId(
+                $parent,
+                $aclRoles,
+                $ns
+            );
+            $ns = $newns . '.' . $ns;
         }
 
         return $ns;
     }
-} 
+}
