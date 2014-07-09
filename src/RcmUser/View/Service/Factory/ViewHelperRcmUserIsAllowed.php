@@ -17,10 +17,12 @@
 
 namespace RcmUser\View\Service\Factory;
 
-
-use RcmUser\View\Helper\RcmUserIsAllowed;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    RcmUser\View\Helper\RcmUserIsAllowed;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * ViewHelperRcmUserIsAllowed

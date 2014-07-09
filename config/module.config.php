@@ -27,7 +27,6 @@ return array(
                 'disabled', // **REQUIRED for User entity**
                 'enabled',
             ),
-
             /*
              * DefaultUserState
              * Used in:
@@ -37,7 +36,6 @@ return array(
              * be set on create/update if none is set.
              */
             'DefaultUserState' => 'enabled',
-
             /*
              * Encryptor.passwordCost
              * Used in:
@@ -46,7 +44,6 @@ return array(
              * This should only be changed if you know what you are doing.
              */
             'Encryptor.passwordCost' => 14,
-
             /*
              * InputFilter
              * Used in:
@@ -85,7 +82,6 @@ return array(
                         ),
                     ),
                 ),
-
                 'password' => array(
                     'name' => 'password',
                     'required' => true,
@@ -109,12 +105,12 @@ return array(
                         */
                     ),
                 ),
-
                 'email' => array(
                     'name' => 'email',
                     'required' => true,
-                    'filters'  => array(
-                        array('name' => 'Zend\Filter\StripTags'), // Help protect from XSS
+                    'filters' => array(
+                        array('name' => 'Zend\Filter\StripTags'),
+                        // Help protect from XSS
                         array('name' => 'Zend\Filter\StringTrim'),
                     ),
                     'validators' => array(
@@ -124,20 +120,18 @@ return array(
                 'name' => array(
                     'name' => 'name',
                     'required' => true,
-                    'filters'  => array(
-                        array('name' => 'Zend\Filter\StripTags'), // Help protect from XSS
+                    'filters' => array(
+                        array('name' => 'Zend\Filter\StripTags'),
+                        // Help protect from XSS
                         array('name' => 'Zend\Filter\StringTrim'),
                     ),
-                    'validators' => array(
-                    ),
+                    'validators' => array(),
                 ),
             ),
         ),
-
         'Auth\Config' => array(
             'ObfuscatePasswordOnAuth' => true,
         ),
-
         'Acl\Config' => array(
 
             /*
@@ -151,7 +145,6 @@ return array(
              */
             'DefaultGuestRoleIds' => array('guest'),
             'DefaultUserRoleIds' => array('user'),
-
             /*
              * SuperAdminRoleId
              *
@@ -159,12 +152,10 @@ return array(
              * Basically over-rides standard permission handling
              */
             'SuperAdminRoleId' => 'admin',
-
             /**
              * @todo work this out
              */
             'GuestRoleId' => 'guest',
-
             /*
              * ResourceProviders
              * Used in:
@@ -236,7 +227,6 @@ return array(
             ),
         ),
     ),
-
     'service_manager' => array(
         'factories' => array(
             /*
@@ -246,7 +236,6 @@ return array(
             'RcmUser\User\Config' => 'RcmUser\User\Service\Factory\Config',
             'RcmUser\Auth\Config' => 'RcmUser\Authentication\Service\Factory\Config',
             'RcmUser\Acl\Config' => 'RcmUser\Acl\Service\Factory\Config',
-
             /* ************************************** */
             /* USER ********************************* */
             /* ************************************** */
@@ -271,7 +260,6 @@ return array(
              */
             'RcmUser\User\Service\UserPropertyService' =>
                 'RcmUser\User\Service\Factory\UserPropertyService',
-
             /*
              * UserRoleService - Core User Role data access service
              * Required *
@@ -280,7 +268,6 @@ return array(
              */
             'RcmUser\User\Service\UserRoleService' =>
                 'RcmUser\User\Service\Factory\UserRoleService',
-
             /*
              * UserDataMapper - Data source adapter
              * Required for:
@@ -293,7 +280,6 @@ return array(
              */
             'RcmUser\User\UserDataMapper' =>
                 'RcmUser\User\Service\Factory\DoctrineUserDataMapper',
-
             /* ---------------------------- */
             /*
              * UserRolesDataMapper
@@ -307,7 +293,6 @@ return array(
              */
             'RcmUser\User\UserRolesDataMapper' =>
                 'RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper',
-
             /* - Validations - */
             /*
              * UserValidator - Validates User object data on create and update
@@ -319,7 +304,6 @@ return array(
              */
             'RcmUser\User\Data\UserValidator' =>
                 'RcmUser\User\Service\Factory\UserValidator',
-
             /* - Data Prep - */
             /*
              * Encryptor
@@ -343,7 +327,6 @@ return array(
              */
             'RcmUser\User\Data\UserDataPreparer' =>
                 'RcmUser\User\Service\Factory\DbUserDataPreparer',
-
             /*
              * UserDataServiceListeners
              * Required
@@ -356,14 +339,12 @@ return array(
              */
             'RcmUser\User\UserDataServiceListeners' =>
                 'RcmUser\User\Service\Factory\UserDataServiceListeners',
-
             /*
              * UserRoleDataServiceListeners
              * Required for (User Acl Property populating):
              */
             'RcmUser\User\UserRoleDataServiceListeners' =>
                 'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
-
             /* ************************************** */
             /* AUTH ********************************* */
             /* ************************************** */
@@ -376,7 +357,6 @@ return array(
              */
             'RcmUser\Authentication\Service\UserAuthenticationService' =>
                 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
-
             /* ---------------------------- */
             /*
              * UserAdapter (requires Encryptor)
@@ -421,7 +401,6 @@ return array(
              */
             'RcmUser\Authentication\UserAuthenticationServiceListeners' =>
                 'RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners',
-
             /* ************************************** */
             /* ACL ********************************** */
             /* ************************************** */
@@ -429,13 +408,12 @@ return array(
             /*
              * AclResourceService
              * Used by:
-             *  RcmUser\Acl\Provider\BjyResourceProvider
+             *  RcmUser\Acl\Provider\ResourceProvider
              *
              * Exposes this module's resource aggregation methods
              */
             'RcmUser\Acl\Service\AclResourceService' =>
                 'RcmUser\Acl\Service\Factory\AclResourceService',
-
             /*
              * AuthorizeService (ACL)
              * Used by:
@@ -465,7 +443,6 @@ return array(
              */
             'RcmUser\Acl\AclRuleDataMapper' =>
                 'RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper',
-
             /*
              * AclDataService
              * Required for accessing mappers
@@ -475,7 +452,6 @@ return array(
              */
             'RcmUser\Acl\AclDataService' =>
                 'RcmUser\Acl\Service\Factory\AclDataService',
-
             /* ************************************** */
             /* CORE ********************************* */
             /* ************************************** */
@@ -489,20 +465,17 @@ return array(
              */
             'RcmUser\Service\RcmUserService' =>
                 'RcmUser\Service\Factory\RcmUserService',
-
             /*
              * Provides the Access Resources for this Module to ACL
              * Required *
              */
             'RcmUser\Provider\RcmUserAclResourceProvider' =>
                 'RcmUser\Service\Factory\RcmUserAclResourceProvider',
-
             /*
              * Event Aggregation
              * Required *
              */
             'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
-
             /*
              * Logging
              * Required *
@@ -510,7 +483,6 @@ return array(
             'RcmUser\Log\Logger' => 'RcmUser\Service\Factory\DoctrineLogger',
         ),
     ),
-
     /*
      * Allows doctrine to generate tables as needed
      * Only required if using doctrine entities and mappers
@@ -533,7 +505,6 @@ return array(
             )
         )
     ),
-
     'controllers' => array(
         'invokables' => array(
             // TESTING
@@ -542,48 +513,37 @@ return array(
             // ADMIN GENERAL
             'RcmUser\Controller\AdminJsController' =>
                 'RcmUser\Controller\AdminJsController',
-
             'RcmUser\Controller\AdminCssController' =>
                 'RcmUser\Controller\AdminCssController',
             // ADMIN ACL
             'RcmUser\Controller\AdminAclController' =>
                 'RcmUser\Controller\AdminAclController',
-
             'RcmUser\Controller\AdminApiAclResourcesController' =>
                 'RcmUser\Controller\AdminApiAclResourcesController',
-
             'RcmUser\Controller\AdminApiAclRulesByRolesController' =>
                 'RcmUser\Controller\AdminApiAclRulesByRolesController',
-
             'RcmUser\Controller\AdminApiAclRuleController' =>
                 'RcmUser\Controller\AdminApiAclRuleController',
-
             'RcmUser\Controller\AdminApiAclRoleController' =>
                 'RcmUser\Controller\AdminApiAclRoleController',
-
             'RcmUser\Controller\AdminApiAclDefaultUserRoleController' =>
                 'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
             // ADMIN USERS
             'RcmUser\Controller\AdminUserController' =>
                 'RcmUser\Controller\AdminUserController',
-
             'RcmUser\Controller\AdminApiUserController' =>
                 'RcmUser\Controller\AdminApiUserController',
-
             'RcmUser\Controller\AdminApiUserValidUserStatesController' =>
                 'RcmUser\Controller\AdminApiUserValidUserStatesController',
-
             // ADMIN USER ROLES
             /*'RcmUser\Controller\AdminUserRoleController'
             => 'RcmUser\Controller\AdminUserRoleController',*/
             'RcmUser\Controller\AdminApiUserRolesController' =>
                 'RcmUser\Controller\AdminApiUserRolesController',
-
             'RcmUser\Controller\AdminApiUserRoleController' =>
                 'RcmUser\Controller\AdminApiUserRoleController',
         ),
     ),
-
     'router' => array(
         'routes' => array(
             // GENERAL
@@ -717,6 +677,7 @@ return array(
             /**
              * RcmUserAdminApiAclRole
              * Return roles and exposes create and delete
+             *
              * @api
              */
             'RcmUserAdminApiAclRole' => array(
@@ -735,6 +696,7 @@ return array(
             /**
              * RcmUserAdminApiAclDefaultUserRole
              * Return default User roles
+             *
              * @api
              */
             'RcmUserAdminApiAclDefaultUserRole' => array(
@@ -819,7 +781,6 @@ return array(
                     ),
                 ),
             ),
-
             /* ADMIN USER ROLES
             'RcmUserAdminUserRole' => array(
                 'may_terminate' => true,
@@ -884,7 +845,6 @@ return array(
             ),
         ),
     ),
-
     'view_manager' => array(
         'template_path_stack' => array(
             'RcmUser' => __DIR__ . '/../view',
@@ -893,7 +853,6 @@ return array(
             'ViewJsonStrategy',
         ),
     ),
-
     'controller_plugins' => array(
         'factories' => array(
             'rcmUserIsAllowed' =>
@@ -902,7 +861,6 @@ return array(
                 'RcmUser\Service\Factory\ControllerPluginRcmUserGetCurrentUser',
         ),
     ),
-
     'view_helpers' => array(
         'factories' => array(
             'rcmUserIsAllowed' =>

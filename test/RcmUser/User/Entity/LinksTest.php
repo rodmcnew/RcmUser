@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * LinksTest.php
  *
  * LongDescHere
@@ -38,7 +38,8 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @link      https://github.com/reliv
  * @covers    \RcmUser\User\Entity\Links
  */
-class LinksTest extends \PHPUnit_Framework_TestCase {
+class LinksTest extends \PHPUnit_Framework_TestCase
+{
 
     public function test()
     {

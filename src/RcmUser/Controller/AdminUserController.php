@@ -17,10 +17,8 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use Zend\Http\Response;
-use Zend\View\Model\ViewModel;
-
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
 
 /**
  * Class AdminUserController
@@ -50,7 +48,8 @@ class AdminUserController extends AbstractAdminController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -58,4 +57,4 @@ class AdminUserController extends AbstractAdminController
 
         return $this->buildView($viewArr);
     }
-} 
+}

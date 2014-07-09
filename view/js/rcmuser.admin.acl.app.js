@@ -354,7 +354,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
 
 
             self.getRoles(
-                function(data, status) {
+                function (data, status) {
 
                     $scope.roles = data.data;
                 }
@@ -373,7 +373,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
             };
 
             self.getResources(
-                function(data, status) {
+                function (data, status) {
 
                     $scope.resources = data.data;
                     $scope.resourceCount = $scope.resources.length;

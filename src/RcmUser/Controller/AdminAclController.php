@@ -17,11 +17,8 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\User\Entity\User;
-use Zend\Http\Response;
-use Zend\View\Model\ViewModel;
-
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
 
 /**
  * Class AdminAclController
@@ -50,7 +47,8 @@ class AdminAclController extends AbstractAdminController
         // ACCESS CHECK
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -58,4 +56,4 @@ class AdminAclController extends AbstractAdminController
 
         return $this->buildView($viewArr);
     }
-} 
+}

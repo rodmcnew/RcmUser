@@ -17,12 +17,16 @@
 
 namespace RcmUser\Acl\Service;
 
-use RcmUser\Acl\Entity\AclResource;
-use RcmUser\Acl\Provider\ResourceProvider;
-use RcmUser\Acl\Provider\ResourceProviderInterface;
-use RcmUser\Exception\RcmUserException;
-use Zend\ServiceManager\ServiceLocatorInterface;
-
+use
+    RcmUser\Acl\Entity\AclResource;
+use
+    RcmUser\Acl\Provider\ResourceProvider;
+use
+    RcmUser\Acl\Provider\ResourceProviderInterface;
+use
+    RcmUser\Exception\RcmUserException;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * AclResourceService
@@ -78,7 +82,10 @@ class AclResourceService
      */
     public function __construct($rootResource)
     {
-        $this->rootResource = $this->buildValidResource($rootResource, null);
+        $this->rootResource = $this->buildValidResource(
+            $rootResource,
+            null
+        );
     }
 
     /**
@@ -165,8 +172,10 @@ class AclResourceService
      *
      * @return array
      */
-    public function getResources($resourceId, $providerId = null)
-    {
+    public function getResources(
+        $resourceId,
+        $providerId = null
+    ) {
         $resourceId = strtolower($resourceId);
 
         // add root
@@ -197,9 +206,15 @@ class AclResourceService
             return array();
         }
 
-        $resource = $this->buildValidAclResource($resource, $providerId);
+        $resource = $this->buildValidAclResource(
+            $resource,
+            $providerId
+        );
 
-        $resources = $this->getResourceStack($provider, $resource);
+        $resources = $this->getResourceStack(
+            $provider,
+            $resource
+        );
 
         $this->resources = $this->resources + $resources;
 
@@ -226,19 +241,26 @@ class AclResourceService
 
             foreach ($this->resourceProviders as $providerId => &$provider) {
 
-                $provider = $this->buildValidProvider($provider, $providerId);
+                $provider = $this->buildValidProvider(
+                    $provider,
+                    $providerId
+                );
 
                 $providerResources = $provider->getResources();
 
                 foreach ($providerResources as &$resource) {
 
-                    $resource = $this->buildValidAclResource($resource, $providerId);
+                    $resource = $this->buildValidAclResource(
+                        $resource,
+                        $providerId
+                    );
                     $resourceId = $resource->getResourceId();
 
                     if (!isset($this->resources[$resourceId])) {
 
                         $newResources = $this->getResources(
-                            $resourceId, $providerId
+                            $resourceId,
+                            $providerId
                         );
                         $this->resources = $this->resources + $newResources;
                     }
@@ -298,8 +320,9 @@ class AclResourceService
 
         if ($hasParent && empty($parentResource)) {
 
-            $resources[$resource->getResourceId()]
-                ->setParentResourceId($this->rootResource->getResourceId());
+            $resources[$resource->getResourceId()]->setParentResourceId(
+                $this->rootResource->getResourceId()
+            );
         }
 
         if ($hasParent && !empty($parentResource)) {
@@ -309,12 +332,14 @@ class AclResourceService
                 $provider->getProviderId()
             );
 
-            return $this->getResourceStack($provider, $parentResource, $resources);
+            return $this->getResourceStack(
+                $provider,
+                $parentResource,
+                $resources
+            );
         }
 
         // set parent root
-
-
         return $resources;
     }
 
@@ -328,12 +353,12 @@ class AclResourceService
     public function getProvider($providerId)
     {
         if (!isset($this->resourceProviders[$providerId])) {
-
             return null;
         }
 
         // @codingStandardsIgnoreStart
-        if (!($this->resourceProviders[$providerId] instanceof ResourceProviderInterface)
+        if (!($this->resourceProviders[$providerId] instanceof
+            ResourceProviderInterface)
         ) {
             $this->resourceProviders[$providerId] = $this->buildValidProvider(
                 $this->resourceProviders[$providerId],
@@ -341,7 +366,6 @@ class AclResourceService
             );
         }
         // @codingStandardsIgnoreEnd
-
         return $this->resourceProviders[$providerId];
     }
 
@@ -359,12 +383,14 @@ class AclResourceService
 
         foreach ($this->resourceProviders as $providerId => &$provider) {
 
-            $provider = $this->buildValidProvider($provider, $providerId);
+            $provider = $this->buildValidProvider(
+                $provider,
+                $providerId
+            );
 
             $resource = $provider->getResource($resourceId);
 
             if (!empty($resource)) {
-
                 return $provider;
             }
         }
@@ -387,7 +413,7 @@ class AclResourceService
      *
      * $provider = $this->buildValidProvider($provider, $providerId);
      *
-     * if($provider->hasResource($resourceId)){
+     * if ($provider->hasResource($resourceId)) {
      *
      * return $provider;
      * }
@@ -459,7 +485,10 @@ class AclResourceService
             $resources = $this->getAllResources($refresh);
         } else {
 
-            $resources = $this->getResources($resourceId, $providerId);
+            $resources = $this->getResources(
+                $resourceId,
+                $providerId
+            );
         }
 
         foreach ($resources as $res) {
@@ -498,11 +527,13 @@ class AclResourceService
 
             $parent = $aclResources[$parentId];
 
-            $ns = $this->createNamespaceId(
+            $newns = $this->createNamespaceId(
                 $parent,
                 $aclResources,
                 $nsChar
-            ) . $nsChar . $ns;
+            );
+
+            $ns = $newns . $nsChar . $ns;
         }
 
         return $ns;
@@ -541,9 +572,14 @@ class AclResourceService
      *
      * @return AclResource
      */
-    public function buildValidAclResource($resource, $providerId)
-    {
-        $resource = $this->buildValidResource($resource, $providerId);
+    public function buildValidAclResource(
+        $resource,
+        $providerId
+    ) {
+        $resource = $this->buildValidResource(
+            $resource,
+            $providerId
+        );
         $resource = $this->buildValidParent($resource);
 
         return $resource;
@@ -558,8 +594,10 @@ class AclResourceService
      * @return AclResource
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function buildValidResource($resourceData, $providerId)
-    {
+    public function buildValidResource(
+        $resourceData,
+        $providerId
+    ) {
         if ($resourceData instanceof AclResource) {
 
             $resource = $resourceData;
@@ -570,7 +608,10 @@ class AclResourceService
         } else {
 
             throw new RcmUserException(
-                'Resource is not valid: ' . var_export($resourceData, true)
+                'Resource is not valid: ' . var_export(
+                    $resourceData,
+                    true
+                )
             );
         }
 
@@ -613,8 +654,10 @@ class AclResourceService
      * @return ResourceProviderInterface
      * @throws \RcmUser\Exception\RcmUserException
      */
-    protected function buildValidProvider($providerData, $providerId)
-    {
+    protected function buildValidProvider(
+        $providerData,
+        $providerId
+    ) {
         $provider = null;
 
         if ($providerData instanceof ResourceProviderInterface) {
@@ -631,7 +674,10 @@ class AclResourceService
         if (!($provider instanceof ResourceProviderInterface)) {
 
             throw new RcmUserException(
-                'ResourceProvider is not valid: ' . var_export($providerData, true)
+                'ResourceProvider is not valid: ' . var_export(
+                    $providerData,
+                    true
+                )
             );
         }
 
@@ -639,4 +685,4 @@ class AclResourceService
 
         return $provider;
     }
-} 
+}

@@ -156,7 +156,10 @@ interface UserInterface extends \IteratorAggregate
      * @return mixed|void
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function populate($data, $exclude = array());
+    public function populate(
+        $data,
+        $exclude = array()
+    );
 
     /**
      * getIterator
@@ -164,5 +167,4 @@ interface UserInterface extends \IteratorAggregate
      * @return \Traversable
      */
     public function getIterator();
-
 }

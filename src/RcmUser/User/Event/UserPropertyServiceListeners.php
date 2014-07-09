@@ -17,11 +17,10 @@
 
 namespace RcmUser\User\Event;
 
-
-use RcmUser\Result;
-use RcmUser\User\Entity\Link;
-use RcmUser\User\Entity\Links;
-use RcmUser\User\Entity\UserRoleProperty;
+use
+    RcmUser\Result;
+use
+    RcmUser\User\Entity\UserRoleProperty;
 
 /**
  * UserPropertyServiceListeners
@@ -77,7 +76,6 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         $thisPropertyNameSpace = $this->getUserPropertyKey();
 
         if ($propertyNameSpace !== $thisPropertyNameSpace) {
-
             return false;
         }
 
@@ -87,12 +85,10 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
 
             $property->populate($data);
         } catch (\Exception $e) {
-
             return new \RcmUser\Result(
                 $property,
                 Result::CODE_FAIL,
-                'Property failed to populate with error: ' .
-                $e->getMessage()
+                'Property failed to populate with error: ' . $e->getMessage()
             );
         }
 
@@ -106,27 +102,27 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return \RcmUser\Result
      *
-    public function onGetUserPropertyLinks($e)
-    {
-        $user = $e->getParam('user');
-        $propertyNameSpace = $e->getParam('propertyNameSpace');
-        $thisPropertyNameSpace = $this->getUserPropertyKey();
-
-        if ($propertyNameSpace !== $thisPropertyNameSpace) {
-
-            return false;
-        }
-
-        $links = new Links();
-        $link = new Link();
-        $link->setTitle('Edit User Roles');
-        $link->setType('edit');
-        $link->setHelp('Edit page for adding removing user roles.');
-        $link->setUrl('/admin/' . $user->getId());
-        $links->addLink($link);
-
-        return new Result($links);
-    }
+     * public function onGetUserPropertyLinks($e)
+     * {
+     * $user = $e->getParam('user');
+     * $propertyNameSpace = $e->getParam('propertyNameSpace');
+     * $thisPropertyNameSpace = $this->getUserPropertyKey();
+     *
+     * if ($propertyNameSpace !== $thisPropertyNameSpace) {
+     *
+     * return false;
+     * }
+     *
+     * $links = new Links();
+     * $link = new Link();
+     * $link->setTitle('Edit User Roles');
+     * $link->setType('edit');
+     * $link->setHelp('Edit page for adding removing user roles.');
+     * $link->setUrl('/admin/' . $user->getId());
+     * $links->addLink($link);
+     *
+     * return new Result($links);
+     * }
      */
 
     /**
@@ -136,18 +132,18 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return bool
      *
-    public function onGetUserPropertyIsAllowed($e)
-    {
-        $user = $e->getParam('user');
-        $propertyNameSpace = $e->getParam('propertyNameSpace');
-        $thisPropertyNameSpace = $this->getUserPropertyKey();
-
-        if ($propertyNameSpace !== $thisPropertyNameSpace) {
-
-            return false;
-        }
-
-        return false;
-    }
+     * public function onGetUserPropertyIsAllowed($e)
+     * {
+     * $user = $e->getParam('user');
+     * $propertyNameSpace = $e->getParam('propertyNameSpace');
+     * $thisPropertyNameSpace = $this->getUserPropertyKey();
+     *
+     * if ($propertyNameSpace !== $thisPropertyNameSpace) {
+     *
+     * return false;
+     * }
+     *
+     * return false;
+     * }
      */
-} 
+}

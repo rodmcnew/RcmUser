@@ -17,9 +17,10 @@
 
 namespace RcmUser\User\Service\Factory;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class UserDataService
@@ -56,10 +57,16 @@ class UserDataService implements FactoryInterface
 
         $service = new \RcmUser\User\Service\UserDataService();
         $service->setDefaultUserState(
-            $cfg->get('DefaultUserState', null)
+            $cfg->get(
+                'DefaultUserState',
+                null
+            )
         );
         $service->setValidUserStates(
-            $cfg->get('ValidUserStates', array())
+            $cfg->get(
+                'ValidUserStates',
+                array()
+            )
         );
         $service->setUserDataMapper($userDataMapper);
 

@@ -17,12 +17,18 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Entity\UserRoleProperty;
-use RcmUser\User\Result;
-use Zend\View\Model\JsonModel;
+use
+    RcmUser\Acl\Entity\AclRule;
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\UserRoleProperty;
+use
+    RcmUser\User\Result;
+use
+    Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiUserController
@@ -52,7 +58,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -65,7 +72,6 @@ class AdminApiUserController extends AbstractAdminApiController
 
             $result = $userDataService->getAllUsers(array());
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -85,7 +91,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -101,7 +108,6 @@ class AdminApiUserController extends AbstractAdminApiController
             $result = $userDataService->readUser($user);
 
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -121,7 +127,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'create'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -137,7 +144,6 @@ class AdminApiUserController extends AbstractAdminApiController
             $result = $userDataService->createUser($user);
 
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -157,7 +163,8 @@ class AdminApiUserController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'delete'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -171,12 +178,7 @@ class AdminApiUserController extends AbstractAdminApiController
             $currentUser = $this->rcmUserGetCurrentUser();
 
             if ($id == $currentUser->getId()) {
-
-                return new Result(
-                    $id,
-                    Result::CODE_FAIL,
-                    "Cannot delete yourself."
-                );
+                return new Result($id, Result::CODE_FAIL, "Cannot delete yourself.");
             }
 
             // Build user from request
@@ -185,7 +187,6 @@ class AdminApiUserController extends AbstractAdminApiController
             $result = $userDataService->deleteUser($user);
 
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -200,13 +201,16 @@ class AdminApiUserController extends AbstractAdminApiController
      *
      * @return array|mixed
      */
-    public function update($id, $data)
-    {
+    public function update(
+        $id,
+        $data
+    ) {
         // ACCESS CHECK
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'update'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -228,11 +232,8 @@ class AdminApiUserController extends AbstractAdminApiController
 
                 if ($user->getPassword() !== null) {
 
-                    $result = new Result(
-                        $user,
-                        Result::CODE_FAIL,
-                        "Not allowed to change username and password."
-                    );
+                    $result
+                        = new Result($user, Result::CODE_FAIL, "Not allowed to change username and password.");
 
                     return $this->getJsonResponse($result);
                 }
@@ -250,7 +251,6 @@ class AdminApiUserController extends AbstractAdminApiController
             }
 
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -267,7 +267,10 @@ class AdminApiUserController extends AbstractAdminApiController
     protected function buildUser($data)
     {
         $user = new User();
-        $user->populate($data, array('properties'));
+        $user->populate(
+            $data,
+            array('properties')
+        );
 
         $properties = array();
         if (isset($data['properties'])) {
@@ -278,9 +281,12 @@ class AdminApiUserController extends AbstractAdminApiController
             $roles = $properties[UserRoleProperty::PROPERTY_KEY];
             $userRoleProperty = new UserRoleProperty();
             $userRoleProperty->populate($roles);
-            $user->setProperty(UserRoleProperty::PROPERTY_KEY, $userRoleProperty);
+            $user->setProperty(
+                UserRoleProperty::PROPERTY_KEY,
+                $userRoleProperty
+            );
         }
 
         return $user;
     }
-} 
+}

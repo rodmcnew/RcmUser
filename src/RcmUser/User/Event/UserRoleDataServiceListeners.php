@@ -17,11 +17,14 @@
 
 namespace RcmUser\User\Event;
 
-
-use RcmUser\User\Entity\User;
-use RcmUser\User\Entity\UserRoleProperty;
-use RcmUser\User\Result;
-use RcmUser\User\Service\UserRoleService;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\UserRoleProperty;
+use
+    RcmUser\User\Result;
+use
+    RcmUser\User\Service\UserRoleService;
 
 /**
  * UserRoleDataServiceListeners
@@ -50,7 +53,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     protected $listenerMethods
         = array(
             'onGetAllUsersSuccess' => 'getAllUsersSuccess',
-
             'onBuildUser' => 'buildUser',
             //'onBeforeCreateUser' => 'beforeCreateUser',
             'onCreateUserSuccess' => 'createUserSuccess',
@@ -109,7 +111,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -188,25 +189,25 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      * @param Event $e e
      *
      * @return Result
-        public function onBeforeCreateUser($e)
-        {
-            $requestUser = $e->getParam('requestUser');
-            $responseUser = $e->getParam('responseUser');
-
-            // VALIDATE //
-            $aclRoles = $responseUser->getProperty(
-                $this->getUserPropertyKey()
-            );
-
-            if (!empty($aclRoles)) {
-
-                // @todo Validation logic here
-                // make sure the role sent in is valid
-            }
-
-            return new Result($responseUser);
-        }
-    */
+    public function onBeforeCreateUser($e)
+     * {
+     * $requestUser = $e->getParam('requestUser');
+     * $responseUser = $e->getParam('responseUser');
+     *
+     * // VALIDATE //
+     * $aclRoles = $responseUser->getProperty(
+     * $this->getUserPropertyKey()
+     * );
+     *
+     * if (!empty($aclRoles)) {
+     *
+     * // @todo Validation logic here
+     * // make sure the role sent in is valid
+     * }
+     *
+     * return new Result($responseUser);
+     * }
+     */
 
     /**
      * onCreateUserSuccess
@@ -220,7 +221,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -252,12 +252,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$createResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $createResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $createResult->getMessages(
+            ));
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -276,7 +272,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -285,12 +280,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $readResult = $this->getUserRoleService()->readRoles($responseUser);
 
         if (!$readResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $readResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $readResult->getMessages(
+            ));
         }
 
         $roles = $readResult->getData();
@@ -315,29 +306,29 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return Result
 
-        public function onBeforeUpdateUser($e)
-        {
-            $requestUser = $e->getParam('requestUser');
-            $responseUser = $e->getParam('responseUser');
-            $existingUser = $e->getParam('existingUser');
-
-            // VALIDATE //
-            $userRoleProperty = $responseUser->getProperty(
-                $this->getUserPropertyKey(),
-                new UserRoleProperty(array())
-            );
-
-            $aclRoles = $userRoleProperty->getRoles();
-
-            if (!empty($aclRoles)) {
-
-                // @todo Validation logic here
-                // make sure the role sent in is valid
-            }
-
-            return new Result($responseUser);
-        }
-    */
+    public function onBeforeUpdateUser($e)
+     * {
+     * $requestUser = $e->getParam('requestUser');
+     * $responseUser = $e->getParam('responseUser');
+     * $existingUser = $e->getParam('existingUser');
+     *
+     * // VALIDATE //
+     * $userRoleProperty = $responseUser->getProperty(
+     * $this->getUserPropertyKey(),
+     * new UserRoleProperty(array())
+     * );
+     *
+     * $aclRoles = $userRoleProperty->getRoles();
+     *
+     * if (!empty($aclRoles)) {
+     *
+     * // @todo Validation logic here
+     * // make sure the role sent in is valid
+     * }
+     *
+     * return new Result($responseUser);
+     * }
+     */
 
     /**
      * onUpdateUserSuccess
@@ -351,7 +342,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -384,12 +374,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$updateResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $updateResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $updateResult->getMessages(
+            ));
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -407,7 +393,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -425,12 +410,8 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$deleteResult->isSuccess()) {
-
-            return new Result(
-                $responseUser,
-                Result::CODE_FAIL,
-                $deleteResult->getMessages()
-            );
+            return new Result($responseUser, Result::CODE_FAIL, $deleteResult->getMessages(
+            ));
         }
 
         $userRoleProperty->setRoles(array());
@@ -456,7 +437,10 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         $defaultRoles = $defaultRolesResult->getData();
 
-        return array_diff($roles, $defaultRoles);
+        return array_diff(
+            $roles,
+            $defaultRoles
+        );
     }
 
     /**
@@ -479,8 +463,10 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return UserRoleProperty
      */
-    public function buildValidUserRoleProperty(User $user, $roles = array())
-    {
+    public function buildValidUserRoleProperty(
+        User $user,
+        $roles = array()
+    ) {
         return $this->getUserRoleService()->buildValidUserRoleProperty(
             $user,
             $roles
@@ -495,11 +481,13 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return array
      */
-    public function buildValidRoles(User $user, $roles = array())
-    {
+    public function buildValidRoles(
+        User $user,
+        $roles = array()
+    ) {
         return $this->getUserRoleService()->buildValidRoles(
             $user,
             $roles
         );
     }
-} 
+}

@@ -16,12 +16,16 @@
  */
 namespace RcmUser\User\Db;
 
-
-use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Data\UserDataPreparerInterface;
-use RcmUser\User\Data\UserValidatorInterface;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
+use
+    RcmUser\Exception\RcmUserException;
+use
+    RcmUser\User\Data\UserDataPreparerInterface;
+use
+    RcmUser\User\Data\UserValidatorInterface;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Result;
 
 /**
  * Class UserDataMapper
@@ -60,8 +64,9 @@ class UserDataMapper implements UserDataMapperInterface
      *
      * @return void
      */
-    public function setUserDataPreparer(UserDataPreparerInterface $userDataPreparer)
-    {
+    public function setUserDataPreparer(
+        UserDataPreparerInterface $userDataPreparer
+    ) {
         $this->userDataPreparer = $userDataPreparer;
     }
 
@@ -146,8 +151,10 @@ class UserDataMapper implements UserDataMapperInterface
      * @return Result
      * @throws RcmUserException
      */
-    public function create(User $requestUser, User $responseUser)
-    {
+    public function create(
+        User $requestUser,
+        User $responseUser
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -160,8 +167,10 @@ class UserDataMapper implements UserDataMapperInterface
      * @return Result
      * @throws RcmUserException
      */
-    public function read(User $requestUser, User $responseUser)
-    {
+    public function read(
+        User $requestUser,
+        User $responseUser
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -175,8 +184,11 @@ class UserDataMapper implements UserDataMapperInterface
      * @return mixed|Result
      * @throws RcmUserException
      */
-    public function update(User $requestUser, User $responseUser, User $existingUser)
-    {
+    public function update(
+        User $requestUser,
+        User $responseUser,
+        User $existingUser
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -189,8 +201,10 @@ class UserDataMapper implements UserDataMapperInterface
      * @return mixed|Result
      * @throws RcmUserException
      */
-    public function delete(User $requestUser, User $responseUser)
-    {
+    public function delete(
+        User $requestUser,
+        User $responseUser
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -206,10 +220,9 @@ class UserDataMapper implements UserDataMapperInterface
         $id = $user->getId();
 
         if (empty($id)) {
-
             return false;
         }
 
         return true;
     }
-} 
+}

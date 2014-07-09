@@ -16,10 +16,12 @@
  */
 namespace RcmUser\Controller\Plugin;
 
-use RcmUser\Acl\Service\AuthorizeService;
-use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\User\Entity\User;
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use
+    RcmUser\Acl\Service\AuthorizeService;
+use
+    RcmUser\Authentication\Service\UserAuthenticationService;
+use
+    Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
  * RcmUserIsAllowed
@@ -72,8 +74,11 @@ class RcmUserIsAllowed extends AbstractPlugin
      *
      * @return bool
      */
-    public function __invoke($resourceId, $privilege = null, $providerId = null)
-    {
+    public function __invoke(
+        $resourceId,
+        $privilege = null,
+        $providerId = null
+    ) {
         $user = $this->userAuthService->getIdentity();
 
         return $this->authorizeService->isAllowed(

@@ -17,9 +17,10 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use RcmUser\User\Entity\User;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class DoctrineUserDataMapper

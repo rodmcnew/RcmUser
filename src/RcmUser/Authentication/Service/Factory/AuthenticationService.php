@@ -17,9 +17,10 @@
 
 namespace RcmUser\Authentication\Service\Factory;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * AuthenticationService.php
@@ -51,9 +52,6 @@ class AuthenticationService implements FactoryInterface
         $storage = $serviceLocator->get('RcmUser\Authentication\Storage');
         $adapter = $serviceLocator->get('RcmUser\Authentication\Adapter');
 
-        return new \RcmUser\Authentication\Service\AuthenticationService(
-            $storage,
-            $adapter
-        );
+        return new \RcmUser\Authentication\Service\AuthenticationService($storage, $adapter);
     }
 }

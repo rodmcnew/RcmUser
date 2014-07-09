@@ -17,7 +17,6 @@
 
 namespace RcmUser\User\Entity;
 
-
 /**
  * Interface UserRoleInterface
  *
@@ -82,4 +81,4 @@ interface UserRoleInterface
      * @return mixed
      */
     public function getUserId();
-} 
+}

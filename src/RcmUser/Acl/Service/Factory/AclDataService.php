@@ -17,8 +17,10 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * AclDataService
@@ -46,8 +48,12 @@ class AclDataService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $aclRoleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRoleDataMapper');
-        $aclRuleDataMapper = $serviceLocator->get('RcmUser\Acl\AclRuleDataMapper');
+        $aclRoleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRoleDataMapper'
+        );
+        $aclRuleDataMapper = $serviceLocator->get(
+            'RcmUser\Acl\AclRuleDataMapper'
+        );
 
         $service = new \RcmUser\Acl\Service\AclDataService();
         $service->setAclRoleDataMapper($aclRoleDataMapper);

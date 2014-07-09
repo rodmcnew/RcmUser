@@ -17,13 +17,14 @@
 
 namespace RcmUser\User\Data;
 
-
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
-use Zend\InputFilter\BaseInputFilter;
-use Zend\InputFilter\Factory;
-use Zend\InputFilter\InputFilter;
-use Zend\InputFilter\InputFilterInterface;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Result;
+use
+    Zend\InputFilter\Factory;
+use
+    Zend\InputFilter\InputFilterInterface;
 
 /**
  * Class UserValidator
@@ -60,13 +61,14 @@ class UserValidator implements UserValidatorInterface
     /**
      * @var array $validatableFields
      */
-    protected $validatableFields = array(
-        'username',
-        'password',
-        'state',
-        'email',
-        'name',
-    );
+    protected $validatableFields
+        = array(
+            'username',
+            'password',
+            'state',
+            'email',
+            'name',
+        );
 
     /**
      * __construct
@@ -152,7 +154,6 @@ class UserValidator implements UserValidatorInterface
         return $this->userInputFilterFactory;
     }
 
-
     /**
      * validateUpdateUser
      *
@@ -181,12 +182,16 @@ class UserValidator implements UserValidatorInterface
             ) {
 
                 $inputFilter->add(
-                    $factory->createInput($inputs[$field]), $field
+                    $factory->createInput($inputs[$field]),
+                    $field
                 );
             }
         }
 
-        $validateResult = $this->validateUser($requestUser, $inputFilter);
+        $validateResult = $this->validateUser(
+            $requestUser,
+            $inputFilter
+        );
 
         $responseUser->populate($validateResult->getUser());
 
@@ -218,12 +223,16 @@ class UserValidator implements UserValidatorInterface
             ) {
 
                 $inputFilter->add(
-                    $factory->createInput($inputs[$field]), $field
+                    $factory->createInput($inputs[$field]),
+                    $field
                 );
             }
         }
 
-        $validateResult = $this->validateUser($requestUser, $inputFilter);
+        $validateResult = $this->validateUser(
+            $requestUser,
+            $inputFilter
+        );
 
         $responseUser->populate($validateResult->getUser());
 
@@ -255,11 +264,8 @@ class UserValidator implements UserValidatorInterface
             return new Result($validUser);
         } else {
 
-            $result = new Result(
-                $validUser,
-                Result::CODE_FAIL,
-                'User input not valid'
-            );
+            $result
+                = new Result($validUser, Result::CODE_FAIL, 'User input not valid');
 
             foreach ($inputFilter->getInvalidInput() as $error) {
 
@@ -277,4 +283,4 @@ class UserValidator implements UserValidatorInterface
             return $result;
         }
     }
-} 
+}

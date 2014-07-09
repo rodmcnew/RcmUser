@@ -17,9 +17,10 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * AuthorizeService
@@ -54,12 +55,9 @@ class AuthorizeService implements FactoryInterface
             'RcmUser\Acl\AclDataService'
         );
 
-        $service = new \RcmUser\Acl\Service\AuthorizeService(
-            $aclResourceService,
-            $aclDataService
-        );
+        $service
+            = new \RcmUser\Acl\Service\AuthorizeService($aclResourceService, $aclDataService);
 
         return $service;
     }
-
-} 
+}

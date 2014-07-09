@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * AclRoleTest.php
  *
  * TEST
@@ -62,14 +62,32 @@ class AclRoleTest extends Zf2TestCase
         $aclRole->setParentRoleId($prole);
         $aclRole->setDescription($desc);
 
-        $this->assertTrue($aclRole->getRoleId() === $role, 'Setter or getter failed.');
-        $this->assertTrue($aclRole->getRoleId() === $role, 'Setter or getter failed.');
-        $this->assertTrue($aclRole->getParentRoleId() === $prole, 'Setter or getter failed.');
-        $this->assertTrue($aclRole->getParent() === $prole, 'Setter or getter failed.');
-        $this->assertTrue($aclRole->getDescription() === $desc, 'Setter or getter failed.');
+        $this->assertTrue(
+            $aclRole->getRoleId() === $role,
+            'Setter or getter failed.'
+        );
+        $this->assertTrue(
+            $aclRole->getRoleId() === $role,
+            'Setter or getter failed.'
+        );
+        $this->assertTrue(
+            $aclRole->getParentRoleId() === $prole,
+            'Setter or getter failed.'
+        );
+        $this->assertTrue(
+            $aclRole->getParent() === $prole,
+            'Setter or getter failed.'
+        );
+        $this->assertTrue(
+            $aclRole->getDescription() === $desc,
+            'Setter or getter failed.'
+        );
 
         $aclRole->setParentRole($parentAclRole);
-        $this->assertTrue($aclRole->getParent() === $parentAclRole, 'Setter or getter failed.');
+        $this->assertTrue(
+            $aclRole->getParent() === $parentAclRole,
+            'Setter or getter failed.'
+        );
     }
 
     /**
@@ -82,10 +100,10 @@ class AclRoleTest extends Zf2TestCase
         $aclRole = new AclRole();
         $roleId = '!inV@lid';
 
-        try{
+        try {
             $aclRole->setRoleId($roleId);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -104,10 +122,10 @@ class AclRoleTest extends Zf2TestCase
         $aclRole = new AclRole();
         $roleId = '';
 
-        try{
+        try {
             $aclRole->setRoleId($roleId);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -126,10 +144,10 @@ class AclRoleTest extends Zf2TestCase
         $aclRole = new AclRole();
         $roleId = '!inV@lid';
 
-        try{
+        try {
             $aclRole->setParentRoleId($roleId);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -146,19 +164,29 @@ class AclRoleTest extends Zf2TestCase
     public function testSetParentRoleId()
     {
         $aclRole = new AclRole();
-        $parentAclRole  = new AclRole();
+        $parentAclRole = new AclRole();
         $parentAclRole->setRoleId('2222');
         $aclRole->setParentRoleId('');
 
-        $this->assertNull($aclRole->getParentRoleId(), 'Role id that is set empty should be null');
+        $this->assertNull(
+            $aclRole->getParentRoleId(),
+            'Role id that is set empty should be null'
+        );
 
         $aclRole->setParentRole($parentAclRole);
 
-        $this->assertEquals($parentAclRole->getRoleId(), $aclRole->getParentRoleId(), 'Parent role id not populated.');
+        $this->assertEquals(
+            $parentAclRole->getRoleId(),
+            $aclRole->getParentRoleId(),
+            'Parent role id not populated.'
+        );
 
         $aclRole->setParentRoleId('3333');
 
-        $this->assertNull($aclRole->getParentRole(), 'New parent id should clear parent role object');
+        $this->assertNull(
+            $aclRole->getParentRole(),
+            'New parent id should clear parent role object'
+        );
     }
 
     /**
@@ -191,16 +219,22 @@ class AclRoleTest extends Zf2TestCase
 
         $aclRole->populate($aclRoleA);
 
-        $this->assertTrue($aclRole->getRoleId() === 'arrayrolea', 'Setter or getter failed.');
+        $this->assertTrue(
+            $aclRole->getRoleId() === 'arrayrolea',
+            'Setter or getter failed.'
+        );
 
         $aclRole->populate($aclRoleB);
 
-        $this->assertTrue($aclRole->getRoleId() === 'roleb', 'Setter or getter failed.');
+        $this->assertTrue(
+            $aclRole->getRoleId() === 'roleb',
+            'Setter or getter failed.'
+        );
 
-        try{
+        try {
             $aclRole->populate($aclRoleC);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -251,7 +285,9 @@ class AclRoleTest extends Zf2TestCase
         $this->assertTrue(is_array($aclRoleArr), 'Iterator failed work.');
 
         $this->assertArrayHasKey(
-            'roleId', $aclRoleArr, 'Iterator did not populate correctly.'
+            'roleId',
+            $aclRoleArr,
+            'Iterator did not populate correctly.'
         );
     }
 
@@ -265,7 +301,11 @@ class AclRoleTest extends Zf2TestCase
         $aclRole = new AclRole();
         $aclRole->setRoleId('role');
 
-        $this->assertEquals('role', $aclRole->__toString(), 'toString should return role id.');
+        $this->assertEquals(
+            'role',
+            $aclRole->__toString(),
+            'toString should return role id.'
+        );
     }
 }
  

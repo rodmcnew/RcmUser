@@ -17,11 +17,14 @@
 
 namespace RcmUser\User\Service;
 
-
-use RcmUser\Result;
-use RcmUser\User\Db\UserRolesDataMapperInterface;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Entity\UserRoleProperty;
+use
+    RcmUser\Result;
+use
+    RcmUser\User\Db\UserRolesDataMapperInterface;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\UserRoleProperty;
 
 /**
  * Class UserRoleService
@@ -141,13 +144,15 @@ class UserRoleService
     public function isGuest($roles)
     {
         $guestRoleId = $this->getGuestRoleId()->getData();
-        $inArray = in_array($guestRoleId, $roles);
+        $inArray = in_array(
+            $guestRoleId,
+            $roles
+        );
 
         /**
          * If we have the guest role and only the guest role;
          */
         if ($inArray && (count($roles) < 2)) {
-
             return true;
         }
 
@@ -165,8 +170,11 @@ class UserRoleService
     {
         $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
 
-        if (in_array($superAdminRoleId, $roles)) {
-
+        if (in_array(
+            $superAdminRoleId,
+            $roles
+        )
+        ) {
             return true;
         }
 
@@ -186,7 +194,10 @@ class UserRoleService
 
         $defaultRoles = $defaultRolesResult->getData();
 
-        return array_diff($roles, $defaultRoles);
+        return array_diff(
+            $roles,
+            $defaultRoles
+        );
     }
 
     /**
@@ -200,8 +211,11 @@ class UserRoleService
     {
         $defaultGuestRoles = $this->getDefaultUserRoleIds()->getData();
 
-        if (in_array($roleId, $defaultGuestRoles)) {
-
+        if (in_array(
+            $roleId,
+            $defaultGuestRoles
+        )
+        ) {
             return true;
         }
 
@@ -219,7 +233,10 @@ class UserRoleService
     {
         $defaultUserRoles = $this->getDefaultUserRoleIds()->getData();
 
-        return in_array($roleId, $defaultUserRoles);
+        return in_array(
+            $roleId,
+            $defaultUserRoles
+        );
     }
 
     /**
@@ -230,10 +247,11 @@ class UserRoleService
      *
      * @return bool
      */
-    public function canAddRole(User $user, $aclRoleId)
-    {
+    public function canAddRole(
+        User $user,
+        $aclRoleId
+    ) {
         if ($this->isDefaultUserRole($aclRoleId)) {
-
             return false;
         }
 
@@ -248,8 +266,10 @@ class UserRoleService
      *
      * @return bool
      */
-    public function canRemoveRole(User $user, $roleId)
-    {
+    public function canRemoveRole(
+        User $user,
+        $roleId
+    ) {
         return true;
     }
 
@@ -261,18 +281,22 @@ class UserRoleService
      *
      * @return \RcmUser\User\Db\Result
      */
-    public function addRole(User $user, $roleId)
-    {
-        if (!$this->canAddRole($user, $roleId)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                "Role ({$roleId}) is set via logic and cannot be added."
-            );
+    public function addRole(
+        User $user,
+        $roleId
+    ) {
+        if (!$this->canAddRole(
+            $user,
+            $roleId
+        )
+        ) {
+            return new Result(null, Result::CODE_FAIL, "Role ({$roleId}) is set via logic and cannot be added.");
         }
 
-        return $this->getUserRolesDataMapper()->add($user, $roleId);
+        return $this->getUserRolesDataMapper()->add(
+            $user,
+            $roleId
+        );
     }
 
     /**
@@ -283,18 +307,22 @@ class UserRoleService
      *
      * @return Result
      */
-    public function removeRole(User $user, $roleId)
-    {
-        if (!$this->canRemoveRole($user, $roleId)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                "Role ({$roleId}) is set via logic and cannot be removed."
-            );
+    public function removeRole(
+        User $user,
+        $roleId
+    ) {
+        if (!$this->canRemoveRole(
+            $user,
+            $roleId
+        )
+        ) {
+            return new Result(null, Result::CODE_FAIL, "Role ({$roleId}) is set via logic and cannot be removed.");
         }
 
-        return $this->getUserRolesDataMapper()->remove($user, $roleId);
+        return $this->getUserRolesDataMapper()->remove(
+            $user,
+            $roleId
+        );
     }
 
     /**
@@ -305,11 +333,16 @@ class UserRoleService
      *
      * @return Result
      */
-    public function createRoles(User $user, $roles = array())
-    {
+    public function createRoles(
+        User $user,
+        $roles = array()
+    ) {
         $roles = $this->parseSavableRoles($roles);
 
-        return $this->getUserRolesDataMapper()->create($user, $roles);
+        return $this->getUserRolesDataMapper()->create(
+            $user,
+            $roles
+        );
     }
 
     /**
@@ -333,11 +366,16 @@ class UserRoleService
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function updateRoles(User $user, $roles = array())
-    {
+    public function updateRoles(
+        User $user,
+        $roles = array()
+    ) {
         $roles = $this->parseSavableRoles($roles);
 
-        return $this->getUserRolesDataMapper()->update($user, $roles);
+        return $this->getUserRolesDataMapper()->update(
+            $user,
+            $roles
+        );
     }
 
     /**
@@ -349,11 +387,16 @@ class UserRoleService
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function deleteRoles(User $user, $roles = array())
-    {
+    public function deleteRoles(
+        User $user,
+        $roles = array()
+    ) {
         $roles = $this->parseSavableRoles($roles);
 
-        return $this->getUserRolesDataMapper()->delete($user, $roles);
+        return $this->getUserRolesDataMapper()->delete(
+            $user,
+            $roles
+        );
     }
 
     /**
@@ -366,9 +409,7 @@ class UserRoleService
     public function buildUserRoleProperty(
         $roles = array()
     ) {
-        return new UserRoleProperty(
-            $roles
-        );
+        return new UserRoleProperty($roles);
     }
 
     /**
@@ -407,7 +448,6 @@ class UserRoleService
         $roles = array()
     ) {
         if (!empty($roles)) {
-
             return $roles;
         }
 
@@ -422,4 +462,4 @@ class UserRoleService
 
         return $roles;
     }
-} 
+}

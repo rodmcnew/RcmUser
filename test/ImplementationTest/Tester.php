@@ -57,8 +57,7 @@ class Tester implements ServiceLocatorAwareInterface
     public static function testAll(
         ServiceLocatorInterface $serviceLocator,
         $params = array()
-    )
-    {
+    ) {
         $message = '';
 
         $message .= self::testCase1($serviceLocator, $params);
@@ -83,8 +82,7 @@ class Tester implements ServiceLocatorAwareInterface
     public static function testCase1(
         ServiceLocatorInterface $serviceLocator,
         $params = array()
-    )
-    {
+    ) {
         $startTime = time();
 
         $tester = new Tester($serviceLocator);
@@ -172,7 +170,9 @@ class Tester implements ServiceLocatorAwareInterface
             return $tester->getMessage();
         }
 
-        $tester->addMessage("Read attempt after delete - make sure data is gone:");
+        $tester->addMessage(
+            "Read attempt after delete - make sure data is gone:"
+        );
         $user = $tester->testReadUser($user);
 
         if (!empty($user)) {
@@ -201,8 +201,7 @@ class Tester implements ServiceLocatorAwareInterface
     public static function testCase2(
         ServiceLocatorInterface $serviceLocator,
         $params = array()
-    )
-    {
+    ) {
         $startTime = time();
 
         $tester = new Tester($serviceLocator);
@@ -212,7 +211,9 @@ class Tester implements ServiceLocatorAwareInterface
 
         $user = self::parseParam($params, 'user');
         $password = self::parseParam(
-            $params, 'userPlainTextPassword', 'pass_testCase_2_word1'
+            $params,
+            'userPlainTextPassword',
+            'pass_testCase_2_word1'
         );
 
         $testState = 'TEST-SESSION-UPDATE';
@@ -222,9 +223,13 @@ class Tester implements ServiceLocatorAwareInterface
             $user = new User();
             $user->setUsername('testCase_2');
             $user->setPassword($password);
-            $tester->addMessage("Create test user: " . json_encode($user, true));
+            $tester->addMessage(
+                "Create test user: " . json_encode($user, true)
+            );
             $user = $tester->rcmUserService->buildUser($user);
-            $tester->addMessage("->buildUser result: " . json_encode($user, true));
+            $tester->addMessage(
+                "->buildUser result: " . json_encode($user, true)
+            );
             $user = $tester->testCreateUser($user);
             if (empty($user)) {
                 $tester->addMessage("TEST FAILED");
@@ -237,12 +242,14 @@ class Tester implements ServiceLocatorAwareInterface
         // clean up session
         $tester->addMessage(
             "Get current session user: " . json_encode(
-                $tester->rcmUserService->getIdentity(), true
+                $tester->rcmUserService->getIdentity(),
+                true
             )
         );
         $tester->addMessage(
             "Log Out current session user: " . json_encode(
-                $tester->rcmUserService->clearIdentity(), true
+                $tester->rcmUserService->clearIdentity(),
+                true
             )
         );
         // should not be a session user
@@ -310,7 +317,8 @@ class Tester implements ServiceLocatorAwareInterface
 
             $tester->addMessage(
                 "Updated state: " . json_encode(
-                    $tester->rcmUserService->getIdentity(), true
+                    $tester->rcmUserService->getIdentity(),
+                    true
                 )
             );
         }
@@ -360,8 +368,7 @@ class Tester implements ServiceLocatorAwareInterface
     public static function testCase3(
         ServiceLocatorInterface $serviceLocator,
         $params = array()
-    )
-    {
+    ) {
         $startTime = time();
 
         $tester = new Tester($serviceLocator);
@@ -371,10 +378,14 @@ class Tester implements ServiceLocatorAwareInterface
 
         $user = self::parseParam($params, 'user');
         $password = self::parseParam(
-            $params, 'userPlainTextPassword', 'pass_testCase_3_word1'
+            $params,
+            'userPlainTextPassword',
+            'pass_testCase_3_word1'
         );
         $userRoles = self::parseParam(
-            $params, 'userRoles', array('admin')
+            $params,
+            'userRoles',
+            array('admin')
         );
 
         // build new user if
@@ -382,13 +393,20 @@ class Tester implements ServiceLocatorAwareInterface
             $user = new User();
             $user->setUsername('testCase_3');
             $user->setPassword($password);
-            $tester->addMessage("Create test user: " . json_encode($user, true));
+            $tester->addMessage(
+                "Create test user: " . json_encode($user, true)
+            );
             $user = $tester->rcmUserService->buildUser($user);
             $userRoleProperty = new UserRoleProperty(
                 $userRoles
             );
-            $user->setProperty(UserRoleProperty::PROPERTY_KEY, $userRoleProperty);
-            $tester->addMessage("->buildUser result: " . json_encode($user, true));
+            $user->setProperty(
+                UserRoleProperty::PROPERTY_KEY,
+                $userRoleProperty
+            );
+            $tester->addMessage(
+                "->buildUser result: " . json_encode($user, true)
+            );
             $user = $tester->testCreateUser($user);
             if (empty($user)) {
                 $tester->addMessage("TEST FAILED");
@@ -399,7 +417,11 @@ class Tester implements ServiceLocatorAwareInterface
             $testUserId = $user->getId();
         }
 
-        $resource = self::parseParam($params, 'resource', RcmUserAclResourceProvider::RESOURCE_ID_ROOT);
+        $resource = self::parseParam(
+            $params,
+            'resource',
+            RcmUserAclResourceProvider::RESOURCE_ID_ROOT
+        );
         $privilege = self::parseParam($params, 'privilege', '');
 
         $user->setPassword($password);
@@ -419,30 +441,48 @@ class Tester implements ServiceLocatorAwareInterface
             return $tester->getMessage();
         }
 
-        $properties = $user->getProperty(UserRoleProperty::PROPERTY_KEY, 'NOT SET');
+        $properties = $user->getProperty(
+            UserRoleProperty::PROPERTY_KEY,
+            'NOT SET'
+        );
         if ($properties === 'NOT SET') {
             $tester->addMessage("TEST FAILED");
 
             return $tester->getMessage();
         }
 
-        $tester->addMessage("Current user roles: " . json_encode($properties, true));
+        $tester->addMessage(
+            "Current user roles: " . json_encode($properties, true)
+        );
 
 
         /* ACL VALUES */
         $tester->addMessage(
             "ACL Roles: " .
-            json_encode($tester->authorizeService->getAcl(RcmUserAclResourceProvider::RESOURCE_ID_ROOT, 'RcmUser')->getRoles(), true)
+            json_encode(
+                $tester->authorizeService->getAcl(
+                    RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
+                    'RcmUser'
+                )->getRoles(),
+                true
+            )
         );
         $tester->addMessage(
             "ACL Resources: " .
-            json_encode($tester->authorizeService->getAcl(RcmUserAclResourceProvider::RESOURCE_ID_ROOT, 'RcmUser')->getResources(), true)
+            json_encode(
+                $tester->authorizeService->getAcl(
+                    RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
+                    'RcmUser'
+                )->getResources(),
+                true
+            )
         );
 
         /* ACL CHECK *
         /* RcmUser */
         $tester->addMessage(
-            "ACL CHECK: rcmUserService->rcmUserIsAllowed($resource, $privilege) = " .
+            "ACL CHECK: rcmUserService->rcmUserIsAllowed($resource, $privilege) = "
+            .
             json_encode(
                 $tester->rcmUserService->IsAllowed($resource, $privilege)
             )

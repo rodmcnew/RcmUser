@@ -17,10 +17,12 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\Result;
-use Zend\View\Model\JsonModel;
+use
+    RcmUser\Acl\Entity\AclRule;
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiAclRuleController
@@ -52,7 +54,8 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -72,7 +75,8 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'create'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -87,7 +91,6 @@ class AdminApiAclRuleController extends AbstractAdminApiController
             $aclRule->populate($data);
             $result = $aclDataService->createRule($aclRule);
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
@@ -107,7 +110,8 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'delete'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -116,17 +120,19 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         );
 
         try {
-            $data = json_decode($this->getRequest()->getContent(), true);
+            $data = json_decode(
+                $this->getRequest()->getContent(),
+                true
+            );
             //$data = json_decode(urldecode($id), true);
 
             $aclRule = new AclRule();
             $aclRule->populate($data);
             $result = $aclDataService->deleteRule($aclRule);
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
         return $this->getJsonResponse($result);
     }
-} 
+}

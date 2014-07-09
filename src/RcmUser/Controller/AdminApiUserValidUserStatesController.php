@@ -17,11 +17,12 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\Result;
-use Zend\View\Model\JsonModel;
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    RcmUser\Result;
+use
+    Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiUserValidUserStatesController
@@ -51,7 +52,8 @@ class AdminApiUserValidUserStatesController extends AbstractAdminApiController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'read'
-        )) {
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -62,15 +64,11 @@ class AdminApiUserValidUserStatesController extends AbstractAdminApiController
 
         try {
 
-            $result = new Result(
-                $userDataService->getValidUserStates()
-            );
+            $result = new Result($userDataService->getValidUserStates());
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 
         return $this->getJsonResponse($result);
     }
-
-} 
+}

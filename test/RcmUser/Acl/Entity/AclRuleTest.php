@@ -218,7 +218,9 @@ class AclRuleTest extends Zf2TestCase
         $this->assertTrue(is_array($array1), 'Iterator failed work.');
 
         $this->assertArrayHasKey(
-            'rule', $array1, 'Iterator did not populate correctly.'
+            'rule',
+            $array1,
+            'Iterator did not populate correctly.'
         );
     }
 }

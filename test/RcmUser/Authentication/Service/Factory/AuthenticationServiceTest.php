@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * AuthenticationServiceTest.php
  *
  * LongDescHere
@@ -38,7 +38,8 @@ require_once __DIR__ . '/../../../../Zf2TestCase.php';
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Authentication\Service\Factory\AuthenticationService
  */
-class AuthenticationServiceTest extends Zf2TestCase {
+class AuthenticationServiceTest extends Zf2TestCase
+{
     /**
      * test
      *

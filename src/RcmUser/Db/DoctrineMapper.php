@@ -17,7 +17,8 @@
 
 namespace RcmUser\Db;
 
-use Doctrine\ORM\EntityManager;
+use
+    Doctrine\ORM\EntityManager;
 
 /**
  * DoctrineMapper
@@ -65,7 +66,6 @@ class DoctrineMapper implements DoctrineMapperInterface
      */
     public function getEntityManager()
     {
-
         return $this->entityManager;
     }
 
@@ -90,5 +90,4 @@ class DoctrineMapper implements DoctrineMapperInterface
     {
         return $this->entityClass;
     }
-
-} 
+}

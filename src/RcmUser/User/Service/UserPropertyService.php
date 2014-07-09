@@ -17,10 +17,12 @@
 
 namespace RcmUser\User\Service;
 
-
-use RcmUser\Event\EventProvider;
-use RcmUser\Result;
-use RcmUser\User\Entity\User;
+use
+    RcmUser\Event\EventProvider;
+use
+    RcmUser\Result;
+use
+    RcmUser\User\Entity\User;
 
 /**
  * Class UserPropertyService
@@ -55,7 +57,10 @@ class UserPropertyService extends EventProvider
         $dflt = null,
         $refresh = false
     ) {
-        $property = $user->getProperty($propertyNameSpace, null);
+        $property = $user->getProperty(
+            $propertyNameSpace,
+            null
+        );
 
         // if a property is not set, see try to get it from an event listener
         if ($property === null || $refresh) {
@@ -63,11 +68,17 @@ class UserPropertyService extends EventProvider
             $this->getEventManager()->trigger(
                 __FUNCTION__,
                 $this,
-                array('user' => $user, 'propertyNameSpace' => $propertyNameSpace)
+                array(
+                    'user' => $user,
+                    'propertyNameSpace' => $propertyNameSpace
+                )
             );
         }
 
-        $property = $user->getProperty($propertyNameSpace, $dflt);
+        $property = $user->getProperty(
+            $propertyNameSpace,
+            $dflt
+        );
 
         return $property;
     }
@@ -88,7 +99,10 @@ class UserPropertyService extends EventProvider
         $results = $this->getEventManager()->trigger(
             __FUNCTION__,
             $this,
-            array('propertyNameSpace' => $propertyNameSpace, 'data' => $data),
+            array(
+                'propertyNameSpace' => $propertyNameSpace,
+                'data' => $data
+            ),
             function ($result) {
 
                 if ($result instanceof Result) {
@@ -100,7 +114,6 @@ class UserPropertyService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
@@ -123,7 +136,10 @@ class UserPropertyService extends EventProvider
         $results = $this->getEventManager()->trigger(
             __FUNCTION__,
             $this,
-            array('user' => $user, 'propertyNameSpace' => $propertyNameSpace),
+            array(
+                'user' => $user,
+                'propertyNameSpace' => $propertyNameSpace
+            ),
             function ($result) {
 
                 if ($result instanceof Result) {
@@ -135,7 +151,6 @@ class UserPropertyService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
@@ -159,7 +174,10 @@ class UserPropertyService extends EventProvider
         $results = $this->getEventManager()->trigger(
             __FUNCTION__,
             $this,
-            array('user' => $user, 'propertyNameSpace' => $propertyNameSpace),
+            array(
+                'user' => $user,
+                'propertyNameSpace' => $propertyNameSpace
+            ),
             function ($result) {
 
                 if ($result instanceof Result) {
@@ -171,11 +189,9 @@ class UserPropertyService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
         return new Result(true, Result::CODE_FAIL, 'No Access property found.');
     }
-
-} 
+}

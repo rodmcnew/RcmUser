@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * UserSessionTest.php
  *
  * LongDescHere
@@ -37,7 +37,8 @@ use RcmUser\Authentication\Storage\UserSession;
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Authentication\Storage\UserSession
  */
-class UserSessionTest extends \PHPUnit_Framework_TestCase {
+class UserSessionTest extends \PHPUnit_Framework_TestCase
+{
 
     public function testConstruct()
     {

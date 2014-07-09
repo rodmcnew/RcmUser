@@ -120,7 +120,9 @@ class AclResourceTest extends Zf2TestCase
             'Set or get failed.'
         );
 
-        $aclResource->setParentResourceId($aclResourceArray['parentResourceId']);
+        $aclResource->setParentResourceId(
+            $aclResourceArray['parentResourceId']
+        );
         $this->assertEquals(
             $aclResourceArray['parentResourceId'],
             $aclResource->getParentResourceId(),
@@ -171,10 +173,10 @@ class AclResourceTest extends Zf2TestCase
 
         $this->assertFalse($isvalid, 'Resource not valid, but said it was.');
 
-        try{
+        try {
             $aclResource->setResourceId($badResourceId);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -205,10 +207,10 @@ class AclResourceTest extends Zf2TestCase
 
         $badResourceId = "!inv@lid$";
 
-        try{
+        try {
             $aclResource->setParentResourceId($badResourceId);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -307,10 +309,10 @@ class AclResourceTest extends Zf2TestCase
         );
 
         // exception
-        try{
+        try {
             $aclResource3->populate('NOPE');
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -330,7 +332,11 @@ class AclResourceTest extends Zf2TestCase
 
         $stdObj = $aclResource->jsonSerialize();
 
-        $this->assertInstanceOf('\stdClass', $stdObj, 'jsonSerialize did not return std class.');
+        $this->assertInstanceOf(
+            '\stdClass',
+            $stdObj,
+            'jsonSerialize did not return std class.'
+        );
 
         $json = json_encode($aclResource);
 

@@ -17,10 +17,12 @@
 
 namespace RcmUser\User\Db;
 
-use RcmUser\Acl\Db\AclRoleDataMapperInterface;
-use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
-
+use
+    RcmUser\Acl\Db\AclRoleDataMapperInterface;
+use
+    RcmUser\Exception\RcmUserException;
+use
+    RcmUser\User\Entity\User;
 
 /**
  * Class UserRolesDataMapper
@@ -77,7 +79,6 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     public function getAvailableRoles()
     {
         if (!empty($this->availableRoles)) {
-
             return $this->availableRoles;
         }
 
@@ -113,8 +114,10 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function add(User $user, $aclRoleId)
-    {
+    public function add(
+        User $user,
+        $aclRoleId
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -127,8 +130,10 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function remove(User $user, $aclRoleId)
-    {
+    public function remove(
+        User $user,
+        $aclRoleId
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -141,8 +146,10 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function create(User $user, $roles = array())
-    {
+    public function create(
+        User $user,
+        $roles = array()
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -168,8 +175,10 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function update(User $user, $roles = array())
-    {
+    public function update(
+        User $user,
+        $roles = array()
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
 
@@ -182,11 +191,12 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function delete(User $user, $roles = array())
-    {
+    public function delete(
+        User $user,
+        $roles = array()
+    ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
-
 
     /**
      * canAdd
@@ -196,19 +206,23 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      *
      * @return bool
      */
-    public function canAdd(User $user, $role)
-    {
+    public function canAdd(
+        User $user,
+        $role
+    ) {
         $id = $user->getId();
 
         if (empty($id)) {
-
             return false;
         }
 
         $availableRoles = $this->getAvailableRoles();
 
-        if (!in_array($role, $availableRoles)) {
-
+        if (!in_array(
+            $role,
+            $availableRoles
+        )
+        ) {
             return false;
         }
 
@@ -223,15 +237,16 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      *
      * @return bool
      */
-    public function canRemove(User $user, $role)
-    {
+    public function canRemove(
+        User $user,
+        $role
+    ) {
         $id = $user->getId();
 
         if (empty($id)) {
-
             return false;
         }
 
         return true;
     }
-} 
+}

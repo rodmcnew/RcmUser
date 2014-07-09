@@ -718,7 +718,7 @@ return array(
            /*
             * AclResourceService
             * Used by:
-            *  RcmUser\Acl\Provider\BjyResourceProvider
+            *  RcmUser\Acl\Provider\ResourceProvider
             *
             * Exposes this module's resource aggregation methods
             */

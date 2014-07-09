@@ -17,12 +17,16 @@
 
 namespace RcmUser\Authentication\Adapter;
 
-
-use RcmUser\User\Entity\User;
-use RcmUser\User\Service\UserDataService;
-use Zend\Authentication\Adapter\AbstractAdapter;
-use Zend\Authentication\Result;
-use Zend\Crypt\Password\PasswordInterface;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Service\UserDataService;
+use
+    Zend\Authentication\Adapter\AbstractAdapter;
+use
+    Zend\Authentication\Result;
+use
+    Zend\Crypt\Password\PasswordInterface;
 
 /**
  * UserAdapter
@@ -137,12 +141,7 @@ class UserAdapter extends AbstractAdapter
         $this->setCredential($password);
 
         if ($username === null || $password === null) {
-
-            return new Result(
-                Result::FAILURE_IDENTITY_AMBIGUOUS,
-                null,
-                array('User credentials required.')
-            );
+            return new Result(Result::FAILURE_IDENTITY_AMBIGUOUS, null, array('User credentials required.'));
         }
 
         // We will remove id is set so that we only read from username,
@@ -154,11 +153,8 @@ class UserAdapter extends AbstractAdapter
         if (!$existingUserResult->isSuccess()) {
 
             // ERROR
-            return new Result(
-                Result::FAILURE_IDENTITY_NOT_FOUND,
-                null,
-                $existingUserResult->getMessages()
-            );
+            return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null, $existingUserResult->getMessages(
+            ));
         }
 
         $existingUser = $existingUserResult->getUser();
@@ -166,23 +162,19 @@ class UserAdapter extends AbstractAdapter
 
         $credential = $user->getPassword();
 
-        $isValid = $this->getEncryptor()->verify($credential, $existingHash);
+        $isValid = $this->getEncryptor()->verify(
+            $credential,
+            $existingHash
+        );
         if ($isValid) {
 
-            $result = new Result(
-                Result::SUCCESS,
-                $existingUser,
-                array()
-            );
+            $result = new Result(Result::SUCCESS, $existingUser, array());
         } else {
 
-            $result = new Result(
-                Result::FAILURE_CREDENTIAL_INVALID,
-                null,
-                array('User credential invalid.')
-            );
+            $result
+                = new Result(Result::FAILURE_CREDENTIAL_INVALID, null, array('User credential invalid.'));
         }
 
         return $result;
     }
-} 
+}

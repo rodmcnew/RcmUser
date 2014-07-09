@@ -17,9 +17,8 @@
 
 namespace RcmUser\User\Db;
 
-
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
+use
+    RcmUser\User\Entity\User;
 
 /**
  * Interface UserDataMapperInterface
@@ -176,4 +175,4 @@ interface UserDataMapperInterface
         User $requestUser,
         User $responseUser
     );
-} 
+}

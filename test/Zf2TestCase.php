@@ -73,11 +73,8 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                     'disabled', // **REQUIRED for User entity**
                     'enabled',
                 ),
-
                 'DefaultUserState' => 'enabled',
-
                 'Encryptor.passwordCost' => 14,
-
                 'InputFilter' => array(
 
                     'username' => array(
@@ -97,7 +94,6 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                             ),
                         ),
                     ),
-
                     'password' => array(
                         'name' => 'password',
                         'required' => true,
@@ -115,24 +111,18 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                     ),
                 ),
             ),
-
             'Auth\Config' => array(
                 'ObfuscatePasswordOnAuth' => true,
             ),
-
             'Acl\Config' => array(
 
                 'DefaultGuestRoleIds' => array('guest'),
                 'DefaultUserRoleIds' => array('user'),
-
                 'SuperAdminRoleId' => 'admin',
-
                 'GuestRoleId' => 'guest',
-
                 'ResourceProviders' => array(
 
                     'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
-
                     'RcmUser.TEST' => array(
                         'TESTONE' => array(
                             'resourceId' => 'TESTONE',
@@ -186,164 +176,140 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                 new Config($this->mockRcmUserConfig['Auth\Config']),
             'RcmUser\Acl\Config' =>
                 new Config($this->mockRcmUserConfig['Acl\Config']),
-
             'RcmUser\User\Service\UserDataService' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Service\UserDataService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\Service\UserPropertyService' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Service\UserPropertyService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\Service\UserRoleService' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Service\UserRoleService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\UserDataMapper' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Db\UserDataMapperInterface'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\UserRolesDataMapper' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Db\UserRolesDataMapperInterface'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\Data\UserValidator' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Data\UserValidatorInterface'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\Encryptor' =>
                 $this->getMockBuilder(
                     '\Zend\Crypt\Password\PasswordInterface'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\Data\UserDataPreparer' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Data\UserDataPreparerInterface'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\UserDataServiceListeners' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Event\AbstractUserDataServiceListeners'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\User\UserRoleDataServiceListeners' =>
                 $this->getMockBuilder(
                     '\RcmUser\User\Event\AbstractUserDataServiceListeners'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Authentication\Service\UserAuthenticationService' =>
                 $this->getMockBuilder(
                     '\RcmUser\Authentication\Service\UserAuthenticationService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Authentication\Adapter' =>
                 $this->getMockBuilder(
                     '\RcmUser\Authentication\Adapter\UserAdapter'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Authentication\Storage' =>
                 $this->getMockBuilder(
                     '\RcmUser\Authentication\Storage\UserSession'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Authentication\AuthenticationService' =>
                 $this->getMockBuilder(
                     '\RcmUser\Authentication\Service\AuthenticationService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Authentication\UserAuthenticationServiceListeners' =>
                 $this->getMockBuilder(
                     '\RcmUser\Authentication\Event\UserAuthenticationServiceListeners'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Acl\Service\AclResourceService' =>
                 $this->getMockBuilder(
                     '\RcmUser\Acl\Service\AclResourceService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Acl\Service\AuthorizeService' =>
                 $this->getMockBuilder(
                     '\RcmUser\Acl\Service\AuthorizeService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Acl\AclRoleDataMapper' =>
                 $this->getMockBuilder(
                     '\RcmUser\Acl\Db\AclRoleDataMapperInterface'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Acl\AclRuleDataMapper' =>
                 $this->getMockBuilder(
                     '\RcmUser\Acl\Db\AclRuleDataMapperInterface'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Acl\AclDataService' =>
                 $this->getMockBuilder(
                     '\RcmUser\Acl\Service\AclDataService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Service\RcmUserService' =>
                 $this->getMockBuilder(
                     '\RcmUser\Service\RcmUserService'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Provider\RcmUserAclResourceProvider' =>
                 $this->getMockBuilder(
                     '\RcmUser\Provider\RcmUserAclResourceProvider'
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-
             'RcmUser\Event\Listeners' =>
                 array(),
-
             'RcmUser\Log\Logger' =>
                 $this->getMockBuilder(
                     '\Zend\Log\LoggerInterface'

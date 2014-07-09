@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Data;
 
-
-use RcmUser\User\Entity\User;
+use
+    RcmUser\User\Entity\User;
 
 /**
  * Interface UserDataPreparerInterface
@@ -64,4 +64,4 @@ interface UserDataPreparerInterface
         User $responseUser,
         User $existingUser
     );
-} 
+}
