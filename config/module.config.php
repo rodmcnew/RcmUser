@@ -626,7 +626,7 @@ return array(
             'RcmUserAdminApiAclResources' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-acl-resources[/:id]',
+                    'route' => '/api/admin/rcmuser-acl-resources[/:id]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                     ),
@@ -645,7 +645,7 @@ return array(
             'RcmUserAdminApiAclRulesByRoles' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-acl-rulesbyroles[/:id]',
+                    'route' => '/api/admin/rcmuser-acl-rulesbyroles[/:id]',
                     'constraints' => array(
                         'id' => '[0-9]+',
                     ),
@@ -664,7 +664,7 @@ return array(
             'RcmUserAdminApiAclRule' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-acl-rule[/:id]',
+                    'route' => '/api/admin/rcmuser-acl-rule[/:id]',
                     //'constraints' => array(
                     //'id' => '[a-zA-Z0-9_-]+',
                     //),
@@ -683,7 +683,7 @@ return array(
             'RcmUserAdminApiAclRole' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-acl-role[/:id]',
+                    'route' => '/api/admin/rcmuser-acl-role[/:id]',
                     'constraints' => array(
                         'id' => '[a-zA-Z0-9_-]+',
                     ),
@@ -702,7 +702,7 @@ return array(
             'RcmUserAdminApiAclDefaultUserRole' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-acl-default-user-roles[/:id]',
+                    'route' => '/api/admin/rcmuser-acl-default-user-roles[/:id]',
                     'constraints' => array(
                         'id' => '[a-zA-Z0-9_-]+',
                     ),
@@ -752,7 +752,7 @@ return array(
             'RcmUserAdminApiUser' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-user[/:id]',
+                    'route' => '/api/admin/rcmuser-user[/:id]',
                     'constraints' => array(
                         'id' => '[a-zA-Z0-9_-]+',
                     ),
@@ -771,7 +771,7 @@ return array(
             'RcmUserAdminApiUserValidUserStates' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-user-validuserstates[/:id]',
+                    'route' => '/api/admin/rcmuser-user-validuserstates[/:id]',
                     'constraints' => array(
                         'id' => '[a-zA-Z0-9_-]+',
                     ),
@@ -814,7 +814,7 @@ return array(
             'RcmUserAdminApiUserRoles' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-user-roles[/:id]',
+                    'route' => '/api/admin/rcmuser-user-roles[/:id]',
                     //'constraints' => array(
                     //'id' => '[a-zA-Z0-9_-]+',
                     //),
@@ -833,7 +833,7 @@ return array(
             'RcmUserAdminApiUserRole' => array(
                 'type' => 'Segment',
                 'options' => array(
-                    'route' => '/admin/api/rcmuser-user-role[/:id]',
+                    'route' => '/api/admin/rcmuser-user-role[/:id]',
                     //'constraints' => array(
                     //'id' => '[a-zA-Z0-9_-]+',
                     //),
