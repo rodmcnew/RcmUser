@@ -17,9 +17,12 @@
 
 namespace RcmUser\View\Helper;
 
-use RcmUser\Acl\Service\AuthorizeService;
-use RcmUser\Authentication\Service\UserAuthenticationService;
-use Zend\View\Helper\AbstractHelper;
+use
+    RcmUser\Acl\Service\AuthorizeService;
+use
+    RcmUser\Authentication\Service\UserAuthenticationService;
+use
+    Zend\View\Helper\AbstractHelper;
 
 /**
  * Class RcmUserIsAllowed
@@ -72,8 +75,11 @@ class RcmUserIsAllowed extends AbstractHelper
      *
      * @return bool
      */
-    public function __invoke($resourceId, $privilege = null, $providerId = null)
-    {
+    public function __invoke(
+        $resourceId,
+        $privilege = null,
+        $providerId = null
+    ) {
         $user = $this->userAuthService->getIdentity();
 
         return $this->authorizeService->isAllowed(

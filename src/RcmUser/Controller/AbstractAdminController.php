@@ -17,11 +17,14 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Provider\RcmUserAclResourceProvider;
-use Zend\Http\Response;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
-
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    Zend\Http\Response;
+use
+    Zend\Mvc\Controller\AbstractActionController;
+use
+    Zend\View\Model\ViewModel;
 
 /**
  * Class AbstractAdminController
@@ -49,8 +52,10 @@ class AbstractAdminController extends AbstractActionController
      *
      * @return mixed
      */
-    public function isAllowed($resourceId = 'rcmuser', $privilege = null)
-    {
+    public function isAllowed(
+        $resourceId = RcmUserAclResourceProvider::RESOURCE_ID_ROOT,
+        $privilege = null
+    ) {
         return $this->rcmUserIsAllowed(
             $resourceId,
             $privilege,
@@ -85,4 +90,4 @@ class AbstractAdminController extends AbstractActionController
 
         return $view;
     }
-} 
+}

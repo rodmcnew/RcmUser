@@ -17,8 +17,8 @@
 
 namespace RcmUser\User;
 
-use RcmUser\User\Entity\User;
-
+use
+    RcmUser\User\Entity\User;
 
 /**
  * Class Result
@@ -63,8 +63,11 @@ class Result extends \RcmUser\Result
      * @param int   $code     code
      * @param array $messages messages
      */
-    public function __construct($user = null, $code = 1, $messages = array())
-    {
+    public function __construct(
+        $user = null,
+        $code = 1,
+        $messages = array()
+    ) {
         $this->setUser($user);
 
         $this->setCode($code);
@@ -110,10 +113,9 @@ class Result extends \RcmUser\Result
         if ($this->getCode() >= self::CODE_SUCCESS
             && ($this->data instanceof User)
         ) {
-
             return true;
         }
 
         return false;
     }
-} 
+}

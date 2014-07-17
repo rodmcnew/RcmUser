@@ -56,14 +56,15 @@ class Config
      *
      * @return null
      */
-    public function get($key, $def = null)
-    {
+    public function get(
+        $key,
+        $def = null
+    ) {
 
         if (isset($this->data[$key])) {
-
             return $this->data[$key];
         }
 
         return $def;
     }
-} 
+}

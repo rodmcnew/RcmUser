@@ -20,7 +20,7 @@ angular.module('rcmuserCore', [])
         return self;
 
     })
-    .factory('RcmUserHttp', ['$log','$http', 'RcmUserResult', 'RcmResults', function ($log, $http, RcmUserResult, RcmResults) {
+    .factory('RcmUserHttp', ['$log', '$http', 'RcmUserResult', 'RcmResults', function ($log, $http, RcmUserResult, RcmResults) {
 
         var RcmUserHttp = function () {
 
@@ -31,14 +31,14 @@ angular.module('rcmuserCore', [])
             self.loading = 0;
             self.alerts = new RcmResults();
 
-            self.loadingOn = function(){
+            self.loadingOn = function () {
 
                 self.loading++;
             }
 
-            self.loadingOff = function(){
+            self.loadingOff = function () {
 
-                if(self.loading > 0){
+                if (self.loading > 0) {
 
                     self.loading--;
                 }
@@ -136,7 +136,7 @@ angular.module('rcmuserCore', [])
     })
     .factory('RcmUser', function (rolePropertyId) {
 
-        var RcmUser = function(){
+        var RcmUser = function () {
 
             var self = this;
 

@@ -17,8 +17,8 @@
 
 namespace RcmUser\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
-
+use
+    Zend\View\Helper\AbstractHelper;
 
 /**
  * Class RcmUserBuildHtmlHead
@@ -52,4 +52,4 @@ class RcmUserBuildHtmlHead extends AbstractHelper
         $view->rcmIncludeAngularJs();
         $view->rcmIncludeTwitterBootstrap();
     }
-} 
+}

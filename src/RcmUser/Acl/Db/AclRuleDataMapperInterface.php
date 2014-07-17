@@ -17,9 +17,8 @@
 
 namespace RcmUser\Acl\Db;
 
-
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\AclRule;
+use
+    RcmUser\Acl\Entity\AclRule;
 
 /**
  * Interface AclRuleDataMapperInterface
@@ -38,7 +37,6 @@ use RcmUser\Acl\Entity\AclRule;
  */
 interface AclRuleDataMapperInterface
 {
-
 
     /**
      * fetchAll
@@ -181,4 +179,4 @@ interface AclRuleDataMapperInterface
      * @return Result
      */
     public function delete(AclRule $aclRule);
-} 
+}

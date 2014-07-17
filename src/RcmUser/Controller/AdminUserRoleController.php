@@ -17,9 +17,6 @@
 
 namespace RcmUser\Controller;
 
-use Zend\Http\Response;
-
-
 /**
  * Class AdminUserRoleController
  *
@@ -45,7 +42,11 @@ class AdminUserRoleController extends AbstractAdminController
     public function indexAction()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-user-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_USER,
+            'read'
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -53,4 +54,4 @@ class AdminUserRoleController extends AbstractAdminController
 
         return $this->buildView($viewArr);
     }
-} 
+}

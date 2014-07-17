@@ -17,8 +17,8 @@
 
 namespace RcmUser\Acl\Db;
 
-
-use RcmUser\Acl\Entity\AclRole;
+use
+    RcmUser\Acl\Entity\AclRole;
 
 /**
  * Interface AclRoleDataMapperInterface
@@ -90,7 +90,7 @@ interface AclRoleDataMapperInterface
      *
      *    -- success
      *    array (
-     *    *    0 => '{roleId}',
+     *        0 => '{roleId}',
      *    );
      *
      *    -- fail
@@ -107,7 +107,7 @@ interface AclRoleDataMapperInterface
      *
      *    -- success
      *    array (
-     *    *    '{roleId}' => RcmUser\Acl\Entity\AclRole,
+     *        {roleId}' => RcmUser\Acl\Entity\AclRole,
      *    );
      *
      *    -- fail
@@ -218,4 +218,4 @@ interface AclRoleDataMapperInterface
      * @return Result
      */
     public function delete(AclRole $aclRole);
-} 
+}

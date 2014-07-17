@@ -35,6 +35,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Entity\Link
  */
 class LinkTest extends \PHPUnit_Framework_TestCase
 {
@@ -93,10 +94,10 @@ class LinkTest extends \PHPUnit_Framework_TestCase
             $link2->getUrl()
         );
 
-        try{
+        try {
             $link2->populate('nope');
 
-        }catch(\RcmUser\Exception\RcmUserException $e){
+        } catch (\RcmUser\Exception\RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;

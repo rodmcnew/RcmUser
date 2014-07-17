@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-
-use Doctrine\ORM\Mapping as ORM;
+use
+    Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class DoctrineUserRole
@@ -57,4 +57,4 @@ class DoctrineUserRole extends UserRole
      * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $roleId;
-} 
+}

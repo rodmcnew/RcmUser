@@ -35,4 +35,4 @@ namespace RcmUser\Service\Exception;
 class InvalidInputException extends \RcmUserException
 {
 
-} 
+}

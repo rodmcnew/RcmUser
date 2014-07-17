@@ -17,9 +17,10 @@
 
 namespace RcmUser\Service\Factory;
 
-
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * RcmUserService

@@ -17,8 +17,10 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * UserRoleDataServiceListeners
@@ -47,9 +49,9 @@ class UserRoleService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = new \RcmUser\User\Service\UserRoleService(
-            $serviceLocator->get('RcmUser\User\UserRolesDataMapper')
-        );
+        $service = new \RcmUser\User\Service\UserRoleService($serviceLocator->get(
+            'RcmUser\User\UserRolesDataMapper'
+        ));
 
         return $service;
     }

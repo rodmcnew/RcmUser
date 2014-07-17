@@ -19,7 +19,7 @@ namespace RcmUser\Test\Acl\Entity;
 
 use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Exception\RcmUserException;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -37,6 +37,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Entity\AclResource
  */
 class AclResourceTest extends Zf2TestCase
 {
@@ -119,7 +120,9 @@ class AclResourceTest extends Zf2TestCase
             'Set or get failed.'
         );
 
-        $aclResource->setParentResourceId($aclResourceArray['parentResourceId']);
+        $aclResource->setParentResourceId(
+            $aclResourceArray['parentResourceId']
+        );
         $this->assertEquals(
             $aclResourceArray['parentResourceId'],
             $aclResource->getParentResourceId(),
@@ -170,10 +173,10 @@ class AclResourceTest extends Zf2TestCase
 
         $this->assertFalse($isvalid, 'Resource not valid, but said it was.');
 
-        try{
+        try {
             $aclResource->setResourceId($badResourceId);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -204,10 +207,10 @@ class AclResourceTest extends Zf2TestCase
 
         $badResourceId = "!inv@lid$";
 
-        try{
+        try {
             $aclResource->setParentResourceId($badResourceId);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -306,10 +309,10 @@ class AclResourceTest extends Zf2TestCase
         );
 
         // exception
-        try{
+        try {
             $aclResource3->populate('NOPE');
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -329,7 +332,11 @@ class AclResourceTest extends Zf2TestCase
 
         $stdObj = $aclResource->jsonSerialize();
 
-        $this->assertInstanceOf('\stdClass', $stdObj, 'jsonSerialize did not return std class.');
+        $this->assertInstanceOf(
+            '\stdClass',
+            $stdObj,
+            'jsonSerialize did not return std class.'
+        );
 
         $json = json_encode($aclResource);
 

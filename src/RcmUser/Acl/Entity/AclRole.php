@@ -17,9 +17,10 @@
 
 namespace RcmUser\Acl\Entity;
 
-use RcmUser\Exception\RcmUserException;
-use Zend\Permissions\Acl\Role\RoleInterface;
-
+use
+    RcmUser\Exception\RcmUserException;
+use
+    Zend\Permissions\Acl\Role\RoleInterface;
 
 /**
  * AclRole
@@ -121,9 +122,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
 
         if (!$this->isValidRoleId($parentRoleId)) {
 
-            throw new RcmUserException(
-                "Role parentRoleId ({$parentRoleId}) is invalid."
-            );
+            throw new RcmUserException("Role parentRoleId ({$parentRoleId}) is invalid.");
         }
 
         if (empty($parentRoleId)) {
@@ -182,7 +181,6 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     public function getParent()
     {
         if (empty($this->parentRole)) {
-
             return $this->getParentRoleId();
         }
 
@@ -220,7 +218,11 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      */
     public function isValidRoleId($roleId)
     {
-        if (preg_match('/[^a-z_\-0-9]/i', $roleId)) {
+        if (preg_match(
+            '/[^a-z_\-0-9]/i',
+            $roleId
+        )
+        ) {
             return false;
         }
 
@@ -267,9 +269,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
             return;
         }
 
-        throw new RcmUserException(
-            'Role data could not be populated, data format not supported'
-        );
+        throw new RcmUserException('Role data could not be populated, data format not supported');
     }
 
     /**
@@ -306,4 +306,4 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     {
         return $this->getRoleId();
     }
-} 
+}

@@ -19,9 +19,9 @@ namespace RcmUser\Test\Authentication\Adapter;
 
 
 use RcmUser\Authentication\Adapter\UserAdapter;
+use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
-use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -39,6 +39,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Authentication\Adapter\UserAdapter
  */
 class UserAdapterTest extends Zf2TestCase
 {
@@ -55,7 +56,7 @@ class UserAdapterTest extends Zf2TestCase
 
         $existingUser = new User('123');
 
-        if($user->getUsername() == 'badusername'){
+        if ($user->getUsername() == 'badusername') {
 
             return new Result(
                 null,
@@ -97,8 +98,8 @@ class UserAdapterTest extends Zf2TestCase
             ->getMock();
 
         $this->encryptor->expects($this->any())
-        ->method('create')
-        ->will($this->returnValue('#hash#'));
+            ->method('create')
+            ->will($this->returnValue('#hash#'));
 
         $this->encryptor->expects($this->any())
             ->method('verify')
@@ -172,7 +173,10 @@ class UserAdapterTest extends Zf2TestCase
 
         $result = $userAdapter->authenticate();
 
-        $this->assertTrue($result->isValid(), 'Good password should return true');
+        $this->assertTrue(
+            $result->isValid(),
+            'Good password should return true'
+        );
 
     }
 

@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * RcmUserGetCurrentUserTest.php
  *
  * LongDescHere
@@ -36,8 +36,10 @@ use RcmUser\User\Entity\User;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Controller\Plugin\RcmUserGetCurrentUser
  */
-class RcmUserGetCurrentUserTest extends \PHPUnit_Framework_TestCase {
+class RcmUserGetCurrentUserTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * test
@@ -57,7 +59,8 @@ class RcmUserGetCurrentUserTest extends \PHPUnit_Framework_TestCase {
             ->method('getIdentity')
             ->will($this->returnValue($user));
 
-        $rcmUserGetCurrentUser = new RcmUserGetCurrentUser($this->rcmUserService);
+        $rcmUserGetCurrentUser
+            = new RcmUserGetCurrentUser($this->rcmUserService);
 
         $identity = $rcmUserGetCurrentUser->__invoke();
 

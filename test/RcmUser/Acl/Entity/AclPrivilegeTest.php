@@ -19,7 +19,7 @@ namespace RcmUser\Test\Acl\Entity;
 
 use RcmUser\Acl\Entity\AclPrivilege;
 use RcmUser\Exception\RcmUserException;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -37,6 +37,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Entity\AclPrivilege
  */
 class AclPrivilegeTest extends Zf2TestCase
 {
@@ -106,10 +107,10 @@ class AclPrivilegeTest extends Zf2TestCase
 
         $this->assertTrue(is_string($strPriv), "toString failed");
 
-        try{
+        try {
             $privilege->setPrivilege('N*P#_^^^^');
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;

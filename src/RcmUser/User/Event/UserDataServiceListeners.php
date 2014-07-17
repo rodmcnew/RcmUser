@@ -17,9 +17,10 @@
 
 namespace RcmUser\User\Event;
 
-
-use RcmUser\User\Db\UserDataMapperInterface;
-use Zend\EventManager\ListenerAggregateInterface;
+use
+    RcmUser\User\Db\UserDataMapperInterface;
+use
+    Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * Class UserDataServiceListeners
@@ -36,9 +37,7 @@ use Zend\EventManager\ListenerAggregateInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserDataServiceListeners
-    extends AbstractUserDataServiceListeners
-    implements ListenerAggregateInterface
+class UserDataServiceListeners extends AbstractUserDataServiceListeners implements ListenerAggregateInterface
 {
     protected $priority = -1;
     protected $listenerMethods
@@ -90,6 +89,7 @@ class UserDataServiceListeners
 
         return $this->getUserDataMapper()->fetchAll($options);
     }
+
     /**
      * onCreateUser
      *
@@ -102,7 +102,10 @@ class UserDataServiceListeners
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->create($requestUser, $responseUser);
+        $result = $this->getUserDataMapper()->create(
+            $requestUser,
+            $responseUser
+        );
 
         if ($result->isSuccess()) {
 
@@ -119,11 +122,12 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onCreateUserFail($e)
-    {
-        //@todo do delete?
-    }
+     * {
+     * //@todo do delete?
+     * }
+     */
 
     /**
      * onReadUser
@@ -138,7 +142,10 @@ class UserDataServiceListeners
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->read($requestUser, $responseUser);
+        $result = $this->getUserDataMapper()->read(
+            $requestUser,
+            $responseUser
+        );
 
         if ($result->isSuccess()) {
 
@@ -163,12 +170,11 @@ class UserDataServiceListeners
         $responseUser = $e->getParam('responseUser');
         $existingUser = $e->getParam('existingUser');
 
-        $result = $this->getUserDataMapper()
-            ->update(
-                $requestUser,
-                $responseUser,
-                $existingUser
-            );
+        $result = $this->getUserDataMapper()->update(
+            $requestUser,
+            $responseUser,
+            $existingUser
+        );
 
         if ($result->isSuccess()) {
 
@@ -185,11 +191,12 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onUpdateUserFail($e)
-    {
-        // @todo revert?
-    }
+     * {
+     * // @todo revert?
+     * }
+     */
 
     /**
      * onDeleteUser
@@ -204,7 +211,10 @@ class UserDataServiceListeners
         $requestUser = $e->getParam('requestUser');
         $responseUser = $e->getParam('responseUser');
 
-        $result = $this->getUserDataMapper()->delete($requestUser, $responseUser);
+        $result = $this->getUserDataMapper()->delete(
+            $requestUser,
+            $responseUser
+        );
 
         if ($result->isSuccess()) {
 
@@ -221,9 +231,10 @@ class UserDataServiceListeners
      * @param Event $e e
      *
      * @return \RcmUser\User\Result|void
-     */
+
     public function onDeleteUserFail($e)
-    {
-        // @todo restore?
-    }
-} 
+     * {
+     * // @todo restore?
+     * }
+     */
+}

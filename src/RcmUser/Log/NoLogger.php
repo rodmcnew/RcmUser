@@ -17,9 +17,6 @@
 
 namespace RcmUser\Log;
 
-use Zend\Log\LoggerInterface;
-
-
 /**
  * Class NoLogger
  *
@@ -38,4 +35,4 @@ use Zend\Log\LoggerInterface;
 class NoLogger extends Logger
 {
 
-} 
+}

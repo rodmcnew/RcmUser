@@ -17,8 +17,8 @@
 
 namespace RcmUser\Authentication\Event;
 
-
-use Zend\Authentication\Result;
+use
+    Zend\Authentication\Result;
 
 /**
  * UserAuthenticationServiceListeners
@@ -65,7 +65,6 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
             'onSetIdentity' => 'setIdentity',
             'onGetIdentity' => 'getIdentity',
         );
-
 
     /**
      * onValidateCredentials
@@ -164,10 +163,9 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
         $authService = $this->getAuthService();
 
         if ($authService->hasIdentity()) {
-
             return $authService->getIdentity();
         }
 
         return null;
     }
-} 
+}

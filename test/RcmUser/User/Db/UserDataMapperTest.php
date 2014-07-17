@@ -22,12 +22,29 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
 use RcmUser\User\Db\UserDataMapper;
 use RcmUser\User\Entity\User;
 
+/**
+ * Class UserDataMapperTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\User\Db
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Db\UserDataMapper
+ */
 class UserDataMapperTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @var UserDataMapper $userDataMapper
      */
     public $userDataMapper;
+
     /**
      * setup
      *

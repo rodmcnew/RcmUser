@@ -17,11 +17,16 @@
 
 namespace RcmUser\User\Service;
 
-use RcmUser\Event\EventProvider;
-use RcmUser\User\Db\UserDataMapperInterface;
-use RcmUser\User\Entity\ReadOnlyUser;
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
+use
+    RcmUser\Event\EventProvider;
+use
+    RcmUser\User\Db\UserDataMapperInterface;
+use
+    RcmUser\User\Entity\ReadOnlyUser;
+use
+    RcmUser\User\Entity\User;
+use
+    RcmUser\User\Result;
 
 /**
  * Class UserDataService
@@ -86,7 +91,11 @@ class UserDataService extends EventProvider
      */
     public function setValidUserStates($validUserStates)
     {
-        if (!in_array(User::STATE_DISABLED, $validUserStates)) {
+        if (!in_array(
+            User::STATE_DISABLED,
+            $validUserStates
+        )
+        ) {
             $validUserStates[] = User::STATE_DISABLED;
         }
         $this->validUserStates = $validUserStates;
@@ -147,7 +156,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
@@ -159,7 +167,6 @@ class UserDataService extends EventProvider
                 'options' => $options,
             ),
             function ($result) {
-
                 return !$result->isSuccess();
             }
         );
@@ -265,7 +272,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
@@ -345,7 +351,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
@@ -406,12 +411,7 @@ class UserDataService extends EventProvider
         // require id
         $id = $requestUser->getId();
         if (empty($id)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User Id required for update.'
-            );
+            return new Result(null, Result::CODE_FAIL, 'User Id required for update.');
         }
 
         // check if exists
@@ -456,7 +456,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
@@ -511,12 +510,7 @@ class UserDataService extends EventProvider
         // require id
         $id = $requestUser->getId();
         if (empty($id)) {
-
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                'User Id required for update.'
-            );
+            return new Result(null, Result::CODE_FAIL, 'User Id required for update.');
         }
 
         // check if exists
@@ -549,7 +543,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             return $results->last();
         }
 
@@ -589,7 +582,4 @@ class UserDataService extends EventProvider
 
         return $result;
     }
-
-    /* USERS ******************* */
-
-} 
+}

@@ -17,10 +17,12 @@
 
 namespace RcmUser\Authentication\Service\Factory;
 
-
-use RcmUser\Authentication\Adapter\UserAdapter;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    RcmUser\Authentication\Adapter\UserAdapter;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Adapter

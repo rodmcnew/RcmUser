@@ -17,9 +17,8 @@
 
 namespace RcmUser\User\Db;
 
-
-use RcmUser\User\Entity\User;
-use RcmUser\User\Result;
+use
+    RcmUser\User\Entity\User;
 
 /**
  * Interface UserDataMapperInterface
@@ -41,38 +40,66 @@ interface UserDataMapperInterface
     /**
      * fetchAll
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *        0 => RcmUser\User\Entity\User,
+     *    );
+     *
+     *    -- fail
+     *    array()
+     *
      * @param array $options options
      *
      * @return \RcmUser\User\Result
      */
-    public function fetchAll(
-        $options = array()
-    );
+    public function fetchAll($options = array());
 
     /**
      * fetchById
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\User\Entity\User,
+     *
+     *    -- fail
+     *    null
      *
      * @param mixed $id id
      *
      * @return \RcmUser\User\Result
      */
-    public function fetchById(
-        $id
-    );
+    public function fetchById($id);
 
     /**
      * fetchByUsername
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\User\Entity\User,
+     *
+     *    -- fail
+     *    null
      *
      * @param string $username username
      *
      * @return \RcmUser\User\Result
      */
-    public function fetchByUsername(
-        $username
-    );
+    public function fetchByUsername($username);
 
     /**
      * create
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\User\Entity\User,
+     *
+     *    -- fail
+     *    null
      *
      * @param User $requestUser  User new data (AKA request)
      * @param User $responseUser User new data prepared (VIA Event Listeners)
@@ -87,6 +114,14 @@ interface UserDataMapperInterface
     /**
      * read
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    RcmUser\User\Entity\User,
+     *
+     *    -- fail
+     *    null
+     *
      * @param User $requestUser  User read data (AKA request)
      * @param User $responseUser User read data prepared (VIA Event Listeners)
      *
@@ -99,6 +134,14 @@ interface UserDataMapperInterface
 
     /**
      * update
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success (updated user)
+     *    RcmUser\User\Entity\User,
+     *
+     *    -- fail (request user)
+     *    RcmUser\User\Entity\User,
      *
      * @param User $requestUser  User update data (AKA request)
      * @param User $responseUser User update data prepared (VIA Event Listeners)
@@ -115,6 +158,14 @@ interface UserDataMapperInterface
     /**
      * delete
      *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success (default guest user)
+     *    RcmUser\User\Entity\User,
+     *
+     *    -- fail (request user)
+     *    RcmUser\User\Entity\User,
+     *
      * @param User $requestUser  User delete data (AKA request)
      * @param User $responseUser User delete data prepared (VIA Event Listeners)
      *
@@ -124,4 +175,4 @@ interface UserDataMapperInterface
         User $requestUser,
         User $responseUser
     );
-} 
+}

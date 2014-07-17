@@ -18,8 +18,8 @@
 namespace RcmUser\Test\User\Entity;
 
 use RcmUser\Exception\RcmUserException;
+use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\UserRole;
-use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -37,6 +37,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Entity\UserRole
  */
 class UserRoleTest extends Zf2TestCase
 {
@@ -60,9 +61,21 @@ class UserRoleTest extends Zf2TestCase
         $userRole->setRoleId($roleId);
         $userRole->setUserId($userId);
 
-        $this->assertEquals($id, $userRole->getId(), 'Setter or getter failed.');
-        $this->assertEquals($roleId, $userRole->getRoleId(), 'Setter or getter failed.');
-        $this->assertEquals($userId, $userRole->getUserId(), 'Setter or getter failed.');
+        $this->assertEquals(
+            $id,
+            $userRole->getId(),
+            'Setter or getter failed.'
+        );
+        $this->assertEquals(
+            $roleId,
+            $userRole->getRoleId(),
+            'Setter or getter failed.'
+        );
+        $this->assertEquals(
+            $userId,
+            $userRole->getUserId(),
+            'Setter or getter failed.'
+        );
     }
 
     /**
@@ -98,12 +111,16 @@ class UserRoleTest extends Zf2TestCase
 
         $userRoleA->populate($userRoleB);
 
-        $this->assertEquals($userRoleB['id'], $userRoleA->getId(), 'Populate failed.');
+        $this->assertEquals(
+            $userRoleB['id'],
+            $userRoleA->getId(),
+            'Populate failed.'
+        );
 
-        try{
+        try {
             $userRoleA->populate($userRoleC);
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;

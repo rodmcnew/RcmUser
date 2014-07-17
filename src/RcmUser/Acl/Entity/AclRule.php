@@ -17,7 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
-use RcmUser\Exception\RcmUserException;
+use
+    RcmUser\Exception\RcmUserException;
 
 /**
  * AclRule
@@ -86,9 +87,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     public function setRule($rule)
     {
         if (!$this->isValidRule($rule)) {
-            throw new RcmUserException(
-                "Rule ({$rule}) is invalid."
-            );
+            throw new RcmUserException("Rule ({$rule}) is invalid.");
         }
 
         $this->rule = $rule;
@@ -113,7 +112,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function setRoleId($roleId)
     {
-        $roleId = strtolower((string) $roleId);
+        $roleId = strtolower((string)$roleId);
 
         $this->roleId = $roleId;
     }
@@ -259,9 +258,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
             return;
         }
 
-        throw new RcmUserException(
-            'Rule data could not be populated, data format not supported'
-        );
+        throw new RcmUserException('Rule data could not be populated, data format not supported');
     }
 
     /**
@@ -289,5 +286,4 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     {
         return new \ArrayIterator(get_object_vars($this));
     }
-
-} 
+}

@@ -7,9 +7,23 @@ require_once __DIR__ . '/../Zf2TestCase.php';
 
 use RcmUser\Module;
 use RcmUser\Test;
-use RcmUser\Zf2TestCase;
 
-
+/**
+ * Class ModuleTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\Module
+ */
 class ModuleTest extends Zf2TestCase
 {
     /** @var  \RcmInstanceConfig\Module */

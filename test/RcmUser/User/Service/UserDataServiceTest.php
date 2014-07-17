@@ -17,11 +17,10 @@
 
 namespace RcmUser\Test\User\Service;
 
+use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
-use RcmUser\Zf2TestCase;
-use Zend\EventManager\EventManager;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -90,7 +89,9 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->buildUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result', $result, 'Valid result not returned'
+            '\RcmUser\User\Result',
+            $result,
+            'Valid result not returned'
         );
     }
 
@@ -101,7 +102,9 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->createUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result', $result, 'Valid result not returned'
+            '\RcmUser\User\Result',
+            $result,
+            'Valid result not returned'
         );
     }
 
@@ -112,7 +115,9 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->readUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result', $result, 'Valid result not returned'
+            '\RcmUser\User\Result',
+            $result,
+            'Valid result not returned'
         );
     }
 
@@ -123,7 +128,9 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->updateUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result', $result, 'Valid result not returned'
+            '\RcmUser\User\Result',
+            $result,
+            'Valid result not returned'
         );
     }
 
@@ -134,7 +141,9 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->deleteUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result', $result, 'Valid result not returned'
+            '\RcmUser\User\Result',
+            $result,
+            'Valid result not returned'
         );
     }
 

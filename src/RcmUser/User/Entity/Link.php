@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-use RcmUser\Exception\RcmUserException;
-
+use
+    RcmUser\Exception\RcmUserException;
 
 /**
  * Class Link
@@ -35,7 +35,6 @@ use RcmUser\Exception\RcmUserException;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-
 class Link implements \JsonSerializable
 {
     /**
@@ -189,10 +188,6 @@ class Link implements \JsonSerializable
             return;
         }
 
-        throw new RcmUserException(
-            'Link data could not be populated, date format not supported'
-        );
+        throw new RcmUserException('Link data could not be populated, date format not supported');
     }
-
-
 }

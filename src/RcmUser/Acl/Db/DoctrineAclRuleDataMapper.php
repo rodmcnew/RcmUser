@@ -17,12 +17,16 @@
 
 namespace RcmUser\Acl\Db;
 
-
-use Doctrine\ORM\EntityManager;
-use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Acl\Entity\DoctrineAclRule;
-use RcmUser\Db\DoctrineMapperInterface;
-use RcmUser\Result;
+use
+    Doctrine\ORM\EntityManager;
+use
+    RcmUser\Acl\Entity\AclRule;
+use
+    RcmUser\Acl\Entity\DoctrineAclRule;
+use
+    RcmUser\Db\DoctrineMapperInterface;
+use
+    RcmUser\Result;
 
 /**
  * DoctrineAclRuleDataMapper
@@ -39,9 +43,7 @@ use RcmUser\Result;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineAclRuleDataMapper
-    extends AclRuleDataMapper
-    implements AclRuleDataMapperInterface, DoctrineMapperInterface
+class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleDataMapperInterface, DoctrineMapperInterface
 {
     /**
      * @var EntityManager $entityManager
@@ -105,8 +107,8 @@ class DoctrineAclRuleDataMapper
     public function fetchAll()
     {
         $query = $this->getEntityManager()->createQuery(
-            'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
-            'INDEX BY rule.id'
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule '
+            . 'INDEX BY rule.id'
         );
 
         $rules = $query->getResult();
@@ -123,8 +125,9 @@ class DoctrineAclRuleDataMapper
      */
     public function fetchByRole($roleId)
     {
-        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('roleId' => $roleId));
+        $rules = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )->findBy(array('roleId' => $roleId));
 
         return new Result($rules);
     }
@@ -138,8 +141,9 @@ class DoctrineAclRuleDataMapper
      */
     public function fetchByRule($rule = AclRule::RULE_ALLOW)
     {
-        $rules = $this->getEntityManager()->getRepository($this->getEntityClass())
-            ->findBy(array('rule' => $rule));
+        $rules = $this->getEntityManager()->getRepository(
+            $this->getEntityClass()
+        )->findBy(array('rule' => $rule));
 
         return new Result($rules);
     }
@@ -157,12 +161,14 @@ class DoctrineAclRuleDataMapper
         //    ->findBy(array('resourceId' => $resourceId));
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
-            'INDEX BY rule.id ' .
-            'WHERE rule.resourceId = ?1'
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule '
+            . 'INDEX BY rule.id ' . 'WHERE rule.resourceId = ?1'
         );
 
-        $query->setParameter(1, $resourceId);
+        $query->setParameter(
+            1,
+            $resourceId
+        );
 
         $rules = $query->getResult();
 
@@ -187,11 +193,13 @@ class DoctrineAclRuleDataMapper
         $existingAclRule = $result->getData();
 
         if ($result->isSuccess() && !empty($existingAclRule)) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
-                'Acl Role already exists: ' . var_export($aclRule, true)
+                'Acl Role already exists: ' . var_export(
+                    $aclRule,
+                    true
+                )
             );
         }
 
@@ -218,7 +226,6 @@ class DoctrineAclRuleDataMapper
 
         // check required
         if (empty($rule) || empty($roleId) || empty($resourceId)) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -235,24 +242,33 @@ class DoctrineAclRuleDataMapper
         }
 
         $query = $this->getEntityManager()->createQuery(
-            'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
-            'WHERE rule.rule = ?1 ' .
-            'AND rule.roleId = ?2 ' .
-            'AND rule.resourceId = ?3 ' .
-            $privQuery
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule '
+            . 'WHERE rule.rule = ?1 ' . 'AND rule.roleId = ?2 '
+            . 'AND rule.resourceId = ?3 ' . $privQuery
         );
 
-        $query->setParameter(1, $rule);
-        $query->setParameter(2, $roleId);
-        $query->setParameter(3, $resourceId);
+        $query->setParameter(
+            1,
+            $rule
+        );
+        $query->setParameter(
+            2,
+            $roleId
+        );
+        $query->setParameter(
+            3,
+            $resourceId
+        );
         if ($privilege !== null) {
-            $query->setParameter(4, $privilege);
+            $query->setParameter(
+                4,
+                $privilege
+            );
         }
 
         $rules = $query->getResult();
 
         if (empty($rules[0])) {
-
             return new Result(array());
         }
 
@@ -284,7 +300,6 @@ class DoctrineAclRuleDataMapper
         $result = $this->read($aclRule);
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -294,10 +309,7 @@ class DoctrineAclRuleDataMapper
         $this->getEntityManager()->flush();
 
         // @todo validate action
-        return new Result(
-            null,
-            Result::CODE_SUCCESS
-        );
+        return new Result(null, Result::CODE_SUCCESS);
     }
 
     /**
@@ -319,5 +331,4 @@ class DoctrineAclRuleDataMapper
 
         return new Result($aclRule);
     }
-
-} 
+}

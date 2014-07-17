@@ -17,10 +17,9 @@
 
 namespace RcmUser\Test\Acl\Entity;
 
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Exception\RcmUserException;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -38,6 +37,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Entity\AclRule
  */
 class AclRuleTest extends Zf2TestCase
 {
@@ -218,7 +218,9 @@ class AclRuleTest extends Zf2TestCase
         $this->assertTrue(is_array($array1), 'Iterator failed work.');
 
         $this->assertArrayHasKey(
-            'rule', $array1, 'Iterator did not populate correctly.'
+            'rule',
+            $array1,
+            'Iterator did not populate correctly.'
         );
     }
 }

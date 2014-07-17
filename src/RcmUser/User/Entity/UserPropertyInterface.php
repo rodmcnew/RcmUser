@@ -17,7 +17,6 @@
 
 namespace RcmUser\User\Entity;
 
-
 /**
  * Interface UserPropertyInterface
  *
@@ -45,4 +44,4 @@ interface UserPropertyInterface extends \JsonSerializable
      * @return mixed
      */
     public function populate($data = array());
-} 
+}

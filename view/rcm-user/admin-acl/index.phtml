@@ -19,20 +19,26 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Add rule: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="rcmUserHttp.alerts" alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
+                <div rcm-alerts rcm-results="rcmUserHttp.alerts"
+                     alert-title-error="'An error occured:'"
+                     alert-title-success="'Success:'"></div>
                 <form name="addRuleForm" role="form">
                     <div class="form-group">
                         <label for="rule">Rule: </label>
-                        <select class="form-control" name="rule" ng-model="ruleData.rule" required="true">
+                        <select class="form-control" name="rule"
+                                ng-model="ruleData.rule" required="true">
                             <option selected="true" value="allow">allow</option>
+                            <!-- @todo Implement when ready
                             <option value="deny">deny (unstable)</option>
-                            <!--<option value="ignore">ignore</option>-->
+                            <option value="ignore">ignore</option>
+                            -->
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="roleId">Role: </label>
 
-                        <div name="roleId" class="roleId">{{ruleData.roleId}}</div>
+                        <div name="roleId" class="roleId">{{ruleData.roleId}}
+                        </div>
                     </div>
 
                     <div class="form-group">
@@ -49,12 +55,19 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                             type="text"
                             />
 
-                        <div class="list-dropdown" ng-show="status.isopen" ng-mouseleave="toggleDropdown($event, false)">
+                        <div class="list-dropdown" ng-show="status.isopen"
+                             ng-mouseleave="toggleDropdown($event, false)">
                             <ul class="list-group">
-                                <li class="list-group-item" ng-repeat="resource in resources | resourceFilter:ruleData.resourceId">
-                                    <a href ng-click="ruleData.resourceId = resource.resource.resourceId; toggleDropdown($event, false)">
-                                        <div class="title">{{resource.resource.name}}</div>
-                                        <div>({{resource.resource.resourceId}})</div>
+                                <li class="list-group-item"
+                                    ng-repeat="resource in resources | resourceFilter:ruleData.resourceId">
+                                    <a href
+                                       ng-click="ruleData.resourceId = resource.resource.resourceId; toggleDropdown($event, false)">
+                                        <div class="title">
+                                            {{resource.resource.name}}
+                                        </div>
+                                        <div>
+                                            ({{resource.resource.resourceId}})
+                                        </div>
                                     </a>
                                 </li>
                             </ul>
@@ -63,9 +76,13 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 
                     <div class="form-group">
                         <label for="privilege">Privilege: </label>
-                        <select class="form-control" name="privilege" ng-model="ruleData.privilege" required="true">
+                        <select class="form-control" name="privilege"
+                                ng-model="ruleData.privilege" required="true">
                             <option selected="selected" value="">*ALL*</option>
-                            <option ng-repeat="priv in resources[ruleData.resourceId].resource.privileges" value="{{priv}}">{{priv}}</option>
+                            <option
+                                ng-repeat="priv in resources[ruleData.resourceId].resource.privileges"
+                                value="{{priv}}">{{priv}}
+                            </option>
                         </select>
                     </div>
                 </form>
@@ -73,10 +90,16 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
             </div>
 
             <div class="modal-footer">
-                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...</div>
+                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...
+                </div>
                 <div ng-hide="rcmUserHttp.loading">
-                    <button class="btn btn-primary btn-xs" ng-disabled="rcmUserHttp.loading" ng-click="addRule()">Add Rule</button>
-                    <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-primary btn-xs"
+                            ng-disabled="rcmUserHttp.loading"
+                            ng-click="addRule()">Add Rule
+                    </button>
+                    <button class="btn btn-warning btn-xs" ng-click="cancel()">
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
@@ -88,10 +111,13 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
     <div class="rcmuser">
         <div class="admin-acl">
             <div class="modal-header">
-                <h3 class="modal-title">Are you sure you want to delete rule: </h3>
+                <h3 class="modal-title">Are you sure you want to delete
+                    rule: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="rcmUserHttp.alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
+                <div rcm-alerts rcm-results="rcmUserHttp.alerts"
+                     alert-title-error="'An error occured:'"
+                     alert-title-success="'Success:'"></div>
                 <div>
                     <div class="rule">{{ruleData.rule}}</div>
                     <div>Role of:</div>
@@ -99,11 +125,14 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 </div>
                 <div>
                     <div>Access to resource:</div>
-                    <div class="resource-name">{{resourceData.resource.name}}</div>
+                    <div class="resource-name">{{resourceData.resource.name}}
+                    </div>
                 </div>
                 <div>
                     <div>For privilege:</div>
-                    <div class="resource-privilege">{{(ruleData.privilege || '*ALL*')}}</div>
+                    <div class="resource-privilege">{{(ruleData.privilege ||
+                        '*ALL*')}}
+                    </div>
                 </div>
                 <div>
                     <div class="resource-details">
@@ -115,10 +144,15 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 
             </div>
             <div class="modal-footer">
-                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...</div>
+                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...
+                </div>
                 <div ng-hide="rcmUserHttp.loading">
-                    <button class="btn btn-primary btn-xs" ng-click="removeRule()">Remove Rule</button>
-                    <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-primary btn-xs"
+                            ng-click="removeRule()">Remove Rule
+                    </button>
+                    <button class="btn btn-warning btn-xs" ng-click="cancel()">
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
@@ -133,17 +167,28 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Add role: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="rcmUserHttp.alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
+                <div rcm-alerts rcm-results="rcmUserHttp.alerts"
+                     alert-title-error="'An error occured:'"
+                     alert-title-success="'Success:'"></div>
                 <form name="addRoleForm" role="form">
                     <div class="form-group">
                         <label for="roleId">Role Id: </label>
-                        <input class="form-control" name="roleId" ng-model="roleData.roleId" required="true" type="text">
+                        <input class="form-control" name="roleId"
+                               ng-model="roleData.roleId" required="true"
+                               type="text">
                     </div>
                     <div class="form-group">
                         <label for="roleId">Parent Role: </label>
-                        <select class="form-control" name="parentRoleId" ng-model="roleData.parentRoleId" required="true">
-                            <option selected="selected" value="">-- root --</option>
-                            <option ng-repeat="roleObj in roles" value="{{roleObj.role.roleId}}">{{getNamespaceRepeatString(roleObj.roleNs, '..')}} {{roleObj.role.roleId}}</option>
+                        <select class="form-control" name="parentRoleId"
+                                ng-model="roleData.parentRoleId"
+                                required="true">
+                            <option selected="selected" value="">-- root --
+                            </option>
+                            <option ng-repeat="roleObj in roles"
+                                    value="{{roleObj.role.roleId}}">
+                                {{getNamespaceRepeatString(roleObj.roleNs,
+                                '..')}} {{roleObj.role.roleId}}
+                            </option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -163,10 +208,16 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 </form>
             </div>
             <div class="modal-footer">
-                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...</div>
+                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...
+                </div>
                 <div ng-hide="rcmUserHttp.loading">
-                    <button class="btn btn-primary btn-xs" ng-disabled="rcmUserHttp.loading" ng-click="addRole()">Add Role</button>
-                    <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-primary btn-xs"
+                            ng-disabled="rcmUserHttp.loading"
+                            ng-click="addRole()">Add Role
+                    </button>
+                    <button class="btn btn-warning btn-xs" ng-click="cancel()">
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
@@ -181,8 +232,10 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Edit role: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="rcmUserHttp.alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
-                <!-- @todo creat me
+                <div rcm-alerts rcm-results="rcmUserHttp.alerts"
+                     alert-title-error="'An error occured:'"
+                     alert-title-success="'Success:'"></div>
+                <!-- @todo create me
                 <form name="editRoleForm" role="form">
                     <div class="form-group">
                         <label for="roleId">Role Id: </label>
@@ -232,7 +285,9 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <h3 class="modal-title">Are you sure you want to delete: </h3>
             </div>
             <div class="modal-body">
-                <div rcm-alerts rcm-results="rcmUserHttp.alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
+                <div rcm-alerts rcm-results="rcmUserHttp.alerts"
+                     alert-title-error="'An error occured:'"
+                     alert-title-success="'Success:'"></div>
                 <div>
                     <div>Role:</div>
                     <div class="roleId">{{roleData.role.roleId}}</div>
@@ -242,10 +297,16 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 </div>
             </div>
             <div class="modal-footer">
-                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...</div>
+                <div class="loading" ng-show="rcmUserHttp.loading">LOADING...
+                </div>
                 <div ng-hide="loading">
-                    <button class="btn btn-primary btn-xs" ng-disabled="rcmUserHttp.loading" ng-click="removeRole()">Remove Role</button>
-                    <button class="btn btn-warning btn-xs" ng-click="cancel()">Cancel</button>
+                    <button class="btn btn-primary btn-xs"
+                            ng-disabled="rcmUserHttp.loading"
+                            ng-click="removeRole()">Remove Role
+                    </button>
+                    <button class="btn btn-warning btn-xs" ng-click="cancel()">
+                        Cancel
+                    </button>
                 </div>
             </div>
         </div>
@@ -272,26 +333,33 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
         </div>
         -->
         <div class="col-sm-offset-10 col-sm-2">
-            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRole('sm', roles)" ng-disabled="rcmUserHttp.loading">
+            <button type="button" class="btn btn-primary btn-xs"
+                    ng-click="openAddRole('sm', roles)"
+                    ng-disabled="rcmUserHttp.loading">
                 <i class="glyphicon glyphicon-plus"></i> add role
             </button>
         </div>
     </div>
 </form>
 
-<div rcm-alerts rcm-results="rcmUserHttp.alerts"  alert-title-error="'An error occured:'" alert-title-success="'Success:'"></div>
+<div rcm-alerts rcm-results="rcmUserHttp.alerts"
+     alert-title-error="'An error occured:'"
+     alert-title-success="'Success:'"></div>
 
 <div class="container-fluid">
 
     <accordion close-others="oneAtATime">
 
         <!-- + ROLE -->
-        <accordion-group is-open="isopen" heading="{{role.roleId}}" ng-repeat="roleData in roles">
+        <accordion-group is-open="isopen" heading="{{role.roleId}}"
+                         ng-repeat="roleData in roles">
 
             <accordion-heading>
                 <div class="accordion-heading">
-                    <span class="roleId" tooltip-placement="right" tooltip="This is a user role with roleId of &quot;{{roleData.role.roleId}}&quot;">{{levelRepeat(roleData.roleNs, '&#8901;&#8901;', '.')}} {{roleData.role.roleId}} </span>
-                    <i class="role-opener glyphicon" ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
+                    <span class="roleId" tooltip-placement="right"
+                          tooltip="This is a user role with roleId of &quot;{{roleData.role.roleId}}&quot;">{{levelRepeat(roleData.roleNs, '&#8901;&#8901;', '.')}} {{roleData.role.roleId}} </span>
+                    <i class="role-opener glyphicon"
+                       ng-class="{'glyphicon-chevron-down': isopen, 'glyphicon-chevron-right': !isopen}"></i>
                     <span class="role-actions pull-right">
 
                     </span>
@@ -302,15 +370,21 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                     <div class="roleIdDetails">
                         Role Id: {{roleData.role.roleId}}
                     </div>
-                    <div class="roleDescription" ng-show="roleData.role.description">
+                    <div class="roleDescription"
+                         ng-show="roleData.role.description">
                         Description: {{roleData.role.description}}
                     </div>
                 </div>
                 <div class="">
+                    <!-- @todo Implement when ready
                     <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRole('sm', roleData)" ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-edit"></i> edit role
                     </button>
-                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRole('sm', roleData)" ng-disabled="rcmUserHttp.loading" ng-hide="superAdminRole == roleData.role.roleId">
+                    -->
+                    <button type="button" class="btn btn-warning btn-xs"
+                            ng-click="openRemoveRole('sm', roleData)"
+                            ng-disabled="rcmUserHttp.loading"
+                            ng-hide="superAdminRole == roleData.role.roleId">
                         <i class="glyphicon glyphicon-minus"></i> remove role
                     </button>
                 </div>
@@ -322,7 +396,8 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 
             <!-- + RESOURCE -->
             <div ng-hide="superAdminRole == roleData.role.roleId">
-                <div class="container-fluid admin-acl-resource-section" ng-repeat="ruleData in roleData.rules">
+                <div class="container-fluid admin-acl-resource-section"
+                     ng-repeat="ruleData in roleData.rules">
 
                     <div class="container-fluid">
                         <div class="row">
@@ -331,7 +406,11 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                                     <span class="rule">{{ruleData.rule}}</span>
                                 </div>
                                 <div>Access to
-                                    <span class="resource-name" tooltip-placement="right" tooltip-append-to-body="true" tooltip-title="{{resources[ruleData.resourceId].resource.resourceId}}" tooltip-html-unsafe="{{resources[ruleData.resourceId].resource.description}}<br/><br/>Resource: {{resources[ruleData.resourceId].resource.resourceId}}<br/>NameSpace: {{resources[ruleData.resourceId].resourceNs}}">{{resources[ruleData.resourceId].resource.name}}</span>
+                                    <span class="resource-name"
+                                          tooltip-placement="right"
+                                          tooltip-append-to-body="true"
+                                          tooltip-title="{{resources[ruleData.resourceId].resource.resourceId}}"
+                                          tooltip-html-unsafe="{{resources[ruleData.resourceId].resource.description}}<br/><br/>Resource: {{resources[ruleData.resourceId].resource.resourceId}}<br/>NameSpace: {{resources[ruleData.resourceId].resourceNs}}">{{resources[ruleData.resourceId].resource.name}}</span>
                                 </div>
                                 <div>For privilege
                                     <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span>
@@ -340,11 +419,17 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 
                             <div class="col-sm-3">
                                 <div class="btn-group-vertical">
+                                    <!-- @todo Implement when ready
                                     <button type="button" class="btn btn-primary btn-xs" disabled="true" ng-click="openEditRule('sm', ruleData)">
                                         <i class="glyphicon glyphicon-edit"></i> edit rule
                                     </button>
-                                    <button type="button" class="btn btn-warning btn-xs" ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])" ng-disabled="rcmUserHttp.loading">
-                                        <i class="glyphicon glyphicon-minus"></i> remove rule
+                                    -->
+                                    <button type="button"
+                                            class="btn btn-warning btn-xs"
+                                            ng-click="openRemoveRule('sm', ruleData, resources[ruleData.resourceId])"
+                                            ng-disabled="rcmUserHttp.loading">
+                                        <i class="glyphicon glyphicon-minus"></i>
+                                        remove rule
                                     </button>
                                 </div>
                             </div>
@@ -355,16 +440,21 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 <div ng-hide="roleData.rules.length">
                     <div class="alert alert-warning">
                         <i class="glyphicon glyphicon-warning-sign"></i>
-                        <span class="no-rules" ng-show="roleData.role.parentRoleId">No rules created, access rules inherited from {{roleData.role.parentRoleId}}.</span>
-                        <span class="no-rules" ng-hide="roleData.role.parentRoleId">No rules created.</span>
+                        <span class="no-rules"
+                              ng-show="roleData.role.parentRoleId">No rules created, access rules inherited from {{roleData.role.parentRoleId}}.</span>
+                        <span class="no-rules"
+                              ng-hide="roleData.role.parentRoleId">No rules created.</span>
                     </div>
                 </div>
 
                 <div class="container-fluid admin-acl-resource-footer">
                     <div class="row">
                         <div class="col-sm-2">
-                            <button type="button" class="btn btn-primary btn-xs" ng-click="openAddRule('', roleData, resources)" ng-disabled="rcmUserHttp.loading">
-                                <i class="glyphicon glyphicon-plus"></i> add rule
+                            <button type="button" class="btn btn-primary btn-xs"
+                                    ng-click="openAddRule('', roleData, resources)"
+                                    ng-disabled="rcmUserHttp.loading">
+                                <i class="glyphicon glyphicon-plus"></i> add
+                                rule
                             </button>
                         </div>
                         <div class="col-sm-10">

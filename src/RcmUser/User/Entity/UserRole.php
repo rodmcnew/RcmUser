@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-use RcmUser\Exception\RcmUserException;
-
+use
+    RcmUser\Exception\RcmUserException;
 
 /**
  * Class UserRole
@@ -151,9 +151,7 @@ class UserRole implements UserRoleInterface
             return;
         }
 
-        throw new RcmUserException(
-            'User role data could not be populated, date format not supported'
-        );
+        throw new RcmUserException('User role data could not be populated, date format not supported');
     }
 
     /**
@@ -170,4 +168,4 @@ class UserRole implements UserRoleInterface
 
         return $obj;
     }
-} 
+}

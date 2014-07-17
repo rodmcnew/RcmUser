@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * EventProviderTest.php
  *
  * TEST
@@ -17,7 +17,7 @@
 
 namespace RcmUser\Test\Event;
 
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
@@ -30,14 +30,15 @@ require_once __DIR__ . '/../../Zf2TestCase.php';
  *
  * @covers \RcmUser\Event\EventProvider
  */
-class EventProviderTest extends Zf2TestCase {
+class EventProviderTest extends Zf2TestCase
+{
 
     public $eventProvider;
     public $eventManager;
 
     public function getEventProvider()
     {
-        if(!isset($this->eventProvider)){
+        if (!isset($this->eventProvider)) {
 
             $this->buildEventProvider();
         }
@@ -59,16 +60,26 @@ class EventProviderTest extends Zf2TestCase {
 
     public function testSetEventManager()
     {
-        $result = $this->getEventProvider()->setEventManager($this->eventManager);
+        $result = $this->getEventProvider()->setEventManager(
+            $this->eventManager
+        );
 
-        $this->assertEquals($this->getEventProvider(), $result, 'Did not return proper value.');
+        $this->assertEquals(
+            $this->getEventProvider(),
+            $result,
+            'Did not return proper value.'
+        );
     }
 
     public function testGetEventManager()
     {
         $result = $this->getEventProvider()->getEventManager();
 
-        $this->assertInstanceOf('\Zend\EventManager\EventManagerInterface', $result, 'Did not return EventManagerInterface');
+        $this->assertInstanceOf(
+            '\Zend\EventManager\EventManagerInterface',
+            $result,
+            'Did not return EventManagerInterface'
+        );
     }
 }
  

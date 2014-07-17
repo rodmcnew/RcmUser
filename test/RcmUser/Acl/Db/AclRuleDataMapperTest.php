@@ -20,7 +20,6 @@ namespace RcmUser\Test\Acl\Db;
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\Acl\Db\AclRuleDataMapper;
-use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 
 /**
@@ -37,6 +36,7 @@ use RcmUser\Acl\Entity\AclRule;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Db\AclRuleDataMapper
  */
 class AclRuleDataMapperTest extends \PHPUnit_Framework_TestCase
 {

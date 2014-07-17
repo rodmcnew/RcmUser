@@ -17,10 +17,12 @@
 
 namespace RcmUser\User\Event;
 
-
-use RcmUser\User\Result;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
+use
+    RcmUser\User\Result;
+use
+    Zend\EventManager\EventManagerInterface;
+use
+    Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * Class AbstractUserDataServiceListeners
@@ -52,30 +54,24 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             'onGetAllUsers' => 'getAllUsers',
             'onGetAllUsersFail' => 'getAllUsersFail',
             'onGetAllUsersSuccess' => 'getAllUsersSuccess',
-
             'onBuildUser' => 'buildUser',
-
             'onBeforeCreateUser' => 'beforeCreateUser',
             'onCreateUser' => 'createUser',
             'onCreateUserFail' => 'createUserFail',
             'onCreateUserSuccess' => 'createUserSuccess',
-            
             'onBeforeReadUser' => 'beforeReadUser',
             'onReadUser' => 'readUser',
             'onReadUserFail' => 'readUserFail',
             'onReadUserSuccess' => 'readUserSuccess',
-            
             'onBeforeUpdateUser' => 'beforeUpdateUser',
             'onUpdateUser' => 'updateUser',
             'onUpdateUserFail' => 'updateUserFail',
             'onUpdateUserSuccess' => 'updateUserSuccess',
-            
             'onBeforeDeleteUser' => 'beforeDeleteUser',
             'onDeleteUser' => 'deleteUser',
             'onDeleteUserFail' => 'deleteUserFail',
             'onDeleteUserSuccess' => 'deleteUserSuccess',
         );
-
 
     /**
      * attach
@@ -92,7 +88,10 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             $this->listeners[] = $sharedEvents->attach(
                 $this->id,
                 $event,
-                array($this, $method),
+                array(
+                    $this,
+                    $method
+                ),
                 $this->priority
             );
         }
@@ -126,7 +125,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -142,7 +141,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -158,7 +157,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -174,7 +173,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -190,7 +189,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -206,7 +205,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -222,7 +221,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -238,7 +237,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -254,7 +253,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -270,7 +269,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -286,7 +285,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -302,7 +301,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -318,7 +317,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -334,7 +333,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -350,7 +349,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -366,7 +365,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -382,7 +381,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -398,7 +397,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -414,7 +413,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -430,7 +429,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
 
@@ -446,7 +445,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
         return new Result(
             null,
             Result::CODE_FAIL,
-            'Listener ('.__METHOD__.') not defined.'
+            'Listener (' . __METHOD__ . ') not defined.'
         );
     }
-} 
+}

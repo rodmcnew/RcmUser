@@ -17,8 +17,8 @@
 
 namespace RcmUser\User\Entity;
 
-
-use RcmUser\Exception\RcmUserException;
+use
+    RcmUser\Exception\RcmUserException;
 
 /**
  * Class User
@@ -93,6 +93,7 @@ class User implements UserInterface, \JsonSerializable
     {
         $this->setId($id);
     }
+
     /**
      * setId
      *
@@ -124,7 +125,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setUsername($username)
     {
-        $username = (string) $username;
+        $username = (string)$username;
 
         if (empty($username)) {
 
@@ -152,7 +153,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setPassword($password)
     {
-        $password = (string) $password;
+        $password = (string)$password;
         if (empty($password)) {
             $password = null;
         }
@@ -175,10 +176,17 @@ class User implements UserInterface, \JsonSerializable
      * @param string $state state
      *
      * @return void
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function setState($state)
     {
-        $state = (string) $state;
+        $state = (string)$state;
+
+        if (!$this->isValidState($state)) {
+
+            throw new RcmUserException("User state is invalid: {$state}");
+        }
+
         if (empty($state)) {
             $state = null;
         }
@@ -204,7 +212,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setEmail($email)
     {
-        $email = (string) $email;
+        $email = (string)$email;
         if (empty($email)) {
 
             $email = null;
@@ -231,7 +239,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function setName($name)
     {
-        $name = (string) $name;
+        $name = (string)$name;
         if (empty($name)) {
 
             $name = null;
@@ -284,11 +292,13 @@ class User implements UserInterface, \JsonSerializable
      * @return void
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function setProperty($propertyId, $value)
-    {
+    public function setProperty(
+        $propertyId,
+        $value
+    ) {
         if (!$this->isValidPropertyId($propertyId)) {
 
-            throw new RcmUserException("Property Id is invald: {$propertyId}");
+            throw new RcmUserException("Property Id is invalid: {$propertyId}");
         }
 
         $this->properties[$propertyId] = $value;
@@ -302,10 +312,15 @@ class User implements UserInterface, \JsonSerializable
      *
      * @return null
      */
-    public function getProperty($propertyId, $default = null)
-    {
-        if (array_key_exists($propertyId, $this->properties)) {
-
+    public function getProperty(
+        $propertyId,
+        $default = null
+    ) {
+        if (array_key_exists(
+            $propertyId,
+            $this->properties
+        )
+        ) {
             return $this->properties[$propertyId];
         }
 
@@ -331,7 +346,31 @@ class User implements UserInterface, \JsonSerializable
      */
     public function isValidPropertyId($propertyId)
     {
-        if (preg_match('/[^a-z_\-0-9]/i', $propertyId)) {
+        if (preg_match(
+            '/[^a-z_\-0-9]/i',
+            $propertyId
+        )
+        ) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * isValidState
+     *
+     * @param string $state user stateå
+     *
+     * @return bool
+     */
+    public function isValidState($state)
+    {
+        if (preg_match(
+            '/[^a-z_\-0-9]/i',
+            $state
+        )
+        ) {
             return false;
         }
 
@@ -347,29 +386,59 @@ class User implements UserInterface, \JsonSerializable
      * @return mixed|void
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function populate($data, $exclude = array())
-    {
+    public function populate(
+        $data,
+        $exclude = array()
+    ) {
         if (($data instanceof UserInterface)) {
 
-            if (!in_array('id', $exclude)) {
+            if (!in_array(
+                'id',
+                $exclude
+            )
+            ) {
                 $this->setId($data->getId());
             }
-            if (!in_array('username', $exclude)) {
+            if (!in_array(
+                'username',
+                $exclude
+            )
+            ) {
                 $this->setUsername($data->getUsername());
             }
-            if (!in_array('password', $exclude)) {
+            if (!in_array(
+                'password',
+                $exclude
+            )
+            ) {
                 $this->setPassword($data->getPassword());
             }
-            if (!in_array('state', $exclude)) {
+            if (!in_array(
+                'state',
+                $exclude
+            )
+            ) {
                 $this->setState($data->getState());
             }
-            if (!in_array('email', $exclude)) {
+            if (!in_array(
+                'email',
+                $exclude
+            )
+            ) {
                 $this->setEmail($data->getEmail());
             }
-            if (!in_array('name', $exclude)) {
+            if (!in_array(
+                'name',
+                $exclude
+            )
+            ) {
                 $this->setName($data->getName());
             }
-            if (!in_array('properties', $exclude)) {
+            if (!in_array(
+                'properties',
+                $exclude
+            )
+            ) {
                 $this->setProperties($data->getProperties());
             }
 
@@ -378,25 +447,60 @@ class User implements UserInterface, \JsonSerializable
 
         if (is_array($data)) {
 
-            if (isset($data['id']) && !in_array('id', $exclude)) {
+            if (isset($data['id'])
+                && !in_array(
+                    'id',
+                    $exclude
+                )
+            ) {
                 $this->setId($data['id']);
             }
-            if (isset($data['username']) && !in_array('username', $exclude)) {
+            if (isset($data['username'])
+                && !in_array(
+                    'username',
+                    $exclude
+                )
+            ) {
                 $this->setUsername($data['username']);
             }
-            if (isset($data['password']) && !in_array('password', $exclude)) {
+            if (isset($data['password'])
+                && !in_array(
+                    'password',
+                    $exclude
+                )
+            ) {
                 $this->setPassword($data['password']);
             }
-            if (isset($data['state']) && !in_array('state', $exclude)) {
+            if (isset($data['state'])
+                && !in_array(
+                    'state',
+                    $exclude
+                )
+            ) {
                 $this->setState($data['state']);
             }
-            if (isset($data['email']) && !in_array('email', $exclude)) {
+            if (isset($data['email'])
+                && !in_array(
+                    'email',
+                    $exclude
+                )
+            ) {
                 $this->setEmail($data['email']);
             }
-            if (isset($data['name']) && !in_array('name', $exclude)) {
+            if (isset($data['name'])
+                && !in_array(
+                    'name',
+                    $exclude
+                )
+            ) {
                 $this->setName($data['name']);
             }
-            if (isset($data['properties']) && !in_array('properties', $exclude)) {
+            if (isset($data['properties'])
+                && !in_array(
+                    'properties',
+                    $exclude
+                )
+            ) {
                 // @todo we need to try to populate the correct objects here?
                 $this->setProperties($data['properties']);
             }
@@ -404,9 +508,7 @@ class User implements UserInterface, \JsonSerializable
             return;
         }
 
-        throw new RcmUserException(
-            'User data could not be populated, data format not supported'
-        );
+        throw new RcmUserException('User data could not be populated, data format not supported');
     }
 
     /**
@@ -483,10 +585,11 @@ class User implements UserInterface, \JsonSerializable
 
             $userProperty = $this->getProperty($key);
             if (empty($userProperty)) {
-                $this->setProperty($key, $property);
+                $this->setProperty(
+                    $key,
+                    $property
+                );
             }
         }
     }
-
-
 }

@@ -18,9 +18,9 @@
 namespace RcmUser\Test\User\Service;
 
 
+use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Service\UserPropertyService;
-use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -75,9 +75,16 @@ class UserPropertyServiceTest extends Zf2TestCase
         $user->setId('123');
         $user->setProperty($key, 'XXXXX');
 
-        $newValue = $this->getUserPropertyService()->getUserProperty($user, $key);
+        $newValue = $this->getUserPropertyService()->getUserProperty(
+            $user,
+            $key
+        );
 
-        $this->assertEquals($value, $newValue, 'Property value did not come back.');
+        $this->assertEquals(
+            $value,
+            $newValue,
+            'Property value did not come back.'
+        );
     }
 
 }

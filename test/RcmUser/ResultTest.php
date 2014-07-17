@@ -19,7 +19,6 @@ namespace RcmUser\Test;
 
 use RcmUser\Exception\RcmUserResultException;
 use RcmUser\Result;
-use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../Zf2TestCase.php';
 
@@ -37,6 +36,7 @@ require_once __DIR__ . '/../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\Result
  */
 class ResultTest extends Zf2TestCase
 {
@@ -58,29 +58,47 @@ class ResultTest extends Zf2TestCase
         $result->setMessages($messages);
         $result->setMessage('message 2');
 
-        $this->assertTrue($result->getCode() === Result::CODE_SUCCESS, 'Data not returned.');
+        $this->assertTrue(
+            $result->getCode() === Result::CODE_SUCCESS,
+            'Data not returned.'
+        );
         $this->assertTrue($result->getData() === $data, 'Data not returned.');
 
         $returnedMessages = $result->getMessages();
-        $this->assertTrue(is_array($returnedMessages), 'Messages should be array.');
+        $this->assertTrue(
+            is_array($returnedMessages),
+            'Messages should be array.'
+        );
 
-        $this->assertTrue($returnedMessages[0] === $messages[0], 'Message 1 not returned.');
+        $this->assertTrue(
+            $returnedMessages[0] === $messages[0],
+            'Message 1 not returned.'
+        );
 
-        $this->assertTrue($result->getMessage(1) === 'message 2', 'Message 2 not returned.');
+        $this->assertTrue(
+            $result->getMessage(1) === 'message 2',
+            'Message 2 not returned.'
+        );
 
-        $this->assertTrue($result->getMessage('nope', 'not_found') === 'not_found', 'Message unset default not returned.');
+        $this->assertTrue(
+            $result->getMessage('nope', 'not_found') === 'not_found',
+            'Message unset default not returned.'
+        );
 
-        $this->assertTrue(is_string($result->getMessagesString()), 'Massages not returned as string');
+        $this->assertTrue(
+            is_string($result->getMessagesString()),
+            'Massages not returned as string'
+        );
 
         $this->assertJson(json_encode($result), 'Json not returned');
 
         $result->setCode(Result::CODE_SUCCESS);
 
-        try{
+        try {
             // this should NOT throw
             $result->throwFailure();
 
-        }catch(RcmUserResultException $e){
+        } catch (RcmUserResultException $e) {
 
             $this->fail("Exception thrown incorrectly");
             return;
@@ -88,12 +106,15 @@ class ResultTest extends Zf2TestCase
 
         $result->setCode(Result::CODE_FAIL);
 
-        try{
+        try {
             $result->throwFailure();
 
-        }catch(RcmUserResultException $e){
+        } catch (RcmUserResultException $e) {
 
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserResultException', $e);
+            $this->assertInstanceOf(
+                '\RcmUser\Exception\RcmUserResultException',
+                $e
+            );
             return;
         }
 

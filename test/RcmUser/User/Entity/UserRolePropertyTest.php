@@ -1,6 +1,6 @@
 <?php
 
- /**
+/**
  * UserRolePropertyTest.php
  *
  * UserRolePropertyTest
@@ -36,8 +36,10 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Entity\UserRoleProperty
  */
-class UserRolePropertyTest extends \PHPUnit_Framework_TestCase {
+class UserRolePropertyTest extends \PHPUnit_Framework_TestCase
+{
 
     /**
      * test
@@ -46,7 +48,7 @@ class UserRolePropertyTest extends \PHPUnit_Framework_TestCase {
      */
     public function test()
     {
-        $roles = array('TestRole1','TestRole2');
+        $roles = array('TestRole1', 'TestRole2');
         $userRoleProperty = new UserRoleProperty($roles);
 
         $this->assertTrue(
@@ -85,10 +87,10 @@ class UserRolePropertyTest extends \PHPUnit_Framework_TestCase {
             $userRoleProperty3->hasRole('TestRole2')
         );
 
-        try{
+        try {
             $userRoleProperty3->populate('NOPE');
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;

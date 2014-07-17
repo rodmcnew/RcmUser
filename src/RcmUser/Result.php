@@ -17,8 +17,8 @@
 
 namespace RcmUser;
 
-use RcmUser\Exception\RcmUserResultException;
-
+use
+    RcmUser\Exception\RcmUserResultException;
 
 /**
  * Class Result
@@ -78,8 +78,11 @@ class Result implements \JsonSerializable
      * @param int   $code     code
      * @param array $messages messages
      */
-    public function __construct($data = null, $code = 1, $messages = array())
-    {
+    public function __construct(
+        $data = null,
+        $code = 1,
+        $messages = array()
+    ) {
         $this->setData($data);
 
         $this->setCode($code);
@@ -148,7 +151,10 @@ class Result implements \JsonSerializable
      */
     public function getMessagesString()
     {
-        return implode($this->messageDelimiter, $this->messages);
+        return implode(
+            $this->messageDelimiter,
+            $this->messages
+        );
     }
 
     /**
@@ -171,10 +177,11 @@ class Result implements \JsonSerializable
      *
      * @return null|mixed
      */
-    public function getMessage($key = self::DEFAULT_KEY, $default = null)
-    {
+    public function getMessage(
+        $key = self::DEFAULT_KEY,
+        $default = null
+    ) {
         if (isset($this->messages[$key])) {
-
             return $this->messages[$key];
         }
 
@@ -211,7 +218,6 @@ class Result implements \JsonSerializable
     public function isSuccess()
     {
         if ($this->getCode() >= self::CODE_SUCCESS) {
-
             return true;
         }
 
@@ -246,4 +252,4 @@ class Result implements \JsonSerializable
 
         return $obj;
     }
-} 
+}

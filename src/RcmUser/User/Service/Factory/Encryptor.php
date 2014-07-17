@@ -17,9 +17,12 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use Zend\Crypt\Password\Bcrypt;
-use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use
+    Zend\Crypt\Password\Bcrypt;
+use
+    Zend\ServiceManager\FactoryInterface;
+use
+    Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class Encryptor
@@ -49,7 +52,12 @@ class Encryptor implements FactoryInterface
     {
         $cfg = $serviceLocator->get('RcmUser\User\Config');
         $encryptor = new Bcrypt();
-        $encryptor->setCost($cfg->get('Encryptor.passwordCost', 14));
+        $encryptor->setCost(
+            $cfg->get(
+                'Encryptor.passwordCost',
+                14
+            )
+        );
 
         return $encryptor;
     }

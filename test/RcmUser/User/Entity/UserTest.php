@@ -29,8 +29,9 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  *
  * PHP version 5
  *
+ * @covers    \RcmUser\User\Entity\User
  */
-class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
+class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
     public function setUp()
     {
@@ -76,7 +77,11 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $value = 'usernamexxx';
         $user->setUsername($value);
-        $this->assertEquals($value, $user->getUsername(), 'Setter or getter failed.');
+        $this->assertEquals(
+            $value,
+            $user->getUsername(),
+            'Setter or getter failed.'
+        );
 
         $value = '';
         $user->setUsername($value);
@@ -84,7 +89,11 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $value = 'passwordxxx';
         $user->setPassword($value);
-        $this->assertEquals($value, $user->getPassword(), 'Setter or getter failed.');
+        $this->assertEquals(
+            $value,
+            $user->getPassword(),
+            'Setter or getter failed.'
+        );
 
         $value = '';
         $user->setPassword($value);
@@ -92,7 +101,11 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $value = 'statexxx';
         $user->setState($value);
-        $this->assertEquals($value, $user->getState(), 'Setter or getter failed.');
+        $this->assertEquals(
+            $value,
+            $user->getState(),
+            'Setter or getter failed.'
+        );
 
         $value = '';
         $user->setState($value);
@@ -100,7 +113,11 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $value = 'xxx@example.com';
         $user->setEmail($value);
-        $this->assertEquals($value, $user->getEmail(), 'Setter or getter failed.');
+        $this->assertEquals(
+            $value,
+            $user->getEmail(),
+            'Setter or getter failed.'
+        );
 
         $value = '';
         $user->setEmail($value);
@@ -108,7 +125,11 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $value = 'namesxxx';
         $user->setName($value);
-        $this->assertEquals($value, $user->getName(), 'Setter or getter failed.');
+        $this->assertEquals(
+            $value,
+            $user->getName(),
+            'Setter or getter failed.'
+        );
 
         $value = '';
         $user->setName($value);
@@ -116,21 +137,39 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $value = null;
         $user->setProperties($value);
-        $this->assertTrue(is_array($user->getProperties()), 'Setter or getter failed.');
+        $this->assertTrue(
+            is_array($user->getProperties()),
+            'Setter or getter failed.'
+        );
 
         $pvalue = array('Y' => 'propertyYYY');
         $value = 'propertyXXX';
         $user->setProperties($pvalue);
-        $this->assertArrayHasKey('Y', $user->getProperties(), 'Setter or getter failed.');
+        $this->assertArrayHasKey(
+            'Y',
+            $user->getProperties(),
+            'Setter or getter failed.'
+        );
         $user->setProperty('X', $value);
-        $this->assertEquals($value, $user->getProperty('X'), 'Setter or getter failed.');
-        $this->assertArrayHasKey('Y', $user->getProperties(), 'Setter or getter failed.');
-        $this->assertTrue($user->getProperty('nope', 'not_found') === 'not_found', 'Setter or getter failed.');
+        $this->assertEquals(
+            $value,
+            $user->getProperty('X'),
+            'Setter or getter failed.'
+        );
+        $this->assertArrayHasKey(
+            'Y',
+            $user->getProperties(),
+            'Setter or getter failed.'
+        );
+        $this->assertTrue(
+            $user->getProperty('nope', 'not_found') === 'not_found',
+            'Setter or getter failed.'
+        );
 
-        try{
+        try {
             $user->setProperty('N*P#_^^^^', 'something');
 
-        }catch(RcmUserException $e){
+        } catch (RcmUserException $e) {
 
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -141,13 +180,27 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
     }
 
     /**
+     * testInvalidUserState
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testInvalidUserState()
+    {
+        $user = new User();
+        $user->setState("<invalid>alert('user')</invalid>");
+    }
+
+    /**
      * testIsEnabled
      *
      * @covers \RcmUser\User\Entity\User::isEnabled
      *
      * @return void
      */
-    public function testIsEnabled(){
+    public function testIsEnabled()
+    {
 
         $user = new User();
         $user->setState(User::STATE_DISABLED);
@@ -174,7 +227,9 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
         $this->assertTrue(is_array($userArr), 'Iterator failed work.');
 
         $this->assertArrayHasKey(
-            'id', $userArr, 'Iterator did not populate correctly.'
+            'id',
+            $userArr,
+            'Iterator did not populate correctly.'
         );
     }
 
@@ -197,17 +252,25 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $userA->populate($userB);
 
-        $this->assertEquals($userA, $userB, 'Populate from object not successful');
+        $this->assertEquals(
+            $userA,
+            $userB,
+            'Populate from object not successful'
+        );
 
         $userA->populate($userArrC);
 
-        $this->assertEquals($userA, $userC, 'Populate from array not successful');
+        $this->assertEquals(
+            $userA,
+            $userC,
+            'Populate from array not successful'
+        );
 
 
-        try{
+        try {
             $userA->populate($userD);
 
-        }catch(\RcmUser\Exception\RcmUserException $e){
+        } catch (\RcmUser\Exception\RcmUserException $e) {
             //$this->assertEquals("Exception Code",$e->getMessage());
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
             return;
@@ -232,18 +295,34 @@ class UserTest extends \RcmUser\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         $userA->merge($userB);
 
-        $this->assertEquals($userA, $userB, 'Merge to empty object not successful');
+        $this->assertEquals(
+            $userA,
+            $userB,
+            'Merge to empty object not successful'
+        );
 
         $userA->merge($userC);
 
-        $this->assertNotEquals($userA, $userC, 'Merge to populated object not successful');
+        $this->assertNotEquals(
+            $userA,
+            $userC,
+            'Merge to populated object not successful'
+        );
 
         $userA->setId(null);
 
         $userA->merge($userC);
 
-        $this->assertNotEquals($userA, $userC, 'Merge to populated single property not successful');
-        $this->assertEquals($userA->getId(), $userC->getId(), 'Merge to single property not successful');
+        $this->assertNotEquals(
+            $userA,
+            $userC,
+            'Merge to populated single property not successful'
+        );
+        $this->assertEquals(
+            $userA->getId(),
+            $userC->getId(),
+            'Merge to single property not successful'
+        );
     }
 
     /**

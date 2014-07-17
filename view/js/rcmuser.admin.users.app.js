@@ -1,7 +1,7 @@
 // rcmuserCore include <?php echo "\n"; include(__DIR__ . '/rcmuser.core.js'); ?>
 
 angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
-    .factory('rcmuserAdminUsersData', ['rcmUserConfig', function(rcmUserConfig){
+    .factory('rcmuserAdminUsersData', ['rcmUserConfig', function (rcmUserConfig) {
 
         self = this;
 
@@ -63,7 +63,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             // User
             $scope.showMessages = false;
             self.getUsers(
-                function(data, status) {
+                function (data, status) {
 
                     $scope.users = data.data;
                     $scope.messages = data.messages;
@@ -72,7 +72,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             // User Roles
             self.getRoles(
-                function(data, status) {
+                function (data, status) {
 
                     $scope.roles = data.data;
                     $scope.messages = data.messages;
@@ -81,7 +81,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             // valid user states
             self.getValidUserStates(
-                function(data, status) {
+                function (data, status) {
 
                     $scope.availableStates = data.data;
                 }
@@ -128,11 +128,11 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.orgUser = angular.copy($scope.user);
 
-            $scope.isDefaultRole = function(roleId){
+            $scope.isDefaultRole = function (roleId) {
 
                 var index = $scope.defaultRoles.indexOf(roleId)
 
-                if(index !== -1){
+                if (index !== -1) {
 
                     return true;
                 }
@@ -156,12 +156,12 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.addRole = function (roleId) {
 
-                if(typeof($scope.user.properties[$scope.rolePropertyId]) === 'undefined'){
+                if (typeof($scope.user.properties[$scope.rolePropertyId]) === 'undefined') {
 
                     $scope.user.properties[$scope.rolePropertyId] = [];
                 }
 
-                if($scope.user.properties[$scope.rolePropertyId].indexOf(roleId) === -1){
+                if ($scope.user.properties[$scope.rolePropertyId].indexOf(roleId) === -1) {
 
                     $scope.user.properties[$scope.rolePropertyId].push(roleId);
                 }
@@ -172,7 +172,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
                 var index = $scope.user.properties[$scope.rolePropertyId].indexOf(roleId);
 
-                if(index === -1){
+                if (index === -1) {
 
                     return;
                 }
@@ -205,8 +205,8 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
 
                 var onSuccess = function (data, status) {
 
-                    if(typeof($scope.users.splice) === 'function'){
-                        $scope.users.splice($scope.index,1);
+                    if (typeof($scope.users.splice) === 'function') {
+                        $scope.users.splice($scope.index, 1);
                     } else {
                         $log.log('Expected array, user could not be properly removed');
                     }
@@ -217,15 +217,13 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 self.removeUser($scope.user, onSuccess);
             }
 
-            $scope.resetUser = function ()
-            {
+            $scope.resetUser = function () {
                 $scope.user = angular.copy($scope.orgUser);
             }
 
-            $scope.cancelCreateUser = function ()
-            {
+            $scope.cancelCreateUser = function () {
                 // @todo need pop this from users in parent scope
-                $scope.user = $scope.users.splice($scope.index,1);
+                $scope.user = $scope.users.splice($scope.index, 1);
             }
 
             // API CALLS
@@ -284,7 +282,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             };
 
             self.getDefaultUserRoles(
-                function(data, status) {
+                function (data, status) {
 
                     $scope.defaultRoles = data.data;
                 }

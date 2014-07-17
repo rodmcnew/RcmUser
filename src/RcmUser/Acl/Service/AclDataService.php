@@ -17,13 +17,16 @@
 
 namespace RcmUser\Acl\Service;
 
-use RcmUser\Acl\Db\AclRoleDataMapperInterface;
-use RcmUser\Acl\Db\AclRuleDataMapperInterface;
-use RcmUser\Acl\Entity\AclRole;
-use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Config\Config;
-use RcmUser\Result;
-
+use
+    RcmUser\Acl\Db\AclRoleDataMapperInterface;
+use
+    RcmUser\Acl\Db\AclRuleDataMapperInterface;
+use
+    RcmUser\Acl\Entity\AclRole;
+use
+    RcmUser\Acl\Entity\AclRule;
+use
+    RcmUser\Result;
 
 /**
  * AclDataService
@@ -109,12 +112,7 @@ class AclDataService
     {
         $result = $this->getAllRoles();
 
-        if (!$result->isSuccess()) {
-
-            return $result;
-        }
-
-        $data = $result->getData();
+        return $result->getData();
     }
 
     /**
@@ -217,26 +215,17 @@ class AclDataService
         // some roles should not be deleted, like super admin and guest
         $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
         if ($roleId == $superAdminRoleId) {
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                "Super admin role ({$roleId}) cannot be deleted."
-            );
+            return new Result(null, Result::CODE_FAIL, "Super admin role ({$roleId}) cannot be deleted.");
         }
 
         $guestRoleId = $this->getGuestRoleId()->getData();
         if ($roleId == $guestRoleId) {
-            return new Result(
-                null,
-                Result::CODE_FAIL,
-                "Guest role ({$roleId}) cannot be deleted."
-            );
+            return new Result(null, Result::CODE_FAIL, "Guest role ({$roleId}) cannot be deleted.");
         }
 
         $result = $this->aclRoleDataMapper->delete($aclRole);
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -247,6 +236,7 @@ class AclDataService
             $rulesResult->setMessage(
                 'Could not remove related rules for role: ' . $roleId
             );
+
             return $rulesResult;
         }
 
@@ -273,10 +263,15 @@ class AclDataService
      *
      * @return array
      */
-    public function getRolesWithNamespace($nsChar = '.', $refresh = false)
-    {
+    public function getRolesWithNamespace(
+        $nsChar = '.',
+        $refresh = false
+    ) {
         $aclRoles = array();
-        $roles = $this->getNamespacedRoles($nsChar, $refresh);
+        $roles = $this->getNamespacedRoles(
+            $nsChar,
+            $refresh
+        );
 
         foreach ($roles as $ns => $role) {
 
@@ -302,7 +297,6 @@ class AclDataService
         $result = $this->getAllRoles();
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -321,10 +315,7 @@ class AclDataService
 
         ksort($aclRoles);
 
-        return new Result(
-            $aclRoles,
-            Result::CODE_SUCCESS
-        );
+        return new Result($aclRoles, Result::CODE_SUCCESS);
     }
 
     /**
@@ -336,17 +327,23 @@ class AclDataService
      *
      * @return string
      */
-    public function createRoleNamespaceId(AclRole $aclRole, $aclRoles, $nsChar = '.')
-    {
+    public function createRoleNamespaceId(
+        AclRole $aclRole,
+        $aclRoles,
+        $nsChar = '.'
+    ) {
         $parentId = $aclRole->getParentRoleId();
         $ns = $aclRole->getRoleId();
         if (!empty($parentId)) {
 
             $parent = $aclRoles[$parentId];
 
-            $ns = $this->createRoleNamespaceId($parent, $aclRoles, $nsChar) .
-                $nsChar .
-                $ns;
+            $newns = $this->createRoleNamespaceId(
+                $parent,
+                $aclRoles,
+                $nsChar
+            );
+            $ns = $newns . $nsChar . $ns;
         }
 
         return $ns;
@@ -403,7 +400,6 @@ class AclDataService
 
         // check required
         if (empty($rule) || empty($roleId) || empty($resource)) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -413,7 +409,6 @@ class AclDataService
 
         // check if is super admin
         if ($roleId == $this->getSuperAdminRoleId()->getData()) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -425,7 +420,6 @@ class AclDataService
         $result = $this->getRoleByRoleId($roleId);
 
         if (!$result->isSuccess()) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -434,7 +428,6 @@ class AclDataService
         }
 
         // @todo validate resource/privilege exists
-
         return $this->aclRuleDataMapper->create($aclRule);
     }
 
@@ -454,7 +447,6 @@ class AclDataService
 
         // check required
         if (empty($rule) || empty($roleId) || empty($resource)) {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -466,7 +458,6 @@ class AclDataService
         $result = $this->aclRuleDataMapper->read($aclRule);
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -486,7 +477,6 @@ class AclDataService
         $result = $this->getNamespacedRoles($nsChar);
 
         if (!$result->isSuccess()) {
-
             return $result;
         }
 
@@ -508,10 +498,6 @@ class AclDataService
             }
         }
 
-        return new Result(
-            $aclRoles,
-            Result::CODE_SUCCESS
-        );
+        return new Result($aclRoles, Result::CODE_SUCCESS);
     }
-
-} 
+}

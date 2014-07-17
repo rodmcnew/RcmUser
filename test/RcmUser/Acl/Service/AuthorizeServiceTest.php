@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * AuthorizeServiceTest.php
  *
  * TEST
@@ -19,7 +19,7 @@ namespace RcmUser\Test\Acl\Service;
 
 use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Result;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 use Zend\Di\ServiceLocator;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
@@ -33,13 +33,14 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  *
  * @covers \RcmUser\Acl\Service\AuthorizeService
  */
-class AuthorizeServiceTest extends Zf2TestCase {
+class AuthorizeServiceTest extends Zf2TestCase
+{
 
     public $authorizeService;
 
     public function getAuthorizeService()
     {
-        if(!isset($this->authorizeService)){
+        if (!isset($this->authorizeService)) {
 
             $this->buildAuthorizeService();
         }
@@ -64,14 +65,16 @@ class AuthorizeServiceTest extends Zf2TestCase {
             ->getMock();
 
         $aclDataService->expects($this->any())
-        ->method('getNamespacedRoles')
-        ->will($this->returnValue(
+            ->method('getNamespacedRoles')
+            ->will(
+                $this->returnValue(
                     new Result(
                         array('data' => 'here'),
                         Result::CODE_SUCCESS,
                         'Message'
                     )
-                ));
+                )
+            );
 
         $aclDataService->expects($this->any())
             ->method('getSuperAdminRoleId')
@@ -91,28 +94,37 @@ class AuthorizeServiceTest extends Zf2TestCase {
         );
     }
 
-    public function testGetSet(){
+    public function testGetSet()
+    {
 
         $this->buildAuthorizeService();
 
         /** @var AuthorizeService $authServ */
         $authServ = $this->getAuthorizeService();
 
-        $this->assertInstanceOf('\RcmUser\Acl\Service\AclResourceService', $authServ->getAclResourceService());
-        $this->assertInstanceOf('\RcmUser\Acl\Service\AclDataService', $authServ->getAclDataService());
+        $this->assertInstanceOf(
+            '\RcmUser\Acl\Service\AclResourceService',
+            $authServ->getAclResourceService()
+        );
+        $this->assertInstanceOf(
+            '\RcmUser\Acl\Service\AclDataService',
+            $authServ->getAclDataService()
+        );
 
     }
 
-    public function testGetRoles(){}
+    public function testGetRoles()
+    {
+    }
 
     public function testIsAllowed()
     {
         /* @todo Fix Me
-        $resource = "some.resource";
-
-        $result = $this->getAuthorizeService()->isAllowed($resource);
-
-        $this->assertTrue($result, 'True not returned.');
+         * $resource = "some.resource";
+         *
+         * $result = $this->getAuthorizeService()->isAllowed($resource);
+         *
+         * $this->assertTrue($result, 'True not returned.');
          * */
     }
 
@@ -122,7 +134,11 @@ class AuthorizeServiceTest extends Zf2TestCase {
 
         $result = $this->getAuthorizeService()->parseResource($resource);
 
-        $this->assertContains('some', $result, 'Resource string not parsed correctly');
+        $this->assertContains(
+            'some',
+            $result,
+            'Resource string not parsed correctly'
+        );
     }
 }
  

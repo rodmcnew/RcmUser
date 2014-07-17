@@ -1,5 +1,5 @@
 <?php
- /**
+/**
  * ResourceProviderTest.php
  *
  * LongDescHere
@@ -18,10 +18,26 @@
 namespace RcmUser\Test\Acl\Provider;
 
 use RcmUser\Acl\Provider\ResourceProvider;
-use RcmUser\Zf2TestCase;
+use RcmUser\Test\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class ResourceProviderTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\Acl\Provider
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\Acl\Provider\ResourceProvider
+ */
 class ResourceProviderTest extends Zf2TestCase
 {
     /**

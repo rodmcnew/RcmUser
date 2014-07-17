@@ -17,10 +17,12 @@
 
 namespace RcmUser\Controller;
 
-use RcmUser\Result;
-use Zend\Http\Response;
-use Zend\View\Model\JsonModel;
-
+use
+    RcmUser\Provider\RcmUserAclResourceProvider;
+use
+    RcmUser\Result;
+use
+    Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiAclResourcesController
@@ -47,7 +49,11 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
     public function getList()
     {
         // ACCESS CHECK
-        if (!$this->isAllowed('rcmuser-acl-administration', 'read')) {
+        if (!$this->isAllowed(
+            RcmUserAclResourceProvider::RESOURCE_ID_ACL,
+            'read'
+        )
+        ) {
             return $this->getNotAllowedResponse();
         }
 
@@ -57,12 +63,9 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
 
         try {
 
-            $result = new Result(
-                $aclResourceService->getResourcesWithNamespace()
-            );
+            $result = new Result($aclResourceService->getResourcesWithNamespace());
 
         } catch (\Exception $e) {
-
             return $this->getExceptionResponse($e);
         }
 

@@ -17,12 +17,28 @@
 
 namespace RcmUser\Test\User\Entity;
 
+use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\ReadOnlyUser;
 use RcmUser\User\Entity\User;
-use RcmUser\Zf2TestCase;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
+/**
+ * Class ReadOnlyUserTest
+ *
+ * LongDescHere
+ *
+ * PHP version 5
+ *
+ * @category  Reliv
+ * @package   RcmUser\Test\User\Entity
+ * @author    James Jervis <jjervis@relivinc.com>
+ * @copyright ${YEAR} Reliv International
+ * @license   License.txt New BSD License
+ * @version   Release: <package_version>
+ * @link      https://github.com/reliv
+ * @covers    \RcmUser\User\Entity\ReadOnlyUser
+ */
 class ReadOnlyUserTest extends Zf2TestCase
 {
 
@@ -39,7 +55,7 @@ class ReadOnlyUserTest extends Zf2TestCase
         $user->setId('id');
         $user->setUsername('username');
         $user->setPassword('password');
-        $user->setProperties(array('A'=>'something'));
+        $user->setProperties(array('A' => 'something'));
 
         return new ReadOnlyUser($user);
     }
@@ -61,7 +77,7 @@ class ReadOnlyUserTest extends Zf2TestCase
         $user->setState('disabled');
         $user->setName('name');
         $user->setEmail('test@example.com');
-        $user->setProperties(array('A'=>'something'));
+        $user->setProperties(array('A' => 'something'));
 
         return new ReadOnlyUser($user);
     }
