@@ -494,8 +494,8 @@ return array(
 
                /* example of resource providers as array *
                'RcmUser.TEST' => array(
-                   'TESTONE' => array(
-                       'resourceId' => 'TESTONE',
+                   'test-one' => array(
+                       'resourceId' => 'test-one',
                        'parentResourceId' => null,
                        'privileges' => array(
                            'read',
@@ -507,9 +507,9 @@ return array(
                        'name' => 'Test resource one.',
                        'description' => 'test resource one desc.',
                    ),
-                   'TESTTWO' => array(
-                       'resourceId' => 'TESTTWO',
-                       'parentResourceId' => 'TESTONE',
+                   'test-two' => array(
+                       'resourceId' => 'test-two',
+                       'parentResourceId' => 'test-one',
                        'privileges' => array(
                            'read',
                            'update',
