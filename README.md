@@ -319,6 +319,24 @@ Configuration
 return array(
 
     'RcmUser' => array(
+        /**
+         * Include any paths for JavaScript and CSS here
+         * The included views require:
+         * - AngularJS
+         * - Angular-UI
+         * - TwitterBootstrap
+         */
+        'htmlAssets' => array(
+            'js' => array(
+                '/modules/rcm-angular-js/angular/angular.js',
+                '/modules/rcm-twitter-bootstrap/js/bootstrap.js',
+                '/modules/rcm-angular-js/angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
+            ),
+
+            'css' => array(
+                '/modules/rcm-twitter-bootstrap/css/bootstrap.css',
+            ),
+        ),
        'User\Config' => array(
 
            /*

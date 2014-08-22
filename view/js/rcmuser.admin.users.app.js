@@ -208,7 +208,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     if (typeof($scope.users.splice) === 'function') {
                         $scope.users.splice($scope.index, 1);
                     } else {
-                        $log.log('Expected array, user could not be properly removed');
+                        $log.error('Expected array, user could not be properly removed');
                     }
 
                     delete $scope.user;

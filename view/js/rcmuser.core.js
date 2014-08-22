@@ -52,13 +52,13 @@ angular.module('rcmuserCore', [])
                 self.http(config)
                     .success(function (data, status, headers, config) {
 
-                        $log.log('call-success');
+                        //$log.log('call-success');
                         // if is result object
                         if (typeof(data.code) !== 'undefined' && typeof(data.messages) !== 'undefined') {
 
                             if (data.code < 1) {
 
-                                $log.log('result-fail');
+                                //$log.log('result-fail');
                                 self.alerts.add(data);
 
                                 if (typeof(onFail) === 'function') {
@@ -73,7 +73,7 @@ angular.module('rcmuserCore', [])
                             if (self.includeSuccessAlerts) {
 
                                 if (data.messages.length == 0) {
-                                    $log.log('default-success-alert');
+                                    //$log.log('default-success-alert');
                                     data.messages.push("Success!")
                                 }
 
@@ -81,8 +81,8 @@ angular.module('rcmuserCore', [])
                             }
                         } else {
 
-                            $log.log('Result object not returned: ');
-                            $log.log(data);
+                            $log.error('Result object not returned: ');
+                            //$log.log(data);
                         }
 
                         if ((typeof(onSuccess) === 'function')) {
@@ -94,7 +94,7 @@ angular.module('rcmuserCore', [])
                     })
                     .error(function (data, status, headers, config) {
 
-                        $log.log('call-error');
+                        //$log.log('call-error');
 
                         var failResult = new RcmUserResult(
                             0,
@@ -102,7 +102,7 @@ angular.module('rcmuserCore', [])
                             data
                         );
 
-                        $log.log(failResult);
+                        //$log.log(failResult);
 
                         self.alerts.add(failResult);
 

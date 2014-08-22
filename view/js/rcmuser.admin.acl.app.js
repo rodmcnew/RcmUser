@@ -331,11 +331,11 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
             /* <ROLES> */
             self.getRoles = function (onSuccess, onFail) {
 
-                $log.log('getRoles');
+                //$log.log('getRoles');
 
                 var apiSuccess = function (data, status) {
 
-                    $log.log(data);
+                    //$log.log(data);
                     $scope.roles = data.data;
 
                     if (typeof(onSuccess) === 'function') {
