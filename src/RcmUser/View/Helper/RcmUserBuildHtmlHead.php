@@ -91,11 +91,10 @@ class RcmUserBuildHtmlHead extends AbstractHelper
     ) {
         switch ($type) {
             case 'css':
-                $this->view ->headLink()->appendStylesheet($path);
+                $this->view->headLink()->appendStylesheet($path);
                 break;
             case 'js':
-
-                $this->view ->headScript()->appendFile($path);
+                $this->view->headScript()->appendFile($path);
                 break;
         }
     }
