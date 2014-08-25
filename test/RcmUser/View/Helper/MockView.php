@@ -51,15 +51,11 @@ class MockView implements RendererInterface
     {
     }
 
-    public function rcmIncludeAngularJsUiBootstrap()
+    public function headScript()
     {
     }
 
-    public function rcmIncludeAngularJs()
-    {
-    }
-
-    public function rcmIncludeTwitterBootstrap()
+    public function headLink()
     {
     }
 }
