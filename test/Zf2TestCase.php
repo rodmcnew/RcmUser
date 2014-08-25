@@ -67,6 +67,15 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
      */
     public $mockRcmUserConfig
         = array(
+            'htmlAssets' => array(
+                'js' => array(
+                    '/test.js',
+                ),
+
+                'css' => array(
+                    '/test.css',
+                ),
+            ),
             'User\Config' => array(
 
                 'ValidUserStates' => array(
