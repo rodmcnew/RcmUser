@@ -50,7 +50,11 @@ class ViewHelperRcmUserBuildHtmlHead implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $mgr)
     {
-        $service = new RcmUserBuildHtmlHead();
+        $serviceLocator = $mgr->getServiceLocator();
+        $config = $serviceLocator->get(
+            'RcmUser\Config'
+        );
+        $service = new RcmUserBuildHtmlHead($config['htmlAssets']);
 
         return $service;
     }
