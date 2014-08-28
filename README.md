@@ -329,12 +329,12 @@ return array(
         'htmlAssets' => array(
             'js' => array(
                 '/modules/rcm-angular-js/angular/angular.js',
-                '/modules/rcm-twitter-bootstrap/js/bootstrap.js',
+                '/modules/rcm-twitter-bootstrap/bootstrap/js/bootstrap.js',
                 '/modules/rcm-angular-js/angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
             ),
 
             'css' => array(
-                '/modules/rcm-twitter-bootstrap/css/bootstrap.css',
+                '/modules/rcm-twitter-bootstrap/bootstrap/css/bootstrap.css',
             ),
         ),
        'User\Config' => array(

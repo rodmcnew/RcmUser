@@ -1,5 +1,5 @@
 {
-    "name": "reliv/RcmUser",
+    "name": "reliv/rcm-user",
     "description": "User management, auth and ACL",
     "type": "library",
     "license": "BSD-3-Clause",
