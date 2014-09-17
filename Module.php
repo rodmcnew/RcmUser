@@ -84,6 +84,25 @@ class Module implements AutoloaderProviderInterface
      */
     public function onBootstrap(MvcEvent $event)
     {
+        /** @var \Zend\EventManager\EventManager $eventManager */
+        $eventManager = $event->getApplication()->getEventManager();
+
+        $eventManager->attach(
+            MvcEvent::EVENT_ROUTE,
+            array($this, 'onRouteEvent'),
+            0
+        );
+    }
+
+    /**
+     * Temporary Listener Attachments for RcmUser.
+     *
+     * @param MvcEvent $event
+     *
+     * @todo Investigate better ways to handle this.
+     */
+    public function onRouteEvent(MvcEvent $event)
+    {
         $application = $event->getApplication();
         $sm = $application->getServiceManager();
         $eventManager = $application->getEventManager();
