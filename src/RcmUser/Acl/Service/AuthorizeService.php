@@ -111,6 +111,18 @@ class AuthorizeService
     }
 
     /**
+     * Get the guest user role id
+     *
+     * @return string
+     */
+    public function getGuestRole()
+    {
+        $id = $this->getAclDataService()->getGuestRoleId()->getData();
+
+        return array($this->getAclDataService()->getRoleByRoleId($id)->getData());
+    }
+
+    /**
      * getRoles
      *
      * @return array
@@ -329,13 +341,14 @@ class AuthorizeService
         $providerId = null,
         $user = null
     ) {
-        if (!($user instanceof User)) {
-            return false;
-        }
-
         $resourceId = strtolower($resourceId);
 
-        $userRoles = $this->getUserRoles($user);
+        if ($user instanceof User) {
+            $userRoles = $this->getUserRoles($user);
+        } else {
+            $userRoles = $this->getGuestRole();
+        }
+
         /* Check super admin
             we over-ride everything if user has super admin
         */
