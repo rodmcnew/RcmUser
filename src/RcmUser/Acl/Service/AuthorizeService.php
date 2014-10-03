@@ -179,27 +179,10 @@ class AuthorizeService
 
             return $result->getData();
         }
-        $rules = array();
 
-        foreach ($resources as $resourceId => $resource) {
+        $rules = $this->getAclDataService()->getRulesByResources($resources);
 
-            $result = $this->getAclDataService()->getRulesByResource(
-                $resource->getResourceId()
-            );
-
-            if (!$result->isSuccess()) {
-
-                // @todo Throw error?
-                continue;
-            }
-
-            $rules = array_merge(
-                $rules,
-                $result->getData()
-            );
-        }
-
-        return $rules;
+        return $rules->getData();
     }
 
     /**

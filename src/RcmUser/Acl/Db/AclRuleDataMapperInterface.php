@@ -94,6 +94,25 @@ interface AclRuleDataMapperInterface
     public function fetchByRule($rule);
 
     /**
+     * fetchByResources
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *       1 => RcmUser\Acl\Entity\AclRule
+     *    )
+     *
+     *    -- fail
+     *    array()
+     *
+     * @param array $resources Array of Resources
+     *
+     * @return Result
+     */
+    public function fetchByResources(Array $resources);
+
+    /**
      * fetchByResource
      *
      * RETURN DATA FORMAT:
