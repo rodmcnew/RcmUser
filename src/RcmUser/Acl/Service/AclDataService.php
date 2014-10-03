@@ -362,6 +362,18 @@ class AclDataService
     }
 
     /**
+     * getRulesByResources
+     *
+     * @param array $resources Array of Resources to lookup
+     *
+     * @return Result
+     */
+    public function getRulesByResources(Array $resources)
+    {
+        return $this->aclRuleDataMapper->fetchByResources($resources);
+    }
+
+    /**
      * getRulesByResource
      *
      * @param string $resourceId $resourceId

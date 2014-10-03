@@ -19,6 +19,8 @@ namespace RcmUser\Acl\Db;
 
 use
     Doctrine\ORM\EntityManager;
+use Rcm\Acl\ResourceProvider;
+use RcmUser\Acl\Entity\AclResource;
 use
     RcmUser\Acl\Entity\AclRule;
 use
@@ -151,9 +153,43 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     /**
      * fetchByResource
      *
+     * @param string $resources Array of Resources
+     *
+     * @return Result
+     */
+    public function fetchByResources(Array $resources)
+    {
+        $ids = array();
+
+        foreach ($resources as $resource) {
+            if (!$resource instanceof AclResource) {
+                continue;
+            }
+
+            $ids[] = $resource->getResourceId();
+        }
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule '
+            . 'INDEX BY rule.id ' . 'WHERE rule.resourceId IN (?1)'
+        );
+
+        $query->setParameter(
+            1,
+            $ids
+        );
+
+        $rules = $query->getResult();
+
+        return new Result($rules);
+    }
+
+    /**
+     * fetchByResource
+     *
      * @param string $resourceId resourceId
      *
-     * @return mixed|Result
+     * @return Result
      */
     public function fetchByResource($resourceId)
     {
