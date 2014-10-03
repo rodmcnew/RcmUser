@@ -362,7 +362,7 @@ class AclDataService
     }
 
     /**
-     * getRulesByResource
+     * getRulesByResources
      *
      * @param array $resources Array of Resources to lookup
      *
