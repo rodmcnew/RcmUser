@@ -368,19 +368,23 @@ class AuthorizeService
 
         } catch (\Exception $e) {
             // @todo - report this error or log
-            $message = '<pre>' . 'AuthorizeService->isAllowed failed to check: ' . "providerId: {$providerId} "
-                . "resourceId: {$resourceId} " . 'privilege: ' . var_export(
-                    $privilege,
-                    true
-                ) . ' ' . 'user id: ' . $user->getId() . ' '
-                . //'user roles: ' . var_export($userRoles, true) . ' ' .
-                //'acl roles: ' . var_export(
-                //    $this->getAcl($resourceId, $providerId)->getRoles(), true
-                //) . ' ' .
-                //'defined roles: ' . var_export($this->getRoles() , true) . ' ' .
-                'Acl failed with error: ' . $e->getMessage() . '</pre>';
+            $message = '<pre>';
+            $message .= "AuthorizeService->isAllowed failed to check: \n" .
+                "providerId: {$providerId} \n" .
+                "resourceId: {$resourceId} \n" .
+                'privilege: ' . var_export($privilege, true) . " \n";
+            if ($user) {
+                $message .= 'user id: ' . $user->getId() . " \n";
+            }
+            $message .= 'user roles: ' . var_export($userRoles, true) . " \n";
+            $message .= 'acl roles: ' . var_export(
+                $this->getAcl($resourceId, $providerId)->getRoles(), true
+            ) . " \n";
+            $message .='defined roles: ' . var_export($this->getRoles() , true) . " \n";
+            $message .= 'Acl failed with error: ' . $e->getMessage();
+            $message .= '</pre>';
             //echo($message);
-            throw new RcmUserException($message);
+            throw new RcmUserException($message, 401);
         }
 
         return false;
