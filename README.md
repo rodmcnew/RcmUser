@@ -6,40 +6,7 @@ Introduction
 
 The main goal of this module is to expose a simple and configurable user object as well as the services related to user storage, access control and authentication.
 
-@future composer based install
-
-@future More REST/JSON APIs
-
-@future Additional Views:
-        my profile
-        login
-        reset password
-
-@future User property links on user edit/profile pages:
-        As User when I access a user profile edit page
-        I should see a list of links or tabs to other profile data
-        So I can have quick access to all my user properties
-
-@future Logging of actions for security audits
-
-@future DB Optimization
-
-@future Translation of Result messages
-
-@future Translation of other page content
-
-@future Assign multiple privileges when creating a rule on ACL Administration pages
-
-@future Protection of default and special roles
-        As an ACL Administrator
-        I should not be able to delete super admin, guest or default roles
-        So that rules for default roles will not be removed
-
-@future Full Deny rule support
-
-@future Pagination for DataMappers
-
-@future Guest User features (maybe)
+See TODO.md for future goals.
 
 
 Features
