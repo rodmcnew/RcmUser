@@ -17,12 +17,13 @@ So that I may install in a standard way
 
 #### Admin Edit Profile Updates ####
 
+Story:
+As User when I access a user profile edit page
+I should see a list of links or tabs to other profile data
+So I can have quick access to all my user properties
+    
  - User property links on user edit/profile pages:
- 
-    Story:
-    As User when I access a user profile edit page
-    I should see a list of links or tabs to other profile data
-    So I can have quick access to all my user properties
+ - Simple Interface to register profiles
     
 #### Admin Role and Rule UI Updates ####
 
