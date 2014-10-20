@@ -101,16 +101,28 @@ As a Role Administrator
 I should be able to create Deny rules so 
 I may deny a role access
 
-There is an edge case where the results of a deny may not be what is expected.
+There may be inconsistent or undeterminable access for users with multiple roles.  
+    
+There needs be a way to determine which state the rule is using.
 
+    Possible states
+    
+    - Explicit Allow (rule set for role)
+    - Implicit Allow (inherited rule)
+    - Explicit Deny (rule set for role)
+    - Implicit Deny (inherited rule or no rule)
+            
+Active Directory uses the following rules, in our system this might be configurable:
+ - Inherited Deny permissions do not prevent access to an object if the object has an explicit Allow permission entry.
+ - Explicit permissions take precedence over inherited permissions, even inherited Deny permissions.
+
+To fix:
  - Refactor AuthorizeService
  - Support getAccess() return type (allow, deny or none) in RcmUserACL extended
  - might look at moving some of AuthorizeService into RcmUserACL
  - may decouple from ZF2 ACL class
 
 #### Guest User Identity features (maybe) ####
-
-
 
 Story: 
 As a consumer of RcmUser
