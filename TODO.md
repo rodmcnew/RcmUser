@@ -104,7 +104,9 @@ I may deny a role access
 There may be inconsistent or undeterminable access for users with multiple roles.  
     
 There needs be a way to determine which state the rule is using.
+
     Possible states
+    
     - Explicit Allow (rule set for role)
     - Implicit Allow (inherited rule)
     - Explicit Deny (rule set for role)
