@@ -587,10 +587,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $providerId = null,
         $user = null
     ) {
-        if (!($user instanceof User)) {
-            return false;
-        }
-
         return $this->getAuthorizeService()->isAllowed(
             $resourceId,
             $privilege,
