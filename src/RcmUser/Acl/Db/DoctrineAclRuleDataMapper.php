@@ -212,6 +212,39 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     }
 
     /**
+     * fetchByResourcePrivilege
+     *
+     * @param string $resourceId
+     * @param mixed  $privilege
+     *
+     * @return Result|Result
+     */
+    public function fetchByResourcePrivilege($resourceId, $privilege)
+    {
+        if ($privilege === null) {
+
+            $privQuery = 'AND rule.privilege is NULL';
+        } else {
+
+            $privQuery = 'AND rule.privilege = :privilege';
+        }
+
+        $query = $this->getEntityManager()->createQuery(
+            'SELECT rule FROM ' . $this->getEntityClass() . ' rule ' .
+            'INDEX BY rule.id ' .
+            'WHERE rule.resourceId = :resourceId ' .
+            $privQuery
+        );
+
+        $query->setParameter('resourceId',$resourceId);
+        $query->setParameter('privilege',$privilege);
+
+        $rules = $query->getResult();
+
+        return new Result($rules);
+    }
+
+    /**
      * create
      *
      * @param AclRule $aclRule the aclRule
