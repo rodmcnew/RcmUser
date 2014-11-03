@@ -386,6 +386,22 @@ class AclDataService
     }
 
     /**
+     * getRulesByResourcePrivilege
+     *
+     * @param $resourceId
+     * @param $privilege
+     *
+     * @return \RcmUser\Acl\Db\Result
+     */
+    public function getRulesByResourcePrivilege($resourceId, $privilege)
+    {
+        return $this->aclRuleDataMapper->fetchByResourcePrivilege(
+            $resourceId,
+            $privilege
+        );
+    }
+
+    /**
      * getRulesByRole
      *
      * @param string $roleId roleId
