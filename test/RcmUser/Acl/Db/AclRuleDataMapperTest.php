@@ -86,6 +86,18 @@ class AclRuleDataMapperTest extends \PHPUnit_Framework_TestCase
         $result = $this->aclRuleDataMapper->fetchByRule('ruletype');
     }
 
+
+    /**
+     * testFetchByResources
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testFetchByResources()
+    {
+        $result = $this->aclRuleDataMapper->fetchByResources(array());
+    }
     /**
      * testFetchByResource
      *
@@ -96,6 +108,18 @@ class AclRuleDataMapperTest extends \PHPUnit_Framework_TestCase
     public function testFetchByResource()
     {
         $result = $this->aclRuleDataMapper->fetchByResource('resourceid');
+    }
+
+    /**
+     * testFetchByResourcePrivilege
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testFetchByResourcePrivilege()
+    {
+        $result = $this->aclRuleDataMapper->fetchByResourcePrivilege('resourceid', 'privilege');
     }
 
     /**

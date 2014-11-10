@@ -132,6 +132,26 @@ interface AclRuleDataMapperInterface
     public function fetchByResource($resourceId);
 
     /**
+     * fetchByResourcePrivilege
+     *
+     * RETURN DATA FORMAT:
+     *
+     *    -- success
+     *    array (
+     *       1 => RcmUser\Acl\Entity\AclRule
+     *    )
+     *
+     *    -- fail
+     *    array()
+     *
+     * @param string $resourceId resourceId
+     * @param mixed  $privilege  privilege
+     *
+     * @return Result
+     */
+    public function fetchByResourcePrivilege($resourceId, $privilege);
+
+    /**
      * create
      *
      * RETURN DATA FORMAT:
