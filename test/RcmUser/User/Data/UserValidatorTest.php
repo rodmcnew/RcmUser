@@ -54,41 +54,41 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
      */
     public function setup()
     {
-        $this->config = array(
+        $this->config = [
 
-            'username' => array(
+            'username' => [
                 'name' => 'username',
                 'required' => true,
-                'filters' => array(
-                    array('name' => 'StringTrim'),
-                ),
-                'validators' => array(
-                    array(
+                'filters' => [
+                    ['name' => 'StringTrim'],
+                ],
+                'validators' => [
+                    [
                         'name' => 'StringLength',
-                        'options' => array(
+                        'options' => [
                             'encoding' => 'UTF-8',
                             'min' => 3,
                             'max' => 100,
-                        ),
-                    ),
-                ),
-            ),
-            'password' => array(
+                        ],
+                    ],
+                ],
+            ],
+            'password' => [
                 'name' => 'password',
                 'required' => true,
-                'filters' => array(),
-                'validators' => array(
-                    array(
+                'filters' => [],
+                'validators' => [
+                    [
                         'name' => 'StringLength',
-                        'options' => array(
+                        'options' => [
                             'encoding' => 'UTF-8',
                             'min' => 6,
                             'max' => 100,
-                        ),
-                    ),
-                ),
-            ),
-        );
+                        ],
+                    ],
+                ],
+            ],
+        ];
 
         $this->userInputFilter = new UserInputFilter();
         $this->factory = new Factory();

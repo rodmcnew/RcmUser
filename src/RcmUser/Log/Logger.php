@@ -121,7 +121,7 @@ class Logger implements LoggerInterface
     protected function log(
         $type,
         $message,
-        $extra = array()
+        $extra = []
     ) {
         if ($this->canLog($type)) {
 
@@ -141,7 +141,7 @@ class Logger implements LoggerInterface
      */
     public function emerg(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,
@@ -160,7 +160,7 @@ class Logger implements LoggerInterface
      */
     public function alert(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,
@@ -179,7 +179,7 @@ class Logger implements LoggerInterface
      */
     public function crit(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,
@@ -198,7 +198,7 @@ class Logger implements LoggerInterface
      */
     public function err(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,
@@ -217,7 +217,7 @@ class Logger implements LoggerInterface
      */
     public function warn(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,
@@ -236,7 +236,7 @@ class Logger implements LoggerInterface
      */
     public function notice(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,
@@ -255,7 +255,7 @@ class Logger implements LoggerInterface
      */
     public function info(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,
@@ -274,7 +274,7 @@ class Logger implements LoggerInterface
      */
     public function debug(
         $message,
-        $extra = array()
+        $extra = []
     ) {
         return $this->log(
             __FUNCTION__,

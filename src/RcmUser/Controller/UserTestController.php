@@ -66,11 +66,11 @@ class UserTestController extends AbstractActionController
             return $response;
         }
 
-        $test = array(
+        $test = [
             'userController' => $this,
             'doTest' => false,
             'dumpUser' => false,
-        );
+        ];
 
         return $test;
     }

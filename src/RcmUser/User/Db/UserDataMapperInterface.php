@@ -54,7 +54,7 @@ interface UserDataMapperInterface
      *
      * @return \RcmUser\User\Result
      */
-    public function fetchAll($options = array());
+    public function fetchAll($options = []);
 
     /**
      * fetchById

@@ -54,7 +54,7 @@ class ResultTest extends Zf2TestCase
 
         $result->setCode(Result::CODE_SUCCESS);
         $result->setData($data);
-        $messages = array('message 1');
+        $messages = ['message 1'];
         $result->setMessages($messages);
         $result->setMessage('message 2');
 
@@ -130,7 +130,7 @@ class ResultTest extends Zf2TestCase
      */
     public function testIsSuccess()
     {
-        $result = new Result(null, Result::CODE_SUCCESS, array('Test Message'));
+        $result = new Result(null, Result::CODE_SUCCESS, ['Test Message']);
         $data = 'SOMEDATA';
 
         $result->setCode(Result::CODE_SUCCESS);
@@ -151,7 +151,7 @@ class ResultTest extends Zf2TestCase
     {
         $result = new Result();
 
-        $result->__construct(null, Result::CODE_SUCCESS, array('Test Message'));
+        $result->__construct(null, Result::CODE_SUCCESS, ['Test Message']);
     }
 }
  

@@ -111,7 +111,7 @@ class UserDataMapper implements UserDataMapperInterface
      * @throws RcmUserException
      */
     public function fetchAll(
-        $options = array()
+        $options = []
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }

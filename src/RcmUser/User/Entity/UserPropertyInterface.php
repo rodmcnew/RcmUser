@@ -43,5 +43,5 @@ interface UserPropertyInterface extends \JsonSerializable
      *
      * @return mixed
      */
-    public function populate($data = array());
+    public function populate($data = []);
 }

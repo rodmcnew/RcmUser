@@ -98,11 +98,11 @@ class UserRoleTest extends Zf2TestCase
         $userRole->setUserId($userId);
 
         $userRoleA = new UserRole();
-        $userRoleB = array(
+        $userRoleB = [
             'id' => 789789,
             'roleId' => 123123,
             'userId' => '123123123',
-        );
+        ];
         $userRoleC = 'INVALID';
 
         $userRoleA->populate($userRole);

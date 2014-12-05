@@ -84,15 +84,15 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             case 'fail_service' :
             case 'failAll_service' :
 
-                $this->mockRoles = array('SOME', 'ROLES');
-                $this->mockDefaultRoles = array('DEFAULT', 'ROLES');
-                $this->mockResult = new Result(array(), Result::CODE_FAIL);
+                $this->mockRoles = ['SOME', 'ROLES'];
+                $this->mockDefaultRoles = ['DEFAULT', 'ROLES'];
+                $this->mockResult = new Result([], Result::CODE_FAIL);
                 $this->mockDefaultResult = new Result($this->mockDefaultRoles);
                 break;
             default :
 
-                $this->mockRoles = array('SOME', 'ROLES');
-                $this->mockDefaultRoles = array('DEFAULT', 'ROLES');
+                $this->mockRoles = ['SOME', 'ROLES'];
+                $this->mockDefaultRoles = ['DEFAULT', 'ROLES'];
                 $this->mockResult = new Result($this->mockRoles);
                 $this->mockDefaultResult = new Result($this->mockDefaultRoles);
                 break;
@@ -176,47 +176,47 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
 
             case 'fail_event':
 
-                $this->mockEventReturn = array(
-                    array(
+                $this->mockEventReturn = [
+                    [
                         'result',
                         null,
                         new \RcmUser\User\Result(null, Result::CODE_FAIL)
-                    ),
-                    array(
+                    ],
+                    [
                         'data',
                         null,
-                        new UserRoleProperty(array('SOME', 'ROLES'))
-                    ),
-                    array('requestUser', null, new User('123')),
-                    array('responseUser', null, new User('123')),
-                    array('existingUser', null, new User('123'))
-                );
+                        new UserRoleProperty(['SOME', 'ROLES'])
+                    ],
+                    ['requestUser', null, new User('123')],
+                    ['responseUser', null, new User('123')],
+                    ['existingUser', null, new User('123')]
+                ];
                 break;
 
             case 'successAll':
             case 'failAll_service':
-                $this->mockEventReturn = array(
-                    array('result', null, new Result(array(new User('123'))))
-                );
+                $this->mockEventReturn = [
+                    ['result', null, new Result([new User('123')])]
+                ];
                 break;
 
             default :
 
-                $this->mockEventReturn = array(
-                    array(
+                $this->mockEventReturn = [
+                    [
                         'result',
                         null,
                         new \RcmUser\User\Result(new User('123'))
-                    ),
-                    array(
+                    ],
+                    [
                         'data',
                         null,
-                        new UserRoleProperty(array('SOME', 'ROLES'))
-                    ),
-                    array('requestUser', null, new User('123')),
-                    array('responseUser', null, new User('123')),
-                    array('existingUser', null, new User('123'))
-                );
+                        new UserRoleProperty(['SOME', 'ROLES'])
+                    ],
+                    ['requestUser', null, new User('123')],
+                    ['responseUser', null, new User('123')],
+                    ['existingUser', null, new User('123')]
+                ];
                 break;
         }
 
@@ -495,7 +495,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertEquals(
-            array('SOME'),
+            ['SOME'],
             $result
         );
 

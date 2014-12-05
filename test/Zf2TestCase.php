@@ -66,103 +66,103 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
      * @var array $mockRcmUserConfig
      */
     public $mockRcmUserConfig
-        = array(
-            'htmlAssets' => array(
-                'js' => array(
+        = [
+            'htmlAssets' => [
+                'js' => [
                     '/test.js',
-                ),
+                ],
 
-                'css' => array(
+                'css' => [
                     '/test.css',
-                ),
-            ),
-            'User\Config' => array(
+                ],
+            ],
+            'User\Config' => [
 
-                'ValidUserStates' => array(
+                'ValidUserStates' => [
                     'disabled', // **REQUIRED for User entity**
                     'enabled',
-                ),
+                ],
                 'DefaultUserState' => 'enabled',
                 'Encryptor.passwordCost' => 14,
-                'InputFilter' => array(
+                'InputFilter' => [
 
-                    'username' => array(
+                    'username' => [
                         'name' => 'username',
                         'required' => true,
-                        'filters' => array(
-                            array('name' => 'StringTrim'),
-                        ),
-                        'validators' => array(
-                            array(
+                        'filters' => [
+                            ['name' => 'StringTrim'],
+                        ],
+                        'validators' => [
+                            [
                                 'name' => 'StringLength',
-                                'options' => array(
+                                'options' => [
                                     'encoding' => 'UTF-8',
                                     'min' => 3,
                                     'max' => 100,
-                                ),
-                            ),
-                        ),
-                    ),
-                    'password' => array(
+                                ],
+                            ],
+                        ],
+                    ],
+                    'password' => [
                         'name' => 'password',
                         'required' => true,
-                        'filters' => array(),
-                        'validators' => array(
-                            array(
+                        'filters' => [],
+                        'validators' => [
+                            [
                                 'name' => 'StringLength',
-                                'options' => array(
+                                'options' => [
                                     'encoding' => 'UTF-8',
                                     'min' => 6,
                                     'max' => 100,
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-            'Auth\Config' => array(
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+            'Auth\Config' => [
                 'ObfuscatePasswordOnAuth' => true,
-            ),
-            'Acl\Config' => array(
+            ],
+            'Acl\Config' => [
 
-                'DefaultGuestRoleIds' => array('guest'),
-                'DefaultUserRoleIds' => array('user'),
+                'DefaultGuestRoleIds' => ['guest'],
+                'DefaultUserRoleIds' => ['user'],
                 'SuperAdminRoleId' => 'admin',
                 'GuestRoleId' => 'guest',
-                'ResourceProviders' => array(
+                'ResourceProviders' => [
 
                     'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
-                    'RcmUser.TEST' => array(
-                        'TESTONE' => array(
+                    'RcmUser.TEST' => [
+                        'TESTONE' => [
                             'resourceId' => 'TESTONE',
                             'parentResourceId' => null,
-                            'privileges' => array(
+                            'privileges' => [
                                 'read',
                                 'update',
                                 'create',
                                 'delete',
                                 'execute',
-                            ),
+                            ],
                             'name' => 'Test resource one.',
                             'description' => 'test resource one desc.',
-                        ),
-                        'TESTTWO' => array(
+                        ],
+                        'TESTTWO' => [
                             'resourceId' => 'TESTTWO',
                             'parentResourceId' => 'TESTONE',
-                            'privileges' => array(
+                            'privileges' => [
                                 'read',
                                 'update',
                                 'create',
                                 'delete',
                                 'execute',
-                            ),
+                            ],
                             'name' => 'Test resource two.',
                             'description' => 'test resource two desc.',
-                        )
-                    ),
-                ),
-            ),
-        );
+                        ]
+                    ],
+                ],
+            ],
+        ];
 
     /**
      * getMockServices
@@ -176,7 +176,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
             return $this->mockServices;
         }
 
-        $this->mockServices = array(
+        $this->mockServices = [
 
             'RcmUser\Config' => $this->mockRcmUserConfig,
             'RcmUser\User\Config' =>
@@ -318,7 +318,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                     ->disableOriginalConstructor()
                     ->getMock(),
             'RcmUser\Event\Listeners' =>
-                array(),
+                [],
             'RcmUser\Log\Logger' =>
                 $this->getMockBuilder(
                     '\Zend\Log\LoggerInterface'
@@ -332,7 +332,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-        );
+        ];
 
         return $this->mockServices;
     }
@@ -349,10 +349,10 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
             return $this->valueMap;
         }
         $mockServices = $this->getMockServices();
-        $this->valueMap = array();
+        $this->valueMap = [];
         foreach ($mockServices as $key => $value) {
 
-            $this->valueMap[] = array($key, $value);
+            $this->valueMap[] = [$key, $value];
         }
 
         return $this->valueMap;

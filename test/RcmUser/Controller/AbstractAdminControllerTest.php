@@ -52,7 +52,7 @@ class AbstractAdminControllerTest extends Zf2TestCase
      */
     public function setUp()
     {
-        $this->mocks = array();
+        $this->mocks = [];
 
         $this->mocks['rcmUserIsAllowed'] = true;
 
@@ -99,9 +99,9 @@ class AbstractAdminControllerTest extends Zf2TestCase
 class WrapperAbstractAdminController extends AbstractAdminController
 {
 
-    public $mockData = array();
+    public $mockData = [];
 
-    public function __construct($mockData = array())
+    public function __construct($mockData = [])
     {
         $this->mockData = $mockData;
     }
@@ -116,7 +116,7 @@ class WrapperAbstractAdminController extends AbstractAdminController
         return $this->mockData['getResponse'];
     }
 
-    public function buildView($viewArr = array())
+    public function buildView($viewArr = [])
     {
 
         return parent::buildView($viewArr);

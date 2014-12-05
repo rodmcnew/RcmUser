@@ -49,12 +49,12 @@ class LinkTest extends \PHPUnit_Framework_TestCase
         $link->setType('TESTtype');
         $link->setUrl('TESTurl');
 
-        $linkData = array(
+        $linkData = [
             'help' => 'TEST2help',
             'title' => 'TEST2title',
             'type' => 'TEST2type',
             'url' => 'TEST2url'
-        );
+        ];
 
         $this->assertEquals(
             'TESThelp',

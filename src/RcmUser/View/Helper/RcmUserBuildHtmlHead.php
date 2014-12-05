@@ -107,7 +107,7 @@ class RcmUserBuildHtmlHead extends AbstractHelper
      * @return mixed
      */
     public function __invoke(
-        $options = array()
+        $options = []
     ) {
         $this->buildHtmlHead();
     }

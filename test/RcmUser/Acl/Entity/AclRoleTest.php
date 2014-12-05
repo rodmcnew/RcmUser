@@ -201,12 +201,12 @@ class AclRoleTest extends Zf2TestCase
         $aclRole = new AclRole();
         $parentAclRole = new AclRole();
         $parentAclRole->setRoleId('ppp');
-        $aclRoleA = array(
+        $aclRoleA = [
             'roleId' => 'arrayrolea',
             'parentRoleId' => 'ppp',
             'description' => 'arrayRoleA',
             'parentRole' => $parentAclRole
-        );
+        ];
         $aclRoleB = new AclRole();
         $parentAclRoleB = new AclRole();
         $parentAclRoleB->setRoleId('pppb');

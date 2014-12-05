@@ -65,7 +65,7 @@ class RcmUserAclResourceProvider extends ResourceProvider
      *
      * @var array $rcmResources
      */
-    protected $resources = array();
+    protected $resources = [];
 
     /**
      * __construct
@@ -120,20 +120,20 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     protected function buildResources()
     {
-        $privileges = array(
+        $privileges = [
             'read',
             'update',
             'create',
             'delete',
-        );
+        ];
 
-        $userPrivileges = array(
+        $userPrivileges = [
             'read',
             'update',
             'create',
             'delete',
             'update_credentials',
-        );
+        ];
 
         /* parent resource */
         $this->resources[self::RESOURCE_ID_ROOT]

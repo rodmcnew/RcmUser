@@ -69,7 +69,7 @@ class AuthorizeServiceTest extends Zf2TestCase
             ->will(
                 $this->returnValue(
                     new Result(
-                        array('data' => 'here'),
+                        ['data' => 'here'],
                         Result::CODE_SUCCESS,
                         'Message'
                     )
@@ -82,11 +82,11 @@ class AuthorizeServiceTest extends Zf2TestCase
 
         $aclDataService->expects($this->any())
             ->method('getAllRules')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $aclDataService->expects($this->any())
             ->method('getRulesByResource')
-            ->will($this->returnValue(array()));
+            ->will($this->returnValue([]));
 
         $this->authorizeService = new AuthorizeService(
             $aclResourceService,

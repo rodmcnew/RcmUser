@@ -188,7 +188,7 @@ class UserRoleService
      *
      * @return array
      */
-    public function parseSavableRoles($roles = array())
+    public function parseSavableRoles($roles = [])
     {
         $defaultRolesResult = $this->getDefaultUserRoleIds();
 
@@ -335,7 +335,7 @@ class UserRoleService
      */
     public function createRoles(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         $roles = $this->parseSavableRoles($roles);
 
@@ -368,7 +368,7 @@ class UserRoleService
      */
     public function updateRoles(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         $roles = $this->parseSavableRoles($roles);
 
@@ -389,7 +389,7 @@ class UserRoleService
      */
     public function deleteRoles(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         $roles = $this->parseSavableRoles($roles);
 
@@ -407,7 +407,7 @@ class UserRoleService
      * @return UserRoleProperty
      */
     public function buildUserRoleProperty(
-        $roles = array()
+        $roles = []
     ) {
         return new UserRoleProperty($roles);
     }
@@ -422,7 +422,7 @@ class UserRoleService
      */
     public function buildValidUserRoleProperty(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
 
         $roles = $this->buildValidRoles(
@@ -445,7 +445,7 @@ class UserRoleService
      */
     public function buildValidRoles(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         if (!empty($roles)) {
             return $roles;

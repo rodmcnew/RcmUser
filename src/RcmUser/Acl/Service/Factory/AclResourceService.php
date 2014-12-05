@@ -54,17 +54,17 @@ class AclResourceService implements FactoryInterface
 
         $resourceProviders = $config->get(
             'ResourceProviders',
-            array()
+            []
         );
 
         /* root resource */
-        $rootPrivileges = array(
+        $rootPrivileges = [
             'read',
             'update',
             'create',
             'delete',
             'execute',
-        );
+        ];
 
         $rootResource = new AclResource('root', null, $rootPrivileges);
         $rootResource->setName('Root');

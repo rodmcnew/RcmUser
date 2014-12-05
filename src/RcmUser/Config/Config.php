@@ -35,14 +35,14 @@ namespace RcmUser\Config;
 class Config
 {
 
-    protected $data = array();
+    protected $data = [];
 
     /**
      * __construct
      *
      * @param array $data data
      */
-    public function __construct($data = array())
+    public function __construct($data = [])
     {
 
         $this->data = $data;

@@ -108,7 +108,7 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
      * @return \RcmUser\Result
      */
     public function fetchAll(
-        $options = array()
+        $options = []
     ) {
         $query = $this->getEntityManager()->createQuery(
             'SELECT user FROM ' . $this->getEntityClass() . ' user '
@@ -282,7 +282,7 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
                 // we want to populate everything but properties.
                 $responseUser->populate(
                     $result->getUser(),
-                    array('properties')
+                    ['properties']
                 );
                 $result->setUser($responseUser);
 
@@ -301,7 +301,7 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
                 // we want to populate everything but properties.
                 $responseUser->populate(
                     $result->getUser(),
-                    array('properties')
+                    ['properties']
                 );
                 $result->setUser($responseUser);
             }
@@ -448,11 +448,11 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
      */
     public function buildDeletedUsername(User $user)
     {
-        $usernameArr = array(
+        $usernameArr = [
             self::USER_DELETED_STATE,
             $user->getId(),
             $user->getUsername()
-        );
+        ];
 
         return json_encode($usernameArr);
     }

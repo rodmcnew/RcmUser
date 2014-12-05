@@ -158,7 +158,7 @@ interface UserInterface extends \IteratorAggregate
      */
     public function populate(
         $data,
-        $exclude = array()
+        $exclude = []
     );
 
     /**

@@ -70,7 +70,7 @@ class AdminApiUserController extends AbstractAdminApiController
 
         try {
 
-            $result = $userDataService->getAllUsers(array());
+            $result = $userDataService->getAllUsers([]);
         } catch (\Exception $e) {
             return $this->getExceptionResponse($e);
         }
@@ -269,10 +269,10 @@ class AdminApiUserController extends AbstractAdminApiController
         $user = new User();
         $user->populate(
             $data,
-            array('properties')
+            ['properties']
         );
 
-        $properties = array();
+        $properties = [];
         if (isset($data['properties'])) {
             $properties = $data['properties'];
         }

@@ -141,7 +141,7 @@ class UserAdapter extends AbstractAdapter
         $this->setCredential($password);
 
         if ($username === null || $password === null) {
-            return new Result(Result::FAILURE_IDENTITY_AMBIGUOUS, null, array('User credentials required.'));
+            return new Result(Result::FAILURE_IDENTITY_AMBIGUOUS, null, ['User credentials required.']);
         }
 
         // We will remove id is set so that we only read from username,
@@ -168,11 +168,11 @@ class UserAdapter extends AbstractAdapter
         );
         if ($isValid) {
 
-            $result = new Result(Result::SUCCESS, $existingUser, array());
+            $result = new Result(Result::SUCCESS, $existingUser, []);
         } else {
 
             $result
-                = new Result(Result::FAILURE_CREDENTIAL_INVALID, null, array('User credential invalid.'));
+                = new Result(Result::FAILURE_CREDENTIAL_INVALID, null, ['User credential invalid.']);
         }
 
         return $result;

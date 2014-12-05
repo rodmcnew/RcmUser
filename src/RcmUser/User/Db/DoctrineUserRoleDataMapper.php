@@ -108,7 +108,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
      *
      * @return Result
      */
-    public function fetchAll($options = array())
+    public function fetchAll($options = [])
     {
         $roles = $this->getEntityManager()->getRepository($this->getEntityClass())
             ->findAll();
@@ -194,10 +194,10 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
         );
 
         $userRoles = $emRepo->findBy(
-            array(
+            [
                 'userId' => $userId,
                 'roleId' => $aclRoleId,
-            )
+            ]
         );
 
         foreach ($userRoles as $userRole) {
@@ -221,13 +221,13 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
      */
     public function create(
         User $user,
-        $userRoles = array()
+        $userRoles = []
     ) {
         $userId = $user->getId();
 
         if (empty($userId)) {
             return new Result(
-                array(),
+                [],
                 Result::CODE_FAIL,
                 'User id required to get user roles.'
             );
@@ -238,13 +238,13 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
 
         if (!empty($currentRoles)) {
             return new Result(
-                array(),
+                [],
                 Result::CODE_FAIL,
                 'Roles already exist for user: ' . $user->getId()
             );
         }
 
-        $returnResult = new Result(array(), Result::CODE_SUCCESS);
+        $returnResult = new Result([], Result::CODE_SUCCESS);
 
         foreach ($userRoles as $key => $roleId) {
 
@@ -294,7 +294,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
         $userId = $user->getId();
 
         if (empty($userId)) {
-            return new Result(array(), Result::CODE_FAIL, 'User id required to get user roles.');
+            return new Result([], Result::CODE_FAIL, 'User id required to get user roles.');
         }
 
         $query = $this->getEntityManager()->createQuery(
@@ -309,7 +309,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
 
         $userRoles = $query->getResult();
 
-        $userAclRoles = array();
+        $userAclRoles = [];
 
         foreach ($userRoles as $userRole) {
 
@@ -336,7 +336,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
      */
     public function update(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
 
         $result = $this->read($user);
@@ -346,7 +346,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
             $curRoles = $result->getData();
         } else {
 
-            $curRoles = array();
+            $curRoles = [];
         }
 
         $availableRoles = $this->getAvailableRoles();
@@ -356,7 +356,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
             throw new RcmUserException('No roles are available to assign.');
         }
 
-        $failed = array();
+        $failed = [];
         $returnResult = new Result($failed, Result::CODE_SUCCESS);
 
         $addRoles = array_diff(
@@ -364,7 +364,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
             $curRoles
         );
         $invalidRoles = $curRoles;
-        $addedRoles = array();
+        $addedRoles = [];
 
         // build new roles
         foreach ($availableRoles as $aclRole) {
@@ -417,7 +417,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
             $removeRoles,
             $invalidRoles
         );
-        $removedRoles = array();
+        $removedRoles = [];
 
         foreach ($removeRoles as $roleId) {
 
@@ -453,7 +453,7 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
             $curRoles = $result->getData();
         } else {
 
-            $curRoles = array();
+            $curRoles = [];
         }
 
         $returnResult->setData(
@@ -503,9 +503,9 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
      */
     public function delete(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
-        $failed = array();
+        $failed = [];
 
         $result = new Result($failed, Result::CODE_SUCCESS);
 

@@ -65,7 +65,7 @@ class UserDataService implements FactoryInterface
         $service->setValidUserStates(
             $cfg->get(
                 'ValidUserStates',
-                array()
+                []
             )
         );
         $service->setUserDataMapper($userDataMapper);

@@ -14,9 +14,9 @@
  * @version   GIT: <git_id>
  * @link      https://github.com/reliv
  */
-return array(
+return [
 
-    'RcmUser' => array(
+    'RcmUser' => [
         /**
          * Include any paths for JavaScript and CSS here
          * The included views require:
@@ -24,28 +24,28 @@ return array(
          * - Angular-UI
          * - TwitterBootstrap
          */
-        'htmlAssets' => array(
-            'js' => array(
+        'htmlAssets' => [
+            'js' => [
                 '/modules/rcm-angular-js/angular/angular.js',
                 '/modules/rcm-twitter-bootstrap/bootstrap/js/bootstrap.js',
                 '/modules/rcm-angular-js/angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
-            ),
+            ],
 
-            'css' => array(
+            'css' => [
                 '/modules/rcm-twitter-bootstrap/bootstrap/css/bootstrap.css',
-            ),
-        ),
-        'User\Config' => array(
+            ],
+        ],
+        'User\Config' => [
 
             /*
              * ValidUserStates
              * Used for UI
              */
-            'ValidUserStates' => array(
+            'ValidUserStates' => [
                 'disabled',
                 // **REQUIRED for User entity**
                 'enabled',
-            ),
+            ],
             /*
              * DefaultUserState
              * Used in:
@@ -71,49 +71,49 @@ return array(
              * This input filter will be applied
              * to the User object on create and save.
              */
-            'InputFilter' => array(
+            'InputFilter' => [
 
-                'username' => array(
+                'username' => [
                     'name' => 'username',
                     'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
+                    'filters' => [
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
                             'name' => 'StringLength',
-                            'options' => array(
+                            'options' => [
                                 'encoding' => 'UTF-8',
                                 'min' => 3,
                                 'max' => 100,
-                            ),
-                        ),
+                            ],
+                        ],
                         // Help protect from XSS
-                        array(
+                        [
                             'name' => 'Regex',
-                            'options' => array(
+                            'options' => [
                                 'pattern' => "/^[a-zA-Z0-9-_@'.]+$/",
                                 //'pattern' => "/[<>]/",
-                                'messageTemplates' => array(
+                                'messageTemplates' => [
                                     \Zend\Validator\Regex::NOT_MATCH => "Username can only contain letters, numbers and charactors: . - _ @ '."
-                                )
-                            ),
-                        ),
-                    ),
-                ),
-                'password' => array(
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+                'password' => [
                     'name' => 'password',
                     'required' => true,
-                    'filters' => array(),
-                    'validators' => array(
-                        array(
+                    'filters' => [],
+                    'validators' => [
+                        [
                             'name' => 'StringLength',
-                            'options' => array(
+                            'options' => [
                                 'encoding' => 'UTF-8',
                                 'min' => 6,
                                 'max' => 100,
-                            ),
-                        ),
+                            ],
+                        ],
                         /*
                         array(
                             'name' => 'Regex',
@@ -122,36 +122,36 @@ return array(
                             ),
                         ),
                         */
-                    ),
-                ),
-                'email' => array(
+                    ],
+                ],
+                'email' => [
                     'name' => 'email',
                     'required' => true,
-                    'filters' => array(
-                        array('name' => 'Zend\Filter\StripTags'),
+                    'filters' => [
+                        ['name' => 'Zend\Filter\StripTags'],
                         // Help protect from XSS
-                        array('name' => 'Zend\Filter\StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Zend\Validator\EmailAddress'),
-                    ),
-                ),
-                'name' => array(
+                        ['name' => 'Zend\Filter\StringTrim'],
+                    ],
+                    'validators' => [
+                        ['name' => 'Zend\Validator\EmailAddress'],
+                    ],
+                ],
+                'name' => [
                     'name' => 'name',
                     'required' => true,
-                    'filters' => array(
-                        array('name' => 'Zend\Filter\StripTags'),
+                    'filters' => [
+                        ['name' => 'Zend\Filter\StripTags'],
                         // Help protect from XSS
-                        array('name' => 'Zend\Filter\StringTrim'),
-                    ),
-                    'validators' => array(),
-                ),
-            ),
-        ),
-        'Auth\Config' => array(
+                        ['name' => 'Zend\Filter\StringTrim'],
+                    ],
+                    'validators' => [],
+                ],
+            ],
+        ],
+        'Auth\Config' => [
             'ObfuscatePasswordOnAuth' => true,
-        ),
-        'Acl\Config' => array(
+        ],
+        'Acl\Config' => [
 
             /*
              * DefaultGuestRoleIds and DefaultUserRoleIds
@@ -162,8 +162,8 @@ return array(
              * for a user on the user data events
              * in RcmUser\User\Service\UserDataService.
              */
-            'DefaultGuestRoleIds' => array('guest'),
-            'DefaultUserRoleIds' => array('user'),
+            'DefaultGuestRoleIds' => ['guest'],
+            'DefaultUserRoleIds' => ['user'],
             /*
              * SuperAdminRoleId
              *
@@ -204,7 +204,7 @@ return array(
              *     'description' => 'Human readable or translatable description',
              * )
              */
-            'ResourceProviders' => array(
+            'ResourceProviders' => [
 
                 /*
                  * RcmUserAccess
@@ -243,11 +243,11 @@ return array(
                     )
                 ),
                 /* - example */
-            ),
-        ),
-    ),
-    'service_manager' => array(
-        'factories' => array(
+            ],
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
             /*
              * Config
              */
@@ -500,32 +500,32 @@ return array(
              * Required *
              */
             'RcmUser\Log\Logger' => 'RcmUser\Service\Factory\DoctrineLogger',
-        ),
-    ),
+        ],
+    ],
     /*
      * Allows doctrine to generate tables as needed
      * Only required if using doctrine entities and mappers
      * And you want doctrine utilities to work correctly
      */
-    'doctrine' => array(
-        'driver' => array(
-            'RcmUser' => array(
+    'doctrine' => [
+        'driver' => [
+            'RcmUser' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/RcmUser/Acl/Entity',
                     __DIR__ . '/../src/RcmUser/User/Entity',
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     'RcmUser' => 'RcmUser'
-                )
-            )
-        )
-    ),
-    'controllers' => array(
-        'invokables' => array(
+                ]
+            ]
+        ]
+    ],
+    'controllers' => [
+        'invokables' => [
             // TESTING
             'RcmUser\Controller\UserTestController' =>
                 'RcmUser\Controller\UserTestController',
@@ -561,30 +561,30 @@ return array(
                 'RcmUser\Controller\AdminApiUserRolesController',
             'RcmUser\Controller\AdminApiUserRoleController' =>
                 'RcmUser\Controller\AdminApiUserRoleController',
-        ),
-    ),
-    'router' => array(
-        'routes' => array(
+        ],
+    ],
+    'router' => [
+        'routes' => [
             // GENERAL
             /**
              * TEST CONTROLLER - TESTING ONLY
              *
              * @view
              */
-            'RcmUser' => array(
+            'RcmUser' => [
                 'may_terminate' => true,
                 'type' => 'segment',
-                'options' => array(
+                'options' => [
                     'route' => '/rcmusertest',
-                    'constraints' => array(
+                    'constraints' => [
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'controller' => 'RcmUser\Controller\UserTestController',
                         'action' => 'index',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             // ADMIN GENERAL
             /**
              * RcmUserAdminCss
@@ -592,214 +592,214 @@ return array(
              *
              * @view CSS
              */
-            'RcmUserAdminCss' => array(
+            'RcmUserAdminCss' => [
                 'may_terminate' => true,
                 'type' => 'segment',
-                'options' => array(
+                'options' => [
                     'route' => '/admin/rcmuser/css/admin.css',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'RcmUser\Controller\AdminCssController',
                         'action' => 'index',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             // ADMIN ACL
             /**
              * RcmUserAdminAcl
              * View for creating and editing roles and rule
              *
              */
-            'RcmUserAdminAcl' => array(
+            'RcmUserAdminAcl' => [
                 'may_terminate' => true,
                 'type' => 'segment',
-                'options' => array(
+                'options' => [
                     'route' => '/admin/rcmuser-acl',
-                    'constraints' => array(),
-                    'defaults' => array(
+                    'constraints' => [],
+                    'defaults' => [
                         'controller' => 'RcmUser\Controller\AdminAclController',
                         'action' => 'index',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminAclJs
              * JavaScript for RcmUserAdminAcl
              */
-            'RcmUserAdminAclJs' => array(
+            'RcmUserAdminAclJs' => [
                 'may_terminate' => true,
                 'type' => 'segment',
-                'options' => array(
+                'options' => [
                     'route' => '/admin/rcmuser/js/admin-acl.js',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'RcmUser\Controller\AdminJsController',
                         'action' => 'adminAcl',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiAclResources
              * Get resources
              *
              * @api
              */
-            'RcmUserAdminApiAclResources' => array(
+            'RcmUserAdminApiAclResources' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-acl-resources[/:id]',
-                    'constraints' => array(
+                    'constraints' => [
                         'id' => '[0-9]+',
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclResourcesController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiAclRulesByRoles
              * Returns Roles and the related Rules
              *
              * @api
              */
-            'RcmUserAdminApiAclRulesByRoles' => array(
+            'RcmUserAdminApiAclRulesByRoles' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-acl-rulesbyroles[/:id]',
-                    'constraints' => array(
+                    'constraints' => [
                         'id' => '[0-9]+',
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclRulesByRolesController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiAclRule
              * Return rules and exposes create and delete
              *
              * @api
              */
-            'RcmUserAdminApiAclRule' => array(
+            'RcmUserAdminApiAclRule' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-acl-rule[/:id]',
                     //'constraints' => array(
                     //'id' => '[a-zA-Z0-9_-]+',
                     //),
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclRuleController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiAclRole
              * Return roles and exposes create and delete
              *
              * @api
              */
-            'RcmUserAdminApiAclRole' => array(
+            'RcmUserAdminApiAclRole' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-acl-role[/:id]',
-                    'constraints' => array(
+                    'constraints' => [
                         'id' => '[a-zA-Z0-9_-]+',
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclRoleController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiAclDefaultUserRole
              * Return default User roles
              *
              * @api
              */
-            'RcmUserAdminApiAclDefaultUserRole' => array(
+            'RcmUserAdminApiAclDefaultUserRole' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-acl-default-user-roles[/:id]',
-                    'constraints' => array(
+                    'constraints' => [
                         'id' => '[a-zA-Z0-9_-]+',
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             // ADMIN USERS
             /**
              * RcmUserAdminUsers
              * View for creating and editing users
              */
-            'RcmUserAdminUsers' => array(
+            'RcmUserAdminUsers' => [
                 'may_terminate' => true,
                 'type' => 'segment',
-                'options' => array(
+                'options' => [
                     'route' => '/admin/rcmuser-users',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'RcmUser\Controller\AdminUserController',
                         'action' => 'index',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminUserJs
              * JavaScript for RcmUserAdminUsers
              */
-            'RcmUserAdminUserJs' => array(
+            'RcmUserAdminUserJs' => [
                 'may_terminate' => true,
                 'type' => 'segment',
-                'options' => array(
+                'options' => [
                     'route' => '/admin/rcmuser/js/admin-users.js',
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' => 'RcmUser\Controller\AdminJsController',
                         'action' => 'adminUsers',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiUser
              * API for creating and editing users
              *
              * @api
              */
-            'RcmUserAdminApiUser' => array(
+            'RcmUserAdminApiUser' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-user[/:id]',
-                    'constraints' => array(
+                    'constraints' => [
                         'id' => '[a-zA-Z0-9_-]+',
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiUserController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiUserValidUserStates
              * API to get list of valid user states
              *
              * @api
              */
-            'RcmUserAdminApiUserValidUserStates' => array(
+            'RcmUserAdminApiUserValidUserStates' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-user-validuserstates[/:id]',
-                    'constraints' => array(
+                    'constraints' => [
                         'id' => '[a-zA-Z0-9_-]+',
-                    ),
-                    'defaults' => array(
+                    ],
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiUserValidUserStatesController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /* ADMIN USER ROLES
             'RcmUserAdminUserRole' => array(
                 'may_terminate' => true,
@@ -830,64 +830,64 @@ return array(
              *
              * @api
              */
-            'RcmUserAdminApiUserRoles' => array(
+            'RcmUserAdminApiUserRoles' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-user-roles[/:id]',
                     //'constraints' => array(
                     //'id' => '[a-zA-Z0-9_-]+',
                     //),
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiUserRolesController',
-                    ),
-                ),
-            ),
+                    ],
+                ],
+            ],
             /**
              * RcmUserAdminApiUserRoles
              * API creating and deleting an individual user role
              *
              * @api
              */
-            'RcmUserAdminApiUserRole' => array(
+            'RcmUserAdminApiUserRole' => [
                 'type' => 'Segment',
-                'options' => array(
+                'options' => [
                     'route' => '/api/admin/rcmuser-user-role[/:id]',
                     //'constraints' => array(
                     //'id' => '[a-zA-Z0-9_-]+',
                     //),
-                    'defaults' => array(
+                    'defaults' => [
                         'controller' =>
                             'RcmUser\Controller\AdminApiUserRoleController',
-                    ),
-                ),
-            ),
-        ),
-    ),
-    'view_manager' => array(
-        'template_path_stack' => array(
+                    ],
+                ],
+            ],
+        ],
+    ],
+    'view_manager' => [
+        'template_path_stack' => [
             'RcmUser' => __DIR__ . '/../view',
-        ),
-        'strategies' => array(
+        ],
+        'strategies' => [
             'ViewJsonStrategy',
-        ),
-    ),
-    'controller_plugins' => array(
-        'factories' => array(
+        ],
+    ],
+    'controller_plugins' => [
+        'factories' => [
             'rcmUserIsAllowed' =>
                 'RcmUser\Service\Factory\ControllerPluginRcmUserIsAllowed',
             'rcmUserGetCurrentUser' =>
                 'RcmUser\Service\Factory\ControllerPluginRcmUserGetCurrentUser',
-        ),
-    ),
-    'view_helpers' => array(
-        'factories' => array(
+        ],
+    ],
+    'view_helpers' => [
+        'factories' => [
             'rcmUserIsAllowed' =>
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserIsAllowed',
             'rcmUserBuildHtmlHead' =>
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserBuildHtmlHead',
             'rcmUserGetCurrentUser' =>
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserGetCurrentUser',
-        ),
-    ),
-);
+        ],
+    ],
+];

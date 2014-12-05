@@ -54,7 +54,7 @@ class Result extends \RcmUser\Result
     /**
      * @var array $messages
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * __construct
@@ -66,7 +66,7 @@ class Result extends \RcmUser\Result
     public function __construct(
         $user = null,
         $code = 1,
-        $messages = array()
+        $messages = []
     ) {
         $this->setUser($user);
 

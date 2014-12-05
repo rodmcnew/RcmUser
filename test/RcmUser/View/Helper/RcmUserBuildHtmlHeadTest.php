@@ -92,15 +92,15 @@ class RcmUserBuildHtmlHeadTest extends \PHPUnit_Framework_TestCase
             ->method('headScript')
             ->will($this->returnValue($headScript));
 
-        $htmlAssets = array(
-            'js' => array(
+        $htmlAssets = [
+            'js' => [
                 '/test.js',
-            ),
+            ],
 
-            'css' => array(
+            'css' => [
                 '/test.css',
-            ),
-        );
+            ],
+        ];
 
         $this->rcmUserBuildHtmlHead = new RcmUserBuildHtmlHead($htmlAssets);
 

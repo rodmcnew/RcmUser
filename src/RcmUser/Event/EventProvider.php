@@ -55,10 +55,10 @@ abstract class EventProvider implements EventManagerAwareInterface
      */
     public function setEventManager(EventManagerInterface $events)
     {
-        $identifiers = array(
+        $identifiers = [
             __CLASS__,
             get_called_class()
-        );
+        ];
 
         $events->setIdentifiers($identifiers);
         $this->events = $events;

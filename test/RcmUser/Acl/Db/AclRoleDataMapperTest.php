@@ -50,12 +50,12 @@ class AclRoleDataMapperTest extends \PHPUnit_Framework_TestCase
      */
     public function setUp()
     {
-        $this->configArr = array(
-            'DefaultGuestRoleIds' => array('guest'),
-            'DefaultUserRoleIds' => array('user'),
+        $this->configArr = [
+            'DefaultGuestRoleIds' => ['guest'],
+            'DefaultUserRoleIds' => ['user'],
             'SuperAdminRoleId' => 'admin',
             'GuestRoleId' => 'guest',
-        );
+        ];
 
         $this->config = new Config(
             $this->configArr

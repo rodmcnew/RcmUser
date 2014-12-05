@@ -58,12 +58,12 @@ class AclResourceService
     /**
      * @var array $resourceProviders
      */
-    protected $resourceProviders = array();
+    protected $resourceProviders = [];
 
     /**
      * @var array $resources
      */
-    protected $resources = array();
+    protected $resources = [];
 
     /**
      * @var bool $isCached
@@ -203,7 +203,7 @@ class AclResourceService
         if (empty($resource)) {
 
             // resource not found
-            return array();
+            return [];
         }
 
         $resource = $this->buildValidAclResource(
@@ -288,7 +288,7 @@ class AclResourceService
     public function getResourceStack(
         ResourceProviderInterface $provider,
         AclResource $resource,
-        &$resources = array(),
+        &$resources = [],
         $nestLevel = 0
     ) {
         if ($nestLevel > $this->maxResourceNesting) {
@@ -300,7 +300,7 @@ class AclResourceService
         }
 
         //$resources[$resource->getResourceId()] = $resource;
-        $tempResource = array($resource->getResourceId() => $resource);
+        $tempResource = [$resource->getResourceId() => $resource];
         $resources = $tempResource + $resources;
 
         $parentId = $resource->getParentResourceId();
@@ -440,7 +440,7 @@ class AclResourceService
         $nsChar = '.'
     ) {
         $resourceId = strtolower($resourceId);
-        $aclResources = array();
+        $aclResources = [];
         $resources = $this->getNamespacedResources(
             $resourceId,
             $providerId,
@@ -451,7 +451,7 @@ class AclResourceService
         foreach ($resources as $ns => $res) {
 
             $resourceId = $res->getResourceId();
-            $aclResources[$resourceId] = array();
+            $aclResources[$resourceId] = [];
             $aclResources[$resourceId]['resource'] = $res;
             $aclResources[$resourceId]['resourceNs'] = $ns;
         }
@@ -475,7 +475,7 @@ class AclResourceService
         $refresh = false,
         $nsChar = '.'
     ) {
-        $aclResources = array();
+        $aclResources = [];
 
         $resourceId = strtolower($resourceId);
 
@@ -554,9 +554,9 @@ class AclResourceService
 
         if (!isset($resources[$rootResource->getResourceId()])) {
 
-            $tempRootResource = array(
+            $tempRootResource = [
                 $rootResource->getResourceId() => $rootResource
-            );
+            ];
 
             $resources = $tempRootResource + $tempRootResource;
         }

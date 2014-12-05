@@ -49,7 +49,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * @var array $availableRoles
      */
-    protected $availableRoles = array();
+    protected $availableRoles = [];
 
     /**
      * __construct
@@ -100,7 +100,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function fetchAll($options = array())
+    public function fetchAll($options = [])
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
@@ -148,7 +148,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function create(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
@@ -177,7 +177,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function update(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
@@ -193,7 +193,7 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
      */
     public function delete(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }

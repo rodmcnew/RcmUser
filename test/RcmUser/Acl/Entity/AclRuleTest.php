@@ -127,13 +127,13 @@ class AclRuleTest extends Zf2TestCase
     {
         $aclRuleA = new AclRule();
         $aclRuleB = new AclRule();
-        $data = array(
+        $data = [
             'rule' => 'allow',
             'roleId' => 'somerole',
             'resourceId' => 'someresource',
             'privilege' => 'someprivilege',
             'assertion' => 'someassertion',
-        );
+        ];
 
         $aclRuleA->populate($data);
 

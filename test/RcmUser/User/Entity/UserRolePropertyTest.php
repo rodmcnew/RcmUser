@@ -48,7 +48,7 @@ class UserRolePropertyTest extends \PHPUnit_Framework_TestCase
      */
     public function test()
     {
-        $roles = array('TestRole1', 'TestRole2');
+        $roles = ['TestRole1', 'TestRole2'];
         $userRoleProperty = new UserRoleProperty($roles);
 
         $this->assertTrue(

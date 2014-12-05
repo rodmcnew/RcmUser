@@ -45,11 +45,11 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
-    protected $listeners = array();
+    protected $listeners = [];
     protected $id = 'RcmUser\User\Service\UserDataService';
     protected $priority = -1;
     protected $listenerMethods
-        = array(
+        = [
             'onBeforeGetAllUsers' => 'beforeGetAllUsers',
             'onGetAllUsers' => 'getAllUsers',
             'onGetAllUsersFail' => 'getAllUsersFail',
@@ -71,7 +71,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             'onDeleteUser' => 'deleteUser',
             'onDeleteUserFail' => 'deleteUserFail',
             'onDeleteUserSuccess' => 'deleteUserSuccess',
-        );
+        ];
 
     /**
      * attach
@@ -88,10 +88,10 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
             $this->listeners[] = $sharedEvents->attach(
                 $this->id,
                 $event,
-                array(
+                [
                     $this,
                     $method
-                ),
+                ],
                 $this->priority
             );
         }

@@ -47,10 +47,10 @@ class ResourceProviderTest extends Zf2TestCase
      */
     public function testSetGet()
     {
-        $resources = array(
+        $resources = [
             '1' => 'some',
             '2' => 'res'
-        );
+        ];
         $providerId = 'someprovider';
         $resourceProvider = new ResourceProvider($resources);
 

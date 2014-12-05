@@ -55,7 +55,7 @@ class UserValidator implements FactoryInterface
     {
         $config = $serviceLocator->get('RcmUser\User\Config')->get(
             'InputFilter',
-            array()
+            []
         );
         $userInputFilter = new UserInputFilter();
         $factory = new Factory();

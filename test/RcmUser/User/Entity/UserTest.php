@@ -54,7 +54,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
         $user->setState($prefix . '_state');
         $user->setEmail($prefix . '@example.com');
         $user->setName($prefix . '_name');
-        $user->setProperties(array('property1', $prefix . '_property1'));
+        $user->setProperties(['property1', $prefix . '_property1']);
         $user->setProperty('property2', $prefix . '_property2');
 
         return $user;
@@ -142,7 +142,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
             'Setter or getter failed.'
         );
 
-        $pvalue = array('Y' => 'propertyYYY');
+        $pvalue = ['Y' => 'propertyYYY'];
         $value = 'propertyXXX';
         $user->setProperties($pvalue);
         $this->assertArrayHasKey(

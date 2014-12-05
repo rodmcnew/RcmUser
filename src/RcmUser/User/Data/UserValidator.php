@@ -62,13 +62,13 @@ class UserValidator implements UserValidatorInterface
      * @var array $validatableFields
      */
     protected $validatableFields
-        = array(
+        = [
             'username',
             'password',
             'state',
             'email',
             'name',
-        );
+        ];
 
     /**
      * __construct
@@ -80,7 +80,7 @@ class UserValidator implements UserValidatorInterface
     public function __construct(
         Factory $userInputFilterFactory,
         InputFilterInterface $userInputFilter,
-        $userInputFilterConfig = array()
+        $userInputFilterConfig = []
     ) {
         $this->setUserInputFilterFactory($userInputFilterFactory);
         $this->setUserInputFilter($userInputFilter);

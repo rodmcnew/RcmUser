@@ -36,7 +36,7 @@ class ConfigTest extends Zf2TestCase
 
     public function testGet()
     {
-        $configArr = array('some' => 'thing');
+        $configArr = ['some' => 'thing'];
 
         $config = new Config($configArr);
 

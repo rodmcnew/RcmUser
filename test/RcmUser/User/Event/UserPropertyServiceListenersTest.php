@@ -74,11 +74,11 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
 
     public function buildSuccessCase()
     {
-        $this->mockEventReturn = array(
-            array('propertyNameSpace', null, UserRoleProperty::PROPERTY_KEY),
-            array('data', null, new UserRoleProperty(array('SOME', 'ROLES'))),
-            array('user', null, new User('123'))
-        );
+        $this->mockEventReturn = [
+            ['propertyNameSpace', null, UserRoleProperty::PROPERTY_KEY],
+            ['data', null, new UserRoleProperty(['SOME', 'ROLES'])],
+            ['user', null, new User('123')]
+        ];
 
         $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
@@ -104,11 +104,11 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
 
     public function buildFailCase1()
     {
-        $this->mockEventReturn = array(
-            array('propertyNameSpace', null, 'NOPE'),
-            array('data', null, new UserRoleProperty(array('SOME', 'ROLES'))),
-            array('user', null, new User('123'))
-        );
+        $this->mockEventReturn = [
+            ['propertyNameSpace', null, 'NOPE'],
+            ['data', null, new UserRoleProperty(['SOME', 'ROLES'])],
+            ['user', null, new User('123')]
+        ];
 
         $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
@@ -134,11 +134,11 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
 
     public function buildFailCase2()
     {
-        $this->mockEventReturn = array(
-            array('propertyNameSpace', null, UserRoleProperty::PROPERTY_KEY),
-            array('data', null, 'NOPE'),
-            array('user', null, new User('123'))
-        );
+        $this->mockEventReturn = [
+            ['propertyNameSpace', null, UserRoleProperty::PROPERTY_KEY],
+            ['data', null, 'NOPE'],
+            ['user', null, new User('123')]
+        ];
 
         $this->mockEvent = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'

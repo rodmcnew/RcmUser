@@ -73,9 +73,9 @@ class AbstractAdminApiController extends AbstractRestfulController
     {
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders(
-            array(
+            [
                 'Content-Type' => 'application/json'
-            )
+            ]
         );
         $response->setStatusCode(Response::STATUS_CODE_401);
         $result = new Result(
@@ -128,9 +128,9 @@ class AbstractAdminApiController extends AbstractRestfulController
 
         $response = $this->getResponse();
         $response->getHeaders()->addHeaders(
-            array(
+            [
                 'Content-Type' => 'application/json'
-            )
+            ]
         );
         $response->setContent(json_encode($result));
 

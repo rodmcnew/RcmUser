@@ -55,7 +55,7 @@ class ReadOnlyUserTest extends Zf2TestCase
         $user->setId('id');
         $user->setUsername('username');
         $user->setPassword('password');
-        $user->setProperties(array('A' => 'something'));
+        $user->setProperties(['A' => 'something']);
 
         return new ReadOnlyUser($user);
     }
@@ -77,7 +77,7 @@ class ReadOnlyUserTest extends Zf2TestCase
         $user->setState('disabled');
         $user->setName('name');
         $user->setEmail('test@example.com');
-        $user->setProperties(array('A' => 'something'));
+        $user->setProperties(['A' => 'something']);
 
         return new ReadOnlyUser($user);
     }
@@ -184,7 +184,7 @@ class ReadOnlyUserTest extends Zf2TestCase
     public function testSetProperties()
     {
         $roUser = $this->buildReadOnlyUser();
-        $roUser->setProperties(array('B' => '234'));
+        $roUser->setProperties(['B' => '234']);
     }
 
     /**

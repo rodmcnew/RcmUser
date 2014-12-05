@@ -59,7 +59,7 @@ class AdminApiAclRuleController extends AbstractAdminApiController
             return $this->getNotAllowedResponse();
         }
 
-        return new JsonModel(array('get' . $id));
+        return new JsonModel(['get' . $id]);
     }
 
     /**

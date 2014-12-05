@@ -129,7 +129,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     {
         $rules = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
-        )->findBy(array('roleId' => $roleId));
+        )->findBy(['roleId' => $roleId]);
 
         return new Result($rules);
     }
@@ -145,7 +145,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     {
         $rules = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
-        )->findBy(array('rule' => $rule));
+        )->findBy(['rule' => $rule]);
 
         return new Result($rules);
     }
@@ -159,7 +159,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
      */
     public function fetchByResources(Array $resources)
     {
-        $ids = array();
+        $ids = [];
 
         foreach ($resources as $resource) {
             if (!$resource instanceof AclResource) {
@@ -338,7 +338,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
         $rules = $query->getResult();
 
         if (empty($rules[0])) {
-            return new Result(array());
+            return new Result([]);
         }
 
         return new Result($rules[0]);

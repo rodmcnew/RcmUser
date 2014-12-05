@@ -56,7 +56,7 @@ class Tester implements ServiceLocatorAwareInterface
      */
     public static function testAll(
         ServiceLocatorInterface $serviceLocator,
-        $params = array()
+        $params = []
     ) {
         $message = '';
 
@@ -81,7 +81,7 @@ class Tester implements ServiceLocatorAwareInterface
      */
     public static function testCase1(
         ServiceLocatorInterface $serviceLocator,
-        $params = array()
+        $params = []
     ) {
         $startTime = time();
 
@@ -200,7 +200,7 @@ class Tester implements ServiceLocatorAwareInterface
      */
     public static function testCase2(
         ServiceLocatorInterface $serviceLocator,
-        $params = array()
+        $params = []
     ) {
         $startTime = time();
 
@@ -367,7 +367,7 @@ class Tester implements ServiceLocatorAwareInterface
      */
     public static function testCase3(
         ServiceLocatorInterface $serviceLocator,
-        $params = array()
+        $params = []
     ) {
         $startTime = time();
 
@@ -385,7 +385,7 @@ class Tester implements ServiceLocatorAwareInterface
         $userRoles = self::parseParam(
             $params,
             'userRoles',
-            array('admin')
+            ['admin']
         );
 
         // build new user if

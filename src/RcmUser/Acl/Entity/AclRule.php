@@ -225,7 +225,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      * @return void
      * @throws RcmUserException
      */
-    public function populate($data = array())
+    public function populate($data = [])
     {
         if (($data instanceof AclRule)) {
 

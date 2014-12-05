@@ -96,7 +96,7 @@ class AclRuleDataMapperTest extends \PHPUnit_Framework_TestCase
      */
     public function testFetchByResources()
     {
-        $result = $this->aclRuleDataMapper->fetchByResources(array());
+        $result = $this->aclRuleDataMapper->fetchByResources([]);
     }
     /**
      * testFetchByResource

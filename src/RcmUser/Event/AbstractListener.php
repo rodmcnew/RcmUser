@@ -42,7 +42,7 @@ class AbstractListener implements ListenerAggregateInterface
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
-    protected $listeners = array();
+    protected $listeners = [];
     protected $id = 'RcmUser\Service\RcmUserService';
     protected $event = 'someEvent';
     protected $priority = 100;
@@ -60,10 +60,10 @@ class AbstractListener implements ListenerAggregateInterface
         $this->listeners[] = $sharedEvents->attach(
             $this->id,
             $this->event,
-            array(
+            [
                 $this,
                 'onEvent'
-            ),
+            ],
             $this->priority
         );
     }

@@ -135,7 +135,7 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
     {
         $roles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
-        )->findOneBy(array('roleId' => $roleId));
+        )->findOneBy(['roleId' => $roleId]);
 
         $result = new Result($roles);
 
@@ -157,7 +157,7 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
     {
         $roles = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
-        )->findBy(array('parentRoleId' => $parentRoleId));
+        )->findBy(['parentRoleId' => $parentRoleId]);
 
         $result = new Result($roles);
 

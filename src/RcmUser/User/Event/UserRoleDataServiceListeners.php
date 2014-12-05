@@ -51,7 +51,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      * @var array $listenerMethods
      */
     protected $listenerMethods
-        = array(
+        = [
             'onGetAllUsersSuccess' => 'getAllUsersSuccess',
             'onBuildUser' => 'buildUser',
             //'onBeforeCreateUser' => 'beforeCreateUser',
@@ -60,7 +60,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             //'onBeforeUpdateUser' => 'beforeUpdateUser',
             'onUpdateUserSuccess' => 'updateUserSuccess',
             'onDeleteUserSuccess' => 'deleteUserSuccess',
-        );
+        ];
 
     /**
      * @var UserRoleService $userRoleService
@@ -129,7 +129,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
                     'Could not read user roles: ' . $readResult->getMessage()
                 );
 
-                $roles = array();
+                $roles = [];
             }
 
             $userRoleProperty = $this->buildValidUserRoleProperty(
@@ -171,7 +171,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
             $userRoleProperty = $this->buildValidUserRoleProperty(
                 $responseUser,
-                array()
+                []
             );
         }
 
@@ -229,7 +229,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            new UserRoleProperty(array())
+            new UserRoleProperty([])
         );
 
         $userRoleProperty = $this->buildValidUserRoleProperty(
@@ -350,7 +350,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            new UserRoleProperty(array())
+            new UserRoleProperty([])
         );
 
         $userRoleProperty = $this->buildValidUserRoleProperty(
@@ -401,7 +401,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
         $userRoleProperty = $responseUser->getProperty(
             $this->getUserPropertyKey(),
-            $this->buildUserRoleProperty(array())
+            $this->buildUserRoleProperty([])
         );
 
         $deleteResult = $this->getUserRoleService()->deleteRoles(
@@ -414,7 +414,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
             ));
         }
 
-        $userRoleProperty->setRoles(array());
+        $userRoleProperty->setRoles([]);
 
         $responseUser->setProperty(
             $this->getUserPropertyKey(),
@@ -431,7 +431,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return array
      */
-    public function removeDefaultUserRoleIds($roles = array())
+    public function removeDefaultUserRoleIds($roles = [])
     {
         $defaultRolesResult = $this->getUserRoleService()->getDefaultUserRoleIds();
 
@@ -450,7 +450,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      *
      * @return UserRoleProperty
      */
-    public function buildUserRoleProperty($roles = array())
+    public function buildUserRoleProperty($roles = [])
     {
         return $this->getUserRoleService()->buildUserRoleProperty($roles);
     }
@@ -465,7 +465,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function buildValidUserRoleProperty(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         return $this->getUserRoleService()->buildValidUserRoleProperty(
             $user,
@@ -483,7 +483,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function buildValidRoles(
         User $user,
-        $roles = array()
+        $roles = []
     ) {
         return $this->getUserRoleService()->buildValidRoles(
             $user,

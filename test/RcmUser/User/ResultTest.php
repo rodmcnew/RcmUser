@@ -56,7 +56,7 @@ class ResultTest extends Zf2TestCase
 
         $result->setCode(Result::CODE_SUCCESS);
         $result->setUser($user);
-        $messages = array('message 1');
+        $messages = ['message 1'];
         $result->setMessages($messages);
         $result->setMessage('message 2');
 

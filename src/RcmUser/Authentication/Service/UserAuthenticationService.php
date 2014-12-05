@@ -83,7 +83,7 @@ class UserAuthenticationService extends EventProvider
     {
         /* + LOW_LEVEL_PREP */
         if (!$user->isEnabled()) {
-            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+            return new Result(Result::FAILURE_UNCATEGORIZED, $user, ['User is disabled.']);
         }
         /* - LOW_LEVEL_PREP */
 
@@ -95,7 +95,7 @@ class UserAuthenticationService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'validateCredentials',
             $this,
-            array('user' => $user),
+            ['user' => $user],
             function ($result) {
                 return $result->isValid();
             }
@@ -115,7 +115,7 @@ class UserAuthenticationService extends EventProvider
             $this->getEventManager()->trigger(
                 'validateCredentialsSuccess',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return new Result(Result::SUCCESS, $this->prepareUser(
@@ -129,7 +129,7 @@ class UserAuthenticationService extends EventProvider
         $this->getEventManager()->trigger(
             'validateCredentialsFail',
             $this,
-            array('result' => $result)
+            ['result' => $result]
         );
 
         return $result;
@@ -147,7 +147,7 @@ class UserAuthenticationService extends EventProvider
     {
         /* + LOW_LEVEL_PREP */
         if (!$user->isEnabled()) {
-            return new Result(Result::FAILURE_UNCATEGORIZED, $user, array('User is disabled.'));
+            return new Result(Result::FAILURE_UNCATEGORIZED, $user, ['User is disabled.']);
         }
         /* - LOW_LEVEL_PREP */
 
@@ -159,7 +159,7 @@ class UserAuthenticationService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'authenticate',
             $this,
-            array('user' => $user),
+            ['user' => $user],
             function ($result) {
                 return $result->isValid();
             }
@@ -179,7 +179,7 @@ class UserAuthenticationService extends EventProvider
             $this->getEventManager()->trigger(
                 'authenticateSuccess',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return new Result(Result::SUCCESS, $this->prepareUser(
@@ -193,7 +193,7 @@ class UserAuthenticationService extends EventProvider
         $this->getEventManager()->trigger(
             'authenticateFail',
             $this,
-            array('result' => $result)
+            ['result' => $result]
         );
 
         return $result;
@@ -212,7 +212,7 @@ class UserAuthenticationService extends EventProvider
         $this->getEventManager()->trigger(
             'clearIdentity',
             $this,
-            array()
+            []
         );
     }
 
@@ -226,7 +226,7 @@ class UserAuthenticationService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'hasIdentity',
             $this,
-            array(),
+            [],
             function ($hasIdentity) {
                 return $hasIdentity;
             }
@@ -252,7 +252,7 @@ class UserAuthenticationService extends EventProvider
         $this->getEventManager()->trigger(
             'setIdentity',
             $this,
-            array('identity' => $identity)
+            ['identity' => $identity]
         );
     }
 
@@ -271,7 +271,7 @@ class UserAuthenticationService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'getIdentity',
             $this,
-            array()
+            []
         );
 
         $user = $results->last();

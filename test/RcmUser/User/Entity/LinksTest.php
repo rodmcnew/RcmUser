@@ -50,7 +50,7 @@ class LinksTest extends \PHPUnit_Framework_TestCase
         $link->setType('TESTtype');
         $link->setUrl('TESTurl');
 
-        $linksData = array($link);
+        $linksData = [$link];
         $links = new Links($linksData);
 
         $this->assertEquals(

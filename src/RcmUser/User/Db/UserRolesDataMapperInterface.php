@@ -72,7 +72,7 @@ interface UserRolesDataMapperInterface
      *
      * @return Result
      */
-    public function fetchAll($options = array());
+    public function fetchAll($options = []);
 
     /**
      * add
@@ -136,7 +136,7 @@ interface UserRolesDataMapperInterface
      */
     public function create(
         User $user,
-        $roles = array()
+        $roles = []
     );
 
     /**
@@ -180,7 +180,7 @@ interface UserRolesDataMapperInterface
      */
     public function update(
         User $user,
-        $roles = array()
+        $roles = []
     );
 
     /**
@@ -205,6 +205,6 @@ interface UserRolesDataMapperInterface
      */
     public function delete(
         User $user,
-        $roles = array()
+        $roles = []
     );
 }

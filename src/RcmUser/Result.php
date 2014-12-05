@@ -69,7 +69,7 @@ class Result implements \JsonSerializable
     /**
      * @var array
      */
-    protected $messages = array();
+    protected $messages = [];
 
     /**
      * __construct
@@ -81,7 +81,7 @@ class Result implements \JsonSerializable
     public function __construct(
         $data = null,
         $code = 1,
-        $messages = array()
+        $messages = []
     ) {
         $this->setData($data);
 

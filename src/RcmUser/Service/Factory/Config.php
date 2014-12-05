@@ -50,6 +50,6 @@ class Config implements FactoryInterface
     {
         $config = $serviceLocator->get('Config');
 
-        return isset($config['RcmUser']) ? $config['RcmUser'] : array();
+        return isset($config['RcmUser']) ? $config['RcmUser'] : [];
     }
 }

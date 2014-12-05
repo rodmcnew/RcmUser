@@ -51,7 +51,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
      * @var array
      */
     protected $listenerMethods
-        = array(
+        = [
             'onValidateCredentials' => 'validateCredentials',
             //'onValidateCredentialsSuccess' => 'validateCredentialsSuccess',
             //'onValidateCredentialsFail' => 'validateCredentialsFail',
@@ -64,7 +64,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
             'onHasIdentity' => 'hasIdentity',
             'onSetIdentity' => 'setIdentity',
             'onGetIdentity' => 'getIdentity',
-        );
+        ];
 
     /**
      * onValidateCredentials

@@ -52,7 +52,7 @@ class RcmUserAclTest extends Zf2TestCase
             ->addRole(new AclRole('member'))
             ->addRole(new AclRole('admin'));
 
-        $parents = array('guest', 'member', 'admin');
+        $parents = ['guest', 'member', 'admin'];
         $acl->addRole(new AclRole('someUser'), $parents);
 
         $acl->addResource(new AclResource('someresource'));

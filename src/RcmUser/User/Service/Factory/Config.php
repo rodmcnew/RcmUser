@@ -52,7 +52,7 @@ class Config implements FactoryInterface
         $config = $serviceLocator->get('RcmUser\Config');
 
         return new \RcmUser\Config\Config(
-            isset($config['User\Config']) ? $config['User\Config'] : array()
+            isset($config['User\Config']) ? $config['User\Config'] : []
         );
     }
 }

@@ -84,7 +84,7 @@ class AbstractAdminController extends AbstractActionController
      *
      * @return ViewModel
      */
-    protected function buildView($viewArr = array())
+    protected function buildView($viewArr = [])
     {
         $view = new ViewModel($viewArr);
 

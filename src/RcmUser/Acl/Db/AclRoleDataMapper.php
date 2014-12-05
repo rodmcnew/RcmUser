@@ -96,7 +96,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
     {
         return new Result($this->config->get(
             'DefaultGuestRoleIds',
-            array()
+            []
         ));
     }
 
@@ -110,7 +110,7 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
     {
         return new Result($this->config->get(
             'DefaultUserRoleIds',
-            array()
+            []
         ));
     }
 

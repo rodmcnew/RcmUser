@@ -54,9 +54,9 @@ class AdminCssController extends AbstractAdminController
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $response->getHeaders()->addHeaders(
-            array(
+            [
                 'Content-Type' => 'text/css'
-            )
+            ]
         );
 
         return $viewModel;

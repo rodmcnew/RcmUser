@@ -53,7 +53,7 @@ class AdminUserController extends AbstractAdminController
             return $this->getNotAllowedResponse();
         }
 
-        $viewArr = array();
+        $viewArr = [];
 
         return $this->buildView($viewArr);
     }

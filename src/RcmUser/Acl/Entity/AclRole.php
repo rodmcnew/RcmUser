@@ -237,7 +237,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
      * @return void
      * @throws RcmUserException
      */
-    public function populate($data = array())
+    public function populate($data = [])
     {
         if (($data instanceof AclRole)) {
 

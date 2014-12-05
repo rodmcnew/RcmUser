@@ -68,10 +68,10 @@ class UserPropertyService extends EventProvider
             $this->getEventManager()->trigger(
                 __FUNCTION__,
                 $this,
-                array(
+                [
                     'user' => $user,
                     'propertyNameSpace' => $propertyNameSpace
-                )
+                ]
             );
         }
 
@@ -94,15 +94,15 @@ class UserPropertyService extends EventProvider
      */
     public function populateUserProperty(
         $propertyNameSpace,
-        $data = array()
+        $data = []
     ) {
         $results = $this->getEventManager()->trigger(
             __FUNCTION__,
             $this,
-            array(
+            [
                 'propertyNameSpace' => $propertyNameSpace,
                 'data' => $data
-            ),
+            ],
             function ($result) {
 
                 if ($result instanceof Result) {
@@ -136,10 +136,10 @@ class UserPropertyService extends EventProvider
         $results = $this->getEventManager()->trigger(
             __FUNCTION__,
             $this,
-            array(
+            [
                 'user' => $user,
                 'propertyNameSpace' => $propertyNameSpace
-            ),
+            ],
             function ($result) {
 
                 if ($result instanceof Result) {
@@ -174,10 +174,10 @@ class UserPropertyService extends EventProvider
         $results = $this->getEventManager()->trigger(
             __FUNCTION__,
             $this,
-            array(
+            [
                 'user' => $user,
                 'propertyNameSpace' => $propertyNameSpace
-            ),
+            ],
             function ($result) {
 
                 if ($result instanceof Result) {

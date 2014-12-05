@@ -57,7 +57,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $user->setUsername($prefix . '_username');
         $user->setPassword($prefix . '_password');
         $user->setState($prefix . '_state');
-        $user->setProperties(array('property1', $prefix . '_property1'));
+        $user->setProperties(['property1', $prefix . '_property1']);
         $user->setProperty('property2', $prefix . '_property2');
 
         return $user;
@@ -121,7 +121,7 @@ class RcmUserServiceTest extends Zf2TestCase
             ->getMock();
         $this->userPropertyService->expects($this->any())
             ->method('getUserProperty')
-            ->will($this->returnValue(array('some', 'user', 'property')));
+            ->will($this->returnValue(['some', 'user', 'property']));
 
         /////
         $this->userAuthService = $this->getMockBuilder(

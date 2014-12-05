@@ -48,7 +48,7 @@ class EventListeners implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $listeners = array();
+        $listeners = [];
 
         try {
             $listeners[] = $serviceLocator->get(

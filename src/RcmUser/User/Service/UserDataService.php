@@ -53,7 +53,7 @@ class UserDataService extends EventProvider
     /**
      * @var array
      */
-    protected $validUserStates = array();
+    protected $validUserStates = [];
 
     /**
      * @var string|null $defaultUserState
@@ -141,15 +141,15 @@ class UserDataService extends EventProvider
      * @return mixed
      */
     public function getAllUsers(
-        $options = array()
+        $options = []
     ) {
         /* @event beforeGetAllUsers */
         $results = $this->getEventManager()->trigger(
             'beforeGetAllUsers',
             $this,
-            array(
+            [
                 'options' => $options,
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -163,9 +163,9 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'getAllUsers',
             $this,
-            array(
+            [
                 'options' => $options,
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -177,7 +177,7 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 'getAllUsersFail',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return $result;
@@ -190,7 +190,7 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             'getAllUsersSuccess',
             $this,
-            array('result' => $result)
+            ['result' => $result]
         );
 
         return $result;
@@ -218,10 +218,10 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'buildUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser
-            )
+            ]
         );
 
         return $results->last();
@@ -262,10 +262,10 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'beforeCreateUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -279,10 +279,10 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'createUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -295,7 +295,7 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 'createUserFail',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return $result;
@@ -307,7 +307,7 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 'createUserFail',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return $result;
@@ -317,7 +317,7 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             'createUserSuccess',
             $this,
-            array('result' => $result)
+            ['result' => $result]
         );
 
         return $result;
@@ -341,10 +341,10 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'beforeReadUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -358,10 +358,10 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'readUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -373,7 +373,7 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 'readUserFail',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return $result;
@@ -392,7 +392,7 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             'readUserSuccess',
             $this,
-            array('result' => $result)
+            ['result' => $result]
         );
 
         return $result;
@@ -445,11 +445,11 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'beforeUpdateUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser,
                 'existingUser' => $existingUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -463,11 +463,11 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'updateUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser,
                 'existingUser' => $existingUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -479,7 +479,7 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 'updateUserFail',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return $result;
@@ -491,7 +491,7 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             'updateUserSuccess',
             $this,
-            array('result' => $result)
+            ['result' => $result]
         );
 
         return $result;
@@ -533,10 +533,10 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'beforeDeleteUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -550,10 +550,10 @@ class UserDataService extends EventProvider
         $results = $this->getEventManager()->trigger(
             'deleteUser',
             $this,
-            array(
+            [
                 'requestUser' => $requestUser,
                 'responseUser' => $responseUser
-            ),
+            ],
             function ($result) {
                 return !$result->isSuccess();
             }
@@ -565,7 +565,7 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 'deleteUserFail',
                 $this,
-                array('result' => $result)
+                ['result' => $result]
             );
 
             return $result;
@@ -577,7 +577,7 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             'deleteUserSuccess',
             $this,
-            array('result' => $result)
+            ['result' => $result]
         );
 
         return $result;

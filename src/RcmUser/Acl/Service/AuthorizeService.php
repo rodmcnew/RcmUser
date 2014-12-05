@@ -119,7 +119,7 @@ class AuthorizeService
     {
         $id = $this->getAclDataService()->getGuestRoleId()->getData();
 
-        return array($this->getAclDataService()->getRoleByRoleId($id)->getData());
+        return [$this->getAclDataService()->getRoleByRoleId($id)->getData()];
     }
 
     /**
@@ -134,7 +134,7 @@ class AuthorizeService
         if (!$result->isSuccess()) {
 
             // @todo Throw error?
-            return array();
+            return [];
         }
 
         return $result->getData();
@@ -153,7 +153,7 @@ class AuthorizeService
         $userRoleProperty = $user->getProperty(UserRoleProperty::PROPERTY_KEY);
 
         if (!($userRoleProperty instanceof UserRoleProperty)) {
-            return array();
+            return [];
         }
 
         return $userRoleProperty->getRoles();
@@ -174,7 +174,7 @@ class AuthorizeService
             if (!$result->isSuccess()) {
 
                 // @todo Throw error?
-                return array();
+                return [];
             }
 
             return $result->getData();
@@ -449,6 +449,6 @@ class AuthorizeService
             return $resources;
         }
 
-        return array($resource);
+        return [$resource];
     }
 }

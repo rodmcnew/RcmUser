@@ -84,12 +84,12 @@ class UserAdapterTest extends Zf2TestCase
             ->getMock();
         $this->userDataService->expects($this->any())
             ->method('readUser')
-            ->will($this->returnCallback(array($this, 'userResultCallback')));
+            ->will($this->returnCallback([$this, 'userResultCallback']));
 
-        $encValueMap = array(
-            array('goodpass', '#hash#', true),
-            array('badpass', '#hash#', false),
-        );
+        $encValueMap = [
+            ['goodpass', '#hash#', true],
+            ['badpass', '#hash#', false],
+        ];
 
         $this->encryptor = $this->getMockBuilder(
             '\Zend\Crypt\Password\PasswordInterface'

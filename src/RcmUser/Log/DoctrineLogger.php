@@ -73,7 +73,7 @@ class DoctrineLogger extends Logger
     public function log(
         $type,
         $message,
-        $extra = array()
+        $extra = []
     ) {
         if (!$this->canLog($type)) {
             return $this;

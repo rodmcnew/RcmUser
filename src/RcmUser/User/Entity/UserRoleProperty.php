@@ -44,7 +44,7 @@ class UserRoleProperty implements UserPropertyInterface
     /**
      * @var array $roles
      */
-    protected $roles = array();
+    protected $roles = [];
 
     /**
      * __construct
@@ -52,7 +52,7 @@ class UserRoleProperty implements UserPropertyInterface
      * @param array $roles role id list
      */
     public function __construct(
-        $roles = array()
+        $roles = []
     ) {
         $this->setRoles($roles);
     }
@@ -166,7 +166,7 @@ class UserRoleProperty implements UserPropertyInterface
      * @return void
      * @throws RcmUserException
      */
-    public function populate($data = array())
+    public function populate($data = [])
     {
         if (($data instanceof UserRoleProperty)) {
 

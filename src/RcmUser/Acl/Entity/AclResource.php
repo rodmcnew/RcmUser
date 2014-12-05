@@ -57,7 +57,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     /**
      * @var array $privileges
      */
-    protected $privileges = array();
+    protected $privileges = [];
 
     /**
      * @var string $name
@@ -79,7 +79,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     public function __construct(
         $resourceId,
         $parentResourceId = null,
-        $privileges = array()
+        $privileges = []
     ) {
         $this->setResourceId($resourceId);
         $this->setParentResourceId($parentResourceId);
@@ -298,7 +298,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      * @return void
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function populate($data = array())
+    public function populate($data = [])
     {
         if (($data instanceof AclResource)) {
 

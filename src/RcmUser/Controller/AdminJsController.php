@@ -67,19 +67,19 @@ class AdminJsController extends AbstractAdminController
         $superAdminRoleId = $aclDataService->getSuperAdminRoleId()->getData();
         $guestRoleId = $aclDataService->getGuestRoleId()->getData();
 
-        $viewModel = new ViewModel(array(
+        $viewModel = new ViewModel([
             'superAdminRoleId' => $superAdminRoleId,
             'guestRoleId' => $guestRoleId,
-        ));
+        ]);
         $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
         $viewModel->setTerminal(true);
 
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $response->getHeaders()->addHeaders(
-            array(
+            [
                 'Content-Type' => 'application/javascript'
-            )
+            ]
         );
 
         return $viewModel;
@@ -113,9 +113,9 @@ class AdminJsController extends AbstractAdminController
 
         $rolePropertyId = UserRoleProperty::PROPERTY_KEY;
 
-        $viewModel = new ViewModel(array(
+        $viewModel = new ViewModel([
             'rolePropertyId' => $rolePropertyId,
-        ));
+        ]);
 
         $viewModel->setTemplate('js/rcmuser.admin.users.app.js');
         $viewModel->setTerminal(true);
@@ -123,9 +123,9 @@ class AdminJsController extends AbstractAdminController
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $response->getHeaders()->addHeaders(
-            array(
+            [
                 'Content-Type' => 'application/javascript'
-            )
+            ]
         );
 
         return $viewModel;
@@ -147,7 +147,7 @@ class AdminJsController extends AbstractAdminController
             return $this->getNotAllowedResponse();
         }
 
-        $viewModel = new ViewModel(array());
+        $viewModel = new ViewModel([]);
 
         $viewModel->setTemplate('js/rcmuser.admin.user.role.app.js');
         $viewModel->setTerminal(true);
@@ -155,9 +155,9 @@ class AdminJsController extends AbstractAdminController
         $response = $this->getResponse();
         $response->setStatusCode(Response::STATUS_CODE_200);
         $response->getHeaders()->addHeaders(
-            array(
+            [
                 'Content-Type' => 'application/javascript'
-            )
+            ]
         );
 
         return $viewModel;

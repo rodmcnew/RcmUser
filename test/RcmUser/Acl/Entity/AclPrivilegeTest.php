@@ -49,7 +49,7 @@ class AclPrivilegeTest extends Zf2TestCase
      */
     public function testSetGet()
     {
-        $privileges = array('priv1', 'priv2');
+        $privileges = ['priv1', 'priv2'];
 
         $privilege = new AclPrivilege($privileges);
 

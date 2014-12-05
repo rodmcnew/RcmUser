@@ -51,7 +51,7 @@ class LogEntryTest extends \PHPUnit_Framework_TestCase
         $dateTimeUtc = new \DateTime('now', $tz);
         $type = 'ERR';
         $message = 'testmessage';
-        $extra = json_encode(array('test', 'extra'));
+        $extra = json_encode(['test', 'extra']);
 
 
         $entry = new LogEntry($dateTimeUtc, $type, $message, $extra);

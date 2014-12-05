@@ -46,14 +46,14 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     /**
      * @var array $privileges
      */
-    protected $privileges = array();
+    protected $privileges = [];
 
     /**
      * __construct
      *
      * @param array $privileges privileges
      */
-    public function __construct($privileges = array())
+    public function __construct($privileges = [])
     {
         $this->setPrivileges($privileges);
     }

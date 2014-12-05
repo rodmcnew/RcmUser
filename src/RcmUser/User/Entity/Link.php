@@ -160,7 +160,7 @@ class Link implements \JsonSerializable
      * @return void
      * @throws RcmUserException
      */
-    public function populate($data = array())
+    public function populate($data = [])
     {
         if ($data instanceof Link) {
             $this->setType($data->getType());

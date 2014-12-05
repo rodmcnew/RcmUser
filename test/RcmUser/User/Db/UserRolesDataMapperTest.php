@@ -53,7 +53,7 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
      */
     public function setup()
     {
-        $this->roles = array('someroles');
+        $this->roles = ['someroles'];
 
         $rolsResult = new Result($this->roles);
 

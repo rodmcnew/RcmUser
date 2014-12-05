@@ -82,7 +82,7 @@ class User implements UserInterface, \JsonSerializable
      *
      * @var array $properties
      */
-    protected $properties = array();
+    protected $properties = [];
 
     /**
      * __construct
@@ -268,7 +268,7 @@ class User implements UserInterface, \JsonSerializable
     {
         if (empty($properties)) {
 
-            $properties = array();
+            $properties = [];
         }
         $this->properties = $properties;
     }
@@ -388,7 +388,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function populate(
         $data,
-        $exclude = array()
+        $exclude = []
     ) {
         if (($data instanceof UserInterface)) {
 

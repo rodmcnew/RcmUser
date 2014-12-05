@@ -44,17 +44,17 @@ class Module implements AutoloaderProviderInterface
      */
     public function getAutoloaderConfig()
     {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
+        return [
+            'Zend\Loader\ClassMapAutoloader' => [
                 __DIR__ . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
+            ],
+            'Zend\Loader\StandardAutoloader' => [
+                'namespaces' => [
                     __NAMESPACE__ => __DIR__ . '/src/' .
                         str_replace('\\', '/', __NAMESPACE__),
-                ),
-            ),
-        );
+                ],
+            ],
+        ];
     }
 
     /**
@@ -89,7 +89,7 @@ class Module implements AutoloaderProviderInterface
 
         $eventManager->attach(
             MvcEvent::EVENT_ROUTE,
-            array($this, 'onRouteEvent'),
+            [$this, 'onRouteEvent'],
             0
         );
     }

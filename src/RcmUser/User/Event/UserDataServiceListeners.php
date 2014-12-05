@@ -41,13 +41,13 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
 {
     protected $priority = -1;
     protected $listenerMethods
-        = array(
+        = [
             'onGetAllUsers' => 'getAllUsers',
             'onCreateUser' => 'createUser',
             'onReadUser' => 'readUser',
             'onUpdateUser' => 'updateUser',
             'onDeleteUser' => 'deleteUser',
-        );
+        ];
 
     /**
      * @var UserDataMapperInterface

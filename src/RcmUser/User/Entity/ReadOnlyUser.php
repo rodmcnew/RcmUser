@@ -199,7 +199,7 @@ class ReadOnlyUser extends User
      */
     public function populate(
         $data,
-        $exclude = array()
+        $exclude = []
     ) {
         if (!$this->locked) {
             return parent::populate($data);

@@ -48,7 +48,7 @@ class AdminAclControllerTest extends Zf2TestCase
 
     public function setUp()
     {
-        $this->mockData = array();
+        $this->mockData = [];
 
         $this->mockData['isAllowed'] = true;
 
@@ -118,9 +118,9 @@ class AdminAclControllerTest extends Zf2TestCase
 class WrapperAdminAclController extends AdminAclController
 {
 
-    public $mocks = array();
+    public $mocks = [];
 
-    public function __construct($mocks = array())
+    public function __construct($mocks = [])
     {
         $this->mocks = $mocks;
     }

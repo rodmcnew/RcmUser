@@ -53,13 +53,13 @@ class AclResourceTest extends Zf2TestCase
     public function getAclResource(
         $resourceId,
         $parentResourceId = null,
-        $privileges = array()
+        $privileges = []
     ) {
 
         return new AclResource(
             $resourceId,
             $parentResourceId = null,
-            $privileges = array()
+            $privileges = []
         );
     }
 
@@ -74,14 +74,14 @@ class AclResourceTest extends Zf2TestCase
         $resourceId
     ) {
 
-        return array(
+        return [
             'resourceId' => $resourceId,
             'providerId' => 'providerId',
             'parentResourceId' => 'parentresourceid',
             'privileges' => 'privileges',
             'name' => 'name',
             'description' => 'description',
-        );
+        ];
     }
 
     /**
@@ -91,10 +91,10 @@ class AclResourceTest extends Zf2TestCase
      */
     public function testSetGet()
     {
-        $resourceIds = array(
+        $resourceIds = [
             'testid0',
             'testid1',
-        );
+        ];
         $aclResourceArray = $this->getAclResourceArray($resourceIds[0]);
 
         $aclResource = $this->getAclResource($resourceIds[0]);
