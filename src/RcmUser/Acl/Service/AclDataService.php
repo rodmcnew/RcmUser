@@ -267,7 +267,7 @@ class AclDataService
         $nsChar = '.',
         $refresh = false
     ) {
-        $aclRoles = array();
+        $aclRoles = [];
         $roles = $this->getNamespacedRoles(
             $nsChar,
             $refresh
@@ -276,7 +276,7 @@ class AclDataService
         foreach ($roles as $ns => $role) {
 
             $id = $role->getRoleId();
-            $aclRoles[$id] = array();
+            $aclRoles[$id] = [];
             $aclRoles[$id]['role'] = $role;
             $aclRoles[$id]['roleNs'] = $ns;
         }
@@ -293,7 +293,7 @@ class AclDataService
      */
     public function getNamespacedRoles($nsChar = '.')
     {
-        $aclRoles = array();
+        $aclRoles = [];
         $result = $this->getAllRoles();
 
         if (!$result->isSuccess()) {
@@ -501,7 +501,7 @@ class AclDataService
      */
     public function getRulesByRoles($nsChar = '.')
     {
-        $aclRoles = array();
+        $aclRoles = [];
         $result = $this->getNamespacedRoles($nsChar);
 
         if (!$result->isSuccess()) {
@@ -513,7 +513,7 @@ class AclDataService
         foreach ($roles as $ns => $role) {
 
             $id = $role->getRoleId();
-            $aclRoles[$ns] = array();
+            $aclRoles[$ns] = [];
             $aclRoles[$ns]['role'] = $role;
             $aclRoles[$ns]['roleNs'] = $ns;
             $rulesResult = $this->getRulesByRole($id);
@@ -522,7 +522,7 @@ class AclDataService
                 $aclRoles[$ns]['rules'] = $rulesResult->getData();
             } else {
 
-                $aclRoles[$ns]['rules'] = array();
+                $aclRoles[$ns]['rules'] = [];
             }
         }
 

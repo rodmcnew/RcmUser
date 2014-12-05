@@ -41,7 +41,7 @@ class ResourceProvider implements ResourceProviderInterface
     /**
      * @var array $resources
      */
-    protected $resources = array();
+    protected $resources = [];
 
     /**
      * __construct
