@@ -12,7 +12,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
         self.availableStates = [
             'enabled',
             'disabled'
-        ]
+        ];
 
         return self;
 
@@ -28,7 +28,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             $scope.availableStates = [
                 'enabled',
                 'disabled'
-            ]
+            ];
 
             self.getUsers = function (onSuccess, onFail) {
 
@@ -101,7 +101,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     name: '',
                     properties: {},
                     isNew: true
-                }
+                };
 
                 user.properties[$scope.rolePropertyId] = [];
 
@@ -138,21 +138,21 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 }
 
                 return false;
-            }
+            };
 
             $scope.openEditUser = function () {
                 var onSuccess = function (data, status) {
 
                     $scope.showEdit = true;
                     $scope.user = data.data;
-                }
+                };
 
                 self.getUser(onSuccess, $scope.user);
-            }
+            };
 
             $scope.openRemoveUser = function () {
                 // show dialog
-            }
+            };
 
             $scope.addRole = function (roleId) {
 
@@ -166,7 +166,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     $scope.user.properties[$scope.rolePropertyId].push(roleId);
                 }
 
-            }
+            };
 
             $scope.removeRole = function (roleId) {
 
@@ -178,7 +178,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 }
 
                 $scope.user.properties[$scope.rolePropertyId].splice(index, 1);
-            }
+            };
 
             /* <USER> */
             $scope.createUser = function (user) {
@@ -186,20 +186,20 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                 var onSuccess = function (data, status) {
 
                     $scope.user = data.data;
-                }
+                };
 
                 self.createUser($scope.user, onSuccess);
-            }
+            };
 
             $scope.updateUser = function (user) {
 
                 var onSuccess = function (data, status) {
 
                     $scope.user = data.data;
-                }
+                };
 
                 self.updateUser($scope.user, onSuccess);
-            }
+            };
 
             $scope.removeUser = function (user) {
 
@@ -212,19 +212,19 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
                     }
 
                     delete $scope.user;
-                }
+                };
 
                 self.removeUser($scope.user, onSuccess);
-            }
+            };
 
             $scope.resetUser = function () {
                 $scope.user = angular.copy($scope.orgUser);
-            }
+            };
 
             $scope.cancelCreateUser = function () {
                 // @todo need pop this from users in parent scope
                 $scope.user = $scope.users.splice($scope.index, 1);
-            }
+            };
 
             // API CALLS
             self.createUser = function (user, onSuccess) {
@@ -297,7 +297,7 @@ angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
             strb = ("" + strb).toLowerCase();
 
             return stra.indexOf(strb) !== -1;
-        }
+        };
 
         return function (input, query) {
             if (!query) {

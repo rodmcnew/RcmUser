@@ -66,7 +66,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                         roleId: roleData.role.roleId,
                         resourceId: '',
                         privilege: ''
-                    }
+                    };
 
                     $scope.cancel = function () {
                         $modalInstance.dismiss('cancel');
@@ -90,7 +90,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                         }
 
                         return true;
-                    }
+                    };
 
                     $scope.addRule = function () {
 
@@ -113,7 +113,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                     size: size
                 });
 
-            }
+            };
 
             /**
              * Add Rule
@@ -134,7 +134,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                 };
 
                 rcmUserHttp.execute(config, apiSuccess);
-            }
+            };
             /* </ADD_RULE> */
 
             /* <REMOVE_RULE> */
@@ -177,7 +177,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                     controller: self.controller,
                     size: size
                 });
-            }
+            };
 
             var removeRule = function (rcmUserHttp, ruleData, onSuccess, onFail) {
 
@@ -229,7 +229,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                     var isValid = function () {
 
                         return true;
-                    }
+                    };
 
                     $scope.addRole = function () {
 
@@ -251,7 +251,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                     controller: self.controller,
                     size: size
                 });
-            }
+            };
 
             var addRole = function (rcmUserHttp, roleData, onSuccess, onFail) {
 
@@ -267,7 +267,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                 };
 
                 rcmUserHttp.execute(config, apiSuccess, onFail);
-            }
+            };
             /* </ADD_ROLE> */
 
             /* <REMOVE_ROLE> */
@@ -310,7 +310,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                     controller: self.controller,
                     size: size
                 });
-            }
+            };
 
             var removeRole = function (rcmUserHttp, roleData, onSuccess, onFail) {
 
@@ -388,7 +388,7 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
             strb = ("" + strb).toLowerCase();
 
             return stra.indexOf(strb) !== -1;
-        }
+        };
 
         return function (input, query) {
             if (!query) {
