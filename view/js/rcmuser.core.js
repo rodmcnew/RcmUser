@@ -15,7 +15,7 @@ angular.module('rcmuserCore', [])
             user: "<?php echo $this->url('RcmUserAdminApiUser', array()); ?>",
             users: "<?php echo $this->url('RcmUserAdminApiUser', array()); ?>",
             validUserStates: "<?php echo $this->url('RcmUserAdminApiUserValidUserStates', array()); ?>"
-        }
+        };
 
         return self;
 
@@ -34,7 +34,7 @@ angular.module('rcmuserCore', [])
             self.loadingOn = function () {
 
                 self.loading++;
-            }
+            };
 
             self.loadingOff = function () {
 
@@ -42,7 +42,7 @@ angular.module('rcmuserCore', [])
 
                     self.loading--;
                 }
-            }
+            };
 
             self.execute = function (config, onSuccess, onFail) {
 
@@ -81,8 +81,14 @@ angular.module('rcmuserCore', [])
                             }
                         } else {
 
-                            $log.error('Result object not returned: ');
-                            //$log.log(data);
+                            $log.error('Result object not returned: ', data);
+                            var failResult = new RcmUserResult(
+                                0,
+                                ['Error: Invalid result returned from server.'],
+                                data
+                            );
+
+                            self.alerts.add(failResult);
                         }
 
                         if ((typeof(onSuccess) === 'function')) {
@@ -115,7 +121,7 @@ angular.module('rcmuserCore', [])
                     });
             }
 
-        }
+        };
 
         return RcmUserHttp;
 
@@ -129,7 +135,7 @@ angular.module('rcmuserCore', [])
             self.code = code;
             self.messages = messages;
             self.data = data;
-        }
+        };
 
         return RcmUserResult;
 
@@ -146,7 +152,7 @@ angular.module('rcmuserCore', [])
             self.email = null;
             self.name = null;
             self.properties = {};
-        }
+        };
 
         return RcmUser;
 
@@ -173,7 +179,7 @@ angular.module('rcmuserCore', [])
 
                 self.results = [];
             }
-        }
+        };
 
         return RcmResults;
     })
@@ -210,14 +216,14 @@ angular.module('rcmuserCore', [])
             scope.type = {
                 0: 'warning',
                 1: 'info'
-            }
+            };
 
             scope.title = {
                 0: scope.alertTitleError,
                 1: scope.alertTitleSuccess
             }
 
-        }
+        };
 
         return {
             link: thislink,

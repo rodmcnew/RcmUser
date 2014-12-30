@@ -8,7 +8,7 @@ angular.module('rcmuserAdminUserRoleApp', ['ui.bootstrap', 'rcmuserCore'])
             self.url = {
                 user: "<?php echo $this->url('RcmUserAdminApiUser', array()); ?>",
                 roles: "<?php echo $this->url('RcmUserAdminApiAclRulesByRoles', array()); ?>"
-            }
+            };
 
             self.rcmUserHttp = new RcmUserHttp();
 
