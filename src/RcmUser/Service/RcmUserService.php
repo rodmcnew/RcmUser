@@ -188,6 +188,36 @@ class RcmUserService extends \RcmUser\Event\EventProvider
     }
 
     /**
+     * getUserById
+     *
+     * @param $userId
+     *
+     * @return null|User
+     */
+    public function getUserById($userId){
+
+        $requestUser = $this->buildNewUser();
+        $requestUser->setId($userId);
+
+        return $this->getUser($requestUser);
+    }
+
+    /**
+     * getUserByUsername
+     *
+     * @param $userName
+     *
+     * @return null|User
+     */
+    public function getUserByUsername($userName){
+
+        $requestUser = $this->buildNewUser();
+        $requestUser->setUsername($userName);
+
+        return $this->getUser($requestUser);
+    }
+
+    /**
      * userExists
      * returns true if the user exists in the data source
      *
