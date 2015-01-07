@@ -238,6 +238,22 @@ class RcmUserServiceTest extends Zf2TestCase
             'Did not return instance of Result.'
         );
 
+        $result = $this->getRcmUserService()->getUserById($user->getId());
+
+        $this->assertInstanceOf(
+            '\RcmUser\User\Entity\User',
+            $result,
+            'Did not return instance of Result.'
+        );
+
+        $result = $this->getRcmUserService()->getUserByUsername($user->getUsername());
+
+        $this->assertInstanceOf(
+            '\RcmUser\User\Entity\User',
+            $result,
+            'Did not return instance of Result.'
+        );
+
         // test no not found
     }
 
