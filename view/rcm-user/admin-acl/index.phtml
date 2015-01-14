@@ -345,8 +345,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
 <div rcm-alerts rcm-results="rcmUserHttp.alerts"
      alert-title-error="'An error occured:'"
      alert-title-success="'Success:'"></div>
-
-<div class="container-fluid">
+<div class="container-fluid" ng-hide="rcmUserHttp.alerts.results.length">
 
     <accordion close-others="oneAtATime">
 
@@ -411,6 +410,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                                           tooltip-append-to-body="true"
                                           tooltip-title="{{resources[ruleData.resourceId].resource.resourceId}}"
                                           tooltip-html-unsafe="{{resources[ruleData.resourceId].resource.description}}<br/><br/>Resource: {{resources[ruleData.resourceId].resource.resourceId}}<br/>NameSpace: {{resources[ruleData.resourceId].resourceNs}}">{{resources[ruleData.resourceId].resource.name}}</span>
+                                    <span>({{resources[ruleData.resourceId].resource.resourceId}})</span>
                                 </div>
                                 <div>For privilege
                                     <span class="resource-privilege">{{(ruleData.privilege || '* (ALL)')}}</span>
