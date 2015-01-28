@@ -252,6 +252,7 @@ Requirements
 
 - php 5.5.* (not tested on lesser versions)
 - zendframework 2.2.x
+- kriswallsmith/assetic
 
 Optional based on configuration
 
@@ -259,6 +260,7 @@ Optional based on configuration
 - mysql 5.6.x (not tested on lesser versions)
 
 View dependencies
+
 - AngularJs (https://angularjs.org/)
 - Bootstrap (http://getbootstrap.com/)
 - UI Bootstrap (http://angular-ui.github.io/bootstrap/)

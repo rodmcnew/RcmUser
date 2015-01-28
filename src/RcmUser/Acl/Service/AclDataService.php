@@ -25,6 +25,7 @@ use
     RcmUser\Acl\Entity\AclRole;
 use
     RcmUser\Acl\Entity\AclRule;
+use RcmUser\Acl\Entity\NamespaceAclRole;
 use
     RcmUser\Result;
 
@@ -310,7 +311,13 @@ class AclDataService
                 $nsChar
             );
 
-            $aclRoles[$ns] = $role;
+            $nsRole = new NamespaceAclRole();
+
+            $nsRole->populate($role);
+
+            $nsRole->setNamespace($ns);
+
+            $aclRoles[$ns] = $nsRole;
         }
 
         ksort($aclRoles);

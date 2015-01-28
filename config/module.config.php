@@ -515,6 +515,7 @@ return array(
                 'paths' => array(
                     __DIR__ . '/../src/RcmUser/Acl/Entity',
                     __DIR__ . '/../src/RcmUser/User/Entity',
+                    __DIR__ . '/../src/RcmUser/Log/Entity',
                 )
             ),
             'orm_default' => array(
@@ -600,6 +601,17 @@ return array(
                     'defaults' => array(
                         'controller' => 'RcmUser\Controller\AdminCssController',
                         'action' => 'index',
+                    ),
+                ),
+            ),
+            'RcmUserCoreJs' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser/js/core.js',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminJsController',
+                        'action' => 'adminCore',
                     ),
                 ),
             ),
@@ -728,6 +740,21 @@ return array(
                     'defaults' => array(
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
+                    ),
+                ),
+            ),
+            /**
+             * RcmUserAdminRolesJs
+             * JavaScript for Role management
+             */
+            'RcmUserAdminRolesJs' => array(
+                'may_terminate' => true,
+                'type' => 'segment',
+                'options' => array(
+                    'route' => '/admin/rcmuser/js/admin-roles.js',
+                    'defaults' => array(
+                        'controller' => 'RcmUser\Controller\AdminJsController',
+                        'action' => 'adminRoles',
                     ),
                 ),
             ),

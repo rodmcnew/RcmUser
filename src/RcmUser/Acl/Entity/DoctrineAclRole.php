@@ -40,12 +40,6 @@ use
  */
 class DoctrineAclRole extends AclRole
 {
-
-    /**
-     *
-     */
-    const ROLE_ROOT_ID = 0;
-
     /**
      * @var integer
      * @ORM\Id
@@ -70,9 +64,10 @@ class DoctrineAclRole extends AclRole
     protected $description;
 
     /**
-     * @todo This can probably be made to work
+     * @todo This probably can't be made to work
      * -- Needs to accept null value if this is in the root of the tree
      * -- needs to only nest the parent, not the whole parent tree
+     * -- There is an issue with zend acl, since this in traversable, it will not work
      * ORM\ManyToOne(targetEntity="DoctrineAclRole", inversedBy="children")
      * ORM\JoinColumn(name="parentRoleId", referencedColumnName="roleId")
      *       , onDelete="SET NULL"
