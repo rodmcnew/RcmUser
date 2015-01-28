@@ -1,19 +1,19 @@
 'use strict';
 /** rcmUser from core js **/
-rcmUser.adminRoles = {};
+rcmUser.rcmUserRolesService = {};
 
-angular.module('rcmUserAdminRoles', ['rcmuserCore'])
+angular.module('rcmUserRolesService', ['rcmuserCore'])
     .factory(
-    'rcmUserAdminRolesService',
+    'rcmUserRolesService',
     [
         '$log', '$http', 'rcmUserConfig',
         function ($log, $http, rcmUserConfig) {
 
             /**
-             * RcmUserAdminRolesService
+             * RcmUserRolesService
              * @constructor
              */
-            var RcmUserAdminRolesService = function () {
+            var RcmUserRolesService = function () {
 
                 var self = this;
 
@@ -21,7 +21,7 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
                  * List of API urls
                  * @type {{roles: string}}
                  */
-                var url = rcmUserConfig.url.role;
+                self.url = rcmUserConfig.url.role;
 
                 /**
                  * Simple error tracking
@@ -46,22 +46,33 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
                     $http(
                         {
                             method: 'GET',
-                            url: url
+                            url: self.url
                         }
                     )
                         .success(
                         function (data, status, headers, config) {
-                            rcmUser.cache.roles = data.data;
-                            rcmUser.eventManager.trigger(
-                                'rcmUserAdminRolesService.requestRoles.success',
-                                rcmUser.cache.roles
-                            );
+                           self.setRoles(data.data);
                         }
                     )
                         .error(
                         function (data, status, headers, config) {
                             $log.error('An error occured while talking to the server');
                         }
+                    );
+                };
+
+                /**
+                 * Force a different list of roles into cache
+                 * Warning: Use with caution, roles list should match expected roles list
+                 *          Plus this has no protections and can be over written
+                 * @param roles
+                 */
+                self.setRoles = function(roles){
+
+                    rcmUser.cache.roles = roles;
+                    rcmUser.eventManager.trigger(
+                        'rcmUserRolesService.onSetRoles',
+                        rcmUser.cache.roles
                     );
                 };
 
@@ -105,7 +116,7 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
                     );
 
                     rcmUser.eventManager.trigger(
-                        'rcmUserAdminRolesService.setSelectedRoles',
+                        'rcmUserRolesService.onSetSelectedRoles',
                         {
                             valueNamespace: valueNamespace,
                             selectedRoles: rcmUser.cache.selectedRoles[valueNamespace]
@@ -142,11 +153,15 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
                         rcmUser.cache.selectedRoles[valueNamespace][roleId] = rcmUser.cache.roles[roleId];
 
                         rcmUser.eventManager.trigger(
-                            'rcmUserAdminRolesService.setSelectedRole',
-                            rcmUser.cache.selectedRoles[valueNamespace][roleId]
+                            'rcmUserRolesService.onSetSelectedRole',
+                            {
+                                valueNamespace: valueNamespace,
+                                selectedRoles: rcmUser.cache.selectedRoles[valueNamespace],
+                                newRole: rcmUser.cache.selectedRoles[valueNamespace][roleId]
+                            }
                         );
                     } else {
-                        // console.error('Role (' + roleId + ') not valid');
+                        $log.error('Role (' + roleId + ') not valid');
                     }
 
                 };
@@ -179,7 +194,31 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
                         return;
                     }
 
+                    /** This might be used is required in some browsers where delete does not work
+                    var selectedRoles = self.getSelectedRoles(valueNamespace);
+
+                    rcmUser.cache.selectedRoles[valueNamespace] = {};
+
+                    angular.forEach(
+                        selectedRoles,
+                        function (value, curRoleId) {
+                            if (roleId != curRoleId) {
+                                rcmUser.cache.selectedRoles[valueNamespace][curRoleId] = value;
+                            }
+                        }
+                    );
+                     **/
+
                     rcmUser.cache.selectedRoles[valueNamespace][roleId] = null;
+                    delete rcmUser.cache.selectedRoles[valueNamespace][roleId];
+
+                    rcmUser.eventManager.trigger(
+                        'rcmUserRolesService.onRemoveSelectedRole',
+                        {
+                            valueNamespace: valueNamespace,
+                            selectedRoles: rcmUser.cache.selectedRoles[valueNamespace]
+                        }
+                    );
                 };
 
 
@@ -190,6 +229,7 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
                  * @returns {*}
                  */
                 self.hasSelectedRole = function (valueNamespace, roleId) {
+
                     var role = self.getSelectedRole(valueNamespace, roleId);
 
                     return (role);
@@ -210,6 +250,7 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
                         function (value, roleId) {
                             if (value) {
                                 hasSelectedRoles = true;
+                                return false;
                             }
                         }
                     );
@@ -225,11 +266,36 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
 
                     rcmUser.cache.selectedRoles[valueNamespace] = null;
                 };
+
+                /**
+                 * Check if a role registry has all roles
+                 * @param roles
+                 * @returns {boolean}
+                 */
+                self.hasAllRoles = function (checkRoles){
+
+                    var hasAllRoles = null;
+
+                    var roles = self.getRoles();
+
+                    angular.forEach(
+                        roles,
+                        function (value, roleId) {
+                            if (!checkRoles[roleId]) {
+
+                                hasAllRoles = false;
+                                return false;
+                            }
+                        }
+                    );
+
+                    return hasAllRoles;
+                }
             };
 
-            var rcmUserAdminRolesService = new RcmUserAdminRolesService();
+            var rcmUserRolesService = new RcmUserRolesService();
 
-            return rcmUserAdminRolesService;
+            return rcmUserRolesService;
         }
     ]
 );
@@ -239,12 +305,12 @@ angular.module('rcmUserAdminRoles', ['rcmuserCore'])
  * - This is to support jQuery and native JavaScript modules and code
  * Angular injector to get Module services
  */
-angular.injector(['ng', 'rcmUserAdminRoles']).invoke(
+angular.injector(['ng', 'rcmUserRolesService']).invoke(
     [
-        'rcmUserAdminRolesService',
-        function (rcmUserAdminRolesService) {
+        'rcmUserRolesService',
+        function (rcmUserRolesService) {
 
-            rcmUser.adminRoles.adminRolesService = rcmUserAdminRolesService;
+            rcmUser.rcmUserRolesService.service = rcmUserRolesService;
         }
     ]
 );

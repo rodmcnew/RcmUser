@@ -156,24 +156,4 @@ class AdminJsController extends AbstractAdminController
             'js/rcmuser.admin.user.role.app.js'
         );
     }
-
-    /**
-     * adminRolesAction
-     *
-     * @return mixed|ViewModel
-     */
-    public function adminRolesAction()
-    {
-        // ACCESS CHECK
-        if (!$this->isAllowed(
-            RcmUserAclResourceProvider::RESOURCE_ID_USER,
-            'read'
-        )) {
-            return $this->getNotAllowedResponse();
-        }
-
-        return $this->getJsView(
-            'js/rcmuser.admin.roles.js'
-        );
-    }
 }

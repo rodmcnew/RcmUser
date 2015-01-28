@@ -533,8 +533,6 @@ return array(
             // ADMIN GENERAL
             'RcmUser\Controller\AdminJsController' =>
                 'RcmUser\Controller\AdminJsController',
-            'RcmUser\Controller\AdminCssController' =>
-                'RcmUser\Controller\AdminCssController',
             // ADMIN ACL
             'RcmUser\Controller\AdminAclController' =>
                 'RcmUser\Controller\AdminAclController',
@@ -593,17 +591,6 @@ return array(
              *
              * @view CSS
              */
-            'RcmUserAdminCss' => array(
-                'may_terminate' => true,
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/admin/rcmuser/css/admin.css',
-                    'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminCssController',
-                        'action' => 'index',
-                    ),
-                ),
-            ),
             'RcmUserCoreJs' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
@@ -740,21 +727,6 @@ return array(
                     'defaults' => array(
                         'controller' =>
                             'RcmUser\Controller\AdminApiAclDefaultUserRoleController',
-                    ),
-                ),
-            ),
-            /**
-             * RcmUserAdminRolesJs
-             * JavaScript for Role management
-             */
-            'RcmUserAdminRolesJs' => array(
-                'may_terminate' => true,
-                'type' => 'segment',
-                'options' => array(
-                    'route' => '/admin/rcmuser/js/admin-roles.js',
-                    'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminJsController',
-                        'action' => 'adminRoles',
                     ),
                 ),
             ),
@@ -917,4 +889,22 @@ return array(
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserGetCurrentUser',
         ),
     ),
+
+    /**
+     * Config for allowing dynamic loading of public assets
+     */
+    'asset_manager' => [
+        'resolver_configs' => [
+            'aliases' => [
+                'modules/rcm-user/' => __DIR__ . '/../public/',
+            ],
+            // @todo implement this
+            //'collections' => [
+            //    '/modules/rcm-user/rcm-user.js' => [
+            //    ],
+            //    '/modules/admin/rcm-user/rcm-user.js' => [
+            //    ],
+            //],
+        ],
+    ],
 );

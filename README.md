@@ -252,7 +252,7 @@ Requirements
 
 - php 5.5.* (not tested on lesser versions)
 - zendframework 2.2.x
-- kriswallsmith/assetic
+- rwoverdijk/assetmanager 1.*
 
 Optional based on configuration
 
