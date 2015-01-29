@@ -34,18 +34,25 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                 scope.valueNamespace = attrs.rcmUserRoleSelector;
 
                 /**
-                 * From attribute rcm-user-role-selector-id-property="namespace"
+                 * From attribute rcm-user-role-selector-id-property="roleId"
                  * Used to find the id of the object that relates to the index of the object in the list
                  * @type {string}
                  */
-                scope.idProperty = "namespace";
+                scope.idProperty = "roleId";
 
                 /**
-                 * From attribute rcm-user-role-selector-title-property="name"
+                 * From attribute rcm-user-role-selector-title-property="roleId"
                  * Used to find the title property of the source object
                  * @type {string}
                  */
                 scope.titleProperty = "roleId";
+
+                /**
+                 * From attribute rcm-user-role-selector-namespace-property="namespace"
+                 * Used to find the namespace property of the source object
+                 * @type {string}
+                 */
+                scope.namespaceProperty = "namespace";
 
                 /**
                  * From attribute rcm-user-role-selector-nesting-string="-"
@@ -114,24 +121,28 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                         $log.error("Attribute rcm-user-role-selector requires a value. It will be the unique name used to store cached selected roles.");
                     }
 
-                    if (typeof attrs.rcmUserRoleSelectorIdProperty === 'string') {
+                    if (typeof attrs.rcmUserRoleSelectorIdProperty === 'string' && attrs.rcmUserRoleSelectorIdProperty != '') {
                         scope.idProperty = attrs.rcmUserRoleSelectorIdProperty;
                     }
 
-                    if (typeof attrs.rcmUserRoleSelectorTitleProperty === 'string') {
+                    if (typeof attrs.rcmUserRoleSelectorTitleProperty === 'string' && attrs.rcmUserRoleSelectorTitleProperty != '') {
                         scope.titleProperty = attrs.rcmUserRoleSelectorTitleProperty;
+                    }
+
+                    if (typeof attrs.rcmUserRoleSelectorNamespaceProperty === 'string' && attrs.rcmUserRoleSelectorNamespaceProperty != '') {
+                        scope.namespaceProperty = attrs.rcmUserRoleSelectorNamespaceProperty;
                     }
 
                     if (typeof attrs.rcmUserRoleSelectorShowNesting === 'string') {
                         self.nestingString = attrs.rcmUserRoleSelectorShowNesting
                     }
 
-                    if (typeof attrs.rcmUserRoleSelectorSave === 'string') {
+                    if (typeof attrs.rcmUserRoleSelectorSave === 'string' && attrs.rcmUserRoleSelectorSave != '') {
 
                         self.injectedSave = $parse(attrs.rcmUserRoleSelectorSave);
                     }
 
-                    if (typeof attrs.rcmUserRoleSelectorSaveLabel === 'string') {
+                    if (typeof attrs.rcmUserRoleSelectorSaveLabel === 'string' && attrs.rcmUserRoleSelectorSaveLabel != '') {
 
                         scope.saveLabel = attrs.rcmUserRoleSelectorSaveLabel;
                         scope.hideSave = false;
@@ -224,14 +235,14 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                 };
 
                 scope.mySave = function () {
-                    $log.log('Test Save');
+                    $log.log('Test Save', 'Selected Roles:', scope.selectedRoles, 'Selected Roles Strings: ', selectedRolesStrings);
                 };
 
                 scope.getNestingString = function (model) {
 
                     if (self.nestingString) {
                         return getNamespaceRepeatString(
-                            model.namespace,
+                            model[scope.namespaceProperty],
                             self.nestingString,
                             '.'
                         )

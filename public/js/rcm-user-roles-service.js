@@ -30,6 +30,12 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                 self.errors = {};
 
                 /**
+                 *
+                 * @type {string}
+                 */
+                self.indexProperty = 'roleId';
+
+                /**
                  * requestRoles
                  * @param onSuccess
                  * @param onError
@@ -42,7 +48,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                     rcmUser.cache.roleRequested = true;
 
-                    // @todo use the Rcm User version to get
+                    // @todo use the Rcm User http version to get
                     $http(
                         {
                             method: 'GET',
@@ -51,7 +57,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                     )
                         .success(
                         function (data, status, headers, config) {
-                           self.setRoles(data.data);
+                            self.setRoles(data.data);
                         }
                     )
                         .error(
@@ -62,17 +68,48 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                 };
 
                 /**
+                 * indexRoles - hold a lookup of roles
+                 * @param onComplete
+                 */
+                self.indexRoles = function (onComplete) {
+
+                    rcmUser.cache.rolesIndex = {};
+
+                    angular.forEach(
+                        rcmUser.cache.roles,
+                        function (role, index) {
+                            rcmUser.cache.rolesIndex[role[self.indexProperty]] = index;
+                        }
+                    );
+
+                    onComplete();
+                };
+
+                /**
+                 * getIndexRoles
+                 * @returns {rcmUser.cache.rolesIndex|*}
+                 */
+                self.getIndexRoles = function () {
+                    return rcmUser.cache.rolesIndex;
+                };
+
+                /**
                  * Force a different list of roles into cache
                  * Warning: Use with caution, roles list should match expected roles list
                  *          Plus this has no protections and can be over written
                  * @param roles
                  */
-                self.setRoles = function(roles){
+                self.setRoles = function (roles) {
 
                     rcmUser.cache.roles = roles;
-                    rcmUser.eventManager.trigger(
-                        'rcmUserRolesService.onSetRoles',
-                        rcmUser.cache.roles
+
+                    self.indexRoles(
+                        function () {
+                            rcmUser.eventManager.trigger(
+                                'rcmUserRolesService.onSetRoles',
+                                rcmUser.cache.roles
+                            );
+                        }
                     );
                 };
 
@@ -86,12 +123,12 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                 /**
                  * getRole from the list of roles
-                 * @param roleId
+                 * @param index
                  */
-                self.getRole = function (roleId) {
+                self.getRole = function (index) {
 
-                    if (rcmUser.cache.roles[roleId]) {
-                        return rcmUser.cache.roles[roleId];
+                    if (rcmUser.cache.rolesIndex[index]) {
+                        return rcmUser.cache.roles[rcmUser.cache.rolesIndex[index]];
                     }
 
                     return null;
@@ -107,10 +144,10 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                     angular.forEach(
                         roles,
-                        function (value, roleId) {
+                        function (value, index) {
                             self.setSelectedRole(
                                 valueNamespace,
-                                roleId
+                                index
                             );
                         }
                     );
@@ -138,30 +175,49 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                 };
 
                 /**
+                 * getSelectedRolesText
+                 * @param valueNamespace
+                 */
+                self.getSelectedRolesStrings = function (valueNamespace) {
+
+                    var selectedRoles = self.getSelectedRoles();
+
+                    var selectedRolesStrings = {};
+                    angular.forEach(
+                        selectedRoles,
+                        function (value, index) {
+                            selectedRolesStrings[index] = index;
+                        }
+                    );
+
+                    return selectedRolesStrings;
+                };
+
+                /**
                  * setSelectedRole
                  * @param valueNamespace
-                 * @param roleId
+                 * @param index
                  */
-                self.setSelectedRole = function (valueNamespace, roleId) {
+                self.setSelectedRole = function (valueNamespace, index) {
 
                     if (!rcmUser.cache.selectedRoles[valueNamespace]) {
                         rcmUser.cache.selectedRoles[valueNamespace] = {};
                     }
 
-                    if (rcmUser.cache.roles[roleId]) {
+                    if (rcmUser.cache.rolesIndex[index]) {
 
-                        rcmUser.cache.selectedRoles[valueNamespace][roleId] = rcmUser.cache.roles[roleId];
+                        rcmUser.cache.selectedRoles[valueNamespace][index] = rcmUser.cache.roles[rcmUser.cache.rolesIndex[index]];
 
                         rcmUser.eventManager.trigger(
                             'rcmUserRolesService.onSetSelectedRole',
                             {
                                 valueNamespace: valueNamespace,
                                 selectedRoles: rcmUser.cache.selectedRoles[valueNamespace],
-                                newRole: rcmUser.cache.selectedRoles[valueNamespace][roleId]
+                                newRole: rcmUser.cache.selectedRoles[valueNamespace][index]
                             }
                         );
                     } else {
-                        $log.error('Role (' + roleId + ') not valid');
+                        $log.error('Role (' + index + ') not valid');
                     }
 
                 };
@@ -169,15 +225,15 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                 /**
                  * getSelectedRole
                  * @param valueNamespace
-                 * @param roleId
+                 * @param index
                  * @returns {*}
                  */
-                self.getSelectedRole = function (valueNamespace, roleId) {
+                self.getSelectedRole = function (valueNamespace, index) {
 
                     var selectedRoles = self.getSelectedRoles(valueNamespace);
 
-                    if (selectedRoles[roleId]) {
-                        return selectedRoles[roleId];
+                    if (selectedRoles[index]) {
+                        return selectedRoles[index];
                     }
 
                     return null;
@@ -186,31 +242,31 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                 /**
                  * removeSelectedRole
                  * @param valueNamespace
-                 * @param roleId
+                 * @param index
                  */
-                self.removeSelectedRole = function (valueNamespace, roleId) {
+                self.removeSelectedRole = function (valueNamespace, index) {
 
                     if (!rcmUser.cache.selectedRoles[valueNamespace]) {
                         return;
                     }
 
                     /** This might be used is required in some browsers where delete does not work
-                    var selectedRoles = self.getSelectedRoles(valueNamespace);
+                     var selectedRoles = self.getSelectedRoles(valueNamespace);
 
-                    rcmUser.cache.selectedRoles[valueNamespace] = {};
+                     rcmUser.cache.selectedRoles[valueNamespace] = {};
 
-                    angular.forEach(
-                        selectedRoles,
-                        function (value, curRoleId) {
-                            if (roleId != curRoleId) {
-                                rcmUser.cache.selectedRoles[valueNamespace][curRoleId] = value;
+                     angular.forEach(
+                     selectedRoles,
+                     function (value, curIndex) {
+                            if (index != curIndex) {
+                                rcmUser.cache.selectedRoles[valueNamespace][curIndex] = value;
                             }
                         }
-                    );
+                     );
                      **/
 
-                    rcmUser.cache.selectedRoles[valueNamespace][roleId] = null;
-                    delete rcmUser.cache.selectedRoles[valueNamespace][roleId];
+                    rcmUser.cache.selectedRoles[valueNamespace][index] = null;
+                    delete rcmUser.cache.selectedRoles[valueNamespace][index];
 
                     rcmUser.eventManager.trigger(
                         'rcmUserRolesService.onRemoveSelectedRole',
@@ -225,12 +281,12 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                 /**
                  *
                  * @param valueNamespace
-                 * @param roleId
+                 * @param index
                  * @returns {*}
                  */
-                self.hasSelectedRole = function (valueNamespace, roleId) {
+                self.hasSelectedRole = function (valueNamespace, index) {
 
-                    var role = self.getSelectedRole(valueNamespace, roleId);
+                    var role = self.getSelectedRole(valueNamespace, index);
 
                     return (role);
                 };
@@ -247,7 +303,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                     angular.forEach(
                         selectedRoles,
-                        function (value, roleId) {
+                        function (value, index) {
                             if (value) {
                                 hasSelectedRoles = true;
                                 return false;
@@ -272,16 +328,16 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                  * @param roles
                  * @returns {boolean}
                  */
-                self.hasAllRoles = function (checkRoles){
+                self.hasAllRoles = function (checkRoles) {
 
                     var hasAllRoles = null;
 
-                    var roles = self.getRoles();
+                    var roles = self.getIndexRoles();
 
                     angular.forEach(
                         roles,
-                        function (value, roleId) {
-                            if (!checkRoles[roleId]) {
+                        function (value, index) {
+                            if (!checkRoles[index]) {
 
                                 hasAllRoles = false;
                                 return false;

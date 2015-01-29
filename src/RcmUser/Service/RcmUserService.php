@@ -17,20 +17,13 @@
 
 namespace RcmUser\Service;
 
-use
-    RcmUser\Acl\Service\AuthorizeService;
-use
-    RcmUser\Authentication\Service\UserAuthenticationService;
-use
-    RcmUser\Exception\RcmUserException;
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Result;
-use
-    RcmUser\User\Service\UserDataService;
-use
-    RcmUser\User\Service\UserPropertyService;
+use RcmUser\Acl\Service\AuthorizeService;
+use RcmUser\Authentication\Service\UserAuthenticationService;
+use RcmUser\Exception\RcmUserException;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
+use RcmUser\User\Service\UserDataService;
+use RcmUser\User\Service\UserPropertyService;
 
 //use ZfcUser\Service\User;
 

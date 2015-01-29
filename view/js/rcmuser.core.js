@@ -28,6 +28,7 @@ rcmUser.cache = {
     },
     roleRequested: false,
     roles: {},
+    rolesIndex: {},
     selectedRoles: {}
 };
 
