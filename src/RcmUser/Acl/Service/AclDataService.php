@@ -167,6 +167,16 @@ class AclDataService
     }
 
     /**
+     * getAllRoles
+     *
+     * @return Result
+     */
+    public function getRoleLineage($roleId)
+    {
+        return $this->aclRoleDataMapper->fetchRoleLineage($roleId);
+    }
+
+    /**
      * getRoleByRoleId
      *
      * @param string $roleId roleId
@@ -272,17 +282,16 @@ class AclDataService
         $roles = $this->getNamespacedRoles(
             $nsChar,
             $refresh
-        );
+        )->getData();
 
-        foreach ($roles as $ns => $role) {
+        $index = 0;
+        foreach ($roles as $ns => $nsRole) {
 
-            $id = $role->getRoleId();
-            $aclRoles[$id] = array();
-            $aclRoles[$id]['role'] = $role;
-            $aclRoles[$id]['roleNs'] = $ns;
+            $aclRoles[$index] = $nsRole;
+            $index ++;
         }
 
-        return $aclRoles;
+        return new Result($aclRoles, Result::CODE_SUCCESS);
     }
 
     /**
