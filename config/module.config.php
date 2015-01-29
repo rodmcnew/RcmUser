@@ -515,6 +515,7 @@ return array(
                 'paths' => array(
                     __DIR__ . '/../src/RcmUser/Acl/Entity',
                     __DIR__ . '/../src/RcmUser/User/Entity',
+                    __DIR__ . '/../src/RcmUser/Log/Entity',
                 )
             ),
             'orm_default' => array(
@@ -532,8 +533,6 @@ return array(
             // ADMIN GENERAL
             'RcmUser\Controller\AdminJsController' =>
                 'RcmUser\Controller\AdminJsController',
-            'RcmUser\Controller\AdminCssController' =>
-                'RcmUser\Controller\AdminCssController',
             // ADMIN ACL
             'RcmUser\Controller\AdminAclController' =>
                 'RcmUser\Controller\AdminAclController',
@@ -592,14 +591,14 @@ return array(
              *
              * @view CSS
              */
-            'RcmUserAdminCss' => array(
+            'RcmUserCoreJs' => array(
                 'may_terminate' => true,
                 'type' => 'segment',
                 'options' => array(
-                    'route' => '/admin/rcmuser/css/admin.css',
+                    'route' => '/admin/rcmuser/js/core.js',
                     'defaults' => array(
-                        'controller' => 'RcmUser\Controller\AdminCssController',
-                        'action' => 'index',
+                        'controller' => 'RcmUser\Controller\AdminJsController',
+                        'action' => 'adminCore',
                     ),
                 ),
             ),
@@ -890,4 +889,22 @@ return array(
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserGetCurrentUser',
         ),
     ),
+
+    /**
+     * Config for allowing dynamic loading of public assets
+     */
+    'asset_manager' => [
+        'resolver_configs' => [
+            'aliases' => [
+                'modules/rcm-user/' => __DIR__ . '/../public/',
+            ],
+            // @todo implement this
+            //'collections' => [
+            //    '/modules/rcm-user/rcm-user.js' => [
+            //    ],
+            //    '/modules/admin/rcm-user/rcm-user.js' => [
+            //    ],
+            //],
+        ],
+    ],
 );

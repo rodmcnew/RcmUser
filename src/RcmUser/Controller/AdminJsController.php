@@ -17,14 +17,10 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
-use
-    RcmUser\User\Entity\UserRoleProperty;
-use
-    Zend\Http\Response;
-use
-    Zend\View\Model\ViewModel;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use RcmUser\User\Entity\UserRoleProperty;
+use Zend\Http\Response;
+use Zend\View\Model\ViewModel;
 
 /**
  * Class AdminJsController
@@ -43,10 +39,50 @@ use
  */
 class AdminJsController extends AbstractAdminController
 {
+
     /**
-     * adminAclApp
+     * getJsView
      *
-     * @return void
+     * @param string $template
+     * @param array  $variables
+     *
+     * @return ViewModel
+     */
+    protected function getJsView($template, $variables = array())
+    {
+        $viewModel = new ViewModel($variables);
+
+        $viewModel->setTemplate($template);
+        $viewModel->setTerminal(true);
+
+        $response = $this->getResponse();
+        $response->setStatusCode(Response::STATUS_CODE_200);
+        $response->getHeaders()->addHeaders(
+            array(
+                'Content-Type' => 'application/javascript'
+            )
+        );
+
+        return $viewModel;
+    }
+
+    /**
+     * adminCoreAction
+     *
+     * @return ViewModel
+     */
+    public function adminCoreAction()
+    {
+        // @todo ACCESS CHECK?
+        // This is a shared service, so what level access should we require?
+
+        return $this->getJsView('js/rcmuser.core.js');
+    }
+
+    /**
+     * adminAclAction
+     *
+     * @return ViewModel
      */
     public function adminAclAction()
     {
@@ -54,8 +90,7 @@ class AdminJsController extends AbstractAdminController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_ACL,
             'read'
-        )
-        ) {
+        )) {
             return $this->getNotAllowedResponse();
         }
 
@@ -67,28 +102,20 @@ class AdminJsController extends AbstractAdminController
         $superAdminRoleId = $aclDataService->getSuperAdminRoleId()->getData();
         $guestRoleId = $aclDataService->getGuestRoleId()->getData();
 
-        $viewModel = new ViewModel(array(
-            'superAdminRoleId' => $superAdminRoleId,
-            'guestRoleId' => $guestRoleId,
-        ));
-        $viewModel->setTemplate('js/rcmuser.admin.acl.app.js');
-        $viewModel->setTerminal(true);
 
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_200);
-        $response->getHeaders()->addHeaders(
+        return $this->getJsView(
+            'js/rcmuser.admin.acl.app.js',
             array(
-                'Content-Type' => 'application/javascript'
+                'superAdminRoleId' => $superAdminRoleId,
+                'guestRoleId' => $guestRoleId,
             )
         );
-
-        return $viewModel;
     }
 
     /**
      * adminUsersAction
      *
-     * @return void
+     * @return mixed|ViewModel
      */
     public function adminUsersAction()
     {
@@ -96,45 +123,24 @@ class AdminJsController extends AbstractAdminController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )
-        ) {
+        )) {
             return $this->getNotAllowedResponse();
         }
 
-        /** @var \RcmUser\User\Service\UserDataService $userDataService */
-        $userDataService = $this->getServiceLocator()->get(
-            'RcmUser\User\Service\UserDataService'
-        );
-
-        /** @var \RcmUser\Acl\Service\AclDataService $aclDataService */
-        $aclDataService = $this->getServiceLocator()->get(
-            'RcmUser\Acl\AclDataService'
-        );
-
         $rolePropertyId = UserRoleProperty::PROPERTY_KEY;
 
-        $viewModel = new ViewModel(array(
-            'rolePropertyId' => $rolePropertyId,
-        ));
-
-        $viewModel->setTemplate('js/rcmuser.admin.users.app.js');
-        $viewModel->setTerminal(true);
-
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_200);
-        $response->getHeaders()->addHeaders(
+        return $this->getJsView(
+            'js/rcmuser.admin.users.app.js',
             array(
-                'Content-Type' => 'application/javascript'
+                'rolePropertyId' => $rolePropertyId,
             )
         );
-
-        return $viewModel;
     }
 
     /**
-     * adminUsersAction
+     * adminUserRolesAction
      *
-     * @return void
+     * @return mixed|ViewModel
      */
     public function adminUserRolesAction()
     {
@@ -142,24 +148,12 @@ class AdminJsController extends AbstractAdminController
         if (!$this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
-        )
-        ) {
+        )) {
             return $this->getNotAllowedResponse();
         }
 
-        $viewModel = new ViewModel(array());
-
-        $viewModel->setTemplate('js/rcmuser.admin.user.role.app.js');
-        $viewModel->setTerminal(true);
-
-        $response = $this->getResponse();
-        $response->setStatusCode(Response::STATUS_CODE_200);
-        $response->getHeaders()->addHeaders(
-            array(
-                'Content-Type' => 'application/javascript'
-            )
+        return $this->getJsView(
+            'js/rcmuser.admin.user.role.app.js'
         );
-
-        return $viewModel;
     }
 }

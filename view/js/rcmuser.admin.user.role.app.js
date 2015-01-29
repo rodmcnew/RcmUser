@@ -1,4 +1,4 @@
-// rcmuserCore include <?php echo "\n"; include(__DIR__ . '/rcmuser.core.js'); ?>
+'use strict';
 
 angular.module('rcmuserAdminUserRoleApp', ['ui.bootstrap', 'rcmuserCore'])
 
