@@ -163,7 +163,7 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                     scope.roles = rcmUserRolesService.getRoles();
 
                     rcmUser.eventManager.on(
-                        'rcmUserRolesService.onSetRoles',
+                        'rcmUserRolesService.onRolesReady',
                         function (roles) {
                             scope.loading = false;
                             scope.roles = roles;

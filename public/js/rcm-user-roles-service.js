@@ -109,7 +109,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                         rcmUser.cache.roles
                     );
 
-                    onComplete();
+                    //onComplete();
                 };
 
                 /**
@@ -148,14 +148,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                     rcmUser.cache.roleState = 'SetRoles';
 
-                    self.indexRoles(
-                        function () {
-                            rcmUser.eventManager.trigger(
-                                'rcmUserRolesService.onSetRoles',
-                                rcmUser.cache.roles
-                            );
-                        }
-                    );
+                    self.indexRoles();
                 };
 
                 /**
