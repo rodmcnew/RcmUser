@@ -169,7 +169,7 @@ class AclDataService
     /**
      * getAllRoles
      *
-     * @return Result
+     * @return Result containing array of AcLRoles
      */
     public function getRoleLineage($roleId)
     {

@@ -160,7 +160,7 @@ interface AclRoleDataMapperInterface
      *
      *    -- success
      *    array (
-     *    *    0 =>  RcmUser\Acl\Entity\AclRole
+     *    *    '{roleId}' =>  RcmUser\Acl\Entity\AclRole
      *    );
      *
      *    -- fail
@@ -168,7 +168,7 @@ interface AclRoleDataMapperInterface
      *
      * @param string $roleId roleId
      *
-     * @return Result
+     * @return Result Containing array of AclRoles indexed by roleId
      */
     public function fetchRoleLineage($roleId);
 

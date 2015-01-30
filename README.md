@@ -165,7 +165,7 @@ RcmUserService is a high level service/facade that exposes many useful methods f
  - Get the current User (logged in User) from Auth'd session or returns $default is there is no User Auth'd
  - $default = {return this value if no User is auth'd}
 
-##### Access Control Methods #####
+##### Access Control Methods ACL (Access Control Layer) Based #####
 
 - isAllowed($resourceId, $privilege = null, $providerId = null)
  - Check if the current Auth'd User has access to a resource with a privilege provided by provider id.
@@ -181,6 +181,16 @@ RcmUserService is a high level service/facade that exposes many useful methods f
  - $privilege = {a privilege of the resource to check access against for this User},
  - $providerId = {unique identifier of the provider of the resource and privilege definition}
  - $user = {request user object}
+ 
+##### Access Control Methods RBA (Role Based Access) #####
+
+- hasRoleBasedAccess($roleId)
+ - Check if the current Auth'd User has the requested role or the role exists in the role lineage
+ - Returns Bool
+ 
+- hasUserRoleBasedAccess($user, $roleId)
+ - Check if the requested User has the requested role or the role exists in the role lineage
+ - Returns Bool
 
 ##### Utility Methods #####
 
