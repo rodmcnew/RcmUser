@@ -18,6 +18,16 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                 var self = this;
 
                 /**
+                 *
+                 * @type {{Initial: number, SetRoles: number, RolesReady: number}}
+                 */
+                var roleStateMap = {
+                    'Initial': 0,
+                    'SetRoles': 1,
+                    'RolesReady': 2
+                };
+
+                /**
                  * List of API urls
                  * @type {{roles: string}}
                  */
@@ -37,16 +47,26 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                 /**
                  * requestRoles
-                 * @param onSuccess
-                 * @param onError
                  */
                 self.requestRoles = function () {
 
-                    if (rcmUser.cache.roleRequested) {
+                    // Only request roles once
+                    if (roleStateMap[rcmUser.cache.roleState] > roleStateMap['Initial']) {
+                        $log.warn('rcmUserRolesService.requestRoles called more than once.');
+                        // we trigger this, someone needs it, but roles should already be set
+                        setTimeout(
+                            function() {
+                                rcmUser.eventManager.trigger(
+                                    'rcmUserRolesService.on' + rcmUser.cache.roleState,
+                                    rcmUser.cache.roles
+                                );
+                            },
+                            0
+                        );
                         return;
                     }
 
-                    rcmUser.cache.roleRequested = true;
+                    rcmUser.cache.roleState = 'RequestRoles';
 
                     // @todo use the Rcm User http version to get
                     $http(
@@ -82,7 +102,14 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                         }
                     );
 
-                    onComplete();
+                    rcmUser.cache.roleState = 'RolesReady';
+
+                    rcmUser.eventManager.trigger(
+                        'rcmUserRolesService.onRolesReady',
+                        rcmUser.cache.roles
+                    );
+
+                    //onComplete();
                 };
 
                 /**
@@ -101,16 +128,27 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                  */
                 self.setRoles = function (roles) {
 
+                    // Only set roles once
+                    if(roleStateMap[rcmUser.cache.roleState] > roleStateMap['SetRoles']){
+                        // we trigger this, someone needs it, but roles should already be set
+                        setTimeout(
+                            function() {
+                                rcmUser.eventManager.trigger(
+                                    'rcmUserRolesService.on' + rcmUser.cache.roleState,
+                                    rcmUser.cache.roles
+                                );
+                            },
+                            0
+                        );
+                        $log.warn('rcmUserRolesService.setRoles called more than once.');
+                        return;
+                    }
+
                     rcmUser.cache.roles = roles;
 
-                    self.indexRoles(
-                        function () {
-                            rcmUser.eventManager.trigger(
-                                'rcmUserRolesService.onSetRoles',
-                                rcmUser.cache.roles
-                            );
-                        }
-                    );
+                    rcmUser.cache.roleState = 'SetRoles';
+
+                    self.indexRoles();
                 };
 
                 /**
@@ -141,13 +179,13 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                  * @param roles
                  */
                 self.setSelectedRoles = function (valueNamespace, roles) {
-
                     angular.forEach(
                         roles,
                         function (value, index) {
                             self.setSelectedRole(
                                 valueNamespace,
-                                index
+                                index,
+                                value
                             );
                         }
                     );
@@ -180,7 +218,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                  */
                 self.getSelectedRolesStrings = function (valueNamespace) {
 
-                    var selectedRoles = self.getSelectedRoles();
+                    var selectedRoles = self.getSelectedRoles(valueNamespace);
 
                     var selectedRolesStrings = {};
                     angular.forEach(
@@ -197,28 +235,25 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                  * setSelectedRole
                  * @param valueNamespace
                  * @param index
+                 * @param value
                  */
-                self.setSelectedRole = function (valueNamespace, index) {
+                self.setSelectedRole = function (valueNamespace, index, value) {
 
                     if (!rcmUser.cache.selectedRoles[valueNamespace]) {
                         rcmUser.cache.selectedRoles[valueNamespace] = {};
                     }
 
-                    if (rcmUser.cache.rolesIndex[index]) {
+                    rcmUser.cache.selectedRoles[valueNamespace][index] = value; //rcmUser.cache.roles[rcmUser.cache.rolesIndex[index]];
 
-                        rcmUser.cache.selectedRoles[valueNamespace][index] = rcmUser.cache.roles[rcmUser.cache.rolesIndex[index]];
+                    rcmUser.eventManager.trigger(
+                        'rcmUserRolesService.onSetSelectedRole',
+                        {
+                            valueNamespace: valueNamespace,
+                            selectedRoles: rcmUser.cache.selectedRoles[valueNamespace],
+                            newRole: rcmUser.cache.selectedRoles[valueNamespace][index]
+                        }
+                    );
 
-                        rcmUser.eventManager.trigger(
-                            'rcmUserRolesService.onSetSelectedRole',
-                            {
-                                valueNamespace: valueNamespace,
-                                selectedRoles: rcmUser.cache.selectedRoles[valueNamespace],
-                                newRole: rcmUser.cache.selectedRoles[valueNamespace][index]
-                            }
-                        );
-                    } else {
-                        $log.error('Role (' + index + ') not valid');
-                    }
 
                 };
 
@@ -325,7 +360,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                 /**
                  * Check if a role registry has all roles
-                 * @param roles
+                 * @param checkRoles
                  * @returns {boolean}
                  */
                 self.hasAllRoles = function (checkRoles) {
