@@ -156,6 +156,23 @@ interface AclRoleDataMapperInterface
     public function fetchByParentRoleId($parentRoleId);
 
     /**
+     * fetchRoleLineage - Get an array of my role and all parent in order of tree
+     *
+     *    -- success
+     *    array (
+     *    *    0 =>  RcmUser\Acl\Entity\AclRole
+     *    );
+     *
+     *    -- fail
+     *    array()
+     *
+     * @param string $roleId roleId
+     *
+     * @return Result
+     */
+    public function fetchRoleLineage($roleId);
+
+    /**
      * create
      * RETURN DATA FORMAT:
      *

@@ -13,13 +13,13 @@
     "homepage": "https://github.com/reliv/RcmUser",
     "authors": [
         {
-            "name": "Westin Shafer",
-            "email": "wshafer@relivinc.com",
+            "name": "James Jervis",
+            "email": "jjervis@relivinc.com",
             "homepage": "https://github.com/reliv"
         },
         {
-            "name": "James Jervis",
-            "email": "jjervis@relivinc.com",
+            "name": "Westin Shafer",
+            "email": "wshafer@relivinc.com",
             "homepage": "https://github.com/reliv"
         },
         {
@@ -34,7 +34,8 @@
         }
     ],
     "require": {
-        "php": ">=5.3.3"
+        "php": ">=5.3.3",
+        "rwoverdijk/assetmanager": "1.*"
     },
     "autoload": {
         "psr-0": {

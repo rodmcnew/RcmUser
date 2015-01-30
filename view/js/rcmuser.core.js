@@ -1,8 +1,83 @@
 'use strict';
 
+var rcmUser = {};
+
+rcmUser.core = {};
+
+/**
+ * Global cache
+ * @type {{empty: Function, getCache: Function, roles: {}, selectedRoles: {}}}
+ */
+rcmUser.cache = {
+    empty: function (cacheKey) {
+        var key;
+        for (key in rcmUser.cache[cacheKey]) {
+            if (rcmUser.cache[cacheKey].hasOwnProperty(key)) {
+                return false;
+            }
+        }
+        return true;
+    },
+    getCache: function (cacheKey) {
+
+        if (rcmUser.cache[cacheKey]) {
+            return rcmUser.cache[cacheKey];
+        }
+
+        return {};
+    },
+    rolesState: 'Initial',
+    roles: null,
+    rolesIndex: null,
+    selectedRoles: {}
+};
+
+/**
+ * Global Event Manager
+ * @type {{events: {}, on: Function, trigger: Function}}
+ */
+rcmUser.eventManager = {
+
+    events: {},
+
+    on: function (event, method) {
+
+        if (!this.events[event]) {
+            this.events[event] = [];
+        }
+
+        this.events[event].push(method);
+    },
+
+    trigger: function (event, args) {
+
+        if (this.events[event]) {
+            jQuery.each(
+                this.events[event],
+                function (index, value) {
+                    value(args);
+                }
+            );
+        }
+    },
+    hasEvents: function (event) {
+
+        if (!this.events[event]) {
+            return false;
+        }
+
+        if (this.events[event].length > 0) {
+            return true;
+        }
+
+        return false;
+    }
+};
+
 angular.module('rcmuserCore', [])
 
-    .factory('rcmUserConfig', function () {
+    .factory(
+    'rcmUserConfig', function () {
 
         var self = this;
 
@@ -19,114 +94,127 @@ angular.module('rcmuserCore', [])
 
         return self;
 
-    })
-    .factory('RcmUserHttp', ['$log', '$http', 'RcmUserResult', 'RcmResults', function ($log, $http, RcmUserResult, RcmResults) {
+    }
+)
+    .factory(
+    'RcmUserHttp',
+    [
+        '$log',
+        '$http',
+        'RcmUserResult',
+        'RcmResults',
+        function ($log, $http, RcmUserResult, RcmResults) {
 
-        var RcmUserHttp = function () {
+            var RcmUserHttp = function () {
 
-            var self = this;
-            self.http = $http;
-            self.comErrorMessage = 'There was an error talking to the server: ';
-            self.includeSuccessAlerts = false;
-            self.loading = 0;
-            self.alerts = new RcmResults();
+                var self = this;
+                self.http = $http;
+                self.comErrorMessage = 'There was an error talking to the server: ';
+                self.includeSuccessAlerts = false;
+                self.loading = 0;
+                self.alerts = new RcmResults();
 
-            self.loadingOn = function () {
+                self.loadingOn = function () {
 
-                self.loading++;
-            };
+                    self.loading++;
+                };
 
-            self.loadingOff = function () {
+                self.loadingOff = function () {
 
-                if (self.loading > 0) {
+                    if (self.loading > 0) {
 
-                    self.loading--;
-                }
-            };
+                        self.loading--;
+                    }
+                };
 
-            self.execute = function (config, onSuccess, onFail) {
+                self.execute = function (config, onSuccess, onFail) {
 
-                self.loadingOn();
-                self.alerts.clear();
+                    self.loadingOn();
+                    self.alerts.clear();
 
-                self.http(config)
-                    .success(function (data, status, headers, config) {
+                    self.http(config)
+                        .success(
+                        function (data, status, headers, config) {
 
-                        //$log.log('call-success');
-                        // if is result object
-                        if (typeof(data.code) !== 'undefined' && typeof(data.messages) !== 'undefined') {
+                            //$log.log('call-success');
+                            // if is result object
+                            if (typeof(data.code) !== 'undefined' && typeof(data.messages) !== 'undefined') {
 
-                            if (data.code < 1) {
+                                if (data.code < 1) {
 
-                                //$log.log('result-fail');
-                                self.alerts.add(data);
+                                    //$log.log('result-fail');
+                                    self.alerts.add(data);
 
-                                if (typeof(onFail) === 'function') {
+                                    if (typeof(onFail) === 'function') {
 
-                                    onFail(data);
+                                        onFail(data);
+                                    }
+
+                                    self.loadingOff();
+                                    return;
                                 }
 
-                                self.loadingOff();
-                                return;
-                            }
+                                if (self.includeSuccessAlerts) {
 
-                            if (self.includeSuccessAlerts) {
+                                    if (data.messages.length == 0) {
+                                        //$log.log('default-success-alert');
+                                        data.messages.push("Success!")
+                                    }
 
-                                if (data.messages.length == 0) {
-                                    //$log.log('default-success-alert');
-                                    data.messages.push("Success!")
+                                    self.alerts.add(data);
                                 }
+                            } else {
 
-                                self.alerts.add(data);
+                                $log.error('Result object not returned: ', data);
+                                var failResult = new RcmUserResult(
+                                    0,
+                                    ['Error: Invalid result returned from server.'],
+                                    data
+                                );
+
+                                self.alerts.add(failResult);
                             }
-                        } else {
 
-                            $log.error('Result object not returned: ', data);
+                            if ((typeof(onSuccess) === 'function')) {
+
+                                onSuccess(data, config);
+                            }
+
+                            self.loadingOff();
+                        }
+                    )
+                        .error(
+                        function (data, status, headers, config) {
+
+                            //$log.log('call-error');
+
                             var failResult = new RcmUserResult(
                                 0,
-                                ['Error: Invalid result returned from server.'],
+                                [self.comErrorMessage + status],
                                 data
                             );
 
+                            //$log.log(failResult);
+
                             self.alerts.add(failResult);
+
+                            if (typeof(onFail) === 'function') {
+
+                                onFail(failResult);
+                            }
+
+                            self.loadingOff();
                         }
+                    );
+                }
+            };
 
-                        if ((typeof(onSuccess) === 'function')) {
-
-                            onSuccess(data, config);
-                        }
-
-                        self.loadingOff();
-                    })
-                    .error(function (data, status, headers, config) {
-
-                        //$log.log('call-error');
-
-                        var failResult = new RcmUserResult(
-                            0,
-                            [self.comErrorMessage + status],
-                            data
-                        );
-
-                        //$log.log(failResult);
-
-                        self.alerts.add(failResult);
-
-                        if (typeof(onFail) === 'function') {
-
-                            onFail(failResult);
-                        }
-
-                        self.loadingOff();
-                    });
-            }
-
-        };
-
-        return RcmUserHttp;
-
-    }])
-    .factory('RcmUserResult', function () {
+            return RcmUserHttp;
+        }
+    ]
+)
+    .factory(
+    'RcmUserResult', function () {
 
         var RcmUserResult = function (code, messages, data) {
 
@@ -138,9 +226,10 @@ angular.module('rcmuserCore', [])
         };
 
         return RcmUserResult;
-
-    })
-    .factory('RcmUser', function (rolePropertyId) {
+    }
+)
+    .factory(
+    'RcmUser', function () {
 
         var RcmUser = function () {
 
@@ -155,9 +244,10 @@ angular.module('rcmuserCore', [])
         };
 
         return RcmUser;
-
-    })
-    .factory('RcmResults', function () {
+    }
+)
+    .factory(
+    'RcmResults', function () {
 
         var RcmResults = function () {
 
@@ -182,8 +272,10 @@ angular.module('rcmuserCore', [])
         };
 
         return RcmResults;
-    })
-    .factory('getNamespaceRepeatString', function () {
+    }
+)
+    .factory(
+    'getNamespaceRepeatString', function () {
 
         return function (namespace, repeatStr, namspaceDelimiter) {
             if (!namspaceDelimiter) {
@@ -197,8 +289,10 @@ angular.module('rcmuserCore', [])
             }
             return a.join('');
         }
-    })
-    .directive('rcmAlerts', function () {
+    }
+)
+    .directive(
+    'rcmAlerts', function () {
         /*
          * Example:
          * <div rcm-alerts rcm-results="alerts" alert-title="'An error occured:'"></div>
@@ -234,18 +328,76 @@ angular.module('rcmuserCore', [])
                 'alertTitleSuccess': '='
             },
             template: '' +
-                '<alert class="alert" ng-repeat="alert in rcmResults.results" type="type[alert.code]" close="closeAlert($index)">' +
-                '    <div class="alert-header">' +
-                '        <i class="glyphicon glyphicon-{{type[alert.code]}}-sign"></i>' +
-                '        <span class="alert-title"><strong>{{title[alert.code]}}</strong></span>' +
-                '    </div>' +
-                '    <div class="alert-messages">' +
-                '        <ul>' +
-                '            <li ng-repeat="msg in alert.messages">{{msg}}</li>' +
-                '        </ul>' +
-                '    </div>' +
-                '</alert>'
+            '<alert class="alert" ng-repeat="alert in rcmResults.results" type="type[alert.code]" close="closeAlert($index)">' +
+            '    <div class="alert-header">' +
+            '        <i class="glyphicon glyphicon-{{type[alert.code]}}-sign"></i>' +
+            '        <span class="alert-title"><strong>{{title[alert.code]}}</strong></span>' +
+            '    </div>' +
+            '    <div class="alert-messages">' +
+            '        <ul>' +
+            '            <li ng-repeat="msg in alert.messages">{{msg}}</li>' +
+            '        </ul>' +
+            '    </div>' +
+            '</alert>'
         };
+    }
+);
 
+/**
+ * Exposes Angular service to global scope for use by other libraries
+ * - This is to support jQuery and native JavaScript modules and code
+ * Angular injector to get Module services
+ */
+angular.injector(['ng', 'rcmuserCore']).invoke(
+    [
+        'rcmUserConfig',
+        function (rcmUserConfig) {
+            rcmUser.core.rcmUserConfig = rcmUserConfig;
+        }
+    ]
+);
 
-    });
+angular.injector(['ng', 'rcmuserCore']).invoke(
+    [
+        'RcmUserHttp',
+        function (RcmUserHttp) {
+            rcmUser.core.RcmUserHttp = RcmUserHttp;
+        }
+    ]
+);
+
+angular.injector(['ng', 'rcmuserCore']).invoke(
+    [
+        'RcmUserResult',
+        function (RcmUserResult) {
+            rcmUser.core.RcmUserResult = RcmUserResult;
+        }
+    ]
+);
+
+angular.injector(['ng', 'rcmuserCore']).invoke(
+    [
+        'RcmUser',
+        function (RcmUser) {
+            rcmUser.core.RcmUser = RcmUser;
+        }
+    ]
+);
+
+angular.injector(['ng', 'rcmuserCore']).invoke(
+    [
+        'RcmResults',
+        function (RcmResults) {
+            rcmUser.core.RcmResults = RcmResults;
+        }
+    ]
+);
+
+angular.injector(['ng', 'rcmuserCore']).invoke(
+    [
+        'getNamespaceRepeatString',
+        function (getNamespaceRepeatString) {
+            rcmUser.core.getNamespaceRepeatString = getNamespaceRepeatString;
+        }
+    ]
+);

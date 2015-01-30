@@ -2,7 +2,8 @@
 
 // builds js and css dependencies
 $this->rcmUserBuildHtmlHead();
-$this->headLink()->appendStylesheet($this->url('RcmUserAdminCss'));
+$this->headLink()->appendStylesheet('/modules/rcm-user/css/rcm-user-admin.css');
+$this->headScript()->appendFile($this->url('RcmUserCoreJs'));
 $this->headScript()->appendFile($this->url('RcmUserAdminUserRoleJs'));
 
 ?>

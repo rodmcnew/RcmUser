@@ -1,9 +1,9 @@
-// rcmuserCore include <?php echo "\n"; include(__DIR__ . '/rcmuser.core.js'); ?>
+'use strict';
 
 angular.module('rcmuserAdminUsersApp', ['ui.bootstrap', 'rcmuserCore'])
     .factory('rcmuserAdminUsersData', ['rcmUserConfig', function (rcmUserConfig) {
 
-        self = this;
+        var self = this;
 
         self.url = rcmUserConfig.url;
 

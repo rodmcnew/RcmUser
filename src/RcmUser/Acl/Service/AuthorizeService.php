@@ -17,6 +17,7 @@
 
 namespace RcmUser\Acl\Service;
 
+use RcmUser\Acl\Entity\AclRole;
 use
     RcmUser\Acl\Entity\AclRule;
 use
@@ -410,6 +411,35 @@ class AuthorizeService
          * }
          * }
          */
+    }
+
+    /**
+     * hasRoleAccess
+     *
+     * @param User $user
+     * @param      $roleId
+     *
+     * @return void
+     */
+    public function hasRoleBasedAccess(User $user, $roleId){
+
+        $roles = $this->getUserRoles($user);
+
+        if(!is_array($roles)){
+            return false;
+        }
+
+        foreach($roles as $role){
+
+            if($role instanceof AclRole){
+                $roleId = $role->getRoleId();
+            } else {
+                $roleId = $role;
+            }
+
+            // @todo FINISH THIS
+
+        }
     }
 
     /**

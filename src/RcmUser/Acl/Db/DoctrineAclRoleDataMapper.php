@@ -17,16 +17,11 @@
 
 namespace RcmUser\Acl\Db;
 
-use
-    Doctrine\ORM\EntityManager;
-use
-    RcmUser\Acl\Entity\AclRole;
-use
-    RcmUser\Acl\Entity\DoctrineAclRole;
-use
-    RcmUser\Db\DoctrineMapperInterface;
-use
-    RcmUser\Result;
+use Doctrine\ORM\EntityManager;
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\DoctrineAclRole;
+use RcmUser\Db\DoctrineMapperInterface;
+use RcmUser\Result;
 
 /**
  * DoctrineAclRoleDataMapper
@@ -166,6 +161,42 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         }
 
         return $result;
+    }
+
+    /**
+     * fetchRoleLineage - Get an array of my role and all parent in order of tree
+     *
+     * @param string $roleId roleId
+     *
+     * @return Result
+     */
+    public function fetchRoleLineage($roleId)
+    {
+        $lineage = array();
+
+        while (true) {
+            $result = $this->fetchByRoleId($roleId);
+
+            if (!$result->isSuccess()) {
+
+                return new Result(
+                    array(), Result::CODE_FAIL, $result->getMessages()
+                );
+                break;
+            }
+
+            /** @var AclRole $role */
+            $role = $result->getData();
+            $roleId = $role->getParentRoleId();
+            $lineage[] = $role;
+
+            if (empty($roleId)) {
+                // no parent
+                break;
+            }
+        }
+
+        return new Result($lineage, Result::CODE_SUCCESS, "Success");
     }
 
     /**

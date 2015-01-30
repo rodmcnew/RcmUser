@@ -152,6 +152,19 @@ class AclRoleDataMapper implements AclRoleDataMapperInterface
     }
 
     /**
+     * fetchRoleLineage
+     *
+     * @param string $roleId roleId
+     *
+     * @return Result
+     * @throws RcmUserException
+     */
+    public function fetchRoleLineage($roleId)
+    {
+        throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
+    }
+
+    /**
      * create
      *
      * @param AclRole $aclRole acl role
