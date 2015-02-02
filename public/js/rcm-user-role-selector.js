@@ -187,7 +187,7 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                         }
                     );
 
-                    rcmUserRolesService.requestRoles();
+                    //rcmUserRolesService.requestRoles();
                 };
 
                 self.safeApply = function (fn) {
