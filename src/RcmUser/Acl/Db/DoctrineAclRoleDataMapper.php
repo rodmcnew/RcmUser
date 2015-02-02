@@ -168,7 +168,7 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
      *
      * @param string $roleId roleId
      *
-     * @return Result
+     * @return Result Containing array of AclRoles indexed by roleId
      */
     public function fetchRoleLineage($roleId)
     {
@@ -188,7 +188,7 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
             /** @var AclRole $role */
             $role = $result->getData();
             $roleId = $role->getParentRoleId();
-            $lineage[] = $role;
+            $lineage[$role->getRoleId()] = $role;
 
             if (empty($roleId)) {
                 // no parent

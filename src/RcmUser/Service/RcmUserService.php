@@ -187,7 +187,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return null|User
      */
-    public function getUserById($userId){
+    public function getUserById($userId)
+    {
 
         $requestUser = $this->buildNewUser();
         $requestUser->setId($userId);
@@ -202,7 +203,8 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @return null|User
      */
-    public function getUserByUsername($userName){
+    public function getUserByUsername($userName)
+    {
 
         $requestUser = $this->buildNewUser();
         $requestUser->setUsername($userName);
@@ -520,7 +522,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
 
         if ($userId != $currentUser->getId()) {
 
-            throw new RcmUserException('RefreshIdentity expects user to be get same identity as current.');
+            throw new RcmUserException(
+                'RefreshIdentity expects user to be get same identity as current.'
+            );
         }
 
         return $this->getUserAuthService()->setIdentity($user);
@@ -618,6 +622,43 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         );
     }
 
+    /**
+     * hasRoleBasedAccess
+     * Check if current user has access based on role inheritance
+     *
+     * @param $roleId
+     *
+     * @return bool
+     */
+    public function hasRoleBasedAccess($roleId)
+    {
+        $user = $this->getIdentity();
+
+        if (!($user instanceof User)) {
+            return false;
+        }
+
+        return $this->hasUserRoleBasedAccess($user, $roleId);
+    }
+
+    /**
+     * hasUserRoleBasedAccess -
+     * Check if a user has access based on role inheritance
+     *
+     * @param User $user
+     * @param string $roleId
+     *
+     * @return bool
+     */
+    public function hasUserRoleBasedAccess($user, $roleId)
+    {
+        if (!($user instanceof User)) {
+            return false;
+        }
+
+        return $this->getAuthorizeService()->hasRoleBasedAccess($user, $roleId);
+    }
+
     /* UTILITIES **************************************/
     /**
      * buildNewUser
@@ -656,7 +697,9 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         } else {
 
             // this should not fail, if it does, something is really wrong
-            throw new RcmUserException('User could not be built or was not returned');
+            throw new RcmUserException(
+                'User could not be built or was not returned'
+            );
         }
     }
 }
