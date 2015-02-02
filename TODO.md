@@ -80,7 +80,7 @@ So that I track admin user changes
  - Optimize mappers
  - Pagination for DataMappers
 
-#### Translations #### 
+#### Translations ####
 
  - Result messages
  - Translation of other page content
