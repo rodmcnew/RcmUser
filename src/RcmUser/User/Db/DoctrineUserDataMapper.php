@@ -396,7 +396,7 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
         User $responseUser
     ) {
         /* VALIDATE */
-        if (!$this->canUpdate($requestUser)) {
+        if (!$this->canDelete($requestUser)) {
 
             // error, cannot update
             return new Result($responseUser, Result::CODE_FAIL, 'User cannot be deleted, id required for delete.');
