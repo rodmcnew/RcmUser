@@ -57,7 +57,12 @@ class RcmUserServiceTest extends Zf2TestCase
         $user->setUsername($prefix . '_username');
         $user->setPassword($prefix . '_password');
         $user->setState($prefix . '_state');
-        $user->setProperties(array('property1', $prefix . '_property1'));
+        $user->setProperties(
+            array(
+                'property1',
+                $prefix . '_property1'
+            )
+        );
         $user->setProperty('property2', $prefix . '_property2');
 
         return $user;
@@ -83,7 +88,10 @@ class RcmUserServiceTest extends Zf2TestCase
         $user = $this->getNewUser();
         $userResult = new \RcmUser\User\Result($user);
         $authResult
-            = new \Zend\Authentication\Result(\Zend\Authentication\Result::SUCCESS, $user);
+            = new \Zend\Authentication\Result(
+            \Zend\Authentication\Result::SUCCESS,
+            $user
+        );
 
         /*
         $userDataService = new UserDataService();
@@ -121,7 +129,15 @@ class RcmUserServiceTest extends Zf2TestCase
             ->getMock();
         $this->userPropertyService->expects($this->any())
             ->method('getUserProperty')
-            ->will($this->returnValue(array('some', 'user', 'property')));
+            ->will(
+                $this->returnValue(
+                    array(
+                        'some',
+                        'user',
+                        'property'
+                    )
+                )
+            );
 
         /////
         $this->userAuthService = $this->getMockBuilder(
@@ -144,6 +160,9 @@ class RcmUserServiceTest extends Zf2TestCase
         $this->userAuthService->expects($this->any())
             ->method('getIdentity')
             ->will($this->returnValue($user));
+        $this->userAuthService->expects($this->any())
+            ->method('hasIdentity')
+            ->will($this->returnValue(true));
 
         /////
         $this->authorizeService = $this->getMockBuilder(
@@ -154,6 +173,12 @@ class RcmUserServiceTest extends Zf2TestCase
         $this->authorizeService->expects($this->any())
             ->method('isAllowed')
             ->will($this->returnValue(true));
+
+        // @todo details:  hasRoleBasedAccess(User $user, $roleId)
+        $this->authorizeService->expects($this->any())
+            ->method('hasRoleBasedAccess')
+            ->will($this->returnValue(true));
+
 
         $this->rcmUserService = new RcmUserService();
         $this->rcmUserService->setUserDataService($this->userDataService);
@@ -246,7 +271,9 @@ class RcmUserServiceTest extends Zf2TestCase
             'Did not return instance of Result.'
         );
 
-        $result = $this->getRcmUserService()->getUserByUsername($user->getUsername());
+        $result = $this->getRcmUserService()->getUserByUsername(
+            $user->getUsername()
+        );
 
         $this->assertInstanceOf(
             '\RcmUser\User\Entity\User',
@@ -320,7 +347,7 @@ class RcmUserServiceTest extends Zf2TestCase
     {
         $user = $this->getNewUser();
 
-        $result = $this->getRcmUserService()->createUser($user);
+        $result = $this->getRcmUserService()->updateUser($user);
 
         $this->assertInstanceOf(
             '\RcmUser\User\Result',
@@ -333,7 +360,7 @@ class RcmUserServiceTest extends Zf2TestCase
     {
         $user = $this->getNewUser();
 
-        $result = $this->getRcmUserService()->createUser($user);
+        $result = $this->getRcmUserService()->deleteUser($user);
 
         $this->assertInstanceOf(
             '\RcmUser\User\Result',
@@ -419,11 +446,66 @@ class RcmUserServiceTest extends Zf2TestCase
             $result,
             'Did not return instance of Result.'
         );
+
+        $result = $this->getRcmUserService()->getCurrentUser();
+
+        $this->assertInstanceOf(
+            '\RcmUser\User\Entity\User',
+            $result,
+            'Did not return instance of Result.'
+        );
+
+        $hasIdentity = $this->getRcmUserService()->hasIdentity();
+
+        $this->assertTrue($hasIdentity, 'Did not return true.');
+
+        $this->getRcmUserService()->refreshIdentity();
+
+        $result = $this->getRcmUserService()->getIdentity();
+
+        $this->assertInstanceOf(
+            '\RcmUser\User\Entity\User',
+            $result,
+            'Did not return instance of Result.'
+        );
+
+        $this->getRcmUserService()->setIdentity($result);
+
+        $userException = null;
+
+        try {
+            $newUser = new User();
+
+            $newUser->setId('newguy');
+
+            $this->getRcmUserService()->setIdentity($newUser);
+
+        } catch (\Exception $e) {
+
+            $userException = $e;
+
+        }
+
+        $this->assertInstanceOf('\Exception', $userException);
     }
 
     public function testIsAllowed()
     {
         $result = $this->getRcmUserService()->isAllowed('someResource');
+
+        $this->assertTrue($result, 'Did not return true.');
+    }
+
+
+    public function testHasRoleBasedAccess()
+    {
+        $user = $this->getRcmUserService()->getIdentity();
+
+        $result = $this->getRcmUserService()->hasRoleBasedAccess('someRole');
+
+        $this->assertTrue($result, 'Did not return true.');
+
+        $result = $this->getRcmUserService()->hasUserRoleBasedAccess($user, 'someRole');
 
         $this->assertTrue($result, 'Did not return true.');
     }
