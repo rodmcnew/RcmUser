@@ -65,6 +65,4 @@ class NamespaceAclRole extends AclRole
 
         return $obj;
     }
-
-
 }

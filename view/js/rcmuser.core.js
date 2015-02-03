@@ -26,9 +26,9 @@ rcmUser.cache = {
 
         return {};
     },
-    roleRequested: false,
-    roles: {},
-    rolesIndex: {},
+    rolesState: 'Initial',
+    roles: null,
+    rolesIndex: null,
     selectedRoles: {}
 };
 

@@ -190,7 +190,7 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
 
-        var_dump($this->mockEvent->getParam('propertyNameSpace'));
+        //var_dump($this->mockEvent->getParam('propertyNameSpace'));
 
         $this->assertFalse(
             $result

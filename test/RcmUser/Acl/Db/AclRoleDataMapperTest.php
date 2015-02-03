@@ -138,6 +138,18 @@ class AclRoleDataMapperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * testFetchRoleLineage
+     *
+     * @expectedException \RcmUser\Exception\RcmUserException
+     *
+     * @return void
+     */
+    public function testFetchRoleLineage()
+    {
+        $result = $this->aclRoleDataMapper->fetchRoleLineage('roleId');
+    }
+
+    /**
      * testCreate
      *
      * @expectedException \RcmUser\Exception\RcmUserException

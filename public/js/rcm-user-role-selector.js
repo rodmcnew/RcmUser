@@ -110,7 +110,7 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                  * selectedRoles from service
                  * @type {{}}
                  */
-                scope.selectedRoles = {};
+                scope.selectedRoles = rcmUserRolesService.getRoles();
 
                 /**
                  * init
@@ -160,10 +160,11 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                         scope.hideSearch = false;
                     }
 
-                    rcmUser.eventManager.on(
-                        'rcmUserRolesService.onSetRoles',
-                        function (roles) {
+                    scope.roles = rcmUserRolesService.getRoles();
 
+                    rcmUser.eventManager.on(
+                        'rcmUserRolesService.onRolesReady',
+                        function (roles) {
                             scope.loading = false;
                             scope.roles = roles;
                             scope.selectedRoles = rcmUserRolesService.getSelectedRoles(scope.valueNamespace);
@@ -187,7 +188,8 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                         }
                     );
 
-                    //rcmUserRolesService.requestRoles();
+                    // @todo - Should we call this?
+                    rcmUserRolesService.requestRoles();
                 };
 
                 self.safeApply = function (fn) {
@@ -216,7 +218,8 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                     } else {
                         rcmUserRolesService.setSelectedRole(
                             scope.valueNamespace,
-                            model[scope.idProperty]
+                            model[scope.idProperty],
+                            model
                         );
                     }
                 };
