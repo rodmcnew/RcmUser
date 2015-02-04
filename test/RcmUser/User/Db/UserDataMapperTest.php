@@ -102,10 +102,18 @@ class UserDataMapperTest extends \PHPUnit_Framework_TestCase
             $this->userDataMapper->canUpdate($user)
         );
 
+        $this->assertFalse(
+            $this->userDataMapper->canDelete($user)
+        );
+
         $user->setId('234');
 
         $this->assertTrue(
             $this->userDataMapper->canUpdate($user)
+        );
+
+        $this->assertTrue(
+            $this->userDataMapper->canDelete($user)
         );
     }
 

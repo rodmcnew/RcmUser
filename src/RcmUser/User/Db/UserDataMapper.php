@@ -225,4 +225,17 @@ class UserDataMapper implements UserDataMapperInterface
 
         return true;
     }
+
+
+    /**
+     * canDelete
+     *
+     * @param User $user user
+     *
+     * @return bool
+     */
+    public function canDelete(User $user)
+    {
+        return $this->canUpdate($user);
+    }
 }

@@ -875,6 +875,8 @@ return array(
         'factories' => array(
             'rcmUserIsAllowed' =>
                 'RcmUser\Service\Factory\ControllerPluginRcmUserIsAllowed',
+            'rcmUserHasRoleBasedAccess' =>
+                'RcmUser\Service\Factory\ControllerPluginRcmUserHasRoleBasedAccess',
             'rcmUserGetCurrentUser' =>
                 'RcmUser\Service\Factory\ControllerPluginRcmUserGetCurrentUser',
         ),
@@ -883,6 +885,8 @@ return array(
         'factories' => array(
             'rcmUserIsAllowed' =>
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserIsAllowed',
+            'rcmUserHasRoleBasedAccess' =>
+                'RcmUser\View\Service\Factory\ViewHelperRcmUserHasRoleBasedAccess',
             'rcmUserBuildHtmlHead' =>
                 'RcmUser\View\Service\Factory\ViewHelperRcmUserBuildHtmlHead',
             'rcmUserGetCurrentUser' =>

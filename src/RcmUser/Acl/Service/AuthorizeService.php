@@ -144,12 +144,17 @@ class AuthorizeService
     /**
      * getUserRoles
      *
-     * @param User $user user
+     * @param User|null $user user
      *
      * @return null
      */
-    public function getUserRoles(User $user)
+    public function getUserRoles($user)
     {
+        if (!($user instanceof User)) {
+
+            return $this->getGuestRole();
+        }
+
         /** @var $userRoleProperty UserRoleProperty */
         $userRoleProperty = $user->getProperty(UserRoleProperty::PROPERTY_KEY);
 
@@ -308,6 +313,23 @@ class AuthorizeService
         }
     }
 
+    public function hasSuperAdmin($userRoles)
+    {
+        $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
+
+        if (!empty($superAdminRoleId)
+            && is_array($userRoles)
+            && in_array(
+                $superAdminRoleId,
+                $userRoles
+            )
+        ) {
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * isAllowed
      *
@@ -327,23 +349,13 @@ class AuthorizeService
     ) {
         $resourceId = strtolower($resourceId);
 
-        if ($user instanceof User) {
-            $userRoles = $this->getUserRoles($user);
-        } else {
-            $userRoles = $this->getGuestRole();
-        }
+        /* Get roles or guest roles if no user */
+        $userRoles = $this->getUserRoles($user);
 
         /* Check super admin
             we over-ride everything if user has super admin
         */
-        $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
-        if (!empty($superAdminRoleId)
-            && is_array($userRoles)
-            && in_array(
-                $superAdminRoleId,
-                $userRoles
-            )
-        ) {
+        if($this->hasSuperAdmin($userRoles)){
             return true;
         }
 
@@ -414,32 +426,43 @@ class AuthorizeService
     }
 
     /**
-     * hasRoleAccess
+     * hasRoleBasedAccess
      *
      * @param User $user
      * @param      $roleId
      *
-     * @return void
+     * @return bool
      */
-    public function hasRoleBasedAccess(User $user, $roleId){
+    public function hasRoleBasedAccess(User $user, $roleId)
+    {
+        /* Get roles or guest roles if no user */
+        $userRoles = $this->getUserRoles($user);
 
-        $roles = $this->getUserRoles($user);
-
-        if(!is_array($roles)){
-            return false;
+        /* Check super admin
+            we over-ride everything if user has super admin
+        */
+        if($this->hasSuperAdmin($userRoles)){
+            return true;
         }
 
-        foreach($roles as $role){
+        foreach($userRoles as $userRole){
 
-            if($role instanceof AclRole){
-                $roleId = $role->getRoleId();
+            if($userRole instanceof AclRole){
+                $userRoleId = $userRole->getRoleId();
             } else {
-                $roleId = $role;
+                $userRoleId = $userRole;
             }
 
-            // @todo FINISH THIS
+            $result = $this->aclDataService->getRoleLineage($userRoleId);
 
+            $checkRoles = $result->getData();
+
+            if(array_key_exists($roleId, $checkRoles)){
+                return true;
+            }
         }
+
+        return false;
     }
 
     /**
