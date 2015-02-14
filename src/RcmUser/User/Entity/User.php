@@ -328,6 +328,16 @@ class User implements UserInterface, \JsonSerializable
     }
 
     /**
+     * Get the users assigned roles
+     *
+     * @return null
+     */
+    public function getRoles()
+    {
+        return $this->getProperty(UserRoleProperty::PROPERTY_KEY);
+    }
+
+    /**
      * isEnabled - Any state that is not disabled is considered enabled
      *
      * @return bool
