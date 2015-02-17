@@ -285,7 +285,7 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                 '  <button class="btn btn-default" data-ng-click="save()" type="button">{{saveLabel}}</button>' +
                 ' </div>' +
                 '</div>'
- 
+
             };
         }
     ]
