@@ -266,7 +266,7 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                 '  <form class="form-inline">' +
                 '   <label>{{searchLabel}}</label> ' +
                 '   <input class="form-control" type="text" placeholder="{{searchPlaceholder}}" ng-model="searchTerm" />' +
-                '   <button class="btn btn-default btn-group" data-ng-click="searchTerm = \'\'" type="button">x</button>' +
+                '   <button class="btn btn-default btn-group" style="margin-top: 6px;" data-ng-click="searchTerm = \'\'" type="button">x</button>' +
                 '  </form>' +
                 ' </div>' +
                 ' <div class="selector">' +
@@ -285,7 +285,7 @@ angular.module('rcmUserRoleSelector', ['rcmUserRolesService'])
                 '  <button class="btn btn-default" data-ng-click="save()" type="button">{{saveLabel}}</button>' +
                 ' </div>' +
                 '</div>'
-
+ 
             };
         }
     ]
