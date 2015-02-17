@@ -52,7 +52,6 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
 
                     // Only request roles once
                     if (roleStateMap[rcmUser.cache.roleState] > roleStateMap['Initial']) {
-                        $log.warn('rcmUserRolesService.requestRoles called more than once.');
                         // we trigger this, someone needs it, but roles should already be set
                         setTimeout(
                             function() {
@@ -140,7 +139,7 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                             },
                             0
                         );
-                        $log.warn('rcmUserRolesService.setRoles called more than once.');
+
                         return;
                     }
 
@@ -238,6 +237,10 @@ angular.module('rcmUserRolesService', ['rcmuserCore'])
                  * @param value
                  */
                 self.setSelectedRole = function (valueNamespace, index, value) {
+
+                    if (!index || !value) {
+                        return;
+                    }
 
                     if (!rcmUser.cache.selectedRoles[valueNamespace]) {
                         rcmUser.cache.selectedRoles[valueNamespace] = {};
