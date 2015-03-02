@@ -72,20 +72,14 @@ class AbstractAdminApiController extends AbstractRestfulController
     public function getNotAllowedResponse()
     {
         $response = $this->getResponse();
-        $response->getHeaders()->addHeaders(
-            [
-                'Content-Type' => 'application/json'
-            ]
-        );
         $response->setStatusCode(Response::STATUS_CODE_401);
         $result = new Result(
             null,
             Result::CODE_FAIL,
             $response->renderStatusLine()
         );
-        $response->setContent(json_encode($result));
 
-        return $response;
+        return $this->getJsonResponse($result);
     }
 
     /**
@@ -108,10 +102,7 @@ class AbstractAdminApiController extends AbstractRestfulController
          " | " . $e->getTraceAsString()
         */
 
-        $response = $this->getResponse();
-        $response->setContent(json_encode($result));
-
-        return $response;
+        return $this->getJsonResponse($result);
     }
 
     /**
@@ -127,12 +118,16 @@ class AbstractAdminApiController extends AbstractRestfulController
         $view->setTerminal(true);
 
         $response = $this->getResponse();
+
+        $json = json_encode($result);
+
+        $response->setContent($json);
+
         $response->getHeaders()->addHeaders(
             [
                 'Content-Type' => 'application/json'
             ]
         );
-        $response->setContent(json_encode($result));
 
         return $response;
     }
