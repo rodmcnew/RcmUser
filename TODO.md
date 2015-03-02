@@ -163,3 +163,14 @@ So that my code is clean, simple and efficient
  - AclResourceService only need deal with ResourceProvider and AclResource objects
  - Build ResourceProvider populate method and take array on construct
  - Build AclResource populate method and take array on construct
+ 
+#### Manage Orphaned Resources in for rules ####
+ 
+ Story:
+ As ACL
+ I should remove rules if the resource no longer exists
+ So that I do not retain unused data
+ 
+ - Might do this on rules read
+ - This is not a security issue
+ 
