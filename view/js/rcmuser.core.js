@@ -194,7 +194,7 @@ angular.module('rcmuserCore', [])
                                 data
                             );
 
-                            //$log.log(failResult);
+                            $log.error(failResult);
 
                             self.alerts.add(failResult);
 
