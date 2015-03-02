@@ -20,7 +20,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                             <h3 class="modal-title">Add rule: </h3>
                         </div>
                         <div class="modal-body">
-                            <div rcm-alerts rcm-results="rcmUserHttp.alerts"
+                            <div rcm-alerts="true" rcm-results="rcmUserHttp.alerts"
                                  alert-title-error="'An error occured:'"
                                  alert-title-success="'Success:'"></div>
                             <form name="addRuleForm" role="form">
@@ -360,7 +360,7 @@ $this->headScript()->appendFile($this->url('RcmUserAdminAclJs'));
                 </div>
             </form>
 
-            <div rcm-alerts rcm-results="rcmUserHttp.alerts"
+           <div rcm-alerts rcm-results="rcmUserHttp.alerts"
                  alert-title-error="'An error occured:'"
                  alert-title-success="'Success:'"></div>
 

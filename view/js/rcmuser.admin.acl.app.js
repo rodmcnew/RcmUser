@@ -23,6 +23,8 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
 
             $scope.rcmUserHttp = new RcmUserHttp();
 
+            $scope.roleData = {};
+
             $scope.superAdminRole = rcmuserAdminAclData.superAdminRole;
             $scope.guestRole = rcmuserAdminAclData.guestRole;
 
@@ -243,7 +245,6 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
                             onSuccess
                         );
                     };
-
                 };
 
                 var modal = $modal.open({
@@ -293,7 +294,6 @@ angular.module('rcmuserAdminAclApp', ['ui.bootstrap', 'rcmuserCore'])
 
                         $scope.close();
                     };
-
 
                     $scope.removeRole = function () {
 
