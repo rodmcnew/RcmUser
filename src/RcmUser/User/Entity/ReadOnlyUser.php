@@ -53,6 +53,16 @@ class ReadOnlyUser extends User
         $this->locked = true;
     }
 
+
+    public function set($property, $value)
+    {
+        if (!$this->locked) {
+            return parent::set($property, $value);
+        }
+
+        throw new RcmUserReadOnlyException('Object is READ ONLY');
+    }
+
     /**
      * setId
      *
@@ -194,7 +204,7 @@ class ReadOnlyUser extends User
      * @param User|array $data    data as User or array
      * @param array      $exclude list of object properties to ignore (not populate)
      *
-     * @return mixed|void
+     * @return void
      * @throws \RcmUser\Exception\RcmUserException|RcmUserReadOnlyException
      */
     public function populate(
@@ -203,6 +213,23 @@ class ReadOnlyUser extends User
     ) {
         if (!$this->locked) {
             return parent::populate($data);
+        }
+
+        throw new RcmUserReadOnlyException('Object is READ ONLY');
+    }
+
+    /**
+     * populateFromObject
+     *
+     * @param UserInterface $object
+     *
+     * @return void
+     * @throws RcmUserReadOnlyException
+     */
+    public function populateFromObject(UserInterface $object)
+    {
+        if (!$this->locked) {
+            return parent::populateFromObject($object);
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');

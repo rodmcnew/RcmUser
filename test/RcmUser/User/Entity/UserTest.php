@@ -131,9 +131,24 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
             'Setter or getter failed.'
         );
 
+        $this->assertEquals(
+            $value,
+            $user->get('name', null),
+            'Getter failed.'
+        );
+
         $value = '';
         $user->setName($value);
         $this->assertNull($user->getName(), 'Setter or getter failed.');
+
+        // cannot set or get iterator
+        $hasSet = $user->set('iterator', 'something');
+        $this->assertFalse($hasSet, 'Failed to stop iterator property set.');
+
+        $this->assertNull(
+            $user->get('iterator', null),
+            'Getter failed to exclude.'
+        );
 
         $value = null;
         $user->setProperties($value);
@@ -166,16 +181,32 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
             'Setter or getter failed.'
         );
 
+        $this->assertEquals(
+            'propertyYYY',
+            $user->get('Y', null),
+            'Getter failed.'
+        );
+
+        $badPropertyName = 'N*P#_^^^^';
+
+        $hasSet = $user->set($badPropertyName, 'something');
+
+        $this->assertFalse($hasSet, 'Failed to stop bad property set.');
+
+        $hasException = false;
+
         try {
-            $user->setProperty('N*P#_^^^^', 'something');
+            $user->setProperty($badPropertyName, 'something');
 
         } catch (RcmUserException $e) {
 
+            $hasException = true;
             $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
-            return;
         }
 
-        $this->fail("Expected exception not thrown");
+        if(!$hasException) {
+            $this->fail("Expected exception not thrown");
+        }
 
     }
 
