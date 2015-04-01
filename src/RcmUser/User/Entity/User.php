@@ -17,8 +17,7 @@
 
 namespace RcmUser\User\Entity;
 
-use
-    RcmUser\Exception\RcmUserException;
+use RcmUser\Exception\RcmUserException;
 
 /**
  * Class User
@@ -46,6 +45,11 @@ class User implements UserInterface, \JsonSerializable
      * any other value means enabled and the value is up to the implementation
      */
     const STATE_DISABLED = 'disabled';
+
+    /**
+     * @var array Exclude these from the magic get
+     */
+    private $getSetExclude = ['iterator'];
 
     /**
      * @var mixed $id
@@ -92,6 +96,60 @@ class User implements UserInterface, \JsonSerializable
     public function __construct($id = null)
     {
         $this->setId($id);
+    }
+
+    /**
+     * set a property
+     *
+     * @param $property
+     * @param $value
+     *
+     * @return bool
+     * @throws RcmUserException
+     */
+    public function set($property, $value)
+    {
+        if (in_array(lcfirst($property), $this->getSetExclude)) {
+            return false;
+        }
+
+        $setter = 'set' . ucfirst($property);
+
+        if (method_exists($this, $setter)) {
+            $this->$setter($value);
+            return true;
+        }
+
+        try {
+            $this->setProperty($property, $value);
+        } catch (\Exception $e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * get a property
+     *
+     * @param $property
+     * @param $default
+     *
+     * @return mixed
+     */
+    public function get($property, $default = null)
+    {
+        if (in_array(lcfirst($property), $this->getSetExclude)) {
+            return $default;
+        }
+
+        $getter = 'get' . ucfirst($property);
+
+        if (method_exists($this, $getter)) {
+            return $this->$getter();
+        }
+
+        return $this->getProperty($property, $default);
     }
 
     /**
@@ -316,11 +374,7 @@ class User implements UserInterface, \JsonSerializable
         $propertyId,
         $default = null
     ) {
-        if (array_key_exists(
-            $propertyId,
-            $this->properties
-        )
-        ) {
+        if (array_key_exists($propertyId, $this->properties)) {
             return $this->properties[$propertyId];
         }
 
@@ -346,11 +400,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function isValidPropertyId($propertyId)
     {
-        if (preg_match(
-            '/[^a-z_\-0-9]/i',
-            $propertyId
-        )
-        ) {
+        if (preg_match('/[^a-z_\-0-9]/i', $propertyId)) {
             return false;
         }
 
@@ -366,11 +416,7 @@ class User implements UserInterface, \JsonSerializable
      */
     public function isValidState($state)
     {
-        if (preg_match(
-            '/[^a-z_\-0-9]/i',
-            $state
-        )
-        ) {
+        if (preg_match('/[^a-z_\-0-9]/i', $state)) {
             return false;
         }
 
@@ -392,123 +438,42 @@ class User implements UserInterface, \JsonSerializable
     ) {
         if (($data instanceof UserInterface)) {
 
-            if (!in_array(
-                'id',
-                $exclude
-            )
-            ) {
-                $this->setId($data->getId());
-            }
-            if (!in_array(
-                'username',
-                $exclude
-            )
-            ) {
-                $this->setUsername($data->getUsername());
-            }
-            if (!in_array(
-                'password',
-                $exclude
-            )
-            ) {
-                $this->setPassword($data->getPassword());
-            }
-            if (!in_array(
-                'state',
-                $exclude
-            )
-            ) {
-                $this->setState($data->getState());
-            }
-            if (!in_array(
-                'email',
-                $exclude
-            )
-            ) {
-                $this->setEmail($data->getEmail());
-            }
-            if (!in_array(
-                'name',
-                $exclude
-            )
-            ) {
-                $this->setName($data->getName());
-            }
-            if (!in_array(
-                'properties',
-                $exclude
-            )
-            ) {
-                $this->setProperties($data->getProperties());
-            }
+            $this->populateFromObject($data);
 
             return;
         }
 
         if (is_array($data)) {
 
-            if (isset($data['id'])
-                && !in_array(
-                    'id',
-                    $exclude
-                )
-            ) {
-                $this->setId($data['id']);
-            }
-            if (isset($data['username'])
-                && !in_array(
-                    'username',
-                    $exclude
-                )
-            ) {
-                $this->setUsername($data['username']);
-            }
-            if (isset($data['password'])
-                && !in_array(
-                    'password',
-                    $exclude
-                )
-            ) {
-                $this->setPassword($data['password']);
-            }
-            if (isset($data['state'])
-                && !in_array(
-                    'state',
-                    $exclude
-                )
-            ) {
-                $this->setState($data['state']);
-            }
-            if (isset($data['email'])
-                && !in_array(
-                    'email',
-                    $exclude
-                )
-            ) {
-                $this->setEmail($data['email']);
-            }
-            if (isset($data['name'])
-                && !in_array(
-                    'name',
-                    $exclude
-                )
-            ) {
-                $this->setName($data['name']);
-            }
-            if (isset($data['properties'])
-                && !in_array(
-                    'properties',
-                    $exclude
-                )
-            ) {
-                // @todo we need to try to populate the correct objects here?
-                $this->setProperties($data['properties']);
+            foreach ($data as $property => $value) {
+
+                // Check for ignore keys
+                if (in_array($property, $exclude)) {
+                    continue;
+                }
+
+                $this->set($property, $value);
             }
 
             return;
         }
 
-        throw new RcmUserException('User data could not be populated, data format not supported');
+        throw new RcmUserException(
+            'User data could not be populated, data format not supported'
+        );
+    }
+
+    /**
+     * populateFromObject
+     *
+     * @param UserInterface $object
+     *
+     * @return void
+     * @throws RcmUserException
+     */
+    public function populateFromObject(UserInterface $object)
+    {
+        $this->populate($object->toArray());
     }
 
     /**
@@ -518,7 +483,21 @@ class User implements UserInterface, \JsonSerializable
      */
     public function getIterator()
     {
-        return new \ArrayIterator(get_object_vars($this));
+        return new \ArrayIterator($this->toArray());
+    }
+
+    /**
+     * toArray
+     *
+     * @return array
+     */
+    public function toArray()
+    {
+        $arr = get_object_vars($this);
+
+        unset($arr['getSetExclude']);
+
+        return $arr;
     }
 
     /**

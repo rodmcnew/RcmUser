@@ -36,6 +36,26 @@ interface UserInterface extends \IteratorAggregate
 {
 
     /**
+     * set a property
+     *
+     * @param string $property
+     * @param mixed $value
+     *
+     * @return bool
+     */
+    public function set($property, $value);
+
+    /**
+     * get a property
+     *
+     * @param string $property
+     * @param mixed $default
+     *
+     * @return mixed
+     */
+    public function get($property, $default = null);
+
+    /**
      * setId
      *
      * @param mixed $id id
@@ -162,9 +182,25 @@ interface UserInterface extends \IteratorAggregate
     );
 
     /**
+     * populateFromObject
+     *
+     * @param UserInterface $object
+     *
+     * @return void
+     */
+    public function populateFromObject(UserInterface $object);
+
+    /**
      * getIterator
      *
      * @return \Traversable
      */
     public function getIterator();
+
+    /**
+     * toArray
+     *
+     * @return array
+     */
+    public function toArray();
 }
