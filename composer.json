@@ -35,7 +35,14 @@
     ],
     "require": {
         "php": ">=5.3.3",
+        "zendframework/zendframework": "2.*",
         "rwoverdijk/assetmanager": "1.*"
+    },
+    "require-dev": {
+        "doctrine/doctrine-orm-module": "0.*"
+    },
+    "suggest": {
+        "doctrine/doctrine-orm-module": "By default this module uses the Doctrine DataMappers"
     },
     "autoload": {
         "psr-0": {
