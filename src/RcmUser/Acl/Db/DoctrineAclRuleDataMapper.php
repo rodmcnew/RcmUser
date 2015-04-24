@@ -17,18 +17,12 @@
 
 namespace RcmUser\Acl\Db;
 
-use
-    Doctrine\ORM\EntityManager;
-use Rcm\Acl\ResourceProvider;
+use Doctrine\ORM\EntityManager;
 use RcmUser\Acl\Entity\AclResource;
-use
-    RcmUser\Acl\Entity\AclRule;
-use
-    RcmUser\Acl\Entity\DoctrineAclRule;
-use
-    RcmUser\Db\DoctrineMapperInterface;
-use
-    RcmUser\Result;
+use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Acl\Entity\DoctrineAclRule;
+use RcmUser\Db\DoctrineMapperInterface;
+use RcmUser\Result;
 
 /**
  * DoctrineAclRuleDataMapper
@@ -236,8 +230,8 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
             $privQuery
         );
 
-        $query->setParameter('resourceId',$resourceId);
-        $query->setParameter('privilege',$privilege);
+        $query->setParameter('resourceId', $resourceId);
+        $query->setParameter('privilege', $privilege);
 
         $rules = $query->getResult();
 

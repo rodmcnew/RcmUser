@@ -20,8 +20,6 @@ namespace RcmUser\Test\Service;
 use RcmUser\Service\RcmUserService;
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
-use Zend\Di\ServiceLocator;
-
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
@@ -77,7 +75,6 @@ class RcmUserServiceTest extends Zf2TestCase
     {
         /*
         $config = new Config();
-        $serviceLocator = new ServiceLocator();
         */
 
         $user = $this->getNewUser();
@@ -92,7 +89,6 @@ class RcmUserServiceTest extends Zf2TestCase
         $userDataService = new UserDataService();
         $userPropertyService = new UserPropertyService();
         $userAuthService = new UserAuthenticationService();
-        $authorizeService = new AuthorizeService($config, $serviceLocator);
         */
 
         $this->userDataService = $this->getMockBuilder(
