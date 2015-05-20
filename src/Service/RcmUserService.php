@@ -484,7 +484,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $currentUser = $this->getIdentity();
 
         if (empty($currentUser) || $user->getId() !== $currentUser->getId()) {
-
             throw new RcmUserException(
                 'SetIdentity expects user to be get same identity as current, '
                 . 'user authenticate to change users.'
@@ -521,7 +520,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         $userId = $user->getId();
 
         if ($userId != $currentUser->getId()) {
-
             throw new RcmUserException(
                 'RefreshIdentity expects user to be get same identity as current.'
             );
@@ -695,7 +693,6 @@ class RcmUserService extends \RcmUser\Event\EventProvider
         if ($result->isSuccess() || $result->getUser() == null) {
             return $result->getUser();
         } else {
-
             // this should not fail, if it does, something is really wrong
             throw new RcmUserException(
                 'User could not be built or was not returned'

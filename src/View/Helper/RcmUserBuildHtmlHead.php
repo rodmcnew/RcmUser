@@ -17,8 +17,7 @@
 
 namespace RcmUser\View\Helper;
 
-use
-    Zend\View\Helper\AbstractHelper;
+use Zend\View\Helper\AbstractHelper;
 
 /**
  * Class RcmUserBuildHtmlHead
@@ -61,9 +60,7 @@ class RcmUserBuildHtmlHead extends AbstractHelper
     public function buildHtmlHead()
     {
         if (is_array($this->htmlAssets)) {
-
             foreach ($this->htmlAssets as $type => $paths) {
-
                 foreach ($paths as $path) {
                     $this->includeHead(
                         $type,

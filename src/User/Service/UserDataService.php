@@ -17,16 +17,11 @@
 
 namespace RcmUser\User\Service;
 
-use
-    RcmUser\Event\EventProvider;
-use
-    RcmUser\User\Db\UserDataMapperInterface;
-use
-    RcmUser\User\Entity\ReadOnlyUser;
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Result;
+use RcmUser\Event\EventProvider;
+use RcmUser\User\Db\UserDataMapperInterface;
+use RcmUser\User\Entity\ReadOnlyUser;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
 
 /**
  * Class UserDataService
@@ -172,7 +167,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             $result = $results->last();
             $this->getEventManager()->trigger(
                 'getAllUsersFail',
@@ -289,7 +283,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             $result = $results->last();
 
             $this->getEventManager()->trigger(
@@ -368,7 +361,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             $result = $results->last();
             $this->getEventManager()->trigger(
                 'readUserFail',
@@ -418,7 +410,6 @@ class UserDataService extends EventProvider
         $existingUserResult = $this->readUser($requestUser);
 
         if (!$existingUserResult->isSuccess()) {
-
             // ERROR
             return $existingUserResult;
         }
@@ -474,7 +465,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             $result = $results->last();
             $this->getEventManager()->trigger(
                 'updateUserFail',
@@ -517,7 +507,6 @@ class UserDataService extends EventProvider
         $existingUserResult = $this->readUser($requestUser);
 
         if (!$existingUserResult->isSuccess()) {
-
             // ERROR
             return $existingUserResult;
         }
@@ -560,7 +549,6 @@ class UserDataService extends EventProvider
         );
 
         if ($results->stopped()) {
-
             $result = $results->last();
             $this->getEventManager()->trigger(
                 'deleteUserFail',

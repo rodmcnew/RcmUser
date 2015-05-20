@@ -17,16 +17,11 @@
 
 namespace RcmUser\Authentication\Adapter;
 
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Service\UserDataService;
-use
-    Zend\Authentication\Adapter\AbstractAdapter;
-use
-    Zend\Authentication\Result;
-use
-    Zend\Crypt\Password\PasswordInterface;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Service\UserDataService;
+use Zend\Authentication\Adapter\AbstractAdapter;
+use Zend\Authentication\Result;
+use Zend\Crypt\Password\PasswordInterface;
 
 /**
  * UserAdapter
@@ -151,7 +146,6 @@ class UserAdapter extends AbstractAdapter
         $existingUserResult = $this->getUserDataService()->readUser($user);
 
         if (!$existingUserResult->isSuccess()) {
-
             // ERROR
             return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null, $existingUserResult->getMessages(
             ));
@@ -167,10 +161,8 @@ class UserAdapter extends AbstractAdapter
             $existingHash
         );
         if ($isValid) {
-
             $result = new Result(Result::SUCCESS, $existingUser, []);
         } else {
-
             $result
                 = new Result(Result::FAILURE_CREDENTIAL_INVALID, null, ['User credential invalid.']);
         }

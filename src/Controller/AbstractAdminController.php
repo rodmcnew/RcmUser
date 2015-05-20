@@ -17,14 +17,10 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
-use
-    Zend\Http\Response;
-use
-    Zend\Mvc\Controller\AbstractActionController;
-use
-    Zend\View\Model\ViewModel;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use Zend\Http\Response;
+use Zend\Mvc\Controller\AbstractActionController;
+use Zend\View\Model\ViewModel;
 
 /**
  * Class AbstractAdminController

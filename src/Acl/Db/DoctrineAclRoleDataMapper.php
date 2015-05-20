@@ -178,9 +178,10 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
             $result = $this->fetchByRoleId($roleId);
 
             if (!$result->isSuccess()) {
-
                 return new Result(
-                    array(), Result::CODE_FAIL, $result->getMessages()
+                    array(),
+                    Result::CODE_FAIL,
+                    $result->getMessages()
                 );
                 break;
             }
@@ -228,7 +229,6 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         }
 
         try {
-
             $this->getEntityManager()->persist($aclRole);
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
@@ -260,7 +260,6 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         $roleId = $aclRole->getRoleId();
 
         if (!empty($roleId)) {
-
             $result = $this->fetchByRoleId($roleId);
 
             return $result;
@@ -298,7 +297,6 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         }
 
         try {
-
             $this->getEntityManager()->merge($aclRole);
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
@@ -351,7 +349,6 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         $result = $this->fetchByParentRoleId($aclRoleId);
 
         if (!$result->isSuccess()) {
-
             $result->setMessage(
                 'Failed to find child roles for  ' . $aclRole->getRoleId() . '.'
             );
@@ -362,19 +359,16 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         $childRoles = $result->getData();
 
         foreach ($childRoles as $childRole) {
-
             $childRole->setParentRoleId($parentRoleId);
             $childResult = $this->update($childRole);
 
             if (!$childResult->isSuccess()) {
-
                 $result->setCode(Result::CODE_FAIL);
                 $result->setMessage($childResult->getMessage());
             }
         }
 
         if (!$result->isSuccess()) {
-
             $result->setMessage(
                 'Failed to update child roles for delete of ' . $aclRole->getRoleId()
                 . '.'
@@ -384,7 +378,6 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         }
 
         try {
-
             $this->getEntityManager()->remove($aclRole);
             $this->getEntityManager()->flush();
         } catch (\Exception $e) {
@@ -415,7 +408,6 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
     public function getValidInstance(AclRole $aclRole)
     {
         if (!($aclRole instanceof DoctrineAclRole)) {
-
             $doctrineAclRole = new DoctrineAclRole();
             $doctrineAclRole->populate($aclRole);
 
@@ -435,11 +427,9 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
     public function prepareRoles($roles)
     {
         foreach ($roles as $key => $role) {
-
             $parentRoleId = $role->getParentRoleId();
 
             if (isset($roles[$parentRoleId])) {
-
                 $roles[$key]->setParentRole($roles[$parentRoleId]);
             }
         }
@@ -462,7 +452,6 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         $parentRoleId = $role->getParentRoleId();
         $ns = $role->getRoleId();
         if (!empty($parentRoleId)) {
-
             $parent = $aclRoles[$parentRoleId];
 
             $newns = $this->createNamespaceId(

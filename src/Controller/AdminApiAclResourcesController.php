@@ -17,12 +17,9 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
-use
-    RcmUser\Result;
-use
-    Zend\View\Model\JsonModel;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use RcmUser\Result;
+use Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiAclResourcesController
@@ -62,7 +59,6 @@ class AdminApiAclResourcesController extends AbstractAdminApiController
         );
 
         try {
-
             $resources = $aclResourceService->getResourcesWithNamespace();
             $result = new Result($resources);
 

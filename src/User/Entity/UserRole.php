@@ -17,8 +17,7 @@
 
 namespace RcmUser\User\Entity;
 
-use
-    RcmUser\Exception\RcmUserException;
+use RcmUser\Exception\RcmUserException;
 
 /**
  * Class UserRole
@@ -128,7 +127,6 @@ class UserRole implements UserRoleInterface
     public function populate($data = [])
     {
         if (($data instanceof UserRole)) {
-
             $this->setId($data->getId());
             $this->setRoleId($data->getRoleId());
             $this->setUserId($data->getUserId());
@@ -137,7 +135,6 @@ class UserRole implements UserRoleInterface
         }
 
         if (is_array($data)) {
-
             if (isset($data['id'])) {
                 $this->setId($data['id']);
             }

@@ -17,8 +17,7 @@
 
 namespace RcmUser\Db;
 
-use
-    Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManager;
 
 /**
  * DoctrineMapper

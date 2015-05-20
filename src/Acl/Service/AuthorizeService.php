@@ -18,16 +18,11 @@
 namespace RcmUser\Acl\Service;
 
 use RcmUser\Acl\Entity\AclRole;
-use
-    RcmUser\Acl\Entity\AclRule;
-use
-    RcmUser\Exception\RcmUserException;
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Entity\UserRoleProperty;
-use
-    Zend\Permissions\Acl\Acl;
+use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Exception\RcmUserException;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserRoleProperty;
+use Zend\Permissions\Acl\Acl;
 
 /**
  * Class AuthorizeService
@@ -133,7 +128,6 @@ class AuthorizeService
         $result = $this->getAclDataService()->getNamespacedRoles();
 
         if (!$result->isSuccess()) {
-
             // @todo Throw error?
             return [];
         }
@@ -151,7 +145,6 @@ class AuthorizeService
     public function getUserRoles($user)
     {
         if (!($user instanceof User)) {
-
             return $this->getGuestRole();
         }
 
@@ -178,7 +171,6 @@ class AuthorizeService
             $result = $this->getAclDataService()->getAllRules();
 
             if (!$result->isSuccess()) {
-
                 // @todo Throw error?
                 return [];
             }
@@ -222,7 +214,6 @@ class AuthorizeService
         $providerId
     ) {
         if (!isset($this->acl)) {
-
             $this->buildAcl();
         }
 
@@ -235,9 +226,7 @@ class AuthorizeService
         );
 
         foreach ($resources as $resource) {
-
             if (!$this->acl->hasResource($resource)) {
-
                 $this->acl->addResource(
                     $resource,
                     $resource->getParentResource()
@@ -247,10 +236,8 @@ class AuthorizeService
             $privileges = $resource->getPrivileges();
 
             if (!empty($privileges)) {
-
                 foreach ($privileges as $privilege) {
                     if (!$this->acl->hasResource($privilege)) {
-
                         $this->acl->addResource(
                             $privilege,
                             $resource
@@ -264,9 +251,7 @@ class AuthorizeService
         $rules = $this->getRules($resources);
 
         foreach ($rules as $aclRule) {
-
             if ($aclRule->getRule() == AclRule::RULE_ALLOW) {
-
                 $this->acl->allow(
                     $aclRule->getRoleId(),
                     $aclRule->getResourceId(),
@@ -274,7 +259,6 @@ class AuthorizeService
                     $aclRule->getAssertion()
                 );
             } elseif ($aclRule->getRule() == AclRule::RULE_DENY) {
-
                 $this->acl->deny(
                     $aclRule->getRoleId(),
                     $aclRule->getResourceId(),
@@ -300,7 +284,6 @@ class AuthorizeService
         $roles = $this->getRoles();
 
         foreach ($roles as $role) {
-
             if ($this->acl->hasRole($role)) {
                 // @todo throw error?
                 continue;
@@ -355,7 +338,7 @@ class AuthorizeService
         /* Check super admin
             we over-ride everything if user has super admin
         */
-        if($this->hasSuperAdmin($userRoles)){
+        if ($this->hasSuperAdmin($userRoles)) {
             return true;
         }
 
@@ -366,7 +349,6 @@ class AuthorizeService
             );
 
             foreach ($userRoles as $userRole) {
-
                 // @todo this will fail on deny
                 $result = $acl->isAllowed(
                     $userRole,
@@ -391,9 +373,10 @@ class AuthorizeService
             }
             $message .= 'user roles: ' . var_export($userRoles, true) . " \n";
             $message .= 'acl roles: ' . var_export(
-                $this->getAcl($resourceId, $providerId)->getRoles(), true
+                $this->getAcl($resourceId, $providerId)->getRoles(),
+                true
             ) . " \n";
-            $message .='defined roles: ' . var_export($this->getRoles() , true) . " \n";
+            $message .='defined roles: ' . var_export($this->getRoles(), true) . " \n";
             $message .= 'Acl failed with error: ' . $e->getMessage();
             $message .= '</pre>';
             //echo($message);
@@ -441,13 +424,12 @@ class AuthorizeService
         /* Check super admin
             we over-ride everything if user has super admin
         */
-        if($this->hasSuperAdmin($userRoles)){
+        if ($this->hasSuperAdmin($userRoles)) {
             return true;
         }
 
-        foreach($userRoles as $userRole){
-
-            if($userRole instanceof AclRole){
+        foreach ($userRoles as $userRole) {
+            if ($userRole instanceof AclRole) {
                 $userRoleId = $userRole->getRoleId();
             } else {
                 $userRoleId = $userRole;
@@ -457,7 +439,7 @@ class AuthorizeService
 
             $checkRoles = $result->getData();
 
-            if(array_key_exists($roleId, $checkRoles)){
+            if (array_key_exists($roleId, $checkRoles)) {
                 return true;
             }
         }
@@ -491,7 +473,6 @@ class AuthorizeService
     public function parseResource($resource)
     {
         if (is_string($resource)) {
-
             $resources = explode(
                 self::RESOURCE_DELIMITER,
                 $resource

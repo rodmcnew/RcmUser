@@ -17,8 +17,7 @@
 
 namespace RcmUser\User\Entity;
 
-use
-    RcmUser\Exception\RcmUserReadOnlyException;
+use RcmUser\Exception\RcmUserReadOnlyException;
 
 /**
  * Class ReadOnlyUser

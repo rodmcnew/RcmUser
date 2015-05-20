@@ -17,10 +17,8 @@
 
 namespace RcmUser\User\Event;
 
-use
-    RcmUser\User\Db\UserDataMapperInterface;
-use
-    Zend\EventManager\ListenerAggregateInterface;
+use RcmUser\User\Db\UserDataMapperInterface;
+use Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * Class UserDataServiceListeners
@@ -108,7 +106,6 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         );
 
         if ($result->isSuccess()) {
-
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
         }
@@ -148,7 +145,6 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         );
 
         if ($result->isSuccess()) {
-
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
         }
@@ -177,7 +173,6 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         );
 
         if ($result->isSuccess()) {
-
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
         }
@@ -217,7 +212,6 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
         );
 
         if ($result->isSuccess()) {
-
             // @todo may not be required if can assign (by reference)
             $responseUser->populate($result->getUser());
         }

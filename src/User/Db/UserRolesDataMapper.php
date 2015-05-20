@@ -17,12 +17,9 @@
 
 namespace RcmUser\User\Db;
 
-use
-    RcmUser\Acl\Db\AclRoleDataMapperInterface;
-use
-    RcmUser\Exception\RcmUserException;
-use
-    RcmUser\User\Entity\User;
+use RcmUser\Acl\Db\AclRoleDataMapperInterface;
+use RcmUser\Exception\RcmUserException;
+use RcmUser\User\Entity\User;
 
 /**
  * Class UserRolesDataMapper
@@ -85,7 +82,6 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
         $result = $this->getAclRoleDataMapper()->fetchAll();
 
         if ($result->isSuccess()) {
-
             $this->availableRoles = $result->getData();
         }
 

@@ -16,12 +16,9 @@
  */
 namespace RcmUser\Controller\Plugin;
 
-use
-    RcmUser\Acl\Service\AuthorizeService;
-use
-    RcmUser\Authentication\Service\UserAuthenticationService;
-use
-    Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use RcmUser\Acl\Service\AuthorizeService;
+use RcmUser\Authentication\Service\UserAuthenticationService;
+use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 
 /**
  * RcmUserIsAllowed

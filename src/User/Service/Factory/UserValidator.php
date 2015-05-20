@@ -17,14 +17,10 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use
-    RcmUser\User\InputFilter\UserInputFilter;
-use
-    Zend\InputFilter\Factory;
-use
-    Zend\ServiceManager\FactoryInterface;
-use
-    Zend\ServiceManager\ServiceLocatorInterface;
+use RcmUser\User\InputFilter\UserInputFilter;
+use Zend\InputFilter\Factory;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class UserValidator

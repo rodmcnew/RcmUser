@@ -17,12 +17,9 @@
 
 namespace RcmUser\Service\Factory;
 
-use
-    RcmUser\Controller\Plugin\RcmUserGetCurrentUser;
-use
-    Zend\ServiceManager\FactoryInterface;
-use
-    Zend\ServiceManager\ServiceLocatorInterface;
+use RcmUser\Controller\Plugin\RcmUserGetCurrentUser;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * ControllerPluginRcmUserGetCurrentUser

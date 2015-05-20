@@ -17,12 +17,9 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Acl\Entity\AclRule;
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
-use
-    Zend\View\Model\JsonModel;
+use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiAclRuleController
@@ -86,7 +83,6 @@ class AdminApiAclRuleController extends AbstractAdminApiController
         );
 
         try {
-
             $aclRule = new AclRule();
             $aclRule->populate($data);
             $result = $aclDataService->createRule($aclRule);

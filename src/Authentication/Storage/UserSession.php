@@ -17,8 +17,7 @@
 
 namespace RcmUser\Authentication\Storage;
 
-use
-    Zend\Authentication\Storage\Session;
+use Zend\Authentication\Storage\Session;
 
 /**
  * UserSession

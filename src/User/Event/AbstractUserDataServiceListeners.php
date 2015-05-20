@@ -17,12 +17,9 @@
 
 namespace RcmUser\User\Event;
 
-use
-    RcmUser\User\Result;
-use
-    Zend\EventManager\EventManagerInterface;
-use
-    Zend\EventManager\ListenerAggregateInterface;
+use RcmUser\User\Result;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * Class AbstractUserDataServiceListeners

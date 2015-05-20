@@ -17,8 +17,7 @@
 
 namespace RcmUser\Log;
 
-use
-    Zend\Log\LoggerInterface;
+use Zend\Log\LoggerInterface;
 
 /**
  * Class Logger
@@ -124,7 +123,6 @@ class Logger implements LoggerInterface
         $extra = []
     ) {
         if ($this->canLog($type)) {
-
             // override with logging logic here
         }
 

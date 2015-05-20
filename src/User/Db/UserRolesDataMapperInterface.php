@@ -17,8 +17,7 @@
 
 namespace RcmUser\User\Db;
 
-use
-    RcmUser\User\Entity\User;
+use RcmUser\User\Entity\User;
 
 /**
  * Interface UserRolesDataMapperInterface

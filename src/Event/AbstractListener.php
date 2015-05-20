@@ -17,10 +17,8 @@
 
 namespace RcmUser\Event;
 
-use
-    Zend\EventManager\EventManagerInterface;
-use
-    Zend\EventManager\ListenerAggregateInterface;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * AbstractListener

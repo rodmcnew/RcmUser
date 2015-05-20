@@ -17,8 +17,7 @@
 
 namespace RcmUser\User\InputFilter;
 
-use
-    Zend\InputFilter\InputFilter;
+use Zend\InputFilter\InputFilter;
 
 /**
  * Class UserInputFilter

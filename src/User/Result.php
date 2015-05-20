@@ -17,8 +17,7 @@
 
 namespace RcmUser\User;
 
-use
-    RcmUser\User\Entity\User;
+use RcmUser\User\Entity\User;
 
 /**
  * Class Result
@@ -73,10 +72,8 @@ class Result extends \RcmUser\Result
         $this->setCode($code);
 
         if (!is_array($messages)) {
-
             $this->setMessage((string)$messages);
         } else {
-
             $this->setMessages($messages);
         }
     }

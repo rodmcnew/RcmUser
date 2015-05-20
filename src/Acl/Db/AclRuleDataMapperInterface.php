@@ -17,8 +17,7 @@
 
 namespace RcmUser\Acl\Db;
 
-use
-    RcmUser\Acl\Entity\AclRule;
+use RcmUser\Acl\Entity\AclRule;
 
 /**
  * Interface AclRuleDataMapperInterface

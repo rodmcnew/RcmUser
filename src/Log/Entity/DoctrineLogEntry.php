@@ -17,8 +17,7 @@
 
 namespace RcmUser\Log\Entity;
 
-use
-    Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Class DoctrineLogEntry

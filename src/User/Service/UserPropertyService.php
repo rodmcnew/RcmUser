@@ -17,12 +17,9 @@
 
 namespace RcmUser\User\Service;
 
-use
-    RcmUser\Event\EventProvider;
-use
-    RcmUser\Result;
-use
-    RcmUser\User\Entity\User;
+use RcmUser\Event\EventProvider;
+use RcmUser\Result;
+use RcmUser\User\Entity\User;
 
 /**
  * Class UserPropertyService

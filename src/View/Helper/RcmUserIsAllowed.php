@@ -17,12 +17,9 @@
 
 namespace RcmUser\View\Helper;
 
-use
-    RcmUser\Acl\Service\AuthorizeService;
-use
-    RcmUser\Authentication\Service\UserAuthenticationService;
-use
-    Zend\View\Helper\AbstractHelper;
+use RcmUser\Acl\Service\AuthorizeService;
+use RcmUser\Authentication\Service\UserAuthenticationService;
+use Zend\View\Helper\AbstractHelper;
 
 /**
  * Class RcmUserIsAllowed

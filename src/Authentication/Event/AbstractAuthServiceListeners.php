@@ -17,16 +17,11 @@
 
 namespace RcmUser\Authentication\Event;
 
-use
-    RcmUser\Authentication\Service\AuthenticationService;
-use
-    RcmUser\Exception\RcmUserException;
-use
-    Zend\Authentication\Result;
-use
-    Zend\EventManager\EventManagerInterface;
-use
-    Zend\EventManager\ListenerAggregateInterface;
+use RcmUser\Authentication\Service\AuthenticationService;
+use RcmUser\Exception\RcmUserException;
+use Zend\Authentication\Result;
+use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\ListenerAggregateInterface;
 
 /**
  * AbstractAuthServiceListeners

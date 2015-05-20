@@ -17,14 +17,10 @@
 
 namespace RcmUser\Acl\Db;
 
-use
-    RcmUser\Acl\Entity\AclRole;
-use
-    RcmUser\Config\Config;
-use
-    RcmUser\Exception\RcmUserException;
-use
-    RcmUser\Result;
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Config\Config;
+use RcmUser\Exception\RcmUserException;
+use RcmUser\Result;
 
 /**
  * class AclRoleDataMapper

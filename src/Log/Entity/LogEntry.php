@@ -108,7 +108,6 @@ class LogEntry
     public function setExtra($extra)
     {
         if (empty($extra)) {
-
             $this->extra = '';
 
             return;

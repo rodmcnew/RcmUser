@@ -17,8 +17,7 @@
 
 namespace RcmUser\Authentication\Service;
 
-use
-    RcmUser\User\Entity\User;
+use RcmUser\User\Entity\User;
 
 /**
  * AuthenticationService

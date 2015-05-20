@@ -17,12 +17,9 @@
 
 namespace RcmUser\View\Service\Factory;
 
-use
-    RcmUser\View\Helper\RcmUserBuildHtmlHead;
-use
-    Zend\ServiceManager\FactoryInterface;
-use
-    Zend\ServiceManager\ServiceLocatorInterface;
+use RcmUser\View\Helper\RcmUserBuildHtmlHead;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class ViewHelperRcmUserBuildHtmlHead

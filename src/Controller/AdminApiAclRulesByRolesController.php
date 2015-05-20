@@ -17,10 +17,8 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
-use
-    Zend\View\Model\JsonModel;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiAclRulesByRolesController
@@ -63,7 +61,6 @@ class AdminApiAclRulesByRolesController extends AbstractAdminApiController
         );
 
         try {
-
             $result = $aclDataService->getRulesByRoles();
         } catch (\Exception $e) {
             return $this->getExceptionResponse($e);

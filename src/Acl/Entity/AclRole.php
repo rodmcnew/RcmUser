@@ -17,10 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
-use
-    RcmUser\Exception\RcmUserException;
-use
-    Zend\Permissions\Acl\Role\RoleInterface;
+use RcmUser\Exception\RcmUserException;
+use Zend\Permissions\Acl\Role\RoleInterface;
 
 /**
  * AclRole
@@ -85,12 +83,10 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
         $roleId = strtolower((string)$roleId);
 
         if (!$this->isValidRoleId($roleId)) {
-
             throw new RcmUserException("Role roleId ({$roleId}) is invalid.");
         }
 
         if (empty($roleId)) {
-
             throw new RcmUserException("Role roleId cannot be set empty.");
         }
 
@@ -121,7 +117,6 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
         $parentRoleId = strtolower((string)$parentRoleId);
 
         if (!$this->isValidRoleId($parentRoleId)) {
-
             throw new RcmUserException("Role parentRoleId ({$parentRoleId}) is invalid.");
         }
 
@@ -130,9 +125,7 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
         }
 
         if (!empty($this->parentRole)) {
-
             if ($this->parentRole->getRoleId() != $parentRoleId) {
-
                 $this->parentRole = null;
             }
         }
@@ -240,7 +233,6 @@ class AclRole implements RoleInterface, \JsonSerializable, \IteratorAggregate
     public function populate($data = [])
     {
         if (($data instanceof AclRole)) {
-
             $this->setRoleId($data->getRoleId());
             $this->setDescription($data->getDescription());
             $this->setParentRoleId($data->getParentRoleId());

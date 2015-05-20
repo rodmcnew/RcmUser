@@ -17,16 +17,11 @@
 
 namespace RcmUser\User\Db;
 
-use
-    Doctrine\ORM\EntityManager;
-use
-    RcmUser\Db\DoctrineMapperInterface;
-use
-    RcmUser\User\Entity\DoctrineUser;
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Result;
+use Doctrine\ORM\EntityManager;
+use RcmUser\Db\DoctrineMapperInterface;
+use RcmUser\User\Entity\DoctrineUser;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
 
 /**
  * Class DoctrineUserDataMapper
@@ -215,7 +210,6 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
         );
 
         if (!$result->isSuccess()) {
-
             $responseUser->setState(null);
 
             return $result;
@@ -228,7 +222,6 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
         );
 
         if ($dupUser->isSuccess()) {
-
             $responseUser->setState(null);
 
             // ERROR - user exists
@@ -241,7 +234,6 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
         );
 
         if (!$result->isSuccess()) {
-
             $responseUser->setState(null);
 
             return $result;
@@ -274,11 +266,9 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
         $id = $requestUser->getId();
 
         if (!empty($id)) {
-
             $result = $this->fetchById($id);
 
             if ($result->isSuccess()) {
-
                 // we want to populate everything but properties.
                 $responseUser->populate(
                     $result->getUser(),
@@ -293,11 +283,9 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
         $username = $requestUser->getUsername();
 
         if (!empty($username)) {
-
             $result = $this->fetchByUsername($username);
 
             if ($result->isSuccess()) {
-
                 // we want to populate everything but properties.
                 $responseUser->populate(
                     $result->getUser(),
@@ -328,7 +316,6 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     ) {
         /* VALIDATE */
         if (!$this->canUpdate($requestUser)) {
-
             // error, cannot update
             return new Result($responseUser, Result::CODE_FAIL, 'User cannot be updated, id required for update.');
         }
@@ -339,12 +326,10 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
 
         // if username changed:
         if ($existingUserName !== $requestUsername) {
-
             // make sure no duplicates
             $dupUser = $this->fetchByUsername($requestUsername);
 
             if ($dupUser->isSuccess()) {
-
                 // ERROR - user exists
                 return new Result($responseUser, Result::CODE_FAIL, 'User could not be prepared, duplicate username.');
             }
@@ -397,7 +382,6 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     ) {
         /* VALIDATE */
         if (!$this->canDelete($requestUser)) {
-
             // error, cannot update
             return new Result($responseUser, Result::CODE_FAIL, 'User cannot be deleted, id required for delete.');
         }
@@ -429,7 +413,6 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     public function getValidInstance(User $user)
     {
         if (!($user instanceof DoctrineUser)) {
-
             $doctrineUser = new DoctrineUser();
             $doctrineUser->populate($user);
 
@@ -467,7 +450,6 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     public function parseDeletedUsername(User $user)
     {
         try {
-
             $usernameArr = json_decode(
                 $user->getUsername(),
                 true

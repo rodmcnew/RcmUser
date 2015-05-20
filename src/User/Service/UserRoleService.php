@@ -17,14 +17,10 @@
 
 namespace RcmUser\User\Service;
 
-use
-    RcmUser\Result;
-use
-    RcmUser\User\Db\UserRolesDataMapperInterface;
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Entity\UserRoleProperty;
+use RcmUser\Result;
+use RcmUser\User\Db\UserRolesDataMapperInterface;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserRoleProperty;
 
 /**
  * Class UserRoleService
@@ -453,10 +449,8 @@ class UserRoleService
 
         $id = $user->getId();
         if (empty($id)) {
-
             $roles = $this->getDefaultGuestRoleIds()->getData();
         } else {
-
             $roles = $this->getDefaultUserRoleIds()->getData();
         }
 

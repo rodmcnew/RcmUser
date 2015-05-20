@@ -17,12 +17,9 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
-use
-    RcmUser\Result;
-use
-    RcmUser\User\Entity\User;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use RcmUser\Result;
+use RcmUser\User\Entity\User;
 
 /**
  * Class AdminApiUserRoleController
@@ -65,7 +62,6 @@ class AdminApiUserRoleController extends AbstractAdminApiController
         );
 
         try {
-
             $user = new User($userId);
 
             $result = $userRoleService->readRoles($user);
@@ -102,7 +98,6 @@ class AdminApiUserRoleController extends AbstractAdminApiController
         );
 
         try {
-
             if (!isset($data['userId'])) {
                 $result
                     = new Result(null, Result::CODE_FAIL, "No user id recieved.");
@@ -161,7 +156,6 @@ class AdminApiUserRoleController extends AbstractAdminApiController
         );
 
         try {
-
             $data = json_decode(
                 urldecode($data),
                 true

@@ -17,10 +17,8 @@
 
 namespace RcmUser\User\Event;
 
-use
-    RcmUser\Result;
-use
-    RcmUser\User\Entity\UserRoleProperty;
+use RcmUser\Result;
+use RcmUser\User\Entity\UserRoleProperty;
 
 /**
  * UserPropertyServiceListeners
@@ -82,7 +80,6 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
         $property = new UserRoleProperty();
 
         try {
-
             $property->populate($data);
         } catch (\Exception $e) {
             return new \RcmUser\Result(

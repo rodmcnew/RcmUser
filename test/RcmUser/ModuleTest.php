@@ -37,16 +37,6 @@ class ModuleTest extends Zf2TestCase
     /**
      * No covers tag so this tests both class map file and module file
      */
-    public function testGetAutoloaderConfig()
-    {
-        $autoLoadConfig = $this->module->getAutoloaderConfig();
-        $mapPath = array_pop($autoLoadConfig['Zend\Loader\ClassMapAutoloader']);
-        $this->assertTrue(is_array(include($mapPath)));
-    }
-
-    /**
-     * No covers tag so this tests both class map file and module file
-     */
     public function testGetConfig()
     {
         $this->assertTrue(is_array($this->module->getConfig()));

@@ -17,12 +17,9 @@
 
 namespace RcmUser\Authentication\Service\Factory;
 
-use
-    RcmUser\Authentication\Storage\UserSession;
-use
-    Zend\ServiceManager\FactoryInterface;
-use
-    Zend\ServiceManager\ServiceLocatorInterface;
+use RcmUser\Authentication\Storage\UserSession;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Storage

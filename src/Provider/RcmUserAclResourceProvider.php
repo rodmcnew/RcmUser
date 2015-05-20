@@ -17,10 +17,8 @@
 
 namespace RcmUser\Provider;
 
-use
-    RcmUser\Acl\Entity\AclResource;
-use
-    RcmUser\Acl\Provider\ResourceProvider;
+use RcmUser\Acl\Entity\AclResource;
+use RcmUser\Acl\Provider\ResourceProvider;
 
 /**
  * RcmUserAclResourceProvider
@@ -85,7 +83,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
     public function getResources()
     {
         if (empty($this->resources)) {
-
             $this->buildResources();
         }
 
@@ -106,7 +103,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
     {
 
         if (empty($this->resources)) {
-
             $this->buildResources();
         }
 

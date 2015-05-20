@@ -17,12 +17,9 @@
 
 namespace RcmUser\Authentication\Service;
 
-use
-    RcmUser\Event\EventProvider;
-use
-    RcmUser\User\Entity\User;
-use
-    Zend\Authentication\Result;
+use RcmUser\Event\EventProvider;
+use RcmUser\User\Entity\User;
+use Zend\Authentication\Result;
 
 /**
  * UserAuthenticationService
@@ -108,7 +105,6 @@ class UserAuthenticationService extends EventProvider
         }
 
         if ($results->stopped()) {
-
             /*
              * @event validateCredentialsSuccess
              */
@@ -172,7 +168,6 @@ class UserAuthenticationService extends EventProvider
         }
 
         if ($results->stopped()) {
-
             /*
              * @event authenticateSuccess
              */
@@ -294,7 +289,6 @@ class UserAuthenticationService extends EventProvider
     {
 
         if ($this->getObfuscatePassword()) {
-
             $user->setPassword(User::PASSWORD_OBFUSCATE);
         }
 

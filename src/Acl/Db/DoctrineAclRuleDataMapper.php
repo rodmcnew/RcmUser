@@ -216,10 +216,8 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     public function fetchByResourcePrivilege($resourceId, $privilege)
     {
         if ($privilege === null) {
-
             $privQuery = 'AND rule.privilege is NULL';
         } else {
-
             $privQuery = 'AND rule.privilege = :privilege';
         }
 
@@ -297,10 +295,8 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
         }
 
         if ($privilege === null) {
-
             $privQuery = 'AND rule.privilege is NULL';
         } else {
-
             $privQuery = 'AND rule.privilege = ?4';
         }
 
@@ -385,7 +381,6 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     public function getValidInstance(AclRule $aclRule)
     {
         if (!($aclRule instanceof DoctrineAclRule)) {
-
             $doctrineAclRole = new DoctrineAclRule();
             $doctrineAclRole->populate($aclRule);
 

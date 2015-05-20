@@ -17,8 +17,7 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
+use RcmUser\Provider\RcmUserAclResourceProvider;
 
 /**
  * Class AdminAclController

@@ -17,12 +17,9 @@
 
 namespace RcmUser\User\Data;
 
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Result;
-use
-    Zend\Crypt\Password\PasswordInterface;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
+use Zend\Crypt\Password\PasswordInterface;
 
 /**
  * Class DbUserDataPreparer
@@ -114,7 +111,6 @@ class DbUserDataPreparer implements UserDataPreparerInterface
 
         // if password changed
         if ($existingPassword !== $requestPassword) {
-
             $hashedPassword = $this->getEncryptor()->create($requestPassword);
             $responseUser->setPassword($hashedPassword);
         }
@@ -124,7 +120,6 @@ class DbUserDataPreparer implements UserDataPreparerInterface
         $existingState = $existingUser->getState();
 
         if ($requestState !== $existingState) {
-
             $responseUser->setState($requestState);
         }
 

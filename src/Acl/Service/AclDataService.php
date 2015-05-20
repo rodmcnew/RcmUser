@@ -17,17 +17,12 @@
 
 namespace RcmUser\Acl\Service;
 
-use
-    RcmUser\Acl\Db\AclRoleDataMapperInterface;
-use
-    RcmUser\Acl\Db\AclRuleDataMapperInterface;
-use
-    RcmUser\Acl\Entity\AclRole;
-use
-    RcmUser\Acl\Entity\AclRule;
+use RcmUser\Acl\Db\AclRoleDataMapperInterface;
+use RcmUser\Acl\Db\AclRuleDataMapperInterface;
+use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Acl\Entity\NamespaceAclRole;
-use
-    RcmUser\Result;
+use RcmUser\Result;
 
 /**
  * AclDataService
@@ -243,7 +238,6 @@ class AclDataService
         $rulesResult = $this->getRulesByRole($roleId);
 
         if (!$rulesResult->isSuccess()) {
-
             $rulesResult->setMessage(
                 'Could not remove related rules for role: ' . $roleId
             );
@@ -254,10 +248,8 @@ class AclDataService
         $aclRules = $rulesResult->getData();
 
         foreach ($aclRules as $aclRule) {
-
             $ruleResult = $this->deleteRule($aclRule);
             if (!$ruleResult->isSuccess()) {
-
                 $result->setCode(Result::CODE_FAIL);
                 $result->setMessage($ruleResult->getMessage());
             }
@@ -286,7 +278,6 @@ class AclDataService
 
         $index = 0;
         foreach ($roles as $ns => $nsRole) {
-
             $aclRoles[$index] = $nsRole;
             $index ++;
         }
@@ -313,7 +304,6 @@ class AclDataService
         $roles = $result->getData();
 
         foreach ($roles as $role) {
-
             $ns = $this->createRoleNamespaceId(
                 $role,
                 $roles,
@@ -351,7 +341,6 @@ class AclDataService
         $parentId = $aclRole->getParentRoleId();
         $ns = $aclRole->getRoleId();
         if (!empty($parentId)) {
-
             $parent = $aclRoles[$parentId];
 
             $newns = $this->createRoleNamespaceId(
@@ -527,17 +516,14 @@ class AclDataService
         $roles = $result->getData();
 
         foreach ($roles as $ns => $role) {
-
             $id = $role->getRoleId();
             $aclRoles[$ns] = array();
             $aclRoles[$ns]['role'] = $role;
             $aclRoles[$ns]['roleNs'] = $ns;
             $rulesResult = $this->getRulesByRole($id);
             if ($rulesResult->isSuccess()) {
-
                 $aclRoles[$ns]['rules'] = $rulesResult->getData();
             } else {
-
                 $aclRoles[$ns]['rules'] = array();
             }
         }

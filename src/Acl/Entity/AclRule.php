@@ -17,8 +17,7 @@
 
 namespace RcmUser\Acl\Entity;
 
-use
-    RcmUser\Exception\RcmUserException;
+use RcmUser\Exception\RcmUserException;
 
 /**
  * AclRule
@@ -228,7 +227,6 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     public function populate($data = [])
     {
         if (($data instanceof AclRule)) {
-
             $this->setRule($data->getRule());
             $this->setRoleId($data->getRoleId());
             $this->setResourceId($data->getResourceId());

@@ -17,14 +17,10 @@
 
 namespace RcmUser\User\Event;
 
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Entity\UserRoleProperty;
-use
-    RcmUser\User\Result;
-use
-    RcmUser\User\Service\UserRoleService;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserRoleProperty;
+use RcmUser\User\Result;
+use RcmUser\User\Service\UserRoleService;
 
 /**
  * UserRoleDataServiceListeners
@@ -117,14 +113,11 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $users = $result->getData();
 
         foreach ($users as &$user) {
-
             $readResult = $this->getUserRoleService()->readRoles($user);
 
             if ($readResult->isSuccess()) {
-
                 $roles = $readResult->getData();
             } else {
-
                 $result->setMessage(
                     'Could not read user roles: ' . $readResult->getMessage()
                 );
@@ -168,7 +161,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$userRoleProperty instanceof UserRoleProperty) {
-
             $userRoleProperty = $this->buildValidUserRoleProperty(
                 $responseUser,
                 []

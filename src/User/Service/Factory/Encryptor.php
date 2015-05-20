@@ -17,12 +17,9 @@
 
 namespace RcmUser\User\Service\Factory;
 
-use
-    Zend\Crypt\Password\Bcrypt;
-use
-    Zend\ServiceManager\FactoryInterface;
-use
-    Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Crypt\Password\Bcrypt;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
  * Class Encryptor

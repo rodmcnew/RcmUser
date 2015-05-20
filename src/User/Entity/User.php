@@ -186,7 +186,6 @@ class User implements UserInterface, \JsonSerializable
         $username = (string)$username;
 
         if (empty($username)) {
-
             $username = null;
         }
         $this->username = $username;
@@ -241,7 +240,6 @@ class User implements UserInterface, \JsonSerializable
         $state = (string)$state;
 
         if (!$this->isValidState($state)) {
-
             throw new RcmUserException("User state is invalid: {$state}");
         }
 
@@ -272,7 +270,6 @@ class User implements UserInterface, \JsonSerializable
     {
         $email = (string)$email;
         if (empty($email)) {
-
             $email = null;
         }
         $this->email = $email;
@@ -299,7 +296,6 @@ class User implements UserInterface, \JsonSerializable
     {
         $name = (string)$name;
         if (empty($name)) {
-
             $name = null;
         }
         $this->name = $name;
@@ -325,7 +321,6 @@ class User implements UserInterface, \JsonSerializable
     public function setProperties($properties)
     {
         if (empty($properties)) {
-
             $properties = [];
         }
         $this->properties = $properties;
@@ -355,7 +350,6 @@ class User implements UserInterface, \JsonSerializable
         $value
     ) {
         if (!$this->isValidPropertyId($propertyId)) {
-
             throw new RcmUserException("Property Id is invalid: {$propertyId}");
         }
 
@@ -437,16 +431,13 @@ class User implements UserInterface, \JsonSerializable
         $exclude = []
     ) {
         if (($data instanceof UserInterface)) {
-
             $this->populateFromObject($data);
 
             return;
         }
 
         if (is_array($data)) {
-
             foreach ($data as $property => $value) {
-
                 // Check for ignore keys
                 if (in_array($property, $exclude)) {
                     continue;
@@ -530,38 +521,31 @@ class User implements UserInterface, \JsonSerializable
     public function merge(User $user)
     {
         if ($this->getId() === null) {
-
             $this->setId($user->getId());
         }
 
         if ($this->getUsername() === null) {
-
             $this->setUsername($user->getUsername());
         }
 
         if ($this->getPassword() === null) {
-
             $this->setPassword($user->getPassword());
         }
 
         if ($this->getState() === null) {
-
             $this->setState($user->getState());
         }
 
         if ($this->getEmail() === null) {
-
             $this->setEmail($user->getEmail());
         }
 
         if ($this->getName() === null) {
-
             $this->setName($user->getName());
         }
 
         $properties = $user->getProperties();
         foreach ($properties as $key => $property) {
-
             $userProperty = $this->getProperty($key);
             if (empty($userProperty)) {
                 $this->setProperty(

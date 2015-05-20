@@ -17,14 +17,10 @@
 
 namespace RcmUser\User\Data;
 
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Result;
-use
-    Zend\InputFilter\Factory;
-use
-    Zend\InputFilter\InputFilterInterface;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
+use Zend\InputFilter\Factory;
+use Zend\InputFilter\InputFilterInterface;
 
 /**
  * Class UserValidator
@@ -174,13 +170,11 @@ class UserValidator implements UserValidatorInterface
         $inputs = $this->getUserInputFilterConfig();
 
         foreach ($this->validatableFields as $field) {
-
             $getMethod = 'get' . ucfirst($field);
 
             if ($requestUser->$getMethod() !== $existingUser->$getMethod()
                 && isset($inputs[$field])
             ) {
-
                 $inputFilter->add(
                     $factory->createInput($inputs[$field]),
                     $field
@@ -218,10 +212,8 @@ class UserValidator implements UserValidatorInterface
         $inputs = $this->getUserInputFilterConfig();
 
         foreach ($this->validatableFields as $field) {
-
             if (isset($inputs[$field])
             ) {
-
                 $inputFilter->add(
                     $factory->createInput($inputs[$field]),
                     $field
@@ -258,17 +250,14 @@ class UserValidator implements UserValidatorInterface
         $inputFilter->setData($validUser);
 
         if ($inputFilter->isValid()) {
-
             $validUser->populate($inputFilter->getValues());
 
             return new Result($validUser);
         } else {
-
             $result
                 = new Result($validUser, Result::CODE_FAIL, 'User input not valid');
 
             foreach ($inputFilter->getInvalidInput() as $error) {
-
                 $msg = $error->getName() . ': ';
 
                 $errs = $error->getMessages();

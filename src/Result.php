@@ -17,8 +17,7 @@
 
 namespace RcmUser;
 
-use
-    RcmUser\Exception\RcmUserResultException;
+use RcmUser\Exception\RcmUserResultException;
 
 /**
  * Class Result
@@ -88,14 +87,11 @@ class Result implements \JsonSerializable
         $this->setCode($code);
 
         if (!is_array($messages)) {
-
             $message = (string)$messages;
             if (!empty($message)) {
-
                 $this->setMessage($message);
             }
         } else {
-
             $this->setMessages($messages);
         }
     }
@@ -233,7 +229,6 @@ class Result implements \JsonSerializable
     public function throwFailure()
     {
         if (!$this->isSuccess()) {
-
             throw new RcmUserResultException($this->getMessagesString());
         }
     }

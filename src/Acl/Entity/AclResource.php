@@ -17,10 +17,8 @@
 
 namespace RcmUser\Acl\Entity;
 
-use
-    RcmUser\Exception\RcmUserException;
-use
-    Zend\Permissions\Acl\Resource\GenericResource;
+use RcmUser\Exception\RcmUserException;
+use Zend\Permissions\Acl\Resource\GenericResource;
 
 /**
  * Class AclResource
@@ -100,7 +98,6 @@ class AclResource extends GenericResource implements \JsonSerializable
         $resourceId = strtolower((string)$resourceId);
 
         if (!$this->isValidResourceId($resourceId) || empty($resourceId)) {
-
             throw new RcmUserException("Resource resourceId ({$resourceId}) is invalid.");
         }
 
@@ -143,20 +140,16 @@ class AclResource extends GenericResource implements \JsonSerializable
         $parentResourceId = strtolower((string)$parentResourceId);
 
         if (!$this->isValidResourceId($parentResourceId)) {
-
             throw new RcmUserException("Resource parentResourceId ({$parentResourceId}) is invalid.");
         }
 
         if (!empty($this->parentResource)) {
-
             if ($this->parentResource->getResourceId() !== $parentResourceId) {
-
                 $this->parentResource = null;
             }
         }
 
         if (empty($parentResourceId)) {
-
             $parentResourceId = null;
         }
 
@@ -301,7 +294,6 @@ class AclResource extends GenericResource implements \JsonSerializable
     public function populate($data = [])
     {
         if (($data instanceof AclResource)) {
-
             $this->setResourceId($data->getResourceId());
             $this->setProviderId($data->getProviderId());
             $this->setParentResourceId($data->getParentResourceId());

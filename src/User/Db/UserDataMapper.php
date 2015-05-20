@@ -16,16 +16,11 @@
  */
 namespace RcmUser\User\Db;
 
-use
-    RcmUser\Exception\RcmUserException;
-use
-    RcmUser\User\Data\UserDataPreparerInterface;
-use
-    RcmUser\User\Data\UserValidatorInterface;
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Result;
+use RcmUser\Exception\RcmUserException;
+use RcmUser\User\Data\UserDataPreparerInterface;
+use RcmUser\User\Data\UserValidatorInterface;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Result;
 
 /**
  * Class UserDataMapper

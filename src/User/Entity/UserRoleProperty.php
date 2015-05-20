@@ -17,8 +17,7 @@
 
 namespace RcmUser\User\Entity;
 
-use
-    RcmUser\Exception\RcmUserException;
+use RcmUser\Exception\RcmUserException;
 
 /**
  * Class UserRoleProperty
@@ -89,7 +88,6 @@ class UserRoleProperty implements UserPropertyInterface
     public function setRole($roleId)
     {
         if (!$this->hasRole($roleId)) {
-
             $this->roles[] = $roleId;
         }
     }
@@ -169,14 +167,12 @@ class UserRoleProperty implements UserPropertyInterface
     public function populate($data = [])
     {
         if (($data instanceof UserRoleProperty)) {
-
             $this->setRoles($data->getRoles());
 
             return;
         }
 
         if (is_array($data)) {
-
             $this->setRoles($data);
 
             return;

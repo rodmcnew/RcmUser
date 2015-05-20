@@ -17,8 +17,7 @@
 
 namespace RcmUser\Acl\Entity;
 
-use
-    RcmUser\Exception\RcmUserException;
+use RcmUser\Exception\RcmUserException;
 
 /**
  * Class AclPrivilege
@@ -70,7 +69,6 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
         $privileges = $this->preparePrivileges($privileges);
 
         foreach ($privileges as $privilege) {
-
             $this->setPrivilege($privilege);
         }
     }
@@ -98,7 +96,6 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
         $privilege = strtolower((string)$privilege);
 
         if (!$this->isValidPrivilege($privilege)) {
-
             throw new RcmUserException("Privilege ({$privilege}) is invalid.");
         }
 
@@ -168,7 +165,6 @@ class AclPrivilege implements \JsonSerializable, \IteratorAggregate
     public function preparePrivileges($privileges)
     {
         if (!is_array($privileges)) {
-
             $privileges = (string)$privileges;
 
             $privileges = explode(

@@ -17,12 +17,9 @@
 
 namespace RcmUser\Event;
 
-use
-    Zend\EventManager\EventManager;
-use
-    Zend\EventManager\EventManagerAwareInterface;
-use
-    Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
 
 /**
  * Class EventProvider

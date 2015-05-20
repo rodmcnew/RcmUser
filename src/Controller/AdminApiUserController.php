@@ -17,18 +17,12 @@
 
 namespace RcmUser\Controller;
 
-use
-    RcmUser\Acl\Entity\AclRule;
-use
-    RcmUser\Provider\RcmUserAclResourceProvider;
-use
-    RcmUser\User\Entity\User;
-use
-    RcmUser\User\Entity\UserRoleProperty;
-use
-    RcmUser\User\Result;
-use
-    Zend\View\Model\JsonModel;
+use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Provider\RcmUserAclResourceProvider;
+use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserRoleProperty;
+use RcmUser\User\Result;
+use Zend\View\Model\JsonModel;
 
 /**
  * Class AdminApiUserController
@@ -69,7 +63,6 @@ class AdminApiUserController extends AbstractAdminApiController
         );
 
         try {
-
             $result = $userDataService->getAllUsers([]);
         } catch (\Exception $e) {
             return $this->getExceptionResponse($e);
@@ -102,7 +95,6 @@ class AdminApiUserController extends AbstractAdminApiController
         );
 
         try {
-
             $user = new User($id);
 
             $result = $userDataService->readUser($user);
@@ -229,9 +221,7 @@ class AdminApiUserController extends AbstractAdminApiController
                 'update_credentials'
             );
             if (!$isAllowChangeCreds) {
-
                 if ($user->getPassword() !== null) {
-
                     $result
                         = new Result($user, Result::CODE_FAIL, "Not allowed to change username and password.");
 
@@ -244,7 +234,6 @@ class AdminApiUserController extends AbstractAdminApiController
             $result = $userDataService->updateUser($user);
 
             if ($user->getUsername() === null) {
-
                 $result->setMessage(
                     'Username was not update, was not allowed or empty.'
                 );

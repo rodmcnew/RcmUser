@@ -17,12 +17,9 @@
 
 namespace RcmUser\Log;
 
-use
-    Doctrine\ORM\EntityManager;
-use
-    RcmUser\Log\Entity\DoctrineLogEntry;
-use
-    Zend\Log\LoggerInterface;
+use Doctrine\ORM\EntityManager;
+use RcmUser\Log\Entity\DoctrineLogEntry;
+use Zend\Log\LoggerInterface;
 
 /**
  * Class DoctrineLogger

@@ -3,7 +3,6 @@
 
 namespace RcmUser\Acl\Entity;
 
-
 /**
  * Class NamespaceAclRole
  *
