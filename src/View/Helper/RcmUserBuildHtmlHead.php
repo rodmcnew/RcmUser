@@ -82,7 +82,7 @@ class RcmUserBuildHtmlHead extends AbstractHelper
      *
      * @return void
      */
-    function includeHead(
+    public function includeHead(
         $type,
         $path
     ) {

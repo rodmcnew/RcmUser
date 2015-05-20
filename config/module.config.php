@@ -95,7 +95,8 @@ return array(
                                 'pattern' => "/^[a-zA-Z0-9-_@'.]+$/",
                                 //'pattern' => "/[<>]/",
                                 'messageTemplates' => array(
-                                    \Zend\Validator\Regex::NOT_MATCH => "Username can only contain letters, numbers and charactors: . - _ @ '."
+                                    \Zend\Validator\Regex::NOT_MATCH
+                                        => "Username can only contain letters, numbers and charactors: . - _ @ '."
                                 )
                             ),
                         ),
