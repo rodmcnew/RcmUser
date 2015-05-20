@@ -10,4 +10,5 @@ before_script:
   - composer update --prefer-source
 script:
   - find . -type d \( -path ./vendor -o -path ./test \) -prune -o -name "*.php" -print0 | xargs -0 -n1 -P8 php -l
+  - ./vendor/bin/phpunit
   - ./vendor/bin/phpcs --standard=PSR2 --ignore=vendor,test,autoload_classmap.php --extensions=php ./
