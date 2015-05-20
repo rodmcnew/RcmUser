@@ -35,28 +35,8 @@ use Zend\Mvc\MvcEvent;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class Module implements AutoloaderProviderInterface
+class Module
 {
-    /**
-     * getAutoloaderConfig
-     *
-     * @return array
-     */
-    public function getAutoloaderConfig()
-    {
-        return [
-            'Zend\Loader\ClassMapAutoloader' => [
-                __DIR__ . '/autoload_classmap.php',
-            ],
-            'Zend\Loader\StandardAutoloader' => [
-                'namespaces' => [
-                    __NAMESPACE__ => __DIR__ . '/src/' .
-                        str_replace('\\', '/', __NAMESPACE__),
-                ],
-            ],
-        ];
-    }
-
     /**
      * getConfig
      *
@@ -64,7 +44,7 @@ class Module implements AutoloaderProviderInterface
      */
     public function getConfig()
     {
-        return include __DIR__ . '/config/module.config.php';
+        return include __DIR__ . '/../config/module.config.php';
     }
 
     /* Not used
