@@ -15,7 +15,6 @@
  * @link      https://github.com/reliv
  */
 return array(
-
     'RcmUser' => array(
         /**
          * Include any paths for JavaScript and CSS here
@@ -514,9 +513,9 @@ return array(
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
                 'paths' => array(
-                    __DIR__ . '/../src/RcmUser/Acl/Entity',
-                    __DIR__ . '/../src/RcmUser/User/Entity',
-                    __DIR__ . '/../src/RcmUser/Log/Entity',
+                    __DIR__ . '/../src/Acl/Entity',
+                    __DIR__ . '/../src/User/Entity',
+                    __DIR__ . '/../src/Log/Entity',
                 )
             ),
             'orm_default' => array(
