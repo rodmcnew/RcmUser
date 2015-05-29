@@ -904,9 +904,9 @@ return array(
             ],
             // @todo implement this
             //'collections' => [
-            //    '/modules/rcm-user/rcm-user.js' => [
+            //    'modules/rcm-user/rcm-user.js' => [
             //    ],
-            //    '/modules/admin/rcm-user/rcm-user.js' => [
+            //    'modules/admin/rcm-user/rcm-user.js' => [
             //    ],
             //],
         ],
