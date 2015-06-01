@@ -26,12 +26,12 @@ return array(
         'htmlAssets' => array(
             'js' => array(
                 '/modules/rcm-angular-js/angular/angular.js',
-                '/modules/rcm-twitter-bootstrap/bootstrap/js/bootstrap.js',
+                '/vendor/bootstrap/dist/js/bootstrap.min.js',
                 '/modules/rcm-angular-js/angular-ui/bootstrap/ui-bootstrap-tpls-0.11.0.min.js',
             ),
 
             'css' => array(
-                '/modules/rcm-twitter-bootstrap/bootstrap/css/bootstrap.css',
+                '/vendor/bootstrap/dist/css/bootstrap.min.css',
             ),
         ),
         'User\Config' => array(
