@@ -1,4 +1,5 @@
 # HOW TO DEFINE SuperUser #
+
 ```php
     <?php
     // Create a User:
@@ -22,4 +23,17 @@
     
     // There is a way to do this with a service, but I think it is protected currently
     DoctrineUserRoleDataMapper->addRole($user, $superAdminRoleId)
+```
+# HOW TO DEFINE Default Guest Role #
+
+```php
+    <?php
+    // Create default guest role:
+    
+    $guestRoleId = AclDataService->getGuestRoleId()
+    
+    $guestRole = new AclRole();
+    $guestRole->setRoleId($guestRoleId);
+    $guestRole->setDescription('Default Guest'); 
+    AclDataService->createRole($guestRole);
 ```
