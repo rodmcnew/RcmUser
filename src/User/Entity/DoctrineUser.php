@@ -42,7 +42,7 @@ class DoctrineUser extends User
     /**
      * @var string $id
      * @ORM\Id
-     * @ORM\Column(type="string", length=255, unique=true, nullable=false)
+     * @ORM\Column(type="string", length=255, nullable=false)
      */
     protected $id = null;
 
