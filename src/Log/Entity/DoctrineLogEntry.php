@@ -41,7 +41,7 @@ class DoctrineLogEntry extends LogEntry
     /**
      * @var integer
      * @ORM\Id
-     * @ORM\Column(type="integer", unique=true, nullable=false)
+     * @ORM\Column(type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
