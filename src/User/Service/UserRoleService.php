@@ -275,7 +275,7 @@ class UserRoleService
      * @param User   $user   user
      * @param string $roleId aclRoleId
      *
-     * @return \RcmUser\User\Db\Result
+     * @return Result
      */
     public function addRole(
         User $user,
