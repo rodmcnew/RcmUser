@@ -66,13 +66,13 @@ class DoctrineUser extends User
 
     /**
      * @var string $email
-     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $email;
 
     /**
      * @var string $name
-     * @ORM\Column(type="string", length=255, unique=true, nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $name;
 }
