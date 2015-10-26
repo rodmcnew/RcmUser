@@ -47,14 +47,6 @@ class Module
         return include __DIR__ . '/../config/module.config.php';
     }
 
-    /* Not used
-    public function getServiceConfig()
-    {
-
-        return array();
-    }
-    */
-
     /**
      * onBootstrap
      *
@@ -63,25 +55,6 @@ class Module
      * @return void
      */
     public function onBootstrap(MvcEvent $event)
-    {
-        /** @var \Zend\EventManager\EventManager $eventManager */
-        $eventManager = $event->getApplication()->getEventManager();
-
-        $eventManager->attach(
-            MvcEvent::EVENT_ROUTE,
-            [$this, 'onRouteEvent'],
-            0
-        );
-    }
-
-    /**
-     * Temporary Listener Attachments for RcmUser.
-     *
-     * @param MvcEvent $event
-     *
-     * @todo Investigate better ways to handle this.
-     */
-    public function onRouteEvent(MvcEvent $event)
     {
         $application = $event->getApplication();
         $sm = $application->getServiceManager();
