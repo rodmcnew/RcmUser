@@ -60,13 +60,13 @@ class Module
         $sm = $application->getServiceManager();
         $eventManager = $application->getEventManager();
 
-        try {
+//        try {
             $listeners = $sm->get('RcmUser\Event\Listeners');
             foreach ($listeners as $listener) {
                 $listener->attach($eventManager);
             }
-        } catch (\Exception $e) {
-            // no listeners
-        }
+//        } catch (\Exception $e) {
+//            // no listeners
+//        }
     }
 }
