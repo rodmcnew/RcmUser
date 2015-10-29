@@ -525,6 +525,15 @@ class RcmUserService extends \RcmUser\Event\EventProvider
             );
         }
 
+        // Sync properties
+        $currentProperties = $currentUser->getProperties();
+        $updatedProperties = $user->getProperties();
+        foreach ($currentProperties as $currentPropertyId => $currentProperty) {
+            if (!array_key_exists($currentPropertyId, $updatedProperties)) {
+                $user->setProperty($currentPropertyId, $currentProperty);
+            }
+        }
+
         $this->getUserAuthService()->setIdentity($user);
     }
 
@@ -643,7 +652,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      * hasUserRoleBasedAccess -
      * Check if a user has access based on role inheritance
      *
-     * @param User $user
+     * @param User   $user
      * @param string $roleId
      *
      * @return bool
