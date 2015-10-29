@@ -254,11 +254,11 @@ class UserAuthenticationService extends EventProvider
     /**
      * getIdentity
      *
-     * @param null $deflt default is no identity
+     * @param null $default default is no identity
      *
-     * @return mixed|null
+     * @return User|null
      */
-    public function getIdentity($deflt = null)
+    public function getIdentity($default = null)
     {
         /*
          * @event getIdentity
@@ -272,7 +272,7 @@ class UserAuthenticationService extends EventProvider
         $user = $results->last();
 
         if (empty($user)) {
-            return $deflt;
+            return $default;
         }
 
         return $this->prepareUser($user);
@@ -287,7 +287,6 @@ class UserAuthenticationService extends EventProvider
      */
     public function prepareUser(User $user)
     {
-
         if ($this->getObfuscatePassword()) {
             $user->setPassword(User::PASSWORD_OBFUSCATE);
         }

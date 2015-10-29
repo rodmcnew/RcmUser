@@ -40,7 +40,6 @@ class RcmUserServiceTest extends Zf2TestCase
     public $userAuthService;
     public $authorizeService;
 
-
     public function setUp()
     {
         $this->buildRcmUserService();
@@ -161,7 +160,6 @@ class RcmUserServiceTest extends Zf2TestCase
         $this->authorizeService->expects($this->any())
             ->method('hasRoleBasedAccess')
             ->will($this->returnValue(true));
-
 
         $this->rcmUserService = new RcmUserService();
         $this->rcmUserService->setUserDataService($this->userDataService);
@@ -352,7 +350,6 @@ class RcmUserServiceTest extends Zf2TestCase
         );
     }
 
-
     public function testGetUserProperty()
     {
         $user = $this->getNewUser();
@@ -415,9 +412,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testClearIdentity()
     {
-        $result = $this->getRcmUserService()->clearIdentity('somePropertName');
-
-        $this->assertTrue($result, 'Did not return true.');
+        $this->getRcmUserService()->clearIdentity('somePropertName');
     }
 
     public function testGetIdentity()
@@ -479,7 +474,6 @@ class RcmUserServiceTest extends Zf2TestCase
         $this->assertTrue($result, 'Did not return true.');
     }
 
-
     public function testHasRoleBasedAccess()
     {
         $user = $this->getRcmUserService()->getIdentity();
@@ -488,7 +482,10 @@ class RcmUserServiceTest extends Zf2TestCase
 
         $this->assertTrue($result, 'Did not return true.');
 
-        $result = $this->getRcmUserService()->hasUserRoleBasedAccess($user, 'someRole');
+        $result = $this->getRcmUserService()->hasUserRoleBasedAccess(
+            $user,
+            'someRole'
+        );
 
         $this->assertTrue($result, 'Did not return true.');
     }
@@ -516,6 +513,5 @@ class RcmUserServiceTest extends Zf2TestCase
             'Did not return instance of Result.'
         );
     }
-
 
 }

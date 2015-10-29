@@ -88,6 +88,12 @@ RcmUserService is a high level service/facade that exposes many useful methods f
 - Methods for checking user access (ACL)
 - Other utility and helpful methods are also provided
 
+### CurrentUser Service ###
+
+Exposes a simple service for getting the current user
+
+CurrentUser->get({default if no user}) or CurrentUser({default if no user})
+
 ##### Data Methods #####
 
 - getUser(User $user)
@@ -773,6 +779,13 @@ return array(
              */
             'RcmUser\Service\RcmUserService' =>
                 'RcmUser\Service\Factory\RcmUserService',
+            /**
+             * Simple Access to the current user
+             * Uses:
+             *  UserAuthenticationService
+             */
+            'RcmUser\Service\CurrentUser' =>
+                'RcmUser\Service\Factory\CurrentUser',
             /*
              * Provides the Access Resources for this Module to ACL
              * Required *

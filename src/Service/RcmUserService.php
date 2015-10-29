@@ -405,7 +405,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @param User $user request user object
      *
-     * @return Result
+     * @return \Zend\Authentication\Result
      */
     public function authenticate(User $user)
     {
@@ -420,7 +420,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function clearIdentity()
     {
-        return $this->getUserAuthService()->clearIdentity();
+        $this->getUserAuthService()->clearIdentity();
     }
 
     /**
@@ -490,7 +490,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
             );
         }
 
-        return $this->getUserAuthService()->setIdentity($user);
+        $this->getUserAuthService()->setIdentity($user);
     }
 
     /**
@@ -525,7 +525,16 @@ class RcmUserService extends \RcmUser\Event\EventProvider
             );
         }
 
-        return $this->getUserAuthService()->setIdentity($user);
+        // Sync properties
+        $currentProperties = $currentUser->getProperties();
+        $updatedProperties = $user->getProperties();
+        foreach ($currentProperties as $currentPropertyId => $currentProperty) {
+            if (!array_key_exists($currentPropertyId, $updatedProperties)) {
+                $user->setProperty($currentPropertyId, $currentProperty);
+            }
+        }
+
+        $this->getUserAuthService()->setIdentity($user);
     }
 
     /**
@@ -643,7 +652,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      * hasUserRoleBasedAccess -
      * Check if a user has access based on role inheritance
      *
-     * @param User $user
+     * @param User   $user
      * @param string $roleId
      *
      * @return bool
