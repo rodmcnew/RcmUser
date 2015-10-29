@@ -484,6 +484,13 @@ return array(
              */
             'RcmUser\Service\RcmUserService' =>
                 'RcmUser\Service\Factory\RcmUserService',
+            /**
+             * Simple Access to the current user
+             * Uses:
+             *  UserAuthenticationService
+             */
+            'RcmUser\Service\CurrentUser' =>
+                'RcmUser\Service\Factory\CurrentUser',
             /*
              * Provides the Access Resources for this Module to ACL
              * Required *

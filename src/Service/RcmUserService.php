@@ -405,7 +405,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @param User $user request user object
      *
-     * @return Result
+     * @return \Zend\Authentication\Result
      */
     public function authenticate(User $user)
     {
@@ -420,7 +420,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      */
     public function clearIdentity()
     {
-        return $this->getUserAuthService()->clearIdentity();
+        $this->getUserAuthService()->clearIdentity();
     }
 
     /**
@@ -490,7 +490,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
             );
         }
 
-        return $this->getUserAuthService()->setIdentity($user);
+        $this->getUserAuthService()->setIdentity($user);
     }
 
     /**
@@ -525,7 +525,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
             );
         }
 
-        return $this->getUserAuthService()->setIdentity($user);
+        $this->getUserAuthService()->setIdentity($user);
     }
 
     /**
