@@ -18,6 +18,7 @@
 namespace RcmUser\Authentication\Storage;
 
 use Zend\Authentication\Storage\Session;
+use Zend\Session\ManagerInterface as SessionManager;
 
 /**
  * UserSession
