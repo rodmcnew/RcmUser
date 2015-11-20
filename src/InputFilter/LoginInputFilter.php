@@ -1,6 +1,6 @@
 <?php
 
-namespace RcmUser\User\InputFilter;
+namespace RcmUser\InputFilter;
 
 use Zend\InputFilter\InputFilter;
 

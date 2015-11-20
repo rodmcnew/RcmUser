@@ -3,7 +3,7 @@
 namespace RcmUser\ApiController;
 
 use RcmUser\Provider\RcmUserAclResourceProvider;
-use RcmUser\User\InputFilter\LoginInputFilter;
+use RcmUser\InputFilter\LoginInputFilter;
 use Reliv\RcmApiLib\Model\ApiMessage;
 use Zend\Http\Response;
 
