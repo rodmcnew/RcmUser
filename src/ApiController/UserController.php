@@ -23,6 +23,31 @@ use Zend\Http\Response;
 class UserController extends AbstractController
 {
     /**
+     * List of RPC methods that are passed as IDs
+     * 
+     * @var array
+     */
+    protected $reservedIds
+        = [
+            'new',
+            'current',
+            'login',
+            'logout',
+        ];
+
+    /**
+     * isReservedId
+     *
+     * @param $id
+     *
+     * @return bool
+     */
+    protected function isReservedId($id)
+    {
+        return in_array($id, $this->reservedIds);
+    }
+
+    /**
      * get
      *
      * @param mixed $id
@@ -42,7 +67,7 @@ class UserController extends AbstractController
             $user = $rcmUserService->getCurrentUser();
         }
 
-        if ($this->isAllowed(
+        if (!$this->isReservedId($id) && $this->isAllowed(
             RcmUserAclResourceProvider::RESOURCE_ID_USER,
             'read'
         )
