@@ -567,6 +567,8 @@ return array(
                 'RcmUser\Controller\AdminApiUserRolesController',
             'RcmUser\Controller\AdminApiUserRoleController' =>
                 'RcmUser\Controller\AdminApiUserRoleController',
+            'RcmUser\ApiController\UserController' =>
+                'RcmUser\ApiController\UserController'
         ),
     ),
     'router' => array(
@@ -865,6 +867,30 @@ return array(
                     'defaults' => array(
                         'controller' =>
                             'RcmUser\Controller\AdminApiUserRoleController',
+                    ),
+                ),
+            ),
+            /**
+             * RcmUserApiUser
+             * API for User
+             * - GET New:     /api/rcm-user/user/new
+             * - GET current: /api/rcm-user/user/current
+             * - POST login:  /api/rcm-user/user/login
+             *   {
+             *    "username": "MYUSERNAME",
+             *    "password": "MYPASSWORD"
+             *   }
+             * - POST logout: /api/rcm-user/user/logout
+             *
+             * @api
+             */
+            'RcmUserApiUser' => array(
+                'type' => 'Segment',
+                'options' => array(
+                    'route' => '/api/rcm-user/user[/:id]',
+                    'defaults' => array(
+                        'controller' =>
+                            'RcmUser\ApiController\UserController',
                     ),
                 ),
             ),
