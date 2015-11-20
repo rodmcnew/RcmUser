@@ -24,7 +24,7 @@ class UserController extends AbstractController
 {
     /**
      * List of RPC methods that are passed as IDs
-     * 
+     *
      * @var array
      */
     protected $reservedIds
@@ -67,10 +67,11 @@ class UserController extends AbstractController
             $user = $rcmUserService->getCurrentUser();
         }
 
-        if (!$this->isReservedId($id) && $this->isAllowed(
-            RcmUserAclResourceProvider::RESOURCE_ID_USER,
-            'read'
-        )
+        if (!$this->isReservedId($id)
+            && $this->isAllowed(
+                RcmUserAclResourceProvider::RESOURCE_ID_USER,
+                'read'
+            )
         ) {
             $user = $rcmUserService->getUserById($id);
         }
