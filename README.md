@@ -216,17 +216,6 @@ Any data mapper can be written and configured so that data may be stored based o
 > NOTE: If you decide to write you own data mappers, you may find the implementation test (W.I.P.) in RcmUser/test/ImplementationTest helpful.
 > The implementation test is NOT to be run in PROD as it creates and destroys data.
 
-#### Controller Plugins and View Helpers ####
-
-- rcmUserIsAllowed($resourceId, $privilege = null, $providerId = null) (plugin and helper)
- - Alias of RcmUserService::isAllowed()
-
-- rcmUserHasRoleBasedAccess($roleId) (plugin and helper)
- - Alias of RcmUserService::hasRoleBasedAccess()
- 
-- rcmUserGetCurrentUser($default = null) (plugin and helper)
- - Alias of RcmUserService::getIdentity()
-
 ### Authentication ###
 
 This module uses the ZF2 Authentication libraries.  This requires it to provide:
@@ -243,9 +232,9 @@ This module uses the ZF2 Authentication libraries.  This requires it to provide:
 ### ACL ###
 
 This module wraps resources in a root schema and provides data mappers for storage of roles and rules.
-This module also provides a service, controller plug-in and view helper for isAllowed (rcmUserIsAllowed for plug-in and helper)
+This module also provides a service for isAllowed
 
-This module also creates some ACL resources that are used to allow access to APIs and Views provided in this Module.
+This module also creates some ACL resources that are used to allow access to APIs and Views.
 
 ProviderId:
 - RcmUser
@@ -277,12 +266,6 @@ Optional based on configuration
 
 - doctrine 2.x
 - mysql 5.6.x (not tested on lesser versions)
-
-View dependencies
-
-- AngularJs (https://angularjs.org/)
-- Bootstrap (http://getbootstrap.com/)
-- UI Bootstrap (http://angular-ui.github.io/bootstrap/)
 
 Installation
 ------------
