@@ -14,19 +14,19 @@
  * @version   GIT: <git_id>
  * @link      https://github.com/reliv
  */
-return array(
-    'RcmUser' => array(
-        'User\Config' => array(
+return [
+    'RcmUser' => [
+        'User\Config' => [
 
             /*
              * ValidUserStates
              * Used for UI
              */
-            'ValidUserStates' => array(
+            'ValidUserStates' => [
                 'disabled',
                 // **REQUIRED for User entity**
                 'enabled',
-            ),
+            ],
             /*
              * DefaultUserState
              * Used in:
@@ -52,89 +52,88 @@ return array(
              * This input filter will be applied
              * to the User object on create and save.
              */
-            'InputFilter' => array(
+            'InputFilter' => [
 
-                'username' => array(
+                'username' => [
                     'name' => 'username',
                     'required' => true,
-                    'filters' => array(
-                        array('name' => 'StringTrim'),
-                    ),
-                    'validators' => array(
-                        array(
+                    'filters' => [
+                        ['name' => 'StringTrim'],
+                    ],
+                    'validators' => [
+                        [
                             'name' => 'StringLength',
-                            'options' => array(
+                            'options' => [
                                 'encoding' => 'UTF-8',
                                 'min' => 3,
                                 'max' => 100,
-                            ),
-                        ),
+                            ],
+                        ],
                         // Help protect from XSS
-                        array(
+                        [
                             'name' => 'Regex',
-                            'options' => array(
+                            'options' => [
                                 'pattern' => "/^[a-zA-Z0-9-_@'.]+$/",
                                 //'pattern' => "/[<>]/",
-                                'messageTemplates' => array(
+                                'messageTemplates' => [
                                     \Zend\Validator\Regex::NOT_MATCH
                                         => "Username can only contain letters, numbers and charactors: . - _ @ '."
-                                )
-                            ),
-                        ),
-                    ),
-                ),
-                'password' => array(
+                                ]
+                            ],
+                        ],
+                    ],
+                ],
+                'password' => [
                     'name' => 'password',
                     'required' => true,
-                    'filters' => array(),
-                    'validators' => array(
-                        array(
+                    'filters' => [],
+                    'validators' => [
+                        [
                             'name' => 'StringLength',
-                            'options' => array(
+                            'options' => [
                                 'encoding' => 'UTF-8',
                                 'min' => 6,
                                 'max' => 100,
-                            ),
-                        ),
+                            ],
+                        ],
                         /*
-                        array(
+                        [
                             'name' => 'Regex',
-                            'options' => array(
-                                'pattern' => '^(?=.*\d)(?=.*[a-zA-Z])$'
-                            ),
-                        ),
+                            'options' => [
+                                'pattern' => '^(?=.*\d](?=.*[a-zA-Z]]$'
+                            ],
+                        ],
                         */
-                    ),
-                ),
-                'email' => array(
+                    ],
+                ],
+                'email' => [
                     'name' => 'email',
                     'required' => true,
-                    'filters' => array(
-                        array('name' => 'Zend\Filter\StripTags'),
+                    'filters' => [
+                        ['name' => 'Zend\Filter\StripTags'],
                         // Help protect from XSS
-                        array('name' => 'Zend\Filter\StringTrim'),
-                    ),
-                    'validators' => array(
-                        array('name' => 'Zend\Validator\EmailAddress'),
-                    ),
-                ),
-                'name' => array(
+                        ['name' => 'Zend\Filter\StringTrim'],
+                    ],
+                    'validators' => [
+                        ['name' => 'Zend\Validator\EmailAddress'],
+                    ],
+                ],
+                'name' => [
                     'name' => 'name',
                     'required' => true,
-                    'filters' => array(
-                        array('name' => 'Zend\Filter\StripTags'),
+                    'filters' => [
+                        ['name' => 'Zend\Filter\StripTags'],
                         // Help protect from XSS
-                        array('name' => 'Zend\Filter\StringTrim'),
-                    ),
-                    'validators' => array(),
-                ),
-            ),
-        ),
-        'Auth\Config' => array(
+                        ['name' => 'Zend\Filter\StringTrim'],
+                    ],
+                    'validators' => [],
+                ],
+            ],
+        ],
+        'Auth\Config' => [
             'ObfuscatePasswordOnAuth' => true,
-        ),
-        'Acl\Config' => array(
-
+        ],
+        'Acl\Config' => [
             /*
              * DefaultGuestRoleIds and DefaultUserRoleIds
              * Used by:
@@ -144,8 +143,8 @@ return array(
              * for a user on the user data events
              * in RcmUser\User\Service\UserDataService.
              */
-            'DefaultGuestRoleIds' => array('guest'),
-            'DefaultUserRoleIds' => array('user'),
+            'DefaultGuestRoleIds' => ['guest'],
+            'DefaultUserRoleIds' => ['user'],
             /*
              * SuperAdminRoleId
              *
@@ -173,20 +172,20 @@ return array(
              *
              * Format for each value of this array is:
              *
-             * 'ProviderId(module namespace without back-slashes)' =>
-             * 'MyResource/ResourceProvider(extents ResourceProvider)'
+             * 'ProviderId(module namespace without back-slashes]' =>
+             * 'MyResource/ResourceProvider(extents ResourceProvider]'
              *
              * OR
              *
-             * ProviderId(usually module namespace)' => array(
+             * ProviderId(usually module namespace]' => [
              *     'resourceId' => 'some-resource'
              *     'parentResourceId' => null // Or a parent resourceId if needed
-             *     'privileges' => array('privilege1', 'privilege2', 'etc...'),
+             *     'privileges' => ['privilege1', 'privilege2', 'etc...'],
              *     'name' => 'Human readable or translatable name',
              *     'description' => 'Human readable or translatable description',
-             * )
+             * ]
              */
-            'ResourceProviders' => array(
+            'ResourceProviders' => [
 
                 /*
                  * RcmUserAccess
@@ -196,40 +195,40 @@ return array(
                 'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
 
                 /* example of resource providers as array *
-                'RcmUser.TEST' => array(
-                    'test-one' => array(
+                'RcmUser.TEST' => [
+                    'test-one' => [
                         'resourceId' => 'test-one',
                         'parentResourceId' => null,
-                        'privileges' => array(
+                        'privileges' => [
                             'read',
                             'update',
                             'create',
                             'delete',
                             'execute',
-                        ),
+                        ],
                         'name' => 'Test resource one.',
                         'description' => 'test resource one desc.',
-                    ),
-                    'test-two' => array(
+                    ],
+                    'test-two' => [
                         'resourceId' => 'test-two',
                         'parentResourceId' => 'test-one',
-                        'privileges' => array(
+                        'privileges' => [
                             'read',
                             'update',
                             'create',
                             'delete',
                             'execute',
-                        ),
+                        ],
                         'name' => 'Test resource two.',
                         'description' => 'test resource two desc.',
-                    )
-                ),
+                    ]
+                ],
                 /* - example */
-            ),
-        ),
-    ),
-    'service_manager' => array(
-        'factories' => array(
+            ],
+        ],
+    ],
+    'service_manager' => [
+        'factories' => [
             /*
              * Config
              */
@@ -284,7 +283,7 @@ return array(
             /* ---------------------------- */
             /*
              * UserRolesDataMapper
-             * Required for (ACL user property):
+             * Required for (ACL user property]:
              *  RcmUser\User\Event\UserRoleDataServiceListeners
              *
              * This is a DataMapper adapter that is used
@@ -298,7 +297,7 @@ return array(
             /*
              * UserValidator - Validates User object data on create and update
              * Required for:
-             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper]
              *
              * Uses the InputFilter value from the config by default.
              * This may be configured to use a custom UserValidator as required.
@@ -320,10 +319,10 @@ return array(
             /*
              * UserDataPreparer
              * Required for:
-             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper)
+             *  RcmUser\User\Db\UserDataMapper (RcmUser\User\UserDataMapper]
              *
              * Used by default to prepare data for DB storage.
-             * By default, encrypts passwords and creates id (UUID)
+             * By default, encrypts passwords and creates id (UUID]
              * This may be configured to use a custom UserDataPreparer as required
              */
             'RcmUser\User\Data\UserDataPreparer' =>
@@ -331,7 +330,7 @@ return array(
             /*
              * UserDataServiceListeners
              * Required
-             *  to validate, prepare and save (CRUD) User:
+             *  to validate, prepare and save (CRUD] User:
              *
              * Requires: RcmUser\User\UserDataMapper
              *
@@ -342,7 +341,7 @@ return array(
                 'RcmUser\User\Service\Factory\UserDataServiceListeners',
             /*
              * UserRoleDataServiceListeners
-             * Required for (User Acl Property populating):
+             * Required for (User Acl Property populating]:
              */
             'RcmUser\User\UserRoleDataServiceListeners' =>
                 'RcmUser\User\Service\Factory\UserRoleDataServiceListeners',
@@ -360,8 +359,8 @@ return array(
                 'RcmUser\Authentication\Service\Factory\UserAuthenticationService',
             /* ---------------------------- */
             /*
-             * UserAdapter (requires Encryptor)
-             * Required for (Auth):
+             * UserAdapter (requires Encryptor]
+             * Required for (Auth]:
              *  RcmUser\Authentication\Service\AuthenticationService
              *
              * By default this auth Adapter uses the Encryptor
@@ -372,7 +371,7 @@ return array(
                 'RcmUser\Authentication\Service\Factory\Adapter',
             /*
              * UserSession
-             * Required for (Auth):
+             * Required for (Auth]:
              *  RcmUser\Authentication\Service\AuthenticationService
              *
              * By default this module uses the default session container for storage
@@ -416,7 +415,7 @@ return array(
             'RcmUser\Acl\Service\AclResourceService' =>
                 'RcmUser\Acl\Service\Factory\AclResourceService',
             /*
-             * AuthorizeService (ACL)
+             * AuthorizeService (ACL]
              * Used by:
              *  RcmUserService
              *  ControllerPluginRcmUserIsAllowed
@@ -489,29 +488,29 @@ return array(
              * Required *
              */
             'RcmUser\Log\Logger' => 'RcmUser\Service\Factory\DoctrineLogger',
-        ),
-    ),
+        ],
+    ],
     /*
      * Allows doctrine to generate tables as needed
      * Only required if using doctrine entities and mappers
      * And you want doctrine utilities to work correctly
      */
-    'doctrine' => array(
-        'driver' => array(
-            'RcmUser' => array(
+    'doctrine' => [
+        'driver' => [
+            'RcmUser' => [
                 'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                 'cache' => 'array',
-                'paths' => array(
+                'paths' => [
                     __DIR__ . '/../src/Acl/Entity',
                     __DIR__ . '/../src/User/Entity',
                     __DIR__ . '/../src/Log/Entity',
-                )
-            ),
-            'orm_default' => array(
-                'drivers' => array(
+                ]
+            ],
+            'orm_default' => [
+                'drivers' => [
                     'RcmUser' => 'RcmUser'
-                )
-            )
-        )
-    ),
-);
+                ]
+            ]
+        ]
+    ],
+];
