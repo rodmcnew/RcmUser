@@ -35,9 +35,7 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.*",
-        "rwoverdijk/assetmanager": "1.*",
-        "rcm/api-lib": "0.*"
+        "zendframework/zendframework": "2.*"
     },
     "require-dev": {
         "doctrine/doctrine-orm-module": "0.*",
