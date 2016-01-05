@@ -17,6 +17,8 @@
 
 namespace RcmUser\Acl\Provider;
 
+use RcmUser\Acl\Entity\AclResource;
+
 /**
  * class ResourceProvider
  *
@@ -38,6 +40,7 @@ class ResourceProvider implements ResourceProviderInterface
      * @var string $providerId
      */
     protected $providerId = null;
+
     /**
      * @var array $resources
      */
@@ -78,6 +81,18 @@ class ResourceProvider implements ResourceProviderInterface
     }
 
     /**
+     * getAllResources
+     * Return a one-dimensional array of resources and privileges
+     * containing ALL possible resources including run-time resources
+     *
+     * @return array
+     */
+    public function getAllResources()
+    {
+        return $this->resources;
+    }
+
+    /**
      * getResources (ALL resources)
      * Return a multi-dimensional array of resources and privileges
      * containing ALL possible resources including run-time resources
@@ -105,5 +120,19 @@ class ResourceProvider implements ResourceProviderInterface
         }
 
         return null;
+    }
+
+    /**
+     * hasResource
+     *
+     * @param string $resourceId
+     *
+     * @return bool
+     */
+    public function hasResource($resourceId)
+    {
+        $resource = $this->getResource($resourceId);
+
+        return ($resource !== null);
     }
 }

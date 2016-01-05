@@ -1,22 +1,9 @@
 <?php
-/**
- * AclResourceService.php
- *
- * AclResourceService
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Service\Factory
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
+
 namespace RcmUser\Acl\Service\Factory;
 
-use RcmUser\Acl\Entity\AclResource;
+use RcmUser\Acl\Entity\RootAclResource;
+use RcmUser\Acl\Entity\RootResource;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -54,21 +41,7 @@ class AclResourceService implements FactoryInterface
             []
         );
 
-        /* root resource */
-        $rootPrivileges = [
-            'read',
-            'update',
-            'create',
-            'delete',
-            'execute',
-        ];
-
-        $rootResource = new AclResource('root', null, $rootPrivileges);
-        $rootResource->setName('Root');
-        $rootResource->setDescription(
-            'This is the lowest level resource.  '
-            . 'Access to this will allow access to all resources.'
-        );
+        $rootResource = new RootAclResource();
 
         $service = new \RcmUser\Acl\Service\AclResourceService($rootResource);
         $service->setResourceProviders($resourceProviders);
