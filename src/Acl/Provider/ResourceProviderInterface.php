@@ -28,17 +28,8 @@ interface ResourceProviderInterface
     public function getProviderId();
 
     /**
-     * getAllResources (ALL resources) {"resourceId": "{AclResource}"}
-     * Return a one-dimensional array of resources and privileges indexed by resourceId
-     * containing ALL possible resources including run-time resources
-     *
-     * @return array
-     */
-    public function getAllResources();
-
-    /**
-     * getResources (ALL resources)
-     * Return a multi-dimensional array of resources and privileges
+     * getResources (ALL resources) {"resourceId": "{AclResource}"}
+     * Return an array of resources and privileges indexed by resourceId
      * containing ALL possible resources including run-time resources
      *
      * @return array

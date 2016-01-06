@@ -4,6 +4,7 @@ namespace RcmUser\Acl\Builder;
 
 use RcmUser\Acl\Entity\AclResource;
 use RcmUser\Exception\RcmUserException;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * Class AclResourceBuilder
@@ -21,7 +22,7 @@ use RcmUser\Exception\RcmUserException;
 class AclResourceBuilder
 {
     /**
-     * @var \RcmUser\Acl\Entity\AclResource
+     * @var AclResource
      */
     protected $rootResource;
 
@@ -37,38 +38,45 @@ class AclResourceBuilder
     }
 
     /**
-     * getRootResourceId
-     *
-     * @return string
-     */
-    protected function getRootResourceId() {
-        return $this->rootResource->getResourceId();
-    }
-
-    /**
      * build
      *
-     * @param mixed  $resourceData
-     * @param string $providerId
+     * @param $resourceData
      *
-     * @return \RcmUser\Acl\Entity\AclResource
+     * @return null|AclResource
      * @throws RcmUserException
      */
     public function build(
-        $resourceData,
-        $providerId
+        $resourceData
     ) {
         $resource = null;
 
-        if ($resourceData instanceof \RcmUser\Acl\Entity\AclResource) {
+        // Is AclResource
+        if ($resourceData instanceof AclResource) {
             $resource = $resourceData;
         }
 
+        // Is ResourceInterface
+        if (!$resourceData instanceof AclResource
+            && $resourceData instanceof ResourceInterface
+        ) {
+            $resource = new AclResource(
+                $resourceData->getResourceId()
+            );
+        }
+
+        // Is array
         if (is_array($resourceData)) {
-            $resource = new \RcmUser\Acl\Entity\AclResource(
+            $resource = new AclResource(
                 $resourceData['resourceId']
             );
             $resource->populate($resourceData);
+        }
+
+        // Is resourceId
+        if (is_string($resourceData)) {
+            $resource = new AclResource(
+                $resourceData
+            );
         }
 
         if ($resource === null) {
@@ -78,12 +86,6 @@ class AclResourceBuilder
                     true
                 )
             );
-        }
-
-        $resourceProviderId = $resource->getProviderId();
-
-        if (empty($resourceProviderId)) {
-            $resource->setProviderId($providerId);
         }
 
         $resource = $this->buildParent($resource);
@@ -103,9 +105,9 @@ class AclResourceBuilder
     {
         $parentResourceId = $resource->getParentResourceId();
 
-        if (empty($parentResourceId)) {
+        if (empty($parentResourceId) && $resource !== $this->rootResource) {
             $resource->setParentResourceId(
-                $this->getRootResourceId()
+                $this->rootResource->getResourceId()
             );
         }
 

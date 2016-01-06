@@ -2,6 +2,7 @@
 
 namespace RcmUser\Acl\Provider;
 
+use RcmUser\Acl\Builder\AclResourceBuilder;
 use RcmUser\Acl\Cache\ResourceCache;
 use RcmUser\Acl\Entity\AclResource;
 use Zend\Cache\Storage\StorageInterface;
@@ -27,27 +28,27 @@ class CompositeResourceProvider implements ResourceProviderInterface
     protected $resourceProviders = [];
 
     /**
-     * @var AclResource
-     */
-    protected $rootResource;
-
-    /**
      * @var ResourceCache
      */
     protected $cache;
 
     /**
+     * @var AclResourceBuilder
+     */
+    protected $aclResourceBuilder;
+
+    /**
      * CompositeResourceProvider constructor.
      *
-     * @param AclResource   $rootResource
-     * @param ResourceCache $cache
+     * @param ResourceCache      $cache
+     * @param AclResourceBuilder $aclResourceBuilder
      */
     public function __construct(
-        AclResource $rootResource,
-        ResourceCache $cache
+        ResourceCache $cache,
+        AclResourceBuilder $aclResourceBuilder
     ) {
-        $this->rootResource = $rootResource;
         $this->cache = $cache;
+        $this->aclResourceBuilder = $aclResourceBuilder;
     }
 
     /**
@@ -70,7 +71,7 @@ class CompositeResourceProvider implements ResourceProviderInterface
      */
     public function getProviderId()
     {
-        return $this->rootResource->getProviderId();
+        return 'RcmUser\Acl\Provider\CompositeResourceProvider';
     }
 
     /**
@@ -82,21 +83,7 @@ class CompositeResourceProvider implements ResourceProviderInterface
      */
     public function getResources()
     {
-        $resources = $this->getAllResources();
-
-        // @todo Tree resources
-
-        return $resources;
-    }
-
-    /**
-     * getAllResources
-     *
-     * @return array
-     */
-    public function getAllResources()
-    {
-        $resources = [];
+        $allResources = [];
 
         /** @var ResourceProviderInterface $resourceProvider */
         foreach ($this->resourceProviders as $resourceProvider) {
@@ -104,12 +91,21 @@ class CompositeResourceProvider implements ResourceProviderInterface
             $providerId = $resourceProvider->getProviderId();
             $resources = $this->cache->getProviderResources($providerId);
             if($resources === null){
-                $resources = $resourceProvider->getAllResources();
+                $resources = $resourceProvider->getResources();
+                foreach ($resources as $key => $resourceData) {
+                    $resource = $this->aclResourceBuilder->build($resourceData);
+                    // @todo Not required
+                    $resource->setProviderId($providerId);
+                    $this->cache->set($resource);
+                    $resources[$key] = $resource;
+                }
                 $this->cache->setProviderResources($providerId, $resources);
             }
+
+            $allResources = array_merge($allResources, $resources);
         }
 
-        return $resources;
+        return $allResources;
     }
 
     /**
@@ -124,9 +120,10 @@ class CompositeResourceProvider implements ResourceProviderInterface
     public function getResource($resourceId)
     {
         /** @var AclResource $resource */
-        $resource = $this->cache->get($resourceId);
+        $resourceData = $this->cache->get($resourceId);
 
-        if ($resource !== null) {
+        if ($resourceData !== null) {
+            $resource = $this->aclResourceBuilder->build($resourceData);
             return $resource;
         }
 
@@ -134,14 +131,11 @@ class CompositeResourceProvider implements ResourceProviderInterface
         foreach ($this->resourceProviders as $resourceProvider) {
             $hasResource = $resourceProvider->hasResource($resourceId);
             if ($hasResource) {
+                $resourceData = $resourceProvider->getResource($resourceId);
                 /** @var AclResource $resource */
-                $resource = $resourceProvider->getResource($resourceId);
-                $parentResourceId = $resource->getParentResourceId();
-                // @todo Build parent - use builder??
-                if (empty($parentResourceId)) {
-                    $resource->setParentResourceId($this->rootResource->getResourceId());
-                    $resource->setParentResource($this->rootResource);
-                }
+                $resource = $this->aclResourceBuilder->build($resourceData);
+                // @todo Not required
+                $resource->setProviderId($resourceProvider->getProviderId());
                 $this->cache->set($resource);
                 break;
             }

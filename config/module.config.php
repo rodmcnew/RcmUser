@@ -186,6 +186,10 @@ return [
              * ]
              */
             'ResourceProviders' => [
+                /**
+                 * Root Resource Provider
+                 */
+                //'root' => 'RcmUser\Acl\RootResourceProvider',
 
                 /*
                  * RcmUserAccess
@@ -404,6 +408,9 @@ return [
             /* ************************************** */
             /* ACL ********************************** */
             /* ************************************** */
+
+            'RcmUser\Acl\RootResourceProvider' => 'RcmUser\Acl\Service\Factory\RootResourceProvider',
+            'RcmUser\Acl\ResourceProvider' => 'RcmUser\Acl\Service\Factory\CompositeResourceProvider',
 
             'RcmUser\Acl\ResourceCache' => 'RcmUser\Acl\Service\Factory\ResourceCacheMemory',
 

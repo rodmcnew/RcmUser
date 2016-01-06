@@ -2,13 +2,11 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
-use RcmUser\Acl\Cache\ResourceCache;
-use Zend\Cache\Storage\Adapter\Memory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Class ResourceCacheMemory
+ * Class RootResourceProvider
  *
  * PHP version 5
  *
@@ -20,7 +18,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class ResourceCacheMemory implements FactoryInterface
+class RootResourceProvider implements FactoryInterface
 {
     /**
      * createService
@@ -31,28 +29,13 @@ class ResourceCacheMemory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-
-        $resourceStorage = new Memory();
-        $resourceStorage = new \Zend\Cache\Storage\Adapter\Filesystem();
-        $resourceStorage->setOptions(['cacheDir' => __DIR__ . '/../../../../../../../data/rcmuser/resources']);
-
-        $providerIndexStorage = new Memory();
-        $providerIndexStorage = new \Zend\Cache\Storage\Adapter\Filesystem();
-        $providerIndexStorage->setOptions(['cacheDir' => __DIR__ . '/../../../../../../../data/rcmuser/providerindex']);
-
         /** @var \RcmUser\Acl\Entity\RootAclResource $rootResource */
         $rootResource = $serviceLocator->get(
             'RcmUser\Acl\RootAclResource'
         );
 
-        $resourceBuilder = new \RcmUser\Acl\Builder\AclResourceBuilder(
+        $service = new \RcmUser\Acl\Provider\RootResourceProvider(
             $rootResource
-        );
-
-        $service = new ResourceCache(
-            $resourceStorage,
-            $providerIndexStorage,
-            $resourceBuilder
         );
 
         return $service;

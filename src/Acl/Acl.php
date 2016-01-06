@@ -33,6 +33,9 @@ class Acl implements AclInterface
      */
     protected $resourceProvider;
 
+    /**
+     * @var
+     */
     protected $aclResourceBuilder;
 
     /**

@@ -2,6 +2,7 @@
 
 namespace RcmUser\Acl\Cache;
 
+use RcmUser\Acl\Builder\AclResourceBuilder;
 use RcmUser\Acl\Entity\AclResource;
 use Zend\Cache\Storage\StorageInterface;
 
@@ -35,6 +36,11 @@ class ResourceCache
     protected $providerIndexStorage;
 
     /**
+     * @var AclResourceBuilder
+     */
+    protected $aclResourceBuilder;
+
+    /**
      * Resource constructor.
      *
      * @param StorageInterface $resourceStorage
@@ -42,10 +48,12 @@ class ResourceCache
      */
     public function __construct(
         StorageInterface $resourceStorage,
-        StorageInterface $providerIndexStorage
+        StorageInterface $providerIndexStorage,
+        AclResourceBuilder $aclResourceBuilder
     ) {
         $this->resourceStorage = $resourceStorage;
         $this->providerIndexStorage = $providerIndexStorage;
+        $this->aclResourceBuilder = $aclResourceBuilder;
     }
 
     /**
@@ -57,7 +65,9 @@ class ResourceCache
      */
     public function get($resourceId)
     {
-        return $this->resourceStorage->getItem($resourceId);
+        $resourceId = md5($resourceId);
+        $resource = $this->resourceStorage->getItem($resourceId);
+        return json_decode($resource, true);
     }
 
     /**
@@ -69,37 +79,9 @@ class ResourceCache
      */
     public function set(AclResource $resource)
     {
-        $this->resourceStorage->setItem($resource->getResourceId(), $resource);
-    }
-
-    /**
-     * getProviderResources
-     *
-     * @param string $providerId
-     *
-     * @return array|null
-     * @throws \Exception
-     */
-    public function getProviderResources($providerId)
-    {
-        $resourceIds = $this->providerIndexStorage->getItem($providerId);
-
-        if ($resourceIds === null) {
-            return null;
-        }
-
-        $resources = [];
-
-        foreach ($resourceIds as $resourceId) {
-            $resource = $this->get($resourceId);
-            if ($resource == null) {
-                throw new \Exception('Resource could not be found in cache');
-            }
-
-            $resources[$resourceId] = $resource;
-        }
-
-        return $resources;
+        $resourceId = $resource->getResourceId();
+        $resourceId = md5($resourceId);
+        $this->resourceStorage->setItem($resourceId, json_encode($resource));
     }
 
     /**
@@ -112,14 +94,40 @@ class ResourceCache
      */
     public function setProviderResources($providerId, $resources)
     {
-        $index = [];
+        $providerId = md5($providerId);
+        $this->providerIndexStorage->setItem($providerId, json_encode($resources));
+    }
 
-        /** @var AclResource $resource */
-        foreach ($resources as $resource) {
-            $this->set($resource);
-            $index[] = $resource->getResourceId();
+    /**
+     * getProviderResources
+     *
+     * @param string $providerId
+     *
+     * @return array|null
+     * @throws \Exception
+     */
+    public function getProviderResources($providerId)
+    {
+        $providerId = md5($providerId);
+        $resourceIds = $this->providerIndexStorage->getItem($providerId);
+
+        if ($resourceIds === null) {
+            return null;
         }
 
-        $this->providerIndexStorage->setItem($providerId, $index);
+        $resourceIds = json_decode($resourceIds, true);
+
+        $resources = [];
+
+        foreach ($resourceIds as $resourceData) {
+            $resource = $this->get($resourceData['resourceId']);
+            if ($resource == null) {
+                throw new \Exception('Resource could not be found in cache');
+            }
+
+            $resources[$resourceData['resourceId']] = $resource;
+        }
+
+        return $resources;
     }
 }

@@ -107,6 +107,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     }
 
     /**
+     * @deprecated Not required
      * setProviderId
      *
      * @param string $providerId providerId
@@ -119,6 +120,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     }
 
     /**
+     * @deprecated Not required
      * getProviderId
      *
      * @return string
@@ -185,7 +187,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     }
 
     /**
-     * @deprecated Should only require parentResourceId
+     * @deprecated Should only return parentResourceId
      * getParentResource
      *
      * @return string|AclResource

@@ -35,7 +35,7 @@ class CompositeResourceProvider implements FactoryInterface
 
         $providerConfig = $config['RcmUser']['Acl\Config']['ResourceProviders'];
 
-        $builder = new \RcmUser\Acl\Builder\ResourceProviderBuilder(
+        $resourceProviderBuilder = new \RcmUser\Acl\Builder\ResourceProviderBuilder(
             $serviceLocator
         );
 
@@ -49,13 +49,17 @@ class CompositeResourceProvider implements FactoryInterface
             'RcmUser\Acl\ResourceCache'
         );
 
+        $resourceBuilder = new \RcmUser\Acl\Builder\AclResourceBuilder(
+            $rootResource
+        );
+
         $service = new \RcmUser\Acl\Provider\CompositeResourceProvider(
-            $rootResource,
-            $resourceCache
+            $resourceCache,
+            $resourceBuilder
         );
 
         foreach($providerConfig as $providerId => $providerData) {
-            $provider = $builder->build($providerData, $providerId);
+            $provider = $resourceProviderBuilder->build($providerData, $providerId);
             $service->add($provider);
         }
 

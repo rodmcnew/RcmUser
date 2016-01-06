@@ -18,6 +18,13 @@ namespace RcmUser\Acl\Entity;
 class RootAclResource extends AclResource
 {
     /**
+     * Unique id of Resource
+     *
+     * @var string
+     */
+    protected $resourceId = 'root';
+
+    /**
      * @var string $providerId The resource provider Id
      */
     protected $providerId = 'root';

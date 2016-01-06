@@ -2,6 +2,8 @@
 
 namespace RcmUser\Acl\Provider;
 
+use RcmUser\Acl\Entity\AclRole;
+
 /**
  * Class RoleProviderInterface
  *
@@ -22,7 +24,7 @@ interface RoleProviderInterface
      *
      * @param string $roleId
      *
-     * @return mixed
+     * @return bool
      */
     public function hasRole($roleId);
 
@@ -31,7 +33,7 @@ interface RoleProviderInterface
      *
      * @param $roleId
      *
-     * @return \Zend\Permissions\Acl\Role\RoleInterface
+     * @return AclRole
      */
     public function getRole($roleId);
 

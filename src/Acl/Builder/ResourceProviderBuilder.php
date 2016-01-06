@@ -2,6 +2,7 @@
 
 namespace RcmUser\Acl\Builder;
 
+use RcmUser\Acl\Provider\ResourceProvider;
 use RcmUser\Acl\Provider\ResourceProviderInterface;
 use RcmUser\Exception\RcmUserException;
 use Zend\ServiceManager\ServiceLocatorInterface;
@@ -57,7 +58,7 @@ class ResourceProviderBuilder
      */
     public function build(
         $providerData,
-        $providerId
+        $providerId = null
     ) {
         $provider = null;
 
@@ -73,6 +74,10 @@ class ResourceProviderBuilder
             $provider = new \RcmUser\Acl\Provider\ResourceProvider($providerData);
         }
 
+        if($provider instanceof ResourceProvider) {
+            $provider->setProviderId($providerId);
+        }
+
         if ($provider === null) {
             throw new RcmUserException(
                 'ResourceProvider is not valid: ' . var_export(
@@ -82,7 +87,14 @@ class ResourceProviderBuilder
             );
         }
 
-        $provider->setProviderId($providerId);
+        if ($provider->getProviderId() === null) {
+            throw new RcmUserException(
+                'ResourceProvider is not valid, provider ID missing: ' . var_export(
+                    $providerData,
+                    true
+                )
+            );
+        }
 
         return $provider;
     }
