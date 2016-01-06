@@ -1,19 +1,4 @@
 <?php
-/**
- * AclResourceService.php
- *
- * AclResourceService
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Acl\Service;
 
@@ -106,6 +91,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use Registered ResourceProvider
      * getRootResource
      *
      * @return AclResource
@@ -116,6 +102,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use Registered ResourceProvider
      * setResourceProviders
      *
      * @param array $resourceProviders resourceProviders
@@ -128,6 +115,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use Registered ResourceProvider
      * getResourceProviders
      *
      * @return array
@@ -138,6 +126,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use \RcmUser\Acl\Builder\AclResourceStackBuilder
      * setMaxResourceNesting
      *
      * @param int $maxResourceNesting Max nesting levels for resources
@@ -150,6 +139,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use \RcmUser\Acl\Builder\AclResourceStackBuilder
      * getMaxResourceNesting
      *
      * @return int
@@ -160,6 +150,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use Registered ResourceProvider
      * getResources - Get a resource and all of its parents
      *
      * @param string $resourceId resourceId
@@ -213,6 +204,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use CompositeResourceProvider
      * getAllResources - All resources
      * returns a list of all resources
      * This is used for displays or utilities only
@@ -261,6 +253,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use \RcmUser\Acl\Builder\AclResourceStackBuilder
      * getResourceStack - build a resource stack for the
      * provided resource to the top parent
      *
@@ -326,6 +319,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use Registered ResourceProvider
      * getProvider
      *
      * @param string $providerId providerId
@@ -352,6 +346,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use Registered ResourceProvider
      * getProviderByResourceId
      *
      * @param string $resourceId resourceId
@@ -380,29 +375,6 @@ class AclResourceService
             "Provide could not be found for resource: {$resourceId}"
         );
     }
-
-    /**
-     * getProviderByResourceId
-     *
-     * @param string $resourceId resourceId
-     *
-     * @return null|ResourceProviderInterface
-
-    public function getProviderByResourceId($resourceId)
-     * {
-     * foreach ($this->resourceProviders as $providerId => &$provider) {
-     *
-     * $provider = $this->buildValidProvider($provider, $providerId);
-     *
-     * if ($provider->hasResource($resourceId)) {
-     *
-     * return $provider;
-     * }
-     * }
-     *
-     * return null;
-     * }
-     */
 
     /**
      * getResourcesWithNamespace
@@ -516,6 +488,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use Registered ResourceProvider
      * addRootResource
      *
      * @param array &$resources resources
@@ -540,6 +513,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use \RcmUser\Acl\Builder\AclResourceBuilder
      * buildValidAclResource
      *
      * @param mixed  $resource   resource
@@ -561,6 +535,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use \RcmUser\Acl\Builder\AclResourceBuilder
      * buildValidResource
      *
      * @param mixed  $resourceData resource
@@ -596,6 +571,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use \RcmUser\Acl\Builder\AclResourceBuilder
      * buildValidParent
      *
      * @param AclResource $resource resource
@@ -616,6 +592,7 @@ class AclResourceService
     }
 
     /**
+     * @deprecated Use \RcmUser\Acl\Builder\ResourceProviderBuilder
      * buildValidProvider
      *
      * @param mixed  $providerData providerData

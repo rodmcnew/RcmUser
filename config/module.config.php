@@ -195,7 +195,7 @@ return [
                 'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
 
                 /* example of resource providers as array *
-                'RcmUser.TEST' => [
+                'RcmUser' => [
                     'test-one' => [
                         'resourceId' => 'test-one',
                         'parentResourceId' => null,
@@ -405,6 +405,9 @@ return [
             /* ACL ********************************** */
             /* ************************************** */
 
+            'RcmUser\Acl\ResourceCache' => 'RcmUser\Acl\Service\Factory\ResourceCacheMemory',
+
+            'RcmUser\Acl\RootAclResource' => 'RcmUser\Acl\Service\Factory\RootAclResource',
             /*
              * AclResourceService
              * Used by:

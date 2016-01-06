@@ -2,6 +2,7 @@
 
 namespace RcmUser\Acl\Provider;
 
+use RcmUser\Acl\Cache\ResourceCache;
 use RcmUser\Acl\Entity\AclResource;
 use Zend\Cache\Storage\StorageInterface;
 
@@ -21,10 +22,6 @@ use Zend\Cache\Storage\StorageInterface;
 class CompositeResourceProvider implements ResourceProviderInterface
 {
     /**
-     * PROVIDER_RESOURCES_KEY
-     */
-    const PROVIDER_RESOURCES_KEY = '::PROVIDER-RESOURCES::';
-    /**
      * @var array
      */
     protected $resourceProviders = [];
@@ -35,19 +32,19 @@ class CompositeResourceProvider implements ResourceProviderInterface
     protected $rootResource;
 
     /**
-     * @var StorageInterface
+     * @var ResourceCache
      */
     protected $cache;
 
     /**
      * CompositeResourceProvider constructor.
      *
-     * @param AclResource      $rootResource
-     * @param StorageInterface $cache
+     * @param AclResource   $rootResource
+     * @param ResourceCache $cache
      */
     public function __construct(
         AclResource $rootResource,
-        StorageInterface $cache
+        ResourceCache $cache
     ) {
         $this->rootResource = $rootResource;
         $this->cache = $cache;
@@ -99,21 +96,18 @@ class CompositeResourceProvider implements ResourceProviderInterface
      */
     public function getAllResources()
     {
-        $resources = $this->cache->getItem(self::PROVIDER_RESOURCES_KEY);
-
-        if ($resources === null) {
-            $resources = [];
-        }
+        $resources = [];
 
         /** @var ResourceProviderInterface $resourceProvider */
         foreach ($this->resourceProviders as $resourceProvider) {
+
             $providerId = $resourceProvider->getProviderId();
-            if (!array_key_exists($providerId, $resources)) {
-                $resources[$providerId] = $resourceProvider->getAllResources();
+            $resources = $this->cache->getProviderResources($providerId);
+            if($resources === null){
+                $resources = $resourceProvider->getAllResources();
+                $this->cache->setProviderResources($providerId, $resources);
             }
         }
-
-        $this->cache->setItem(self::PROVIDER_RESOURCES_KEY, $resources);
 
         return $resources;
     }
@@ -130,7 +124,7 @@ class CompositeResourceProvider implements ResourceProviderInterface
     public function getResource($resourceId)
     {
         /** @var AclResource $resource */
-        $resource = $this->cache->getItem($resourceId);
+        $resource = $this->cache->get($resourceId);
 
         if ($resource !== null) {
             return $resource;
@@ -143,10 +137,12 @@ class CompositeResourceProvider implements ResourceProviderInterface
                 /** @var AclResource $resource */
                 $resource = $resourceProvider->getResource($resourceId);
                 $parentResourceId = $resource->getParentResourceId();
+                // @todo Build parent - use builder??
                 if (empty($parentResourceId)) {
+                    $resource->setParentResourceId($this->rootResource->getResourceId());
                     $resource->setParentResource($this->rootResource);
                 }
-                $this->cache->setItem($resourceId, $resource);
+                $this->cache->set($resource);
                 break;
             }
         }

@@ -2,9 +2,11 @@
 
 namespace RcmUser\Acl;
 
+use RcmUser\Acl\Builder\AclResourceBuilder;
 use RcmUser\Acl\Provider\ResourceProviderInterface;
 use RcmUser\Acl\Provider\RoleProviderInterface;
 use Zend\Permissions\Acl\AclInterface;
+use Zend\Permissions\Acl\Resource\ResourceInterface;
 
 /**
  * Class Acl
@@ -31,12 +33,13 @@ class Acl implements AclInterface
      */
     protected $resourceProvider;
 
+    protected $aclResourceBuilder;
+
     /**
      * Acl constructor.
      *
      * @param RoleProviderInterface     $roleProvider
      * @param ResourceProviderInterface $resourceProvider
-     * @param ResourceProviderInterface $rootResourceProvider
      */
     public function __construct(
         RoleProviderInterface $roleProvider,
@@ -57,7 +60,14 @@ class Acl implements AclInterface
      */
     public function hasResource($resource)
     {
+        if (is_string($resource)) {
+            return $this->resourceProvider->hasResource($resource);
+        }
+        if($resource instanceof ResourceInterface) {
+            return $this->resourceProvider->hasResource($resource->getResourceId());
+        }
 
+        return false;
     }
 
     /**
