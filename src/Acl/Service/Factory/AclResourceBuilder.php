@@ -2,14 +2,11 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
-use RcmUser\Acl\Provider\ResourceProviderInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * AclResourceService
- *
- * AclResourceService Factory
+ * AclResourceBuilder.
  *
  * PHP version 5
  *
@@ -21,7 +18,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AclResourceService implements FactoryInterface
+class AclResourceBuilder implements FactoryInterface
 {
     /**
      * createService
@@ -32,19 +29,13 @@ class AclResourceService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        /** @var ResourceProviderInterface $resourceProvider */
-        $resourceProvider = $serviceLocator->get(
-            'RcmUser\Acl\ResourceProvider'
+        /** @var \RcmUser\Acl\Entity\RootAclResource $rootResource */
+        $rootResource = $serviceLocator->get(
+            'RcmUser\Acl\RootAclResource'
         );
 
-        /** @var \RcmUser\Acl\Builder\AclResourceStackBuilder $aclResourceStackBuilder */
-        $aclResourceStackBuilder = $serviceLocator->get(
-            'RcmUser\Acl\Builder\AclResourceStackBuilder'
-        );
-
-        $service = new \RcmUser\Acl\Service\AclResourceService(
-            $resourceProvider,
-            $aclResourceStackBuilder
+        $service = new \RcmUser\Acl\Builder\AclResourceBuilder(
+            $rootResource
         );
 
         return $service;

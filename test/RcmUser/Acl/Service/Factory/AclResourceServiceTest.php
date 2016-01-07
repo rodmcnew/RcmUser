@@ -47,7 +47,6 @@ class AclResourceServiceTest extends Zf2TestCase
      */
     public function test()
     {
-
         $factory = new AclResourceService();
 
         $service = $factory->createService($this->getMockServiceLocator());
@@ -55,22 +54,5 @@ class AclResourceServiceTest extends Zf2TestCase
             'RcmUser\Acl\Service\AclResourceService',
             $service
         );
-
-        //
-        $this->assertTrue(
-            is_array($service->getResourceProviders())
-        );
-
-        $this->assertInstanceOf(
-            '\Zend\ServiceManager\ServiceLocatorInterface',
-            $service->getServiceLocator()
-        );
-
-        $this->assertInstanceOf(
-            'RcmUser\Acl\Entity\AclResource',
-            $service->getRootResource()
-        );
-
     }
 }
- 

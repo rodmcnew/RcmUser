@@ -27,36 +27,48 @@ class AclResourceStackBuilder
     protected $maxResourceNesting = 10;
 
     /**
+     * @var ResourceProviderInterface
+     */
+    protected $resourceProvider;
+
+    /**
+     * AclResourceStackBuilder constructor.
+     *
+     * @param ResourceProviderInterface $resourceProvider
+     */
+    public function __construct(
+        ResourceProviderInterface $resourceProvider
+    ) {
+        $this->resourceProvider = $resourceProvider;
+    }
+
+    /**\
      * build
      *
-     * @param ResourceProviderInterface $provider
-     * @param AclResource               $resource
+     * @param AclResource $resource
      *
      * @return array
      * @throws RcmUserException
      */
     public function build(
-        ResourceProviderInterface $provider,
         AclResource $resource
     ) {
-        return $this->getResourceStack($provider, $resource);
+        return $this->getResourceStack($resource);
     }
 
     /**
      * getResourceStack
      *
-     * @param ResourceProviderInterface $provider
-     * @param AclResource               $resource
-     * @param array                     $resources
-     * @param int                       $nestLevel
+     * @param AclResource $resource
+     * @param array       $resources
+     * @param int         $nestLevel
      *
      * @return array
      * @throws RcmUserException
      */
     public function getResourceStack(
-        ResourceProviderInterface $provider,
         AclResource $resource,
-        &$resources = [],
+        $resources = [],
         $nestLevel = 0
     ) {
         if ($nestLevel > $this->maxResourceNesting) {
@@ -74,11 +86,13 @@ class AclResourceStackBuilder
         $hasParent = ($parentResourceId !== null);
 
         if ($hasParent) {
-            $parentResource = $provider->getResource($parentResourceId);
+            $parentResource = $this->resourceProvider->getResource(
+                $parentResourceId
+            );
 
-            $nestLevel ++;
+            $nestLevel++;
+
             return $this->getResourceStack(
-                $provider,
                 $parentResource,
                 $resources,
                 $nestLevel

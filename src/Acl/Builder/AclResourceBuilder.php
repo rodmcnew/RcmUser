@@ -105,7 +105,15 @@ class AclResourceBuilder
     {
         $parentResourceId = $resource->getParentResourceId();
 
-        if (empty($parentResourceId) && $resource !== $this->rootResource) {
+        // root parent must be null
+        if ($resource->getResourceId() == $this->rootResource->getResourceId()) {
+            $resource->setParentResourceId(
+                null
+            );
+            return $resource;
+        }
+
+        if (empty($parentResourceId)) {
             $resource->setParentResourceId(
                 $this->rootResource->getResourceId()
             );

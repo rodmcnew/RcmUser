@@ -121,6 +121,7 @@ class CompositeResourceProvider implements ResourceProviderInterface
     {
         /** @var AclResource $resource */
         $resourceData = $this->cache->get($resourceId);
+        $resource = null;
 
         if ($resourceData !== null) {
             $resource = $this->aclResourceBuilder->build($resourceData);
@@ -137,11 +138,11 @@ class CompositeResourceProvider implements ResourceProviderInterface
                 // @todo Not required
                 $resource->setProviderId($resourceProvider->getProviderId());
                 $this->cache->set($resource);
-                break;
+                return $resource;
             }
         }
 
-        return $resource;
+        return null;
     }
 
     /**

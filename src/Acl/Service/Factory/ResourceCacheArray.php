@@ -2,13 +2,14 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
+use RcmUser\Acl\Cache\ArrayStorage;
 use RcmUser\Acl\Cache\ResourceCache;
 use Zend\Cache\Storage\Adapter\Memory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * Class ResourceCacheMemory
+ * Class ResourceCacheArray
  *
  * PHP version 5
  *
@@ -20,7 +21,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class ResourceCacheMemory implements FactoryInterface
+class ResourceCacheArray implements FactoryInterface
 {
     /**
      * createService
@@ -31,12 +32,9 @@ class ResourceCacheMemory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        $resourceStorage = new ArrayStorage();
 
-        $resourceStorage = new Memory();
-        $resourceStorage->setOptions(['memoryLimit' => 0]);
-
-        $providerIndexStorage = new Memory();
-        $providerIndexStorage->setOptions(['memoryLimit' => 0]);
+        $providerIndexStorage = new ArrayStorage();
 
         /** @var \RcmUser\Acl\Builder\AclResourceBuilder $resourceBuilder */
         $resourceBuilder = $serviceLocator->get(

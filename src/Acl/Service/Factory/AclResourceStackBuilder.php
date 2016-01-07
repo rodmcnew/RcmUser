@@ -7,9 +7,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * AclResourceService
- *
- * AclResourceService Factory
+ * AclResourceStackBuilder
  *
  * PHP version 5
  *
@@ -21,7 +19,7 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AclResourceService implements FactoryInterface
+class AclResourceStackBuilder implements FactoryInterface
 {
     /**
      * createService
@@ -37,14 +35,8 @@ class AclResourceService implements FactoryInterface
             'RcmUser\Acl\ResourceProvider'
         );
 
-        /** @var \RcmUser\Acl\Builder\AclResourceStackBuilder $aclResourceStackBuilder */
-        $aclResourceStackBuilder = $serviceLocator->get(
-            'RcmUser\Acl\Builder\AclResourceStackBuilder'
-        );
-
-        $service = new \RcmUser\Acl\Service\AclResourceService(
-            $resourceProvider,
-            $aclResourceStackBuilder
+        $service = new \RcmUser\Acl\Builder\AclResourceStackBuilder(
+            $resourceProvider
         );
 
         return $service;

@@ -54,7 +54,7 @@ class RootAclResource extends AclResource
     /**
      * @var string $name
      */
-    protected $name = 'Root';
+    protected $name = 'Root Resource';
 
     /**
      * @var string $description
