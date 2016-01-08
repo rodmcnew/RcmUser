@@ -34,7 +34,7 @@ class AclResourceNsArrayService
     /**
      * @var string
      */
-    protected $nsChar = '.';
+    protected $defaultNamespaceSeparator = '.';
 
     /**
      * AclResourceNsArrayBuilder constructor.
@@ -53,16 +53,17 @@ class AclResourceNsArrayService
     /**
      * getResourcesWithNamespace
      *
-     * @param string $resourceId resourceId
-     * @param string $providerId providerId
-     * @param bool   $refresh    refresh
+     * @param null $namespaceSeparator
      *
      * @return array
      */
-    public function getResourcesWithNamespace()
-    {
+    public function getResourcesWithNamespace(
+        $namespaceSeparator = null
+    ) {
         $aclResources = [];
-        $resources = $this->getNamespacedResources();
+        $resources = $this->getNamespacedResources(
+            $namespaceSeparator
+        );
         /**
          * @var             $ns
          * @var AclResource $resource
@@ -78,12 +79,14 @@ class AclResourceNsArrayService
     /**
      * getResourceWithNamespace
      *
-     * @param null $resourceId
+     * @param string $resourceId
+     * @param null   $namespaceSeparator
      *
      * @return array
      */
     public function getResourceWithNamespace(
-        $resourceId = null
+        $resourceId,
+        $namespaceSeparator = null
     ) {
         $resource = $this->resourceProvider->getResource($resourceId);
 
@@ -93,7 +96,8 @@ class AclResourceNsArrayService
 
         $ns = $this->createNamespaceId(
             $resource,
-            $resourceTree
+            $resourceTree,
+            $namespaceSeparator
         );
 
         return $this->getNsModel($resource, $ns);
@@ -102,12 +106,13 @@ class AclResourceNsArrayService
     /**
      * getNamespacedResources
      *
-     * @param string $resourceId resourceId
+     * @param null $namespaceSeparator
      *
      * @return array
      */
-    public function getNamespacedResources()
-    {
+    public function getNamespacedResources(
+        $namespaceSeparator = null
+    ) {
         $aclResources = [];
 
         $resources = $this->resourceProvider->getResources();
@@ -115,7 +120,8 @@ class AclResourceNsArrayService
         foreach ($resources as $resource) {
             $ns = $this->createNamespaceId(
                 $resource,
-                $resources
+                $resources,
+                $namespaceSeparator
             );
 
             $aclResources[$ns] = $resource;
@@ -129,44 +135,63 @@ class AclResourceNsArrayService
     /**
      * createNamespaceId
      *
-     * @param AclResource $aclResource  aclResource
-     * @param array       $aclResources aclResources
+     * @param AclResource $aclResource
+     * @param             $aclResources
+     * @param null        $namespaceSeparator
      *
      * @return string
      */
     public function createNamespaceId(
         AclResource $aclResource,
-        $aclResources
+        $aclResources,
+        $namespaceSeparator = null
     ) {
         $parentId = $aclResource->getParentResourceId();
-        $ns = $aclResource->getResourceId();
+        $namespace = $aclResource->getResourceId();
         if (!empty($parentId) && isset($aclResources[$parentId])) {
             $parent = $aclResources[$parentId];
 
-            $newns = $this->createNamespaceId(
+            $newNamespace = $this->createNamespaceId(
                 $parent,
-                $aclResources
+                $aclResources,
+                $namespaceSeparator
             );
 
-            $ns = $newns . $this->nsChar . $ns;
+            $namespace = $newNamespace . $this->getNamespaceSeparator($namespaceSeparator) . $namespace;
         }
 
-        return $ns;
+        return $namespace;
     }
 
     /**
      * getNsModel
      *
-     * @param $resource
-     * @param $ns
+     * @param AclResource $aclResource
+     * @param string      $namespace
      *
      * @return array
      */
-    public function getNsModel($resource, $ns)
+    public function getNsModel(AclResource $aclResource, $namespace)
     {
         return [
-            'resource' => $resource,
-            'resourceNs' => $ns,
+            'resource' => $aclResource,
+            'resourceNs' => $namespace,
         ];
+    }
+
+    /**
+     * getNamespaceSeparator
+     *
+     * @param string|null $namespaceSeparator
+     *
+     * @return null|string
+     */
+    protected function getNamespaceSeparator($namespaceSeparator = null)
+    {
+        if (empty($namespaceSeparator)) {
+            return $this->defaultNamespaceSeparator;
+        }
+
+        return $namespaceSeparator;
     }
 }

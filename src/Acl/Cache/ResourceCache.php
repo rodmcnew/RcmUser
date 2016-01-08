@@ -65,9 +65,8 @@ class ResourceCache
      */
     public function get($resourceId)
     {
-        $resourceId = md5($resourceId);
         $resource = $this->resourceStorage->getItem($resourceId);
-        return json_decode($resource, true);
+        return $resource;
     }
 
     /**
@@ -80,8 +79,7 @@ class ResourceCache
     public function set(AclResource $resource)
     {
         $resourceId = $resource->getResourceId();
-        $resourceId = md5($resourceId);
-        $this->resourceStorage->setItem($resourceId, json_encode($resource));
+        $this->resourceStorage->setItem($resourceId, $resource);
     }
 
     /**
@@ -94,8 +92,7 @@ class ResourceCache
      */
     public function setProviderResources($providerId, $resources)
     {
-        $providerId = md5($providerId);
-        $this->providerIndexStorage->setItem($providerId, json_encode($resources));
+        $this->providerIndexStorage->setItem($providerId, $resources);
     }
 
     /**
@@ -108,14 +105,11 @@ class ResourceCache
      */
     public function getProviderResources($providerId)
     {
-        $providerId = md5($providerId);
         $resourceIds = $this->providerIndexStorage->getItem($providerId);
 
         if ($resourceIds === null) {
             return null;
         }
-
-        $resourceIds = json_decode($resourceIds, true);
 
         $resources = [];
 
