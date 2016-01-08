@@ -34,7 +34,7 @@ class AclResourceNsArrayService
     /**
      * @var string
      */
-    protected $defaultNamespaceSeparator = '.';
+    protected $defaultNamespaceSeparator = '/';
 
     /**
      * AclResourceNsArrayBuilder constructor.
