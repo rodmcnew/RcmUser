@@ -54,7 +54,7 @@ class ResourceProvider implements ResourceProviderInterface
      */
     public function setProviderId($providerId)
     {
-        if($providerId === null) {
+        if ($providerId === null) {
             throw new RcmUserAclException('Provider ID cannot be null');
         }
         $this->providerId = $providerId;

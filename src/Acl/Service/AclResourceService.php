@@ -99,6 +99,6 @@ class AclResourceService
      */
     public function getAllResources($refresh = false)
     {
-        return $this->resourceProvider->getResources();;
+        return $this->resourceProvider->getResources();
     }
 }

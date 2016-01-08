@@ -3,6 +3,7 @@
 namespace RcmUser\Acl\Provider;
 
 use RcmUser\Acl\Entity\AclRule;
+
 /**
  * @todo Future Use
  * Class RuleProviderInterface
@@ -80,5 +81,4 @@ interface RuleProviderInterface
      * @return array AclRules
      */
     public function getRulesByRole($roleId);
-
 }

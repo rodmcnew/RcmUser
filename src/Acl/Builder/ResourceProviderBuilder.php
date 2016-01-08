@@ -74,7 +74,7 @@ class ResourceProviderBuilder
             $provider = new \RcmUser\Acl\Provider\ResourceProvider($providerData);
         }
 
-        if($provider instanceof ResourceProvider) {
+        if ($provider instanceof ResourceProvider) {
             $provider->setProviderId($providerId);
         }
 

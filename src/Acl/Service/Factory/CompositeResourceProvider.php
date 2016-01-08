@@ -55,7 +55,7 @@ class CompositeResourceProvider implements FactoryInterface
             $resourceBuilder
         );
 
-        foreach($providerConfig as $providerId => $providerData) {
+        foreach ($providerConfig as $providerId => $providerData) {
             $provider = $resourceProviderBuilder->build($providerData, $providerId);
             $service->add($provider);
         }

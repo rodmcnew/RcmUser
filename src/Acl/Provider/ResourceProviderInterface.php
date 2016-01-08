@@ -3,6 +3,7 @@
 namespace RcmUser\Acl\Provider;
 
 use RcmUser\Acl\Entity\AclResource;
+
 /**
  * Interface ResourceProviderInterface
  *

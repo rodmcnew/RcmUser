@@ -66,7 +66,7 @@ class Acl implements AclInterface
         if (is_string($resource)) {
             return $this->resourceProvider->hasResource($resource);
         }
-        if($resource instanceof ResourceInterface) {
+        if ($resource instanceof ResourceInterface) {
             return $this->resourceProvider->hasResource($resource->getResourceId());
         }
 
