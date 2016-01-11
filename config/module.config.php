@@ -77,7 +77,7 @@ return [
                                 //'pattern' => "/[<>]/",
                                 'messageTemplates' => [
                                     \Zend\Validator\Regex::NOT_MATCH
-                                        => "Username can only contain letters, numbers and charactors: . - _ @ '."
+                                    => "Username can only contain letters, numbers and charactors: . - _ @ '."
                                 ]
                             ],
                         ],
@@ -186,6 +186,10 @@ return [
              * ]
              */
             'ResourceProviders' => [
+                /**
+                 * Root Resource Provider
+                 */
+                'root' => 'RcmUser\Acl\RootResourceProvider',
 
                 /*
                  * RcmUserAccess
@@ -195,7 +199,7 @@ return [
                 'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
 
                 /* example of resource providers as array *
-                'RcmUser.TEST' => [
+                'RcmUser' => [
                     'test-one' => [
                         'resourceId' => 'test-one',
                         'parentResourceId' => null,
@@ -404,7 +408,6 @@ return [
             /* ************************************** */
             /* ACL ********************************** */
             /* ************************************** */
-
             /*
              * AclResourceService
              * Used by:
@@ -415,7 +418,7 @@ return [
             'RcmUser\Acl\Service\AclResourceService' =>
                 'RcmUser\Acl\Service\Factory\AclResourceService',
             /*
-             * AuthorizeService (ACL]
+             * AuthorizeService (ACL)
              * Used by:
              *  RcmUserService
              *  ControllerPluginRcmUserIsAllowed
@@ -425,6 +428,61 @@ return [
              */
             'RcmUser\Acl\Service\AuthorizeService' =>
                 'RcmUser\Acl\Service\Factory\AuthorizeService',
+
+            /*
+             * AclResourceNsArrayService
+             *
+             * Exposes a data prep for creating namespaces based on resource
+             */
+            'RcmUser\Acl\Service\AclResourceNsArrayService' =>
+                'RcmUser\Acl\Service\Factory\AclResourceNsArrayService',
+            /*
+             * RootResourceProvider
+             *
+             * Provides the root resource
+             */
+            'RcmUser\Acl\RootResourceProvider' =>
+                'RcmUser\Acl\Service\Factory\RootResourceProvider',
+            /*
+             * RcmUser\Acl\ResourceProvider
+             *
+             * Main Resource provider
+             * By default it wraps all other resource providers
+             * NOTE: Over-riding this is touchy
+             *       as it handles the resource normalization and other details
+             */
+            'RcmUser\Acl\ResourceProvider' =>
+                'RcmUser\Acl\Service\Factory\CompositeResourceProvider',
+            /*
+             * RcmUser\Acl\ResourceCache
+             *
+             * Resource Caching
+             * By default caches to an array
+             */
+            'RcmUser\Acl\ResourceCache' =>
+                'RcmUser\Acl\Service\Factory\ResourceCacheArray',
+            /*
+             * RcmUser\Acl\RootAclResource
+             *
+             * Root resource used for wrapping all other resources
+             */
+            'RcmUser\Acl\RootAclResource' =>
+                'RcmUser\Acl\Service\Factory\RootAclResource',
+            /*
+             * AclResourceBuilder
+             */
+            'RcmUser\Acl\Builder\AclResourceBuilder' =>
+                'RcmUser\Acl\Service\Factory\AclResourceBuilder',
+            /*
+             * AclResourceStackBuilder
+             */
+            'RcmUser\Acl\Builder\AclResourceStackBuilder' =>
+                'RcmUser\Acl\Service\Factory\AclResourceStackBuilder',
+            /*
+             * ResourceProviderBuilder
+             */
+            'RcmUser\Acl\Builder\ResourceProviderBuilder' =>
+                'RcmUser\Acl\Service\Factory\ResourceProviderBuilder',
             /*
              * AclRoleDataMapper
              * Required

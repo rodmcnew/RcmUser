@@ -1,6 +1,5 @@
 <?php
 
-
 namespace RcmUser\Acl\Entity;
 
 /**

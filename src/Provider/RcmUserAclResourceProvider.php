@@ -1,19 +1,4 @@
 <?php
-/**
- * RcmUserAclResourceProvider.php
- *
- * RcmUserAclResourceProvider
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Provider
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Provider;
 
@@ -66,11 +51,11 @@ class RcmUserAclResourceProvider extends ResourceProvider
     protected $resources = [];
 
     /**
-     * __construct
-     *
+     * RcmUserAclResourceProvider constructor.
      */
     public function __construct()
     {
+        $this->buildResources();
     }
 
     /**
@@ -82,10 +67,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     public function getResources()
     {
-        if (empty($this->resources)) {
-            $this->buildResources();
-        }
-
         return $this->resources;
     }
 
@@ -101,11 +82,6 @@ class RcmUserAclResourceProvider extends ResourceProvider
      */
     public function getResource($resourceId)
     {
-
-        if (empty($this->resources)) {
-            $this->buildResources();
-        }
-
         return parent::getResource($resourceId);
     }
 
@@ -132,36 +108,48 @@ class RcmUserAclResourceProvider extends ResourceProvider
         ];
 
         /* parent resource */
-        $this->resources[self::RESOURCE_ID_ROOT]
-            = new AclResource(self::RESOURCE_ID_ROOT);
-        $this->resources[self::RESOURCE_ID_ROOT]->setName(
+        $resource = new AclResource(self::RESOURCE_ID_ROOT);
+        $resource->setName(
             'RCM User'
         );
-        $this->resources[self::RESOURCE_ID_ROOT]->setDescription(
+        $resource->setDescription(
             'All RCM user access.'
         );
-        $this->resources[self::RESOURCE_ID_ROOT]->setPrivileges(
+        $resource->setPrivileges(
             $privileges
         );
+        $this->resources[self::RESOURCE_ID_ROOT] = $resource;
 
         /* user edit */
-        $this->resources[self::RESOURCE_ID_USER]
-            = new AclResource(self::RESOURCE_ID_USER, self::RESOURCE_ID_ROOT, $userPrivileges);
-        $this->resources[self::RESOURCE_ID_USER]->setName(
+        $resource = new AclResource(
+            self::RESOURCE_ID_USER,
+            self::RESOURCE_ID_ROOT,
+            $userPrivileges
+        );
+        $resource->setName(
             'User Administration'
         );
-        $this->resources[self::RESOURCE_ID_USER]->setDescription(
+        $resource->setDescription(
             'Allows the editing of user data.'
         );
+        $this->resources[self::RESOURCE_ID_USER] = $resource;
 
         /* access and roles */
-        $this->resources[self::RESOURCE_ID_ACL]
-            = new AclResource(self::RESOURCE_ID_ACL, self::RESOURCE_ID_ROOT, $privileges);
-        $this->resources[self::RESOURCE_ID_ACL]->setName(
+        $resource = new AclResource(
+            self::RESOURCE_ID_ACL,
+            self::RESOURCE_ID_ROOT,
+            $privileges
+        );
+        $resource->setName(
             'Role and Access Administration'
         );
-        $this->resources[self::RESOURCE_ID_ACL]->setDescription(
+        $resource->setDescription(
             'Allows the editing of user access and role data.'
         );
+
+        $resource->setParentResourceId(
+            self::RESOURCE_ID_ROOT
+        );
+        $this->resources[self::RESOURCE_ID_ACL] = $resource;
     }
 }

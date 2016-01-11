@@ -70,9 +70,9 @@ class AclResource extends GenericResource implements \JsonSerializable
     /**
      * __construct
      *
-     * @param string $resourceId       resourceId
+     * @param string $resourceId resourceId
      * @param null   $parentResourceId parentResourceId
-     * @param array  $privileges       privileges
+     * @param array  $privileges privileges
      */
     public function __construct(
         $resourceId,
@@ -98,13 +98,16 @@ class AclResource extends GenericResource implements \JsonSerializable
         $resourceId = strtolower((string)$resourceId);
 
         if (!$this->isValidResourceId($resourceId) || empty($resourceId)) {
-            throw new RcmUserException("Resource resourceId ({$resourceId}) is invalid.");
+            throw new RcmUserException(
+                "Resource resourceId ({$resourceId}) is invalid."
+            );
         }
 
         $this->resourceId = $resourceId;
     }
 
     /**
+     * @deprecated Not required
      * setProviderId
      *
      * @param string $providerId providerId
@@ -117,6 +120,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     }
 
     /**
+     * @deprecated Not required
      * getProviderId
      *
      * @return string
@@ -129,7 +133,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     /**
      * setParentResourceId
      *
-     * @param string $parentResourceId parentResourceId
+     * @param string|null $parentResourceId parentResourceId
      *
      * @return void
      * @throws \RcmUser\Exception\RcmUserException
@@ -140,7 +144,9 @@ class AclResource extends GenericResource implements \JsonSerializable
         $parentResourceId = strtolower((string)$parentResourceId);
 
         if (!$this->isValidResourceId($parentResourceId)) {
-            throw new RcmUserException("Resource parentResourceId ({$parentResourceId}) is invalid.");
+            throw new RcmUserException(
+                "Resource parentResourceId ({$parentResourceId}) is invalid."
+            );
         }
 
         if (!empty($this->parentResource)) {
@@ -159,7 +165,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     /**
      * getParentResourceId
      *
-     * @return string
+     * @return string|null
      */
     public function getParentResourceId()
     {
@@ -167,6 +173,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     }
 
     /**
+     * @deprecated Should only require parentResourceId
      * setParentResource
      *
      * @param AclResource $parentResource parentResource
@@ -180,6 +187,7 @@ class AclResource extends GenericResource implements \JsonSerializable
     }
 
     /**
+     * @deprecated Should only return parentResourceId
      * getParentResource
      *
      * @return string|AclResource
@@ -327,7 +335,42 @@ class AclResource extends GenericResource implements \JsonSerializable
             return;
         }
 
-        throw new RcmUserException('Resource data could not be populated, data format not supported');
+        throw new RcmUserException(
+            'Resource data could not be populated, data format not supported'
+        );
+    }
+
+    /**
+     * toArray
+     *
+     * @param array $ignore
+     *
+     * @return array
+     */
+    public function toArray($ignore = [])
+    {
+        $data = [];
+
+        if (!in_array('resourceId', $ignore)) {
+            $data['resourceId'] = $this->getResourceId();
+        }
+        if (!in_array('providerId', $ignore)) {
+            $data['providerId'] = $this->getProviderId();
+        }
+        if (!in_array('parentResourceId', $ignore)) {
+            $data['parentResourceId'] = $this->getParentResourceId();
+        }
+        if (!in_array('privileges', $ignore)) {
+            $data['privileges'] = $this->getPrivileges();
+        }
+        if (!in_array('name', $ignore)) {
+            $data['name'] = $this->getName();
+        }
+        if (!in_array('description', $ignore)) {
+            $data['description'] = $this->getDescription();
+        }
+
+        return $data;
     }
 
     /**

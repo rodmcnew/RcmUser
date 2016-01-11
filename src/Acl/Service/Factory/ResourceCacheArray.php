@@ -2,25 +2,26 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
+use RcmUser\Acl\Cache\ArrayStorage;
+use RcmUser\Acl\Cache\ResourceCache;
+use Zend\Cache\Storage\Adapter\Memory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
- * AclDataService
- *
- * AclDataService Factory
+ * Class ResourceCacheArray
  *
  * PHP version 5
  *
  * @category  Reliv
  * @package   RcmUser\Acl\Service\Factory
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
+ * @copyright 2016 Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AclDataService implements FactoryInterface
+class ResourceCacheArray implements FactoryInterface
 {
     /**
      * createService
@@ -31,16 +32,20 @@ class AclDataService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $aclRoleDataMapper = $serviceLocator->get(
-            'RcmUser\Acl\AclRoleDataMapper'
-        );
-        $aclRuleDataMapper = $serviceLocator->get(
-            'RcmUser\Acl\AclRuleDataMapper'
+        $resourceStorage = new ArrayStorage();
+
+        $providerIndexStorage = new ArrayStorage();
+
+        /** @var \RcmUser\Acl\Builder\AclResourceBuilder $resourceBuilder */
+        $resourceBuilder = $serviceLocator->get(
+            'RcmUser\Acl\Builder\AclResourceBuilder'
         );
 
-        $service = new \RcmUser\Acl\Service\AclDataService();
-        $service->setAclRoleDataMapper($aclRoleDataMapper);
-        $service->setAclRuleDataMapper($aclRuleDataMapper);
+        $service = new ResourceCache(
+            $resourceStorage,
+            $providerIndexStorage,
+            $resourceBuilder
+        );
 
         return $service;
     }

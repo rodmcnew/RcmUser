@@ -1,21 +1,8 @@
 <?php
-/**
- * ResourceProviderInterface.php
- *
- * ResourceProviderInterface
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Provider
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Acl\Provider;
+
+use RcmUser\Acl\Entity\AclResource;
 
 /**
  * Interface ResourceProviderInterface
@@ -35,15 +22,6 @@ namespace RcmUser\Acl\Provider;
 interface ResourceProviderInterface
 {
     /**
-     * setProviderId
-     *
-     * @param string $providerId providerId
-     *
-     * @return void
-     */
-    public function setProviderId($providerId);
-
-    /**
      * getProviderId
      *
      * @return string
@@ -51,8 +29,8 @@ interface ResourceProviderInterface
     public function getProviderId();
 
     /**
-     * getResources (ALL resources)
-     * Return a multi-dimensional array of resources and privileges
+     * getResources (ALL resources) {"resourceId": "{AclResource}"}
+     * Return an array of resources and privileges indexed by resourceId
      * containing ALL possible resources including run-time resources
      *
      * @return array
@@ -66,7 +44,16 @@ interface ResourceProviderInterface
      *
      * @param string $resourceId $resourceId
      *
-     * @return AclResource|array|null
+     * @return AclResource|null
      */
     public function getResource($resourceId);
+
+    /**
+     * hasResource
+     *
+     * @param string $resourceId
+     *
+     * @return bool
+     */
+    public function hasResource($resourceId);
 }

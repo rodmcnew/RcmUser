@@ -3,29 +3,27 @@
 namespace RcmUser\Acl\Provider;
 
 use RcmUser\Acl\Entity\AclResource;
-use RcmUser\Acl\Exception\RcmUserAclException;
+use RcmUser\Acl\Entity\RootAclResource;
 
 /**
- * class ResourceProvider
- *
- * ResourceProvider
+ * Class RootResourceProvider
  *
  * PHP version 5
  *
  * @category  Reliv
  * @package   RcmUser\Acl\Provider
  * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
+ * @copyright 2015 Reliv International
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class ResourceProvider implements ResourceProviderInterface
+class RootResourceProvider implements ResourceProviderInterface
 {
     /**
      * @var string $providerId
      */
-    protected $providerId = null;
+    protected $providerId = 'root';
 
     /**
      * @var array $resources
@@ -33,31 +31,11 @@ class ResourceProvider implements ResourceProviderInterface
     protected $resources = [];
 
     /**
-     * __construct
-     *
-     * @param array $resources resources
+     * RootResourceProvider constructor.
      */
-    public function __construct($resources)
+    public function __construct(RootAclResource $rootAclResource)
     {
-        if (is_array($resources)) {
-            $this->resources = $resources;
-        }
-    }
-
-    /**
-     * setProviderId
-     *
-     * @param $providerId
-     *
-     * @return void
-     * @throws RcmUserAclException
-     */
-    public function setProviderId($providerId)
-    {
-        if ($providerId === null) {
-            throw new RcmUserAclException('Provider ID cannot be null');
-        }
-        $this->providerId = $providerId;
+        $this->resources[$this->providerId] = $rootAclResource;
     }
 
     /**

@@ -1,19 +1,4 @@
 <?php
-/**
- * AuthorizeService.php
- *
- * AuthorizeService
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Acl\Service;
 
@@ -296,6 +281,13 @@ class AuthorizeService
         }
     }
 
+    /**
+     * hasSuperAdmin
+     *
+     * @param $userRoles
+     *
+     * @return bool
+     */
     public function hasSuperAdmin($userRoles)
     {
         $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
