@@ -74,7 +74,7 @@ class AclResourceService
      * getResources - Get a resource and all of its parents
      *
      * @param string $resourceId resourceId
-     * @param string $providerId providerId
+     * @param string $providerId @deprecated No Longer Required - providerId
      *
      * @return array
      */

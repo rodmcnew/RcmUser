@@ -172,7 +172,7 @@ class AuthorizeService
      * getResources
      *
      * @param string $resourceId resourceId
-     * @param string $providerId providerId
+     * @param string $providerId  @deprecated No Longer Required - providerId
      *
      * @return array
      */
@@ -190,7 +190,7 @@ class AuthorizeService
      * getAcl - This cannot be called before resources are parsed
      *
      * @param string $resourceId resourceId
-     * @param string $providerId providerId
+     * @param string $providerId  @deprecated No Longer Required - providerId
      *
      * @return Acl
      */
@@ -310,7 +310,7 @@ class AuthorizeService
      *
      * @param string $resourceId resourceId
      * @param string $privilege  privilege
-     * @param string $providerId providerId
+     * @param string $providerId  @deprecated No Longer Required  - providerId
      * @param User   $user       user
      *
      * @return bool
@@ -376,28 +376,6 @@ class AuthorizeService
         }
 
         return false;
-
-        /* @deprecated
-        $resources = $this->parseResource($resourceId);
-         *
-         * foreach ($resources as $res) {
-         *
-         * $acl = $this->getAcl($resourceId, $providerId);
-         *
-         * foreach ($userRoles as $userRole) {
-         *
-         * $result = $acl->isAllowed(
-         * $userRole,
-         * $res,
-         * $privilege
-         * );
-         *
-         * if ($result) {
-         * return $result;
-         * }
-         * }
-         * }
-         */
     }
 
     /**
