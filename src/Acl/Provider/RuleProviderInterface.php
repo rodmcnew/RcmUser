@@ -52,7 +52,7 @@ interface RuleProviderInterface
      *
      * @return array AclRules
      */
-    public function getRulesByResources(Array $resources);
+    public function getRulesByResources(array $resources);
 
     /**
      * getRulesByResource

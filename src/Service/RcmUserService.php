@@ -581,7 +581,7 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @param string $resourceId a string resource id as defined by a provider
      * @param string $privilege  privilege of the resource to check
-     * @param string $providerId resource unique identifier of the resource provider
+     * @param string $providerId  @deprecated No Longer Required - resource unique identifier of the resource provider
      *
      * @return bool
      */
@@ -609,10 +609,10 @@ class RcmUserService extends \RcmUser\Event\EventProvider
      *
      * @param string $resourceId a string resource id as defined by a provider
      * @param string $privilege  privilege of the resource to check
-     * @param string $providerId resource unique identifier of the resource provider
+     * @param string $providerId @deprecated No Longer Required - resource unique identifier of the resource provider
      * @param User   $user       request user object
      *
-     * @return mixed
+     * @return bool
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function isUserAllowed(
