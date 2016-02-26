@@ -1,19 +1,4 @@
 <?php
-/**
- * DoctrineUserDataMapper.php
- *
- * DoctrineUserDataMapper
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\User\Db
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\User\Db;
 
@@ -40,7 +25,11 @@ use RcmUser\User\Result;
  */
 class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInterface
 {
+    /**
+     * USER_DELETED_STATE
+     */
     const USER_DELETED_STATE = 'deleted';
+
     /**
      * @var EntityManager $entityManager
      */

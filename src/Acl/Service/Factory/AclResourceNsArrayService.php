@@ -2,7 +2,6 @@
 
 namespace RcmUser\Acl\Service\Factory;
 
-use RcmUser\Acl\Builder\AclResourceStackBuilder;
 use RcmUser\Acl\Provider\ResourceProviderInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
