@@ -310,7 +310,10 @@ class AclDataService
                 $nsChar
             );
 
-            $nsRole = new NamespaceAclRole();
+            $nsRole = new NamespaceAclRole(
+                $this->getSuperAdminRoleId()->getData(),
+                $this->getGuestRoleId()->getData()
+            );
 
             $nsRole->populate($role);
 

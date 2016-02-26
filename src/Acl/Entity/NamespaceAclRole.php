@@ -27,6 +27,30 @@ class NamespaceAclRole extends AclRole
     protected $namespace = '';
 
     /**
+     * Super admin role
+     * @var bool
+     */
+    protected $superAdminRoleId = null;
+
+    /**
+     * Guest role
+     * @var bool
+     */
+    protected $guestRoleId = null;
+
+    /**
+     * NamespaceAclRole constructor.
+     *
+     * @param null|string $superAdminRoleId
+     * @param null|string $guestRoleId
+     */
+    public function __construct($superAdminRoleId, $guestRoleId)
+    {
+        $this->superAdminRoleId = $superAdminRoleId;
+        $this->guestRoleId = $guestRoleId;
+    }
+
+    /**
      * getNamespace
      *
      * @return string
@@ -52,6 +76,26 @@ class NamespaceAclRole extends AclRole
     }
 
     /**
+     * isSuperAdminRole
+     *
+     * @return mixed
+     */
+    public function isSuperAdminRole()
+    {
+        return ($this->roleId == $this->superAdminRoleId);
+    }
+
+    /**
+     * isGuestRole
+     *
+     * @return bool
+     */
+    public function isGuestRole()
+    {
+        return ($this->roleId == $this->guestRoleId);
+    }
+
+    /**
      * jsonSerialize
      *
      * @return \stdClass
@@ -60,6 +104,8 @@ class NamespaceAclRole extends AclRole
     {
         $obj = parent::jsonSerialize();
         $obj->namespace = $this->getNamespace();
+        $obj->isGuestRole = $this->isGuestRole();
+        $obj->isSuperAdminRole = $this->isSuperAdminRole();
 
         return $obj;
     }
