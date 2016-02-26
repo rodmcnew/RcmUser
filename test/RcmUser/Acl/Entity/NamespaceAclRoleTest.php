@@ -31,7 +31,10 @@ class NamespaceAclRoleTest extends Zf2TestCase {
      */
     public function testSetGet(){
 
-        $nameSpaceAclRole = new NamespaceAclRole();
+        $nameSpaceAclRole = new NamespaceAclRole(
+            'admin',
+            'guest'
+        );
 
         $nameSpaceAclRole->setRoleId('myrole');
 
