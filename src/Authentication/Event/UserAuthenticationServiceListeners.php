@@ -1,19 +1,4 @@
 <?php
-/**
- * UserAuthenticationServiceListeners.php
- *
- * UserAuthenticationServiceListeners
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Authentication\Event
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Authentication\Event;
 
