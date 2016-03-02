@@ -278,7 +278,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
                 "Rule could not be found by rule, roleId and resourceId."
             );
         }
-        var_dump($privileges); die;
+
         $query = $this->getEntityManager()->createQuery(
             'SELECT rule FROM ' . $this->getEntityClass() . ' rule '
             . 'WHERE rule.rule = ?1 ' . 'AND rule.roleId = ?2 '

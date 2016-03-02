@@ -175,10 +175,6 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
         $privileges = $this->getPrivileges();
         // @bc This is only here to support older versions
         if ($privilege === null) {
-            //trigger_error(
-            //    "Using AclRule->getPrivilege() without a value is not longer supported",
-            //    E_USER_WARNING
-            //);
             if(count($privileges) > 0) {
                 return array_values($privileges)[0]; // $privileges[0];
             }
@@ -204,7 +200,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     {
         $this->privileges = $privileges;
         // To standardize ordering for easy querying
-        asort($this->privileges);
+        sort($this->privileges);
     }
 
     /**
@@ -319,8 +315,6 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function jsonSerialize()
     {
-
-
         $obj = new \stdClass();
         $obj->rule = $this->getRule();
         $obj->roleId = $this->getRoleId();
