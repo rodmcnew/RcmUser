@@ -235,19 +235,20 @@ class AuthorizeService
         // get only for resources
         $rules = $this->getRules($resources);
 
+        /** @var AclRule $aclRule */
         foreach ($rules as $aclRule) {
             if ($aclRule->getRule() == AclRule::RULE_ALLOW) {
                 $this->acl->allow(
                     $aclRule->getRoleId(),
                     $aclRule->getResourceId(),
-                    $aclRule->getPrivilege(),
+                    $aclRule->getPrivileges(),
                     $aclRule->getAssertion()
                 );
             } elseif ($aclRule->getRule() == AclRule::RULE_DENY) {
                 $this->acl->deny(
                     $aclRule->getRoleId(),
                     $aclRule->getResourceId(),
-                    $aclRule->getPrivilege(),
+                    $aclRule->getPrivileges(),
                     $aclRule->getAssertion()
                 );
             }

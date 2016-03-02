@@ -464,7 +464,6 @@ class AclDataService
         $rule = $aclRule->getRule();
         $roleId = $aclRule->getRoleId();
         $resource = $aclRule->getResourceId();
-        //$privilege = $aclRule->getPrivilege();
 
         // check required
         if (empty($rule) || empty($roleId) || empty($resource)) {

@@ -268,7 +268,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
         $rule = $aclRule->getRule();
         $roleId = $aclRule->getRoleId();
         $resourceId = $aclRule->getResourceId();
-        $privilege = $aclRule->getPrivilege();
+        $privileges = $aclRule->getPrivileges();
 
         // check required
         if (empty($rule) || empty($roleId) || empty($resourceId)) {
@@ -278,17 +278,11 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
                 "Rule could not be found by rule, roleId and resourceId."
             );
         }
-
-        if ($privilege === null) {
-            $privQuery = 'AND rule.privilege is NULL';
-        } else {
-            $privQuery = 'AND rule.privilege = ?4';
-        }
-
+        var_dump($privileges); die;
         $query = $this->getEntityManager()->createQuery(
             'SELECT rule FROM ' . $this->getEntityClass() . ' rule '
             . 'WHERE rule.rule = ?1 ' . 'AND rule.roleId = ?2 '
-            . 'AND rule.resourceId = ?3 ' . $privQuery
+            . 'AND rule.resourceId = ?3 ' . 'AND rule.privileges = ?4'
         );
 
         $query->setParameter(
@@ -303,12 +297,10 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
             3,
             $resourceId
         );
-        if ($privilege !== null) {
-            $query->setParameter(
-                4,
-                $privilege
-            );
-        }
+        $query->setParameter(
+            4,
+            json_encode($privileges)
+        );
 
         $rules = $query->getResult();
 

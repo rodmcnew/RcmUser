@@ -54,13 +54,13 @@ class AclRuleTest extends Zf2TestCase
         $rule = 'allow';
         $roleId = 'somerole';
         $resource = 'someresource';
-        $privilege = 'someprivilege';
+        $privileges = ['someprivilege'];
         $assertion = 'someassertion';
 
         $aclRule->setRule($rule);
         $aclRule->setRoleId($roleId);
         $aclRule->setResourceId($resource);
-        $aclRule->setPrivilege($privilege);
+        $aclRule->setPrivileges($privileges);
         $aclRule->setAssertion($assertion);
 
         $this->assertEquals(
@@ -79,8 +79,8 @@ class AclRuleTest extends Zf2TestCase
             'Setter or getter failed.'
         );
         $this->assertEquals(
-            $privilege,
-            $aclRule->getPrivilege(),
+            $privileges,
+            $aclRule->getPrivileges(),
             'Setter or getter failed.'
         );
         $this->assertEquals(
@@ -89,10 +89,11 @@ class AclRuleTest extends Zf2TestCase
             'Setter or getter failed.'
         );
 
-        $aclRule->setPrivilege('');
-        $this->assertNull(
-            $aclRule->getPrivilege(),
-            'Empty privilege should be stored as null.'
+        $aclRule->setPrivileges([]);
+        $this->assertEquals(
+            [],
+            $aclRule->getPrivileges(),
+            'Empty privileges should be stored as [].'
         );
     }
 
@@ -131,7 +132,9 @@ class AclRuleTest extends Zf2TestCase
             'rule' => 'allow',
             'roleId' => 'somerole',
             'resourceId' => 'someresource',
-            'privilege' => 'someprivilege',
+            // NOTE privilege is deprecated
+            'privilege' => null,
+            'privileges' => ['someprivilege'],
             'assertion' => 'someassertion',
         ];
 
@@ -177,12 +180,12 @@ class AclRuleTest extends Zf2TestCase
         $rule = 'allow';
         $roleId = 'role';
         $resource = 'someresource';
-        $privilege = 'someprivilege';
+        $privileges = ['someprivilege'];
 
         $aclRule->setRule($rule);
         $aclRule->setRoleId($roleId);
         $aclRule->setResourceId($resource);
-        $aclRule->setPrivilege($privilege);
+        $aclRule->setPrivileges($privileges);
 
         $aclRuleJson = json_encode($aclRule);
 
@@ -202,12 +205,12 @@ class AclRuleTest extends Zf2TestCase
         $rule = 'allow';
         $roleId = 'role';
         $resource = 'someresource';
-        $privilege = 'someprivilege';
+        $privileges = ['someprivilege'];
 
         $aclRule->setRule($rule);
         $aclRule->setRoleId($roleId);
         $aclRule->setResourceId($resource);
-        $aclRule->setPrivilege($privilege);
+        $aclRule->setPrivileges($privileges);
 
         $iter = $aclRule->getIterator();
         $array1 = iterator_to_array($aclRule);
@@ -224,4 +227,3 @@ class AclRuleTest extends Zf2TestCase
         );
     }
 }
- 

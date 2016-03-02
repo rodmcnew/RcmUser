@@ -52,10 +52,19 @@ class DoctrineAclRule extends AclRule
     protected $resourceId;
 
     /**
+     * @deprecated Use $privileges
      * @var string
      * @ORM\Column(type="string", length=255, nullable=true)
      */
     protected $privilege;
+
+    /**
+     * @var array
+     *
+     * OLD: ORM\Column(type="string", length=255, nullable=true)
+     * @ORM\Column(type="json_array")
+     */
+    protected $privileges = [];
 
     /**
      * setId
