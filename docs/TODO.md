@@ -3,7 +3,7 @@
 #### DB and Query Optimization ####
 
  - Optimize mappers
- - Pagination for DataMappers
+ - Pagination/filtering for DataMappers
 
 #### Translations ####
 

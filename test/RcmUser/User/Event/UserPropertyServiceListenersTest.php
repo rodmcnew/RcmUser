@@ -177,8 +177,6 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
 
-        //var_dump($this->mockEvent->getParam('propertyNameSpace'));
-
         $this->assertInstanceOf(
             '\RcmUser\Result',
             $result
@@ -189,8 +187,6 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         $result = $this->userPropertyServiceListeners->onPopulateUserProperty(
             $this->mockEvent
         );
-
-        //var_dump($this->mockEvent->getParam('propertyNameSpace'));
 
         $this->assertFalse(
             $result
@@ -212,4 +208,3 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
 
     }
 }
- 

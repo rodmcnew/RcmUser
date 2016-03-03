@@ -3,6 +3,7 @@
 namespace RcmUser\Acl\Entity;
 
 use RcmUser\Exception\RcmUserException;
+use Zend\Permissions\Acl\Assertion\AssertionInterface;
 
 /**
  * AclRule
@@ -51,9 +52,15 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     protected $resourceId = null;
 
     /**
+     * @deprecated Use $privileges
      * @var string $privilege
      */
     protected $privilege = null;
+
+    /**
+     * @var array $privileges
+     */
+    protected $privileges = [];
 
     /**
      * @var AssertionInterface/string $assertion
@@ -143,27 +150,80 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     public function setPrivilege($privilege)
     {
         if (empty($privilege)) {
-            $privilege = null;
+            return;
         }
 
-        $this->privilege = $privilege;
+        $privilege = (string)$privilege;
+
+        $privileges = $this->privileges;
+
+        if (!in_array($privilege, $privileges)) {
+            $privileges[] = $privilege;
+            $this->setPrivileges($privileges);
+        }
     }
 
     /**
      * getPrivilege
      *
-     * @return string
+     * @param null $privilege @bc Default of null is only here to support older versions
+     *
+     * @return array|null
      */
-    public function getPrivilege()
+    public function getPrivilege($privilege = null)
     {
-        return $this->privilege;
+        $privileges = $this->getPrivileges();
+        // @bc This is only here to support older versions
+        if ($privilege === null) {
+            if (count($privileges) > 0) {
+                return array_values($privileges)[0]; // $privileges[0];
+            }
+
+            return null;
+        }
+
+        $privilege = (string)$privilege;
+
+        $key = array_search($privilege, $privileges);
+        if ($key !== false) {
+            return $privileges;
+        }
+
+        return null;
+    }
+
+    /**
+     * setPrivileges
+     *
+     * @return array
+     */
+    public function setPrivileges(array $privileges)
+    {
+        $this->privileges = $privileges;
+        // To standardize ordering for easy querying
+        sort($this->privileges);
+    }
+
+    /**
+     * getPrivileges
+     *
+     * @return array|null
+     */
+    public function getPrivileges()
+    {
+        // @bc This is only here to support older versions
+        if ($this->privilege !== null) {
+            $this->setPrivilege($this->privilege);
+        }
+
+        return $this->privileges;
     }
 
     /**
      * setAssertion
      * \Zend\Permissions\Acl\Assertion\AssertionInterface
      *
-     * @param AssertionInterface\string $assertion assertion
+     * @param AssertionInterface|string $assertion assertion
      *
      * @return void
      */
@@ -175,7 +235,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * getAssertion
      *
-     * @return AssertionInterface/string
+     * @return AssertionInterface|string
      */
     public function getAssertion()
     {
@@ -215,7 +275,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
             $this->setRule($data->getRule());
             $this->setRoleId($data->getRoleId());
             $this->setResourceId($data->getResourceId());
-            $this->setPrivilege($data->getPrivilege());
+            $this->setPrivileges($data->getPrivileges());
             $this->setAssertion($data->getAssertion());
 
             return;
@@ -231,8 +291,12 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
             if (isset($data['resourceId'])) {
                 $this->setResourceId($data['resourceId']);
             }
+            // @bc This is only here to support older versions
             if (isset($data['privilege'])) {
                 $this->setPrivilege($data['privilege']);
+            }
+            if (isset($data['privileges'])) {
+                $this->setPrivileges($data['privileges']);
             }
             if (isset($data['assertion'])) {
                 $this->setAssertion($data['assertion']);
@@ -241,7 +305,9 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
             return;
         }
 
-        throw new RcmUserException('Rule data could not be populated, data format not supported');
+        throw new RcmUserException(
+            'Rule data could not be populated, data format not supported'
+        );
     }
 
     /**
@@ -255,6 +321,10 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
         $obj->rule = $this->getRule();
         $obj->roleId = $this->getRoleId();
         $obj->resourceId = $this->getResourceId();
+        $obj->privileges = $this->getPrivileges();
+
+        // @bc This is only here to support older versions
+        $obj->_deprecated_privilege = "privilege is deprecate, use privileges";
         $obj->privilege = $this->getPrivilege();
 
         return $obj;

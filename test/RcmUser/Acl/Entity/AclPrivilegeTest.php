@@ -103,8 +103,6 @@ class AclPrivilegeTest extends Zf2TestCase
 
         $strPriv = (string)$privilege;
 
-        //var_dump($strPriv);
-
         $this->assertTrue(is_string($strPriv), "toString failed");
 
         try {
@@ -120,4 +118,3 @@ class AclPrivilegeTest extends Zf2TestCase
 
     }
 }
- 
