@@ -175,9 +175,10 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
         $privileges = $this->getPrivileges();
         // @bc This is only here to support older versions
         if ($privilege === null) {
-            if(count($privileges) > 0) {
+            if (count($privileges) > 0) {
                 return array_values($privileges)[0]; // $privileges[0];
             }
+
             return null;
         }
 
@@ -211,9 +212,10 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     public function getPrivileges()
     {
         // @bc This is only here to support older versions
-        if($this->privilege !== null) {
+        if ($this->privilege !== null) {
             $this->setPrivilege($this->privilege);
         }
+
         return $this->privileges;
     }
 
