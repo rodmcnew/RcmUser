@@ -123,7 +123,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * setResourceId
      *
-     * @param $resourceId
+     * @param string $resourceId
      *
      * @return void
      * @throws RcmUserException
