@@ -14,6 +14,7 @@ class ResourceIdFilter
 {
     /**
      * filter - set to lowercase to avoid overlaps
+     *        - Allows nulls
      *
      * @param $resourceId
      *
@@ -21,6 +22,10 @@ class ResourceIdFilter
      */
     public static function filter($resourceId)
     {
+        if ($resourceId === null) {
+            return null;
+        }
+
         $resourceId = (string)$resourceId;
 
         return strtolower($resourceId);
