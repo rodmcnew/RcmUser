@@ -2,6 +2,8 @@
 
 namespace RcmUser\Acl\Entity;
 
+use RcmUser\Acl\Filter\ResourceIdFilter;
+use RcmUser\Acl\Validator\ResourceIdValidator;
 use RcmUser\Exception\RcmUserException;
 use Zend\Permissions\Acl\Assertion\AssertionInterface;
 
@@ -121,12 +123,21 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
     /**
      * setResourceId
      *
-     * @param string $resourceId resourceId
+     * @param $resourceId
      *
      * @return void
+     * @throws RcmUserException
      */
     public function setResourceId($resourceId)
     {
+        $resourceId = ResourceIdFilter::filter($resourceId);
+
+        if (!ResourceIdValidator::isValid($resourceId) || empty($resourceId)) {
+            throw new RcmUserException(
+                "Resource resourceId ({$resourceId}) is invalid for rule."
+            );
+        }
+
         $this->resourceId = $resourceId;
     }
 
@@ -137,7 +148,7 @@ class AclRule implements \JsonSerializable, \IteratorAggregate
      */
     public function getResourceId()
     {
-        return $this->resourceId;
+        return ResourceIdFilter::filter($this->resourceId);
     }
 
     /**
