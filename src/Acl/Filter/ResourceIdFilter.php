@@ -22,7 +22,7 @@ class ResourceIdFilter
      */
     public static function filter($resourceId)
     {
-        if($resourceId === null) {
+        if ($resourceId === null) {
             return null;
         }
 
