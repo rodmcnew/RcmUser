@@ -2,6 +2,8 @@
 
 namespace RcmUser\Acl\Entity;
 
+use RcmUser\Acl\Filter\ResourceIdFilter;
+use RcmUser\Acl\Validator\ResourceIdValidator;
 use RcmUser\Exception\RcmUserException;
 use Zend\Permissions\Acl\Resource\GenericResource;
 
@@ -55,9 +57,9 @@ class AclResource extends GenericResource implements \JsonSerializable
     /**
      * __construct
      *
-     * @param string $resourceId resourceId
+     * @param string $resourceId       resourceId
      * @param null   $parentResourceId parentResourceId
-     * @param array  $privileges privileges
+     * @param array  $privileges       privileges
      */
     public function __construct(
         $resourceId,
@@ -79,8 +81,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setResourceId($resourceId)
     {
-        // set to lowercase to avoid overlaps
-        $resourceId = strtolower((string)$resourceId);
+        $resourceId = ResourceIdFilter::filter($resourceId);
 
         if (!$this->isValidResourceId($resourceId) || empty($resourceId)) {
             throw new RcmUserException(
@@ -89,6 +90,16 @@ class AclResource extends GenericResource implements \JsonSerializable
         }
 
         $this->resourceId = $resourceId;
+    }
+
+    /**
+     * getResourceId
+     *
+     * @return string
+     */
+    public function getResourceId()
+    {
+        return ResourceIdFilter::filter($this->resourceId);
     }
 
     /**
@@ -125,8 +136,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function setParentResourceId($parentResourceId)
     {
-        // set to lowercase to avoid overlaps
-        $parentResourceId = strtolower((string)$parentResourceId);
+        $parentResourceId = ResourceIdFilter::filter($parentResourceId);
 
         if (!$this->isValidResourceId($parentResourceId)) {
             throw new RcmUserException(
@@ -154,7 +164,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function getParentResourceId()
     {
-        return $this->parentResourceId;
+        return ResourceIdFilter::filter($this->parentResourceId);
     }
 
     /**
@@ -265,15 +275,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function isValidResourceId($resourceId)
     {
-        if (preg_match(
-            '/[^a-z_\-0-9\.]/i',
-            $resourceId
-        )
-        ) {
-            return false;
-        }
-
-        return true;
+        return ResourceIdValidator::isValid($resourceId);
     }
 
     /**
