@@ -201,9 +201,9 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     public function fetchByResourcePrivilege($resourceId, $privilege)
     {
         if ($privilege === null) {
-            $privQuery = 'AND rule.privilege is NULL';
+            $privQuery = "AND rule.privileges = '[]'";
         } else {
-            $privQuery = 'AND rule.privilege = :privilege';
+            $privQuery = "AND rule.privileges LIKE :privilege";
         }
 
         $query = $this->getEntityManager()->createQuery(
@@ -214,7 +214,9 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
         );
 
         $query->setParameter('resourceId', $resourceId);
-        $query->setParameter('privilege', $privilege);
+        if ($privilege !== null) {
+            $query->setParameter('privilege', '%\"' . $privilege . '\"%');
+        }
 
         $rules = $query->getResult();
 
