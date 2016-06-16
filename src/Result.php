@@ -225,11 +225,10 @@ class Result implements \JsonSerializable
      */
     public function jsonSerialize()
     {
-        $obj = new \stdClass();
-        $obj->code = $this->getCode();
-        $obj->messages = $this->getMessages();
-        $obj->data = $this->getData();
-
-        return $obj;
+        return [
+            'code' => $this->getCode(),
+            'messages' => $this->getMessages(),
+            'data' => $this->getData(),
+        ];
     }
 }
