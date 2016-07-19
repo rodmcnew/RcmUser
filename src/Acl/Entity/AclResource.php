@@ -99,7 +99,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function getResourceId()
     {
-        return ResourceIdFilter::filter($this->resourceId);
+        return $this->resourceId;
     }
 
     /**
@@ -164,7 +164,7 @@ class AclResource extends GenericResource implements \JsonSerializable
      */
     public function getParentResourceId()
     {
-        return ResourceIdFilter::filter($this->parentResourceId);
+        return $this->parentResourceId;
     }
 
     /**
