@@ -2,6 +2,7 @@
 
 namespace RcmUser\User\Service\Factory;
 
+use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -22,17 +23,19 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class UserPropertyService implements FactoryInterface
 {
-
     /**
      * createService
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return UserPropertyService
+     * @return \RcmUser\User\Service\UserPropertyService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = new \RcmUser\User\Service\UserPropertyService();
+        /** @var EventManagerInterface $eventManager */
+        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
+
+        $service = new \RcmUser\User\Service\UserPropertyService($eventManager);
 
         return $service;
     }

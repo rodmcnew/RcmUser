@@ -531,6 +531,7 @@ return [
              * Required *
              */
             'RcmUser\Event\Listeners' => 'RcmUser\Service\Factory\EventListeners',
+            'RcmUser\Event\UserEventManager' => 'RcmUser\Event\UserEventManagerFactory',
             /*
              * Logging
              * Required *

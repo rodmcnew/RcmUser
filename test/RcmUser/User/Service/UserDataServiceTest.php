@@ -52,7 +52,6 @@ class UserDataServiceTest extends Zf2TestCase
 
     public function buildUserDataService()
     {
-        $this->userDataService = new UserDataService();
         $user = new User();
         $user->setId('123');
         $result = new Result($user);
@@ -79,7 +78,7 @@ class UserDataServiceTest extends Zf2TestCase
             ->method('trigger')
             ->will($this->returnValue($this->responseCollection));
 
-        $this->userDataService->setEventManager($this->eventManager);
+        $this->userDataService = new UserDataService($this->eventManager);
     }
 
     public function testBuildUser()
@@ -148,4 +147,3 @@ class UserDataServiceTest extends Zf2TestCase
     }
 
 }
- 

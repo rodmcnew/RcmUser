@@ -2,6 +2,7 @@
 
 namespace RcmUser\Service\Factory;
 
+use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -44,7 +45,10 @@ class RcmUserService implements FactoryInterface
             'RcmUser\Acl\Service\AuthorizeService'
         );
 
-        $service = new \RcmUser\Service\RcmUserService();
+        /** @var EventManagerInterface $eventManager */
+        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
+
+        $service = new \RcmUser\Service\RcmUserService($eventManager);
         $service->setUserDataService($userDataService);
         $service->setUserPropertyService($userPropertyService);
         $service->setUserAuthService($authServ);

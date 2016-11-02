@@ -2,7 +2,6 @@
 
 namespace RcmUser;
 
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\Mvc\MvcEvent;
 
 /**
@@ -42,12 +41,10 @@ class Module
     public function onBootstrap(MvcEvent $event)
     {
         $application = $event->getApplication();
-        $sm = $application->getServiceManager();
-        $eventManager = $application->getEventManager();
+        $serviceLocator = $application->getServiceManager();
 
-        $listeners = $sm->get('RcmUser\Event\Listeners');
-        foreach ($listeners as $listener) {
-            $listener->attach($eventManager);
-        }
+        $modulePrepare = new ModulePrepare();
+
+        $modulePrepare->__invoke($serviceLocator);
     }
 }

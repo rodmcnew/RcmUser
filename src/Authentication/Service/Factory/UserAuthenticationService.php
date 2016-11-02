@@ -2,6 +2,7 @@
 
 namespace RcmUser\Authentication\Service\Factory;
 
+use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -33,9 +34,11 @@ class UserAuthenticationService implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('RcmUser\Auth\Config');
+        /** @var EventManagerInterface $eventManager */
+        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
 
         $service
-            = new \RcmUser\Authentication\Service\UserAuthenticationService();
+            = new \RcmUser\Authentication\Service\UserAuthenticationService($eventManager);
         $service->setObfuscatePassword(
             $config->get(
                 'ObfuscatePasswordOnAuth',

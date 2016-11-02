@@ -4,13 +4,12 @@ namespace RcmUser\Service;
 
 use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
+use RcmUser\Event\EventProvider;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
 use RcmUser\User\Service\UserPropertyService;
-
-//use ZfcUser\Service\User;
 
 /**
  * Class RcmUserService
@@ -27,9 +26,8 @@ use RcmUser\User\Service\UserPropertyService;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class RcmUserService extends \RcmUser\Event\EventProvider
+class RcmUserService extends EventProvider
 {
-
     /**
      * @var UserDataService
      */

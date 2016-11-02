@@ -33,29 +33,17 @@ class EventListeners implements FactoryInterface
     {
         $listeners = [];
 
-//        try {
         $listeners[] = $serviceLocator->get(
             'RcmUser\User\UserDataServiceListeners'
         );
-//        } catch (\Exception $e) {
-//            // no listeners
-//        }
 
-//        try {
         $listeners[] = $serviceLocator->get(
             'RcmUser\Authentication\UserAuthenticationServiceListeners'
         );
-//        } catch (\Exception $e) {
-//            // no listeners
-//        }
 
-//        try {
         $listeners[] = $serviceLocator->get(
             'RcmUser\User\UserRoleDataServiceListeners'
         );
-//        } catch (\Exception $e) {
-//            // no listeners
-//        }
 
         return $listeners;
     }

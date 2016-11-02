@@ -20,6 +20,8 @@ namespace RcmUser\Test\Service;
 use RcmUser\Service\RcmUserService;
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerInterface;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
@@ -60,6 +62,25 @@ class RcmUserServiceTest extends Zf2TestCase
         return $user;
     }
 
+    /**
+     * getEventManager
+     *
+     * @return EventManagerInterface
+     */
+    public function getEventManager()
+    {
+        return $this->getMockBuilder(
+            '\Zend\EventManager\EventManagerInterface'
+        )
+            ->disableOriginalConstructor()
+            ->getMock();
+    }
+
+    /**
+     * getRcmUserService
+     *
+     * @return RcmUserService
+     */
     public function getRcmUserService()
     {
         if (!isset($this->rcmUserService)) {
@@ -161,7 +182,7 @@ class RcmUserServiceTest extends Zf2TestCase
             ->method('hasRoleBasedAccess')
             ->will($this->returnValue(true));
 
-        $this->rcmUserService = new RcmUserService();
+        $this->rcmUserService = new RcmUserService($this->getEventManager());
         $this->rcmUserService->setUserDataService($this->userDataService);
         $this->rcmUserService->setUserPropertyService(
             $this->userPropertyService
@@ -173,7 +194,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetUserDataService()
     {
-        $rcmUserService = new RcmUserService();
+        $rcmUserService = new RcmUserService($this->getEventManager());
 
         $rcmUserService->setUserDataService($this->userDataService);
 
@@ -188,7 +209,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetUserPropertyService()
     {
-        $rcmUserService = new RcmUserService();
+        $rcmUserService = new RcmUserService($this->getEventManager());
 
         $rcmUserService->setUserPropertyService($this->userPropertyService);
 
@@ -203,7 +224,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetUserAuthService()
     {
-        $rcmUserService = new RcmUserService();
+        $rcmUserService = new RcmUserService($this->getEventManager());
 
         $rcmUserService->setUserAuthService($this->userAuthService);
 
@@ -218,7 +239,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetAuthorizeService()
     {
-        $rcmUserService = new RcmUserService();
+        $rcmUserService = new RcmUserService($this->getEventManager());
 
         $rcmUserService->setAuthorizeService($this->authorizeService);
 
@@ -412,7 +433,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testClearIdentity()
     {
-        $this->getRcmUserService()->clearIdentity('somePropertName');
+        $this->getRcmUserService()->clearIdentity();
     }
 
     public function testGetIdentity()
