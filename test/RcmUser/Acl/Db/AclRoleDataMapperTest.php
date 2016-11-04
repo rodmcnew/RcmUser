@@ -41,8 +41,6 @@ use RcmUser\Config\Config;
  */
 class AclRoleDataMapperTest extends \PHPUnit_Framework_TestCase
 {
-
-
     /**
      * setUp
      *
@@ -201,4 +199,3 @@ class AclRoleDataMapperTest extends \PHPUnit_Framework_TestCase
         $result = $this->aclRoleDataMapper->delete($acRole);
     }
 }
- 
