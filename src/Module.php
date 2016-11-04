@@ -2,8 +2,6 @@
 
 namespace RcmUser;
 
-use Zend\Mvc\MvcEvent;
-
 /**
  * Class Module
  *
