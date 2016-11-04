@@ -350,7 +350,6 @@ class RcmUserService
             $default,
             $refresh
         );
-
     }
 
     /**

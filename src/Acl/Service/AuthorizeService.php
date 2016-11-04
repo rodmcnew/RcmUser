@@ -353,7 +353,6 @@ class AuthorizeService
                     return $result;
                 }
             }
-
         } catch (\Exception $e) {
             // @todo - report this error or log
             $message = '<pre>';

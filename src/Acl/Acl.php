@@ -2,7 +2,6 @@
 
 namespace RcmUser\Acl;
 
-use RcmUser\Acl\Builder\AclResourceBuilder;
 use RcmUser\Acl\Provider\ResourceProviderInterface;
 use RcmUser\Acl\Provider\RoleProviderInterface;
 use Zend\Permissions\Acl\AclInterface;
@@ -102,6 +101,6 @@ class Acl implements AclInterface
      */
     public function isAllowed($role = null, $resource = null, $privilege = null)
     {
-
+        // @todo make this
     }
 }
