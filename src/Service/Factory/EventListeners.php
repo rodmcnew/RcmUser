@@ -37,11 +37,13 @@ class EventListeners implements FactoryInterface
             $serviceLocator
         );
 
-        $listeners->addListener('RcmUser\User\UserDataServiceListeners');
+        $config = $serviceLocator->get('Config');
 
-        $listeners->addListener('RcmUser\Authentication\UserAuthenticationServiceListeners');
+        $eventListenerConfig = $config['RcmUser']['EventListener\Config'];
 
-        $listeners->addListener('RcmUser\User\UserRoleDataServiceListeners');
+        foreach ($eventListenerConfig as $alias => $serviceName) {
+            $listeners->addListener($serviceName);
+        }
 
         return $listeners;
     }

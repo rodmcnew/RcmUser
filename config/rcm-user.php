@@ -222,4 +222,18 @@ return [
             /* - example */
         ],
     ],
+    /**
+     * Register \Zend\EventManager\ListenerAggregateInterface Services
+     */
+    'EventListener\Config' => [
+        // UserDataServiceListeners
+        'RcmUser\User\UserDataServiceListeners'
+        => 'RcmUser\User\UserDataServiceListeners',
+        // UserAuthenticationServiceListeners
+        'RcmUser\Authentication\UserAuthenticationServiceListeners'
+        => 'RcmUser\Authentication\UserAuthenticationServiceListeners',
+        // UserRoleDataServiceListeners
+        'RcmUser\User\UserRoleDataServiceListeners'
+        => 'RcmUser\User\UserRoleDataServiceListeners',
+    ]
 ];

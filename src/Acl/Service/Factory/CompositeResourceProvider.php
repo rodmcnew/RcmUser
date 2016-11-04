@@ -30,7 +30,7 @@ class CompositeResourceProvider implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get(
-            'config '
+            'Config '
         );
 
         $providerConfig = $config['RcmUser']['Acl\Config']['ResourceProviders'];
