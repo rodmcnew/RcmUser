@@ -45,10 +45,7 @@ class RcmUserService implements FactoryInterface
             'RcmUser\Acl\Service\AuthorizeService'
         );
 
-        /** @var EventManagerInterface $eventManager */
-        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
-
-        $service = new \RcmUser\Service\RcmUserService($eventManager);
+        $service = new \RcmUser\Service\RcmUserService();
         $service->setUserDataService($userDataService);
         $service->setUserPropertyService($userPropertyService);
         $service->setUserAuthService($authServ);

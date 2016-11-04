@@ -2,7 +2,6 @@
 
 namespace RcmUser\Event;
 
-use Zend\EventManager\EventManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -21,11 +20,17 @@ class UserEventManagerFactory implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return EventManager
+     * @return UserEventManager
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = new UserEventManager(UserEventManager::class);
+        /** @var ListenerCollection $listeners */
+        $listeners = $serviceLocator->get('RcmUser\Event\Listeners');
+
+        $service = new UserEventManager(
+            UserEventManager::class,
+            $listeners
+        );
 
         return $service;
     }

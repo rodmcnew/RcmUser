@@ -50,7 +50,8 @@ abstract class EventProvider
             get_called_class()
         ];
 
-        $eventManager->setIdentifiers($identifiers);
+        $eventManager->addIdentifiers($identifiers);
+        //$eventManager->setIdentifiers($identifiers);
         $this->eventManager = $eventManager;
 
         return $this;

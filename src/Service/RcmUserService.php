@@ -26,7 +26,7 @@ use RcmUser\User\Service\UserPropertyService;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class RcmUserService extends EventProvider
+class RcmUserService
 {
     /**
      * @var UserDataService

@@ -30,21 +30,4 @@ class Module
     {
         return include __DIR__ . '/../config/module.config.php';
     }
-
-    /**
-     * onBootstrap
-     *
-     * @param MvcEvent $event event
-     *
-     * @return void
-     */
-    public function onBootstrap(MvcEvent $event)
-    {
-        $application = $event->getApplication();
-        $serviceLocator = $application->getServiceManager();
-
-        $modulePrepare = new ModulePrepare();
-
-        $modulePrepare->__invoke($serviceLocator);
-    }
 }

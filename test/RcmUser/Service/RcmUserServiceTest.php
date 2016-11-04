@@ -63,20 +63,6 @@ class RcmUserServiceTest extends Zf2TestCase
     }
 
     /**
-     * getEventManager
-     *
-     * @return EventManagerInterface
-     */
-    public function getEventManager()
-    {
-        return $this->getMockBuilder(
-            '\Zend\EventManager\EventManagerInterface'
-        )
-            ->disableOriginalConstructor()
-            ->getMock();
-    }
-
-    /**
      * getRcmUserService
      *
      * @return RcmUserService
@@ -182,7 +168,7 @@ class RcmUserServiceTest extends Zf2TestCase
             ->method('hasRoleBasedAccess')
             ->will($this->returnValue(true));
 
-        $this->rcmUserService = new RcmUserService($this->getEventManager());
+        $this->rcmUserService = new RcmUserService();
         $this->rcmUserService->setUserDataService($this->userDataService);
         $this->rcmUserService->setUserPropertyService(
             $this->userPropertyService
@@ -194,7 +180,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetUserDataService()
     {
-        $rcmUserService = new RcmUserService($this->getEventManager());
+        $rcmUserService = new RcmUserService();
 
         $rcmUserService->setUserDataService($this->userDataService);
 
@@ -209,7 +195,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetUserPropertyService()
     {
-        $rcmUserService = new RcmUserService($this->getEventManager());
+        $rcmUserService = new RcmUserService();
 
         $rcmUserService->setUserPropertyService($this->userPropertyService);
 
@@ -224,7 +210,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetUserAuthService()
     {
-        $rcmUserService = new RcmUserService($this->getEventManager());
+        $rcmUserService = new RcmUserService();
 
         $rcmUserService->setUserAuthService($this->userAuthService);
 
@@ -239,7 +225,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testSetGetAuthorizeService()
     {
-        $rcmUserService = new RcmUserService($this->getEventManager());
+        $rcmUserService = new RcmUserService();
 
         $rcmUserService->setAuthorizeService($this->authorizeService);
 

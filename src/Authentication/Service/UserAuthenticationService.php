@@ -23,7 +23,6 @@ use Zend\Authentication\Result;
  */
 class UserAuthenticationService extends EventProvider
 {
-
     /**
      * @var bool
      * Force returned user to hide password,
@@ -86,7 +85,7 @@ class UserAuthenticationService extends EventProvider
         $result = $results->last();
 
         if ($result === null) {
-            throw new \Exception('No auth listener registered or no results returned.');
+            throw new \Exception('No auth listener registered or no results returned (validateCredentials).');
         }
 
         if ($results->stopped()) {
@@ -149,7 +148,7 @@ class UserAuthenticationService extends EventProvider
         $result = $results->last();
 
         if ($result === null) {
-            throw new \Exception('No auth listener registered or no results returned.');
+            throw new \Exception('No auth listener registered or no results returned (authenticate).');
         }
 
         if ($results->stopped()) {
