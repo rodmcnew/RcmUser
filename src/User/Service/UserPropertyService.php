@@ -48,7 +48,7 @@ class UserPropertyService extends EventProvider
         if ($property === null || $refresh) {
             // @event getUserProperty.pre -
             $this->getEventManager()->trigger(
-                __FUNCTION__,
+                'getUserProperty',
                 $this,
                 [
                     'user' => $user,
@@ -79,7 +79,7 @@ class UserPropertyService extends EventProvider
         $data = []
     ) {
         $results = $this->getEventManager()->trigger(
-            __FUNCTION__,
+            'populateUserProperty',
             $this,
             [
                 'propertyNameSpace' => $propertyNameSpace,
@@ -116,7 +116,7 @@ class UserPropertyService extends EventProvider
         $propertyNameSpace
     ) {
         $results = $this->getEventManager()->trigger(
-            __FUNCTION__,
+            'getUserPropertyLinks',
             $this,
             [
                 'user' => $user,
@@ -154,7 +154,7 @@ class UserPropertyService extends EventProvider
         $propertyNameSpace
     ) {
         $results = $this->getEventManager()->trigger(
-            __FUNCTION__,
+            'getUserPropertyIsAllowed',
             $this,
             [
                 'user' => $user,

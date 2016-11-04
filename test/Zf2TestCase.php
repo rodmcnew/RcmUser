@@ -18,8 +18,6 @@ namespace RcmUser\Test;
 
 use RcmUser\Config\Config;
 
-require_once dirname(__FILE__) . '/Bootstrap.php';
-
 /**
  * Class Zf2TestCase
  *

@@ -22,9 +22,9 @@ use Zend\Session\ManagerInterface as SessionManager;
  */
 class UserSession extends Session
 {
-
     /**
      * __construct
+     * @todo Passing null SessionManager can have unintended consequences
      *
      * @param string         $namespace namespace
      * @param string         $member    member

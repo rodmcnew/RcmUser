@@ -2,6 +2,7 @@
 
 namespace RcmUser\User\Service\Factory;
 
+use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -38,7 +39,10 @@ class UserDataService implements FactoryInterface
             'RcmUser\User\UserDataMapper'
         );
 
-        $service = new \RcmUser\User\Service\UserDataService();
+        /** @var EventManagerInterface $eventManager */
+        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
+
+        $service = new \RcmUser\User\Service\UserDataService($eventManager);
         $service->setDefaultUserState(
             $cfg->get(
                 'DefaultUserState',

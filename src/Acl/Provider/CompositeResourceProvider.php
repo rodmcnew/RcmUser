@@ -5,7 +5,6 @@ namespace RcmUser\Acl\Provider;
 use RcmUser\Acl\Builder\AclResourceBuilder;
 use RcmUser\Acl\Cache\ResourceCache;
 use RcmUser\Acl\Entity\AclResource;
-use Zend\Cache\Storage\StorageInterface;
 
 /**
  * Class CompositeResourceProvider
@@ -87,7 +86,6 @@ class CompositeResourceProvider implements ResourceProviderInterface
 
         /** @var ResourceProviderInterface $resourceProvider */
         foreach ($this->resourceProviders as $resourceProvider) {
-
             $providerId = $resourceProvider->getProviderId();
             $resources = $this->cache->getProviderResources($providerId);
             if ($resources === null) {

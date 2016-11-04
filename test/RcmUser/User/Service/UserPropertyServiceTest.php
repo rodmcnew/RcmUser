@@ -17,10 +17,10 @@
 
 namespace RcmUser\Test\User\Service;
 
-
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Service\UserPropertyService;
+use Zend\EventManager\EventManagerInterface;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -51,20 +51,17 @@ class UserPropertyServiceTest extends Zf2TestCase
 
     public function buildUserPropertyService()
     {
-        $this->userPropertyService = new UserPropertyService();
-
         $user = new User();
         $user->setId('123');
 
-        //$this->eventManager = new EventManager('test');
+        /** @var EventManagerInterface $this->eventManager */
         $this->eventManager = $this->getMockBuilder(
             '\Zend\EventManager\EventManagerInterface'
         )
             ->disableOriginalConstructor()
             ->getMock();
 
-        $this->userPropertyService->setEventManager($this->eventManager);
-
+        $this->userPropertyService = new UserPropertyService($this->eventManager);
     }
 
     public function testGetUserProperty()
@@ -88,4 +85,3 @@ class UserPropertyServiceTest extends Zf2TestCase
     }
 
 }
- 

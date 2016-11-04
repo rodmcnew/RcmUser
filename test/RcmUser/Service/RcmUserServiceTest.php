@@ -20,6 +20,8 @@ namespace RcmUser\Test\Service;
 use RcmUser\Service\RcmUserService;
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerInterface;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
@@ -60,6 +62,11 @@ class RcmUserServiceTest extends Zf2TestCase
         return $user;
     }
 
+    /**
+     * getRcmUserService
+     *
+     * @return RcmUserService
+     */
     public function getRcmUserService()
     {
         if (!isset($this->rcmUserService)) {
@@ -412,7 +419,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
     public function testClearIdentity()
     {
-        $this->getRcmUserService()->clearIdentity('somePropertName');
+        $this->getRcmUserService()->clearIdentity();
     }
 
     public function testGetIdentity()

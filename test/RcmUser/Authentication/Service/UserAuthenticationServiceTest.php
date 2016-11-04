@@ -21,6 +21,7 @@ use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
 use Zend\Authentication\Result;
+use Zend\EventManager\EventManager;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -41,6 +42,11 @@ class UserAuthenticationServiceTest extends Zf2TestCase
     public $responseCollection;
     public $eventManager;
 
+    /**
+     * getUserAuthenticationService
+     *
+     * @return UserAuthenticationService
+     */
     public function getUserAuthenticationService()
     {
         if (!isset($this->userAuthenticationService)) {
@@ -63,8 +69,6 @@ class UserAuthenticationServiceTest extends Zf2TestCase
 
     public function buildUserAuthenticationService()
     {
-        $this->userAuthenticationService = new UserAuthenticationService();
-
         $user = new User();
         $user->setId('123');
 
@@ -91,14 +95,11 @@ class UserAuthenticationServiceTest extends Zf2TestCase
             ->method('trigger')
             ->will($this->returnValue($this->responseCollection));
 
-        $this->userAuthenticationService->setEventManager($this->eventManager);
+        $this->userAuthenticationService = new UserAuthenticationService($this->eventManager);
     }
 
     public function buildUserAuthenticationServiceUserResult()
     {
-        $this->userAuthenticationServiceUserResult
-            = new UserAuthenticationService();
-
         $user = new User();
         $user->setId('123');
 
@@ -123,9 +124,8 @@ class UserAuthenticationServiceTest extends Zf2TestCase
             ->method('trigger')
             ->will($this->returnValue($responseCollection));
 
-        $this->userAuthenticationServiceUserResult->setEventManager(
-            $eventManager
-        );
+        $this->userAuthenticationServiceUserResult
+            = new UserAuthenticationService($eventManager);
     }
 
     public function testValidateCredentials()
@@ -168,12 +168,12 @@ class UserAuthenticationServiceTest extends Zf2TestCase
 
     public function testClearIdentity()
     {
-        $result = $this->getUserAuthenticationService()->clearIdentity();
+        $this->getUserAuthenticationService()->clearIdentity();
     }
 
     public function testSetIdentity()
     {
-        $result = $this->getUserAuthenticationServiceUserResult()->getIdentity(
+        $this->getUserAuthenticationServiceUserResult()->getIdentity(
         );
     }
 
@@ -205,4 +205,3 @@ class UserAuthenticationServiceTest extends Zf2TestCase
         $this->assertEquals('NEW_USER_NAME!', $newuser->getUsername());
     }
 }
- 

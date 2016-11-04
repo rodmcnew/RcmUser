@@ -2,6 +2,7 @@
 
 namespace RcmUser\Service\Factory;
 
+use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

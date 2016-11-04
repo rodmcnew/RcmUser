@@ -2,8 +2,6 @@
 
 namespace RcmUser\Event;
 
-use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;
 
 /**
@@ -21,44 +19,51 @@ use Zend\EventManager\EventManagerInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-abstract class EventProvider implements EventManagerAwareInterface
+abstract class EventProvider
 {
     /**
      * @var EventManagerInterface $events
      */
-    protected $events;
+    protected $eventManager;
+
+    /**
+     * EventProvider constructor.
+     *
+     * @param EventManagerInterface $eventManager
+     */
+    public function __construct(EventManagerInterface $eventManager)
+    {
+        $this->setEventManager($eventManager);
+    }
 
     /**
      * setEventManager - Set the event manager instance used by this context
      *
-     * @param EventManagerInterface $events events
+     * @param EventManagerInterface $eventManager events
      *
      * @return $this
      */
-    public function setEventManager(EventManagerInterface $events)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
         $identifiers = [
             __CLASS__,
             get_called_class()
         ];
 
-        $events->setIdentifiers($identifiers);
-        $this->events = $events;
+        $eventManager->addIdentifiers($identifiers);
+        //$eventManager->setIdentifiers($identifiers);
+        $this->eventManager = $eventManager;
 
         return $this;
     }
 
     /**
-     * getEventManager - Loads an EventManager instance if none registered.
+     * getEventManager
      *
      * @return EventManagerInterface
      */
     public function getEventManager()
     {
-        if (!$this->events instanceof EventManagerInterface) {
-            $this->setEventManager(new EventManager());
-        }
-
-        return $this->events;
+        return $this->eventManager;
     }
 }

@@ -20,7 +20,6 @@ namespace RcmUser\Test\Acl\Service;
 use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Result;
 use RcmUser\Test\Zf2TestCase;
-use Zend\Di\ServiceLocator;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
@@ -141,4 +140,3 @@ class AuthorizeServiceTest extends Zf2TestCase
         );
     }
 }
- 

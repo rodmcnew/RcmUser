@@ -2,6 +2,8 @@
 
 namespace RcmUser\Service\Factory;
 
+use RcmUser\Event\ListenerCollection;
+use RcmUser\Event\Listeners;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -31,31 +33,17 @@ class EventListeners implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $listeners = [];
-
-//        try {
-        $listeners[] = $serviceLocator->get(
-            'RcmUser\User\UserDataServiceListeners'
+        $listeners = new ListenerCollection(
+            $serviceLocator
         );
-//        } catch (\Exception $e) {
-//            // no listeners
-//        }
 
-//        try {
-        $listeners[] = $serviceLocator->get(
-            'RcmUser\Authentication\UserAuthenticationServiceListeners'
-        );
-//        } catch (\Exception $e) {
-//            // no listeners
-//        }
+        $config = $serviceLocator->get('Config');
 
-//        try {
-        $listeners[] = $serviceLocator->get(
-            'RcmUser\User\UserRoleDataServiceListeners'
-        );
-//        } catch (\Exception $e) {
-//            // no listeners
-//        }
+        $eventListenerConfig = $config['RcmUser']['EventListener\Config'];
+
+        foreach ($eventListenerConfig as $alias => $serviceName) {
+            $listeners->addListener($serviceName);
+        }
 
         return $listeners;
     }
