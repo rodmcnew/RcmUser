@@ -19,7 +19,7 @@ namespace RcmUser\Test\Log;
 
 require_once __DIR__ . '/../../Zf2TestCase.php';
 
-use RcmUser\Log\Logger;
+use RcmUser\Log\NoLogger;
 
 /**
  * Class LoggerTest
@@ -37,7 +37,7 @@ use RcmUser\Log\Logger;
  * @link      https://github.com/reliv
  * @covers    \RcmUser\Log\Logger
  */
-class LoggerTest extends \PHPUnit_Framework_TestCase
+class NoLoggerTest extends \PHPUnit_Framework_TestCase
 {
 
     /**
@@ -49,7 +49,7 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
     {
 
         /** @var \RcmUser\Log\Logger $logger */
-        $logger = new Logger(\Zend\Log\Logger::ERR);
+        $logger = new NoLogger(\Zend\Log\Logger::ERR);
 
         $loglev = $logger->getLogLevel();
 
@@ -100,4 +100,3 @@ class LoggerTest extends \PHPUnit_Framework_TestCase
 
     }
 }
- 

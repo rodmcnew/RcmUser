@@ -4,6 +4,7 @@ namespace RcmUser\User\Event;
 
 use RcmUser\Result;
 use RcmUser\User\Entity\UserRoleProperty;
+use Zend\EventManager\Event;
 
 /**
  * UserPropertyServiceListeners

@@ -318,6 +318,6 @@ return [
          * Logging
          * Required *
          */
-        'RcmUser\Log\Logger' => 'RcmUser\Service\Factory\DoctrineLogger',
+        RcmUser\Log\Logger::class => RcmUser\Service\Factory\DoctrineLogger::class,
     ],
 ];

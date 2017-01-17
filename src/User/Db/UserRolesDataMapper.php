@@ -4,6 +4,7 @@ namespace RcmUser\User\Db;
 
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Exception\RcmUserException;
+use RcmUser\Result;
 use RcmUser\User\Entity\User;
 
 /**

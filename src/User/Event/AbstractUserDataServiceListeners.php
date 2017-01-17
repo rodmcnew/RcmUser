@@ -3,6 +3,7 @@
 namespace RcmUser\User\Event;
 
 use RcmUser\User\Result;
+use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 

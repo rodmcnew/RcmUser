@@ -3,6 +3,7 @@
 namespace RcmUser\User\Event;
 
 use RcmUser\User\Db\UserDataMapperInterface;
+use Zend\EventManager\Event;
 use Zend\EventManager\ListenerAggregateInterface;
 
 /**

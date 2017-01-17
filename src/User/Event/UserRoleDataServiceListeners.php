@@ -6,6 +6,7 @@ use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserRoleService;
+use Zend\EventManager\Event;
 
 /**
  * UserRoleDataServiceListeners
@@ -195,6 +196,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onCreateUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
@@ -246,6 +248,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onReadUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
@@ -316,6 +319,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onUpdateUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
@@ -367,6 +371,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onDeleteUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {

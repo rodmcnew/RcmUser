@@ -317,7 +317,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                     ->getMock(),
             'RcmUser\Event\Listeners' =>
                 [],
-            'RcmUser\Log\Logger' =>
+            \RcmUser\Log\Logger::class =>
                 $this->getMockBuilder(
                     '\Zend\Log\LoggerInterface'
                 )

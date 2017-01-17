@@ -2,6 +2,7 @@
 
 namespace RcmUser\User\Db;
 
+use RcmUser\Result;
 use RcmUser\User\Entity\User;
 
 /**

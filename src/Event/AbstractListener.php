@@ -2,6 +2,7 @@
 
 namespace RcmUser\Event;
 
+use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
 
