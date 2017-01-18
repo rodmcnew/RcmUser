@@ -33,7 +33,9 @@ class DbUserDataPreparer implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
 
-        $encrypt = $serviceLocator->get('RcmUser\User\Encryptor');
+        $encrypt = $serviceLocator->get(
+            \RcmUser\User\Password\Password::class
+        );
         $service = new \RcmUser\User\Data\DbUserDataPreparer();
         $service->setEncryptor($encrypt);
 

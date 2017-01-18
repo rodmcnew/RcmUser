@@ -2,7 +2,9 @@
 
 namespace RcmUser\Authentication\Event;
 
+use RcmUser\User\Entity\User;
 use Zend\Authentication\Result;
+use Zend\EventManager\Event;
 
 /**
  * UserAuthenticationServiceListeners
@@ -24,7 +26,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
     /**
      * @var string
      */
-    protected $id = 'RcmUser\Authentication\Service\UserAuthenticationService';
+    protected $id = \RcmUser\Authentication\Service\UserAuthenticationService::class;
 
     /**
      * @var int

@@ -32,10 +32,10 @@ class AuthorizeService implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $aclResourceService = $serviceLocator->get(
-            'RcmUser\Acl\Service\AclResourceService'
+            \RcmUser\Acl\Service\AclResourceService::class
         );
         $aclDataService = $serviceLocator->get(
-            'RcmUser\Acl\AclDataService'
+            \RcmUser\Acl\Service\AclDataService::class
         );
 
         $service

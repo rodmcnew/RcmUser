@@ -51,10 +51,9 @@ class UserDataPreparerTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Data\UserDataPreparerInterface',
+            \RcmUser\User\Data\UserDataPreparerInterface::class,
             $service
         );
         //
     }
 }
- 

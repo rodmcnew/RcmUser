@@ -35,10 +35,14 @@ class UserAuthenticationService implements FactoryInterface
     {
         $config = $serviceLocator->get('RcmUser\Auth\Config');
         /** @var EventManagerInterface $eventManager */
-        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
+        $eventManager = $serviceLocator->get(
+            \RcmUser\Event\UserEventManager::class
+        );
 
-        $service
-            = new \RcmUser\Authentication\Service\UserAuthenticationService($eventManager);
+        $service = new \RcmUser\Authentication\Service\UserAuthenticationService(
+                $eventManager
+        );
+
         $service->setObfuscatePassword(
             $config->get(
                 'ObfuscatePasswordOnAuth',

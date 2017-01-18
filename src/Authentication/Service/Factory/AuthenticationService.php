@@ -32,8 +32,12 @@ class AuthenticationService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $storage = $serviceLocator->get('RcmUser\Authentication\Storage');
-        $adapter = $serviceLocator->get('RcmUser\Authentication\Adapter');
+        $storage = $serviceLocator->get(
+            \RcmUser\Authentication\Storage\Session::class
+        );
+        $adapter = $serviceLocator->get(
+            \RcmUser\Authentication\Adapter\Adapter::class
+        );
 
         return new \RcmUser\Authentication\Service\AuthenticationService($storage, $adapter);
     }

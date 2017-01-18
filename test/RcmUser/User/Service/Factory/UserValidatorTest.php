@@ -51,10 +51,9 @@ class UserValidatorTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Data\UserValidatorInterface',
+            \RcmUser\User\Data\UserValidatorInterface::class,
             $service
         );
         //
     }
 }
- 

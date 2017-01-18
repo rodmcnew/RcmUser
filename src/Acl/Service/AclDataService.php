@@ -249,7 +249,7 @@ class AclDataService
      * @param string $nsChar  nsChar
      * @param bool   $refresh refresh
      *
-     * @return array
+     * @return Result
      */
     public function getRolesWithNamespace(
         $nsChar = '.',
@@ -275,7 +275,7 @@ class AclDataService
      *
      * @param string $nsChar nsChar
      *
-     * @return array
+     * @return Result
      */
     public function getNamespacedRoles($nsChar = '.')
     {
@@ -384,7 +384,7 @@ class AclDataService
      * @param $resourceId
      * @param $privilege
      *
-     * @return \RcmUser\Acl\Db\Result
+     * @return Result
      */
     public function getRulesByResourcePrivilege($resourceId, $privilege)
     {
@@ -489,7 +489,7 @@ class AclDataService
      *
      * @param string $nsChar nsChar
      *
-     * @return array
+     * @return Result
      */
     public function getRulesByRoles($nsChar = '.')
     {

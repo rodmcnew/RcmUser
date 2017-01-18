@@ -32,7 +32,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     /**
      * @var string $id
      */
-    protected $id = 'RcmUser\Authentication\Service\UserAuthenticationService';
+    protected $id = \RcmUser\Authentication\Service\UserAuthenticationService::class;
 
     /**
      * @var int $priority

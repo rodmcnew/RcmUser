@@ -51,10 +51,9 @@ class NoLoggerTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\Log\NoLogger',
+            \RcmUser\Log\NoLogger::class,
             $service
         );
         //
     }
 }
- 

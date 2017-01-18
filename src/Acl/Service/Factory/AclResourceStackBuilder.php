@@ -32,7 +32,7 @@ class AclResourceStackBuilder implements FactoryInterface
     {
         /** @var ResourceProviderInterface $resourceProvider */
         $resourceProvider = $serviceLocator->get(
-            'RcmUser\Acl\ResourceProvider'
+            \RcmUser\Acl\Provider\ResourceProvider::class
         );
 
         $service = new \RcmUser\Acl\Builder\AclResourceStackBuilder(

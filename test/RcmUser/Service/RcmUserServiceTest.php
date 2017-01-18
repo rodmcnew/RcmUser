@@ -98,7 +98,7 @@ class RcmUserServiceTest extends Zf2TestCase
         */
 
         $this->userDataService = $this->getMockBuilder(
-            '\RcmUser\User\Service\UserDataService'
+            \RcmUser\User\Service\UserDataService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -120,7 +120,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
         /////
         $this->userPropertyService = $this->getMockBuilder(
-            '\RcmUser\User\Service\UserPropertyService'
+            \RcmUser\User\Service\UserPropertyService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -130,7 +130,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
         /////
         $this->userAuthService = $this->getMockBuilder(
-            '\RcmUser\Authentication\Service\UserAuthenticationService'
+            \RcmUser\Authentication\Service\UserAuthenticationService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -155,7 +155,7 @@ class RcmUserServiceTest extends Zf2TestCase
 
         /////
         $this->authorizeService = $this->getMockBuilder(
-            '\RcmUser\Acl\Service\AuthorizeService'
+            \RcmUser\Acl\Service\AuthorizeService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -187,7 +187,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $service = $rcmUserService->getUserDataService();
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Service\UserDataService',
+            \RcmUser\User\Service\UserDataService::class,
             $service,
             'Getter or setter failed.'
         );
@@ -202,7 +202,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $service = $rcmUserService->getUserPropertyService();
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Service\UserPropertyService',
+            \RcmUser\User\Service\UserPropertyService::class,
             $service,
             'Getter or setter failed.'
         );
@@ -217,7 +217,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $service = $rcmUserService->getUserAuthService();
 
         $this->assertInstanceOf(
-            '\RcmUser\Authentication\Service\UserAuthenticationService',
+            \RcmUser\Authentication\Service\UserAuthenticationService::class,
             $service,
             'Getter or setter failed.'
         );
@@ -232,7 +232,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $service = $rcmUserService->getAuthorizeService();
 
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\AuthorizeService',
+            \RcmUser\Acl\Service\AuthorizeService::class,
             $service,
             'Getter or setter failed.'
         );
@@ -246,7 +246,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->getUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -254,7 +254,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->getUserById($user->getId());
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -264,7 +264,7 @@ class RcmUserServiceTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -312,7 +312,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->readUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -325,7 +325,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->createUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -338,7 +338,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->updateUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -351,7 +351,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->deleteUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -427,7 +427,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->getIdentity();
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -435,7 +435,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->getCurrentUser();
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -449,7 +449,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->getIdentity();
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -502,7 +502,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->buildNewUser();
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );
@@ -515,7 +515,7 @@ class RcmUserServiceTest extends Zf2TestCase
         $result = $this->getRcmUserService()->buildUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result,
             'Did not return instance of Result.'
         );

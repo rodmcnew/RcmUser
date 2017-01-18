@@ -53,21 +53,20 @@ class AclDataServiceTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            'RcmUser\Acl\Service\AclDataService',
+            \RcmUser\Acl\Service\AclDataService::class,
             $service
         );
 
         //
         $this->assertInstanceOf(
-            'RcmUser\Acl\Db\AclRoleDataMapperInterface',
+            \RcmUser\Acl\Db\AclRoleDataMapperInterface::class,
             $service->getAclRoleDataMapper()
         );
 
         $this->assertInstanceOf(
-            'RcmUser\Acl\Db\AclRuleDataMapperInterface',
+            \RcmUser\Acl\Db\AclRuleDataMapperInterface::class,
             $service->getAclRuleDataMapper()
         );
 
     }
 }
- 

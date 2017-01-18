@@ -29,7 +29,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = [];
-    protected $id = 'RcmUser\User\Service\UserDataService';
+    protected $id = \RcmUser\User\Service\UserDataService::class;
     protected $priority = -1;
     protected $listenerMethods
         = [

@@ -51,14 +51,14 @@ class AuthorizeServiceTest extends Zf2TestCase
     {
 
         $aclResourceService = $this->getMockBuilder(
-            'RcmUser\Acl\Service\AclResourceService'
+            \RcmUser\Acl\Service\AclResourceService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
 
 
         $aclDataService = $this->getMockBuilder(
-            'RcmUser\Acl\Service\AclDataService'
+            \RcmUser\Acl\Service\AclDataService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -102,11 +102,11 @@ class AuthorizeServiceTest extends Zf2TestCase
         $authServ = $this->getAuthorizeService();
 
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\AclResourceService',
+            \RcmUser\Acl\Service\AclResourceService::class,
             $authServ->getAclResourceService()
         );
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\AclDataService',
+            \RcmUser\Acl\Service\AclDataService::class,
             $authServ->getAclDataService()
         );
 

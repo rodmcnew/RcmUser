@@ -78,7 +78,7 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
             ->will($this->returnValue(true));
 
         $this->adapter = $this->getMockBuilder(
-            '\RcmUser\Authentication\Adapter\UserAdapter'
+            \RcmUser\Authentication\Adapter\UserAdapter::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -89,7 +89,7 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
             );
         //
         $this->authenticationService = $this->getMockBuilder(
-            '\RcmUser\Authentication\Service\AuthenticationService'
+            \RcmUser\Authentication\Service\AuthenticationService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -116,7 +116,7 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
     public function buildFailAuthServ()
     {
         $this->authenticationService = $this->getMockBuilder(
-            '\RcmUser\Authentication\Service\AuthenticationService'
+            \RcmUser\Authentication\Service\AuthenticationService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -175,4 +175,3 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
         );
     }
 }
- 

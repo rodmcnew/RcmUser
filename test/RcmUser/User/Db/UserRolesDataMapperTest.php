@@ -58,7 +58,7 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
         $rolsResult = new Result($this->roles);
 
         $this->aclRoleDataMapper = $this->getMockBuilder(
-            'RcmUser\Acl\Db\AclRoleDataMapperInterface'
+            \RcmUser\Acl\Db\AclRoleDataMapperInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -248,4 +248,3 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

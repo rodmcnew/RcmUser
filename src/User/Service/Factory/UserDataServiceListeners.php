@@ -28,11 +28,13 @@ class UserDataServiceListeners implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return Config
+     * @return \RcmUser\User\Event\UserDataServiceListeners
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $dm = $serviceLocator->get('RcmUser\User\UserDataMapper');
+        $dm = $serviceLocator->get(
+            \RcmUser\User\Db\UserDataMapper::class
+        );
 
         $service = new \RcmUser\User\Event\UserDataServiceListeners();
 

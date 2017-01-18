@@ -178,7 +178,7 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -199,7 +199,7 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
         $this->assertFalse(

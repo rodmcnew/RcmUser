@@ -181,14 +181,14 @@ return [
             /**
              * Root Resource Provider
              */
-            'root' => 'RcmUser\Acl\RootResourceProvider',
+            'root' => RcmUser\Acl\Provider\RootResourceProvider::class,
 
             /*
              * RcmUserAccess
              * This module inject some of this module's resources.
              * Also example of a Resource provider
              */
-            'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+            'RcmUser' => RcmUser\Provider\RcmUserAclResourceProvider::class,
 
             /* example of resource providers as array *
             'RcmUser' => [
@@ -227,13 +227,13 @@ return [
      */
     'EventListener\Config' => [
         // UserDataServiceListeners
-        'RcmUser\User\UserDataServiceListeners'
-        => 'RcmUser\User\UserDataServiceListeners',
+        RcmUser\User\Event\UserDataServiceListeners::class
+        => RcmUser\User\Event\UserDataServiceListeners::class,
         // UserAuthenticationServiceListeners
-        'RcmUser\Authentication\UserAuthenticationServiceListeners'
-        => 'RcmUser\Authentication\UserAuthenticationServiceListeners',
+        RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class
+        => RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class,
         // UserRoleDataServiceListeners
-        'RcmUser\User\UserRoleDataServiceListeners'
-        => 'RcmUser\User\UserRoleDataServiceListeners',
+        RcmUser\User\Event\UserRoleDataServiceListeners::class
+        => RcmUser\User\Event\UserRoleDataServiceListeners::class,
     ]
 ];

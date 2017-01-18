@@ -3,6 +3,7 @@
 namespace RcmUser\User\Service\Factory;
 
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Crypt\Password\PasswordInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 

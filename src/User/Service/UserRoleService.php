@@ -2,10 +2,12 @@
 
 namespace RcmUser\User\Service;
 
+use RcmUser\Event\EventProvider;
 use RcmUser\Result;
 use RcmUser\User\Db\UserRolesDataMapperInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
+use Zend\EventManager\EventManagerInterface;
 
 /**
  * Class UserRoleService
@@ -22,7 +24,7 @@ use RcmUser\User\Entity\UserRoleProperty;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserRoleService
+class UserRoleService extends EventProvider
 {
     /**
      * @var UserRolesDataMapperInterface
@@ -30,15 +32,17 @@ class UserRoleService
     protected $userRolesDataMapper;
 
     /**
-     * __construct
+     * Constructor.
      *
-     * @param UserRolesDataMapperInterface $userRolesDataMapper Valid data mapper
+     * @param UserRolesDataMapperInterface $userRolesDataMapper
+     * @param EventManagerInterface        $eventManager
      */
     public function __construct(
-        UserRolesDataMapperInterface $userRolesDataMapper
+        UserRolesDataMapperInterface $userRolesDataMapper,
+        EventManagerInterface $eventManager
     ) {
-
         $this->userRolesDataMapper = $userRolesDataMapper;
+        parent::__construct($eventManager);
     }
 
     /**
@@ -271,7 +275,11 @@ class UserRoleService
             $roleId
         )
         ) {
-            return new Result(null, Result::CODE_FAIL, "Role ({$roleId}) is set via logic and cannot be added.");
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Role ({$roleId}) is set via logic and cannot be added."
+            );
         }
 
         return $this->getUserRolesDataMapper()->add(
@@ -297,7 +305,11 @@ class UserRoleService
             $roleId
         )
         ) {
-            return new Result(null, Result::CODE_FAIL, "Role ({$roleId}) is set via logic and cannot be removed.");
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                "Role ({$roleId}) is set via logic and cannot be removed."
+            );
         }
 
         return $this->getUserRolesDataMapper()->remove(

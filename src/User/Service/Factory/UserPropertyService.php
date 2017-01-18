@@ -33,7 +33,9 @@ class UserPropertyService implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /** @var EventManagerInterface $eventManager */
-        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
+        $eventManager = $serviceLocator->get(
+            \RcmUser\Event\UserEventManager::class
+        );
 
         $service = new \RcmUser\User\Service\UserPropertyService($eventManager);
 

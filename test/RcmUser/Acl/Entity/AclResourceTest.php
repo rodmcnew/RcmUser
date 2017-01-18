@@ -178,7 +178,7 @@ class AclResourceTest extends Zf2TestCase
 
         } catch (RcmUserException $e) {
 
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
 
@@ -212,7 +212,7 @@ class AclResourceTest extends Zf2TestCase
 
         } catch (RcmUserException $e) {
 
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
 
@@ -314,7 +314,7 @@ class AclResourceTest extends Zf2TestCase
 
         } catch (RcmUserException $e) {
 
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
 
@@ -344,4 +344,3 @@ class AclResourceTest extends Zf2TestCase
     }
 
 }
- 

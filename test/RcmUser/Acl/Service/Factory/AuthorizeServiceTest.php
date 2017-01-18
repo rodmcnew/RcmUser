@@ -52,21 +52,20 @@ class AuthorizeServiceTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            'RcmUser\Acl\Service\AuthorizeService',
+            \RcmUser\Acl\Service\AuthorizeService::class,
             $service
         );
 
         //
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\AclResourceService',
+            \RcmUser\Acl\Service\AclResourceService::class,
             $service->getAclResourceService()
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\AclDataService',
+            \RcmUser\Acl\Service\AclDataService::class,
             $service->getAclDataService()
         );
 
     }
 }
- 

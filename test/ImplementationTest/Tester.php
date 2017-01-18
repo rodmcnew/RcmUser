@@ -554,10 +554,14 @@ class Tester implements ServiceLocatorAwareInterface
         $this->setServiceLocator($serviceLocator);
 
         $this->rcmUserService = $this->getServiceLocator()
-            ->get('RcmUser\Service\RcmUserService');
+            ->get(
+                \RcmUser\Service\RcmUserService::class
+            );
 
         $this->authorizeService = $this->getServiceLocator()
-            ->get('RcmUser\Acl\Service\AuthorizeService');
+            ->get(
+                \RcmUser\Acl\Service\AuthorizeService::class
+            );
     }
 
     /**

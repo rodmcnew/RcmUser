@@ -31,7 +31,7 @@ class CurrentUser implements FactoryInterface
     {
         /** @var \RcmUser\Authentication\Service\UserAuthenticationService $authServ */
         $authServ = $serviceLocator->get(
-            'RcmUser\Authentication\Service\UserAuthenticationService'
+            \RcmUser\Authentication\Service\UserAuthenticationService::class
         );
 
         return new \RcmUser\Service\CurrentUser($authServ);

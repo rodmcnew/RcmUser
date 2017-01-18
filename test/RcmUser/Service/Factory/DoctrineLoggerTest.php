@@ -51,10 +51,9 @@ class DoctrineLoggerTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\Log\DoctrineLogger',
+            \RcmUser\Log\DoctrineLogger::class,
             $service
         );
         //
     }
 }
- 

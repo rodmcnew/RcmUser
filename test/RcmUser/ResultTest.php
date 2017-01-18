@@ -112,7 +112,7 @@ class ResultTest extends Zf2TestCase
         } catch (RcmUserResultException $e) {
 
             $this->assertInstanceOf(
-                '\RcmUser\Exception\RcmUserResultException',
+                \RcmUser\Exception\RcmUserResultException::class,
                 $e
             );
             return;
@@ -154,4 +154,3 @@ class ResultTest extends Zf2TestCase
         $result->__construct(null, Result::CODE_SUCCESS, ['Test Message']);
     }
 }
- 

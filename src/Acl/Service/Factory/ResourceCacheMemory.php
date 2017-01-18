@@ -40,7 +40,7 @@ class ResourceCacheMemory implements FactoryInterface
 
         /** @var \RcmUser\Acl\Builder\AclResourceBuilder $resourceBuilder */
         $resourceBuilder = $serviceLocator->get(
-            'RcmUser\Acl\Builder\AclResourceBuilder'
+            \RcmUser\Acl\Builder\AclResourceBuilder::class
         );
 
         $service = new ResourceCache(

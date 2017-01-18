@@ -31,7 +31,7 @@ class AclResourceBuilder implements FactoryInterface
     {
         /** @var \RcmUser\Acl\Entity\RootAclResource $rootResource */
         $rootResource = $serviceLocator->get(
-            'RcmUser\Acl\RootAclResource'
+            \RcmUser\Acl\Entity\RootAclResource::class
         );
 
         $service = new \RcmUser\Acl\Builder\AclResourceBuilder(

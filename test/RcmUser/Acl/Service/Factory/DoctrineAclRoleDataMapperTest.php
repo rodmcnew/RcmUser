@@ -53,13 +53,13 @@ class DoctrineAclRoleDataMapperTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            'RcmUser\Acl\Db\DoctrineAclRoleDataMapper',
+            \RcmUser\Acl\Db\DoctrineAclRoleDataMapper::class,
             $service
         );
 
         //
         $this->assertInstanceOf(
-            'Doctrine\ORM\EntityManager',
+            \Doctrine\ORM\EntityManager::class,
             $service->getEntityManager()
         );
 
@@ -68,4 +68,3 @@ class DoctrineAclRoleDataMapperTest extends Zf2TestCase
         );
     }
 }
- 

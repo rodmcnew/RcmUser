@@ -32,11 +32,15 @@ class DoctrineAclRuleDataMapper implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
+        $em = $serviceLocator->get(
+            \Doctrine\ORM\EntityManager::class
+        );
 
         $service = new \RcmUser\Acl\Db\DoctrineAclRuleDataMapper();
         $service->setEntityManager($em);
-        $service->setEntityClass('RcmUser\Acl\Entity\DoctrineAclRule');
+        $service->setEntityClass(
+            \RcmUser\Acl\Entity\DoctrineAclRule::class
+        );
 
         return $service;
     }

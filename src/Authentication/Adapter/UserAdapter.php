@@ -23,7 +23,7 @@ use Zend\Crypt\Password\PasswordInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserAdapter extends AbstractAdapter
+class UserAdapter extends AbstractAdapter implements Adapter
 {
     /**
      * @var

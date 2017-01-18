@@ -29,18 +29,20 @@ class UserDataService implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return UserDataService
+     * @return \RcmUser\User\Service\UserDataService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $cfg = $serviceLocator->get('RcmUser\User\Config');
         /** @var \RcmUser\User\Db\UserDataMapper $userDataMapper */
         $userDataMapper = $serviceLocator->get(
-            'RcmUser\User\UserDataMapper'
+            \RcmUser\User\Db\UserDataMapper::class
         );
 
         /** @var EventManagerInterface $eventManager */
-        $eventManager = $serviceLocator->get('RcmUser\Event\UserEventManager');
+        $eventManager = $serviceLocator->get(
+            \RcmUser\Event\UserEventManager::class
+        );
 
         $service = new \RcmUser\User\Service\UserDataService($eventManager);
         $service->setDefaultUserState(

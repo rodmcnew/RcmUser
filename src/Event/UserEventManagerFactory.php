@@ -25,7 +25,9 @@ class UserEventManagerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /** @var ListenerCollection $listeners */
-        $listeners = $serviceLocator->get('RcmUser\Event\Listeners');
+        $listeners = $serviceLocator->get(
+            \RcmUser\Event\ListenerCollection::class
+        );
 
         $service = new UserEventManager(
             UserEventManager::class,

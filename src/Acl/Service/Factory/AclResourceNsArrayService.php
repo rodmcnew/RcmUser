@@ -32,12 +32,12 @@ class AclResourceNsArrayService implements FactoryInterface
     {
         /** @var ResourceProviderInterface $resourceProvider */
         $resourceProvider = $serviceLocator->get(
-            'RcmUser\Acl\ResourceProvider'
+            \RcmUser\Acl\Provider\ResourceProvider::class
         );
 
         /** @var \RcmUser\Acl\Builder\AclResourceStackBuilder $aclResourceStackBuilder */
         $aclResourceStackBuilder = $serviceLocator->get(
-            'RcmUser\Acl\Builder\AclResourceStackBuilder'
+            \RcmUser\Acl\Builder\AclResourceStackBuilder::class
         );
 
         $service = new \RcmUser\Acl\Service\AclResourceNsArrayService(

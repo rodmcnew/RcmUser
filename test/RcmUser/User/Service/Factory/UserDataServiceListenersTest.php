@@ -51,15 +51,14 @@ class UserDataServiceListenersTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Event\UserDataServiceListeners',
+            \RcmUser\User\Event\UserDataServiceListeners::class,
             $service
         );
         //
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Db\UserDataMapperInterface',
+            \RcmUser\User\Db\UserDataMapperInterface::class,
             $service->getUserDataMapper()
         );
     }
 }
- 

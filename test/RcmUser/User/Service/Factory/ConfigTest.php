@@ -52,11 +52,10 @@ class ConfigTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\Config\Config',
+            \RcmUser\Config\Config::class,
             $service
         );
         //
 
     }
 }
- 

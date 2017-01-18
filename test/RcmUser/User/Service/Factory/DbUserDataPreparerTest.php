@@ -18,6 +18,7 @@
 namespace RcmUser\Test\User\Service\Factory;
 
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Password\Password;
 use RcmUser\User\Service\Factory\DbUserDataPreparer;
 
 require_once __DIR__ . '/../../../../Zf2TestCase.php';
@@ -51,15 +52,14 @@ class DbUserDataPreparerTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Data\DbUserDataPreparer',
+            \RcmUser\User\Data\DbUserDataPreparer::class,
             $service
         );
         //
 
         $this->assertInstanceOf(
-            '\Zend\Crypt\Password\PasswordInterface',
+           Password::class,
             $service->getEncryptor()
         );
     }
 }
- 

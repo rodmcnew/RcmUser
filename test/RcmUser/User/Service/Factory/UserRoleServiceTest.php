@@ -1,19 +1,4 @@
 <?php
-/**
- * UserRoleServiceTest.php
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User\Service\Factory
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\User\Service\Factory;
 
@@ -51,10 +36,9 @@ class UserRoleServiceTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Service\UserRoleService',
+            \RcmUser\User\Service\UserRoleService::class,
             $service
         );
         //
     }
 }
- 

@@ -2,6 +2,7 @@
 
 namespace RcmUser\User\Service\Factory;
 
+use Zend\EventManager\EventManagerInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -28,13 +29,23 @@ class UserRoleService implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return array
+     * @return \RcmUser\User\Service\UserRoleService
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $service = new \RcmUser\User\Service\UserRoleService($serviceLocator->get(
-            'RcmUser\User\UserRolesDataMapper'
-        ));
+        /** @var EventManagerInterface $eventManager */
+        $eventManager = $serviceLocator->get(
+            \RcmUser\Event\UserEventManager::class
+        );
+
+        $userRolesDataMapper = $serviceLocator->get(
+            \RcmUser\User\Db\UserRolesDataMapper::class
+        );
+
+        $service = new \RcmUser\User\Service\UserRoleService(
+            $userRolesDataMapper,
+            $eventManager
+        );
 
         return $service;
     }

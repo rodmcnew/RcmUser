@@ -78,7 +78,7 @@ class UserAdapterTest extends Zf2TestCase
     public function testBuildUserAdapter()
     {
         $this->userDataService = $this->getMockBuilder(
-            '\RcmUser\User\Service\UserDataService'
+            \RcmUser\User\Service\UserDataService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -92,7 +92,7 @@ class UserAdapterTest extends Zf2TestCase
         ];
 
         $this->encryptor = $this->getMockBuilder(
-            '\Zend\Crypt\Password\PasswordInterface'
+            \Zend\Crypt\Password\PasswordInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -181,4 +181,3 @@ class UserAdapterTest extends Zf2TestCase
     }
 
 }
- 

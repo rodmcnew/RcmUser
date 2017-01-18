@@ -53,13 +53,13 @@ class UserDataMapperTest extends \PHPUnit_Framework_TestCase
     public function setup()
     {
         $this->userDataPreparer = $this->getMockBuilder(
-            '\RcmUser\User\Data\UserDataPreparerInterface'
+            \RcmUser\User\Data\UserDataPreparerInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->userValidator = $this->getMockBuilder(
-            '\RcmUser\User\Data\UserValidatorInterface'
+            \RcmUser\User\Data\UserValidatorInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -214,4 +214,3 @@ class UserDataMapperTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

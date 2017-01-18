@@ -37,17 +37,17 @@ class CompositeResourceProvider implements FactoryInterface
 
         /** @var \RcmUser\Acl\Builder\ResourceProviderBuilder $resourceProviderBuilder */
         $resourceProviderBuilder = $serviceLocator->get(
-            'RcmUser\Acl\Builder\ResourceProviderBuilder'
+            \RcmUser\Acl\Builder\ResourceProviderBuilder::class
         );
 
         /** @var \RcmUser\Acl\Cache\ResourceCache $resourceCache */
         $resourceCache = $serviceLocator->get(
-            'RcmUser\Acl\ResourceCache'
+            \RcmUser\Acl\Cache\ResourceCache::class
         );
 
         /** @var \RcmUser\Acl\Builder\AclResourceBuilder $resourceBuilder */
         $resourceBuilder = $serviceLocator->get(
-            'RcmUser\Acl\Builder\AclResourceBuilder'
+            \RcmUser\Acl\Builder\AclResourceBuilder::class
         );
 
         $service = new \RcmUser\Acl\Provider\CompositeResourceProvider(

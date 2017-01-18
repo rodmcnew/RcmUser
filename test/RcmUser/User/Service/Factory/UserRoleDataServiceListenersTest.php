@@ -51,15 +51,14 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Event\UserRoleDataServiceListeners',
+            \RcmUser\User\Event\UserRoleDataServiceListeners::class,
             $service
         );
         //
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Service\UserRoleService',
+            \RcmUser\User\Service\UserRoleService::class,
             $service->getUserRoleService()
         );
     }
 }
- 

@@ -51,13 +51,13 @@ class DoctrineUserDataMapperTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Db\DoctrineUserDataMapper',
+            \RcmUser\User\Db\DoctrineUserDataMapper::class,
             $service
         );
         //
 
         $this->assertInstanceOf(
-            'Doctrine\ORM\EntityManager',
+            \Doctrine\ORM\EntityManager::class,
             $service->getEntityManager()
         );
 
@@ -66,14 +66,13 @@ class DoctrineUserDataMapperTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Data\UserDataPreparerInterface',
+            \RcmUser\User\Data\UserDataPreparerInterface::class,
             $service->getUserDataPreparer()
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Data\UserValidatorInterface',
+            \RcmUser\User\Data\UserValidatorInterface::class,
             $service->getUserValidator()
         );
     }
 }
- 

@@ -32,23 +32,23 @@ class RcmUserService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $authServ = $serviceLocator->get(
-            'RcmUser\Authentication\Service\UserAuthenticationService'
+        $userAuthenticationService = $serviceLocator->get(
+            \RcmUser\Authentication\Service\UserAuthenticationService::class
         );
         $userDataService = $serviceLocator->get(
-            'RcmUser\User\Service\UserDataService'
+            \RcmUser\User\Service\UserDataService::class
         );
         $userPropertyService = $serviceLocator->get(
-            'RcmUser\User\Service\UserPropertyService'
+            \RcmUser\User\Service\UserPropertyService::class
         );
         $authorizeService = $serviceLocator->get(
-            'RcmUser\Acl\Service\AuthorizeService'
+            \RcmUser\Acl\Service\AuthorizeService::class
         );
 
         $service = new \RcmUser\Service\RcmUserService();
         $service->setUserDataService($userDataService);
         $service->setUserPropertyService($userPropertyService);
-        $service->setUserAuthService($authServ);
+        $service->setUserAuthService($userAuthenticationService);
         $service->setAuthorizeService($authorizeService);
 
         return $service;

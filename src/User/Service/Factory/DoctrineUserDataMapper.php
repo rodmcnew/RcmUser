@@ -27,18 +27,24 @@ class DoctrineUserDataMapper implements FactoryInterface
      *
      * @param ServiceLocatorInterface $serviceLocator serviceLocator
      *
-     * @return DoctrineUserDataMapper
+     * @return \RcmUser\User\Db\DoctrineUserDataMapper
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $em = $serviceLocator->get('Doctrine\ORM\EntityManager');
-        $udp = $serviceLocator->get('RcmUser\User\Data\UserDataPreparer');
-        $udv = $serviceLocator->get('RcmUser\User\Data\UserValidator');
+        $em = $serviceLocator->get(
+            \Doctrine\ORM\EntityManager::class
+        );
+        $udp = $serviceLocator->get(
+            \RcmUser\User\Data\UserDataPreparer::class
+        );
+        $udv = $serviceLocator->get(
+            \RcmUser\User\Data\UserValidator::class
+        );
 
         $service = new \RcmUser\User\Db\DoctrineUserDataMapper();
         $service->setEntityManager($em);
         $service->setEntityClass(
-            'RcmUser\User\Entity\DoctrineUser'
+            \RcmUser\User\Entity\DoctrineUser::class
         );
         $service->setUserDataPreparer($udp);
         $service->setUserValidator($udv);

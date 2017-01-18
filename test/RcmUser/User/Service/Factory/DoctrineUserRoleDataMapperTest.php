@@ -51,13 +51,13 @@ class DoctrineUserRoleDataMapperTest extends Zf2TestCase
 
         $service = $factory->createService($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            '\RcmUser\User\Db\DoctrineUserRoleDataMapper',
+            \RcmUser\User\Db\DoctrineUserRoleDataMapper::class,
             $service
         );
         //
 
         $this->assertInstanceOf(
-            'Doctrine\ORM\EntityManager',
+            \Doctrine\ORM\EntityManager::class,
             $service->getEntityManager()
         );
 
@@ -67,10 +67,9 @@ class DoctrineUserRoleDataMapperTest extends Zf2TestCase
 
         /*
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Db\AclRoleDataMapperInterface',
+            \RcmUser\Acl\Db\AclRoleDataMapperInterface::class,
             $service->getUserDataPreparer()
         );
         */
     }
 }
- 

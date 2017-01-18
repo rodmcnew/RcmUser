@@ -99,11 +99,10 @@ class LinkTest extends \PHPUnit_Framework_TestCase
 
         } catch (\RcmUser\Exception\RcmUserException $e) {
 
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
 
         $this->fail("Expected exception not thrown");
     }
 }
- 

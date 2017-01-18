@@ -73,7 +73,7 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
             ->will($this->returnValue(true));
 
         $this->authenticationService = $this->getMockBuilder(
-            '\RcmUser\Authentication\Service\AuthenticationService'
+            \RcmUser\Authentication\Service\AuthenticationService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -94,7 +94,7 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Authentication\Service\AuthenticationService',
+            \RcmUser\Authentication\Service\AuthenticationService::class,
             $this->abstractAuthServiceListeners->getAuthService()
         );
     }
@@ -207,4 +207,3 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
         );
     }
 }
- 

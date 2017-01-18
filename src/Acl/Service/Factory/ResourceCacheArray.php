@@ -4,7 +4,6 @@ namespace RcmUser\Acl\Service\Factory;
 
 use RcmUser\Acl\Cache\ArrayStorage;
 use RcmUser\Acl\Cache\ResourceCache;
-use Zend\Cache\Storage\Adapter\Memory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
@@ -38,7 +37,7 @@ class ResourceCacheArray implements FactoryInterface
 
         /** @var \RcmUser\Acl\Builder\AclResourceBuilder $resourceBuilder */
         $resourceBuilder = $serviceLocator->get(
-            'RcmUser\Acl\Builder\AclResourceBuilder'
+            \RcmUser\Acl\Builder\AclResourceBuilder::class
         );
 
         $service = new ResourceCache(
