@@ -3,6 +3,7 @@
 namespace RcmUser\User\Event;
 
 use RcmUser\User\Result;
+use RcmUser\User\Service\UserDataService;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\ListenerAggregateInterface;
@@ -29,31 +30,31 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = [];
-    protected $id = \RcmUser\User\Service\UserDataService::class;
+    protected $id = UserDataService::class;
     protected $priority = -1;
     protected $listenerMethods
         = [
-            'onBeforeGetAllUsers' => 'beforeGetAllUsers',
-            'onGetAllUsers' => 'getAllUsers',
-            'onGetAllUsersFail' => 'getAllUsersFail',
-            'onGetAllUsersSuccess' => 'getAllUsersSuccess',
-            'onBuildUser' => 'buildUser',
-            'onBeforeCreateUser' => 'beforeCreateUser',
-            'onCreateUser' => 'createUser',
-            'onCreateUserFail' => 'createUserFail',
-            'onCreateUserSuccess' => 'createUserSuccess',
-            'onBeforeReadUser' => 'beforeReadUser',
-            'onReadUser' => 'readUser',
-            'onReadUserFail' => 'readUserFail',
-            'onReadUserSuccess' => 'readUserSuccess',
-            'onBeforeUpdateUser' => 'beforeUpdateUser',
-            'onUpdateUser' => 'updateUser',
-            'onUpdateUserFail' => 'updateUserFail',
-            'onUpdateUserSuccess' => 'updateUserSuccess',
-            'onBeforeDeleteUser' => 'beforeDeleteUser',
-            'onDeleteUser' => 'deleteUser',
-            'onDeleteUserFail' => 'deleteUserFail',
-            'onDeleteUserSuccess' => 'deleteUserSuccess',
+            'onBeforeGetAllUsers' => UserDataService::EVENT_BEFORE_GET_ALL_USERS, //'beforeGetAllUsers',
+            'onGetAllUsers' => UserDataService::EVENT_GET_ALL_USERS, //'getAllUsers',
+            'onGetAllUsersFail' => UserDataService::EVENT_GET_ALL_USERS_FAIL, //'getAllUsersFail',
+            'onGetAllUsersSuccess' => UserDataService::EVENT_GET_ALL_USERS_SUCCESS, //'getAllUsersSuccess',
+            'onBuildUser' => UserDataService::EVENT_BUILD_USER, //'buildUser',
+            'onBeforeCreateUser' => UserDataService::EVENT_BEFORE_CREATE_USER, //'beforeCreateUser',
+            'onCreateUser' => UserDataService::EVENT_CREATE_USER, //'createUser',
+            'onCreateUserFail' => UserDataService::EVENT_CREATE_USER_FAIL, //'createUserFail',
+            'onCreateUserSuccess' => UserDataService::EVENT_CREATE_USER_SUCCESS, //'createUserSuccess',
+            'onBeforeReadUser' => UserDataService::EVENT_BEFORE_READ_USER, //'beforeReadUser',
+            'onReadUser' => UserDataService::EVENT_READ_USER, //'readUser',
+            'onReadUserFail' => UserDataService::EVENT_READ_USER_FAIL, //'readUserFail',
+            'onReadUserSuccess' => UserDataService::EVENT_READ_USER_SUCCESS, //'readUserSuccess',
+            'onBeforeUpdateUser' => UserDataService::EVENT_BEFORE_UPDATE_USER, //'beforeUpdateUser',
+            'onUpdateUser' => UserDataService::EVENT_UPDATE_USER, //'updateUser',
+            'onUpdateUserFail' => UserDataService::EVENT_UPDATE_USER_FAIL, //'updateUserFail',
+            'onUpdateUserSuccess' => UserDataService::EVENT_UPDATE_USER_SUCCESS, //'updateUserSuccess',
+            'onBeforeDeleteUser' => UserDataService::EVENT_BEFORE_DELETE_USER, //'beforeDeleteUser',
+            'onDeleteUser' => UserDataService::EVENT_DELETE_USER, //'deleteUser',
+            'onDeleteUserFail' => UserDataService::EVENT_DELETE_USER_FAIL, //'deleteUserFail',
+            'onDeleteUserSuccess' => UserDataService::EVENT_DELETE_USER_SUCCESS, //'deleteUserSuccess',
         ];
 
     /**

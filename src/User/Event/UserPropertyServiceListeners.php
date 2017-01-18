@@ -4,6 +4,7 @@ namespace RcmUser\User\Event;
 
 use RcmUser\Result;
 use RcmUser\User\Entity\UserRoleProperty;
+use RcmUser\User\Service\UserPropertyService;
 use Zend\EventManager\Event;
 
 /**
@@ -33,7 +34,8 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
     protected $listenerMethods
         = [
             //'onGetUserPropertyLinks' => 'getUserPropertyLinks',
-            'onPopulateUserProperty' => 'populateUserProperty',
+            'onPopulateUserProperty' => UserPropertyService::EVENT_POPULATE_USER_PROPERTY, //'populateUserProperty',
+            //'onGetUserPropertyIsAllowed' => UserPropertyService::EVENT_GET_USER_PROPERTY_IS_ALLOWED,
         ];
 
     /**

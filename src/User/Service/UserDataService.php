@@ -47,7 +47,6 @@ class UserDataService extends EventProvider
     const EVENT_DELETE_USER_FAIL = 'deleteUserFail';
     const EVENT_DELETE_USER_SUCCESS = 'deleteUserSuccess';
 
-
     /**
      * @var UserDataMapperInterface $userDataMapper
      */

@@ -5,6 +5,7 @@ namespace RcmUser\User\Event;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
+use RcmUser\User\Service\UserDataService;
 use RcmUser\User\Service\UserRoleService;
 use Zend\EventManager\Event;
 
@@ -34,14 +35,14 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     protected $listenerMethods
         = [
-            'onGetAllUsersSuccess' => 'getAllUsersSuccess',
-            'onBuildUser' => 'buildUser',
-            //'onBeforeCreateUser' => 'beforeCreateUser',
-            'onCreateUserSuccess' => 'createUserSuccess',
-            'onReadUserSuccess' => 'readUserSuccess',
-            //'onBeforeUpdateUser' => 'beforeUpdateUser',
-            'onUpdateUserSuccess' => 'updateUserSuccess',
-            'onDeleteUserSuccess' => 'deleteUserSuccess',
+            'onGetAllUsersSuccess' => UserDataService::EVENT_GET_ALL_USERS_SUCCESS, //'getAllUsersSuccess',
+            'onBuildUser' => UserDataService::EVENT_BUILD_USER, //'buildUser',
+            //'onBeforeCreateUser' => UserDataService::EVENT_BEFORE_CREATE_USER, //'beforeCreateUser',
+            'onCreateUserSuccess' => UserDataService::EVENT_CREATE_USER_SUCCESS, //'createUserSuccess',
+            'onReadUserSuccess' => UserDataService::EVENT_READ_USER_SUCCESS, //'readUserSuccess',
+            //'onBeforeUpdateUser' => UserDataService::EVENT_BEFORE_UPDATE_USER, //'beforeUpdateUser',
+            'onUpdateUserSuccess' => UserDataService::EVENT_UPDATE_USER_SUCCESS, //'updateUserSuccess',
+            'onDeleteUserSuccess' => UserDataService::EVENT_DELETE_USER_SUCCESS, //'deleteUserSuccess',
         ];
 
     /**
