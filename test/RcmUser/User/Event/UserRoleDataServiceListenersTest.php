@@ -304,7 +304,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            \RcmUser\User\Result,
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -370,7 +370,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            \RcmUser\User\Result,
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
