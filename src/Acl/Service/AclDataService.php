@@ -7,25 +7,35 @@ use RcmUser\Acl\Db\AclRuleDataMapperInterface;
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Acl\Entity\NamespaceAclRole;
+use RcmUser\Event\EventProvider;
+use RcmUser\Event\UserEventManager;
 use RcmUser\Result;
 
 /**
- * AclDataService
+ * Class AclDataService
  *
- * AclDataService @todo COMPLETE ME
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author    James Jervis
+ * @license   License.txt
+ * @link      https://github.com/jerv13
  */
-class AclDataService
+class AclDataService extends EventProvider
 {
+    const EVENT_CREATE_ACL_ROLE = 'createAclRole';
+    const EVENT_CREATE_ACL_ROLE_FAIL = 'createAclRoleFail';
+    const EVENT_CREATE_ACL_ROLE_SUCCESS = 'createAclRoleSuccess';
+
+    const EVENT_DELETE_ACL_ROLE = 'deleteAclRole';
+    const EVENT_DELETE_ACL_ROLE_FAIL = 'deleteAclRoleFail';
+    const EVENT_DELETE_ACL_ROLE_SUCCESS = 'deleteAclRoleSuccess';
+
+    const EVENT_CREATE_ACL_RULE = 'createAclRule';
+    const EVENT_CREATE_ACL_RULE_FAIL = 'createAclRuleFail';
+    const EVENT_CREATE_ACL_RULE_SUCCESS = 'createAclRuleSuccess';
+
+    const EVENT_DELETE_ACL_RULE = 'deleteAclRule';
+    const EVENT_DELETE_ACL_RULE_FAIL = 'deleteAclRuleFail';
+    const EVENT_DELETE_ACL_RULE_SUCCESS = 'deleteAclRuleSuccess';
+
     /**
      * @var AclRoleDataMapperInterface
      */
@@ -35,6 +45,24 @@ class AclDataService
      * @var AclRuleDataMapperInterface
      */
     protected $aclRuleDataMapper;
+
+    /**
+     * Constructor.
+     *
+     * @param AclRoleDataMapperInterface $aclRoleDataMapper
+     * @param AclRuleDataMapperInterface $aclRuleDataMapper
+     * @param UserEventManager           $userEventManager
+     */
+    public function __construct(
+        AclRoleDataMapperInterface $aclRoleDataMapper,
+        AclRuleDataMapperInterface $aclRuleDataMapper,
+        UserEventManager $userEventManager
+    ) {
+        $this->setAclRoleDataMapper($aclRoleDataMapper);
+        $this->setAclRuleDataMapper($aclRuleDataMapper);
+
+        parent::__construct($userEventManager);
+    }
 
     /**
      * setAclRoleDataMapper
@@ -177,7 +205,39 @@ class AclDataService
      */
     public function createRole(AclRole $aclRole)
     {
-        return $this->aclRoleDataMapper->create($aclRole);
+        $this->getEventManager()->trigger(
+            self::EVENT_CREATE_ACL_ROLE,
+            $this,
+            [
+                'aclRole' => $aclRole,
+            ]
+        );
+
+        $result = $this->aclRoleDataMapper->create($aclRole);
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_CREATE_ACL_ROLE_FAIL,
+                $this,
+                [
+                    'aclRole' => $aclRole,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_CREATE_ACL_ROLE_SUCCESS,
+            $this,
+            [
+                'aclRole' => $aclRole,
+                'result' => $result,
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -201,22 +261,59 @@ class AclDataService
      */
     public function deleteRole(AclRole $aclRole)
     {
+        $this->getEventManager()->trigger(
+            self::EVENT_DELETE_ACL_ROLE,
+            $this,
+            [
+                'aclRole' => $aclRole,
+            ]
+        );
+
         $roleId = $aclRole->getRoleId();
 
         // some roles should not be deleted, like super admin and guest
         $superAdminRoleId = $this->getSuperAdminRoleId()->getData();
         if ($roleId == $superAdminRoleId) {
-            return new Result(null, Result::CODE_FAIL, "Super admin role ({$roleId}) cannot be deleted.");
+            $result = new Result(null, Result::CODE_FAIL, "Super admin role ({$roleId}) cannot be deleted.");
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_ROLE_FAIL,
+                $this,
+                [
+                    'aclRole' => $aclRole,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
         $guestRoleId = $this->getGuestRoleId()->getData();
         if ($roleId == $guestRoleId) {
-            return new Result(null, Result::CODE_FAIL, "Guest role ({$roleId}) cannot be deleted.");
+            $result = new Result(null, Result::CODE_FAIL, "Guest role ({$roleId}) cannot be deleted.");
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_ROLE_FAIL,
+                $this,
+                [
+                    'aclRole' => $aclRole,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
         $result = $this->aclRoleDataMapper->delete($aclRole);
 
         if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_ROLE_FAIL,
+                $this,
+                [
+                    'aclRole' => $aclRole,
+                    'result' => $result,
+                ]
+            );
+
             return $result;
         }
 
@@ -225,6 +322,15 @@ class AclDataService
         if (!$rulesResult->isSuccess()) {
             $rulesResult->setMessage(
                 'Could not remove related rules for role: ' . $roleId
+            );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_ROLE_FAIL,
+                $this,
+                [
+                    'aclRole' => $aclRole,
+                    'result' => $rulesResult,
+                ]
             );
 
             return $rulesResult;
@@ -239,6 +345,28 @@ class AclDataService
                 $result->setMessage($ruleResult->getMessage());
             }
         }
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_ROLE_FAIL,
+                $this,
+                [
+                    'aclRole' => $aclRole,
+                    'result' => $rulesResult,
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_DELETE_ACL_ROLE_SUCCESS,
+            $this,
+            [
+                'aclRole' => $aclRole,
+                'result' => $rulesResult,
+            ]
+        );
 
         return $result;
     }
@@ -264,7 +392,7 @@ class AclDataService
         $index = 0;
         foreach ($roles as $ns => $nsRole) {
             $aclRoles[$index] = $nsRole;
-            $index ++;
+            $index++;
         }
 
         return new Result($aclRoles, Result::CODE_SUCCESS);
@@ -415,41 +543,107 @@ class AclDataService
      */
     public function createRule(AclRule $aclRule)
     {
+        $this->getEventManager()->trigger(
+            self::EVENT_CREATE_ACL_RULE,
+            $this,
+            [
+                'aclRule' => $aclRule,
+            ]
+        );
+
         $rule = $aclRule->getRule();
         $roleId = $aclRule->getRoleId();
         $resource = $aclRule->getResourceId();
 
         // check required
         if (empty($rule) || empty($roleId) || empty($resource)) {
-            return new Result(
+            $result = new Result(
                 null,
                 Result::CODE_FAIL,
                 "New rule requires: rule, roleId and resourceId."
             );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_CREATE_ACL_RULE_FAIL,
+                $this,
+                [
+                    'aclRule' => $aclRule,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
         // check if is super admin
         if ($roleId == $this->getSuperAdminRoleId()->getData()) {
-            return new Result(
+            $result = new Result(
                 null,
                 Result::CODE_FAIL,
                 "Rules cannot be assigned to super admin."
             );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_CREATE_ACL_RULE_FAIL,
+                $this,
+                [
+                    'aclRule' => $aclRule,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
         // check if role exists
         $result = $this->getRoleByRoleId($roleId);
 
         if (!$result->isSuccess()) {
-            return new Result(
+            $result = new Result(
                 null,
                 Result::CODE_FAIL,
                 "Rules cannot be assigned to role that does not exist."
             );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_CREATE_ACL_RULE_FAIL,
+                $this,
+                [
+                    'aclRule' => $aclRule,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
         // @todo validate resource/privilege exists
-        return $this->aclRuleDataMapper->create($aclRule);
+        $result = $this->aclRuleDataMapper->create($aclRule);
+
+        if (!$result->isSuccess()) {
+
+            $this->getEventManager()->trigger(
+                self::EVENT_CREATE_ACL_RULE_FAIL,
+                $this,
+                [
+                    'aclRule' => $aclRule,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_CREATE_ACL_RULE_SUCCESS,
+            $this,
+            [
+                'aclRule' => $aclRule,
+                'result' => $result,
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -461,27 +655,79 @@ class AclDataService
      */
     public function deleteRule(AclRule $aclRule)
     {
+        $this->getEventManager()->trigger(
+            self::EVENT_DELETE_ACL_RULE,
+            $this,
+            [
+                'aclRule' => $aclRule,
+            ]
+        );
+
         $rule = $aclRule->getRule();
         $roleId = $aclRule->getRoleId();
         $resource = $aclRule->getResourceId();
 
         // check required
         if (empty($rule) || empty($roleId) || empty($resource)) {
-            return new Result(
+            $result = new Result(
                 null,
                 Result::CODE_FAIL,
                 "Rule requires: rule, roleId and resourceId."
             );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_RULE_FAIL,
+                $this,
+                [
+                    'aclRule' => $aclRule,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
         // check if exists and get valid id
         $result = $this->aclRuleDataMapper->read($aclRule);
 
         if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_RULE_FAIL,
+                $this,
+                [
+                    'aclRule' => $aclRule,
+                    'result' => $result,
+                ]
+            );
+
             return $result;
         }
 
-        return $this->aclRuleDataMapper->delete($result->getData());
+        $result = $this->aclRuleDataMapper->delete($result->getData());
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_ACL_RULE_FAIL,
+                $this,
+                [
+                    'aclRule' => $aclRule,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_DELETE_ACL_RULE_SUCCESS,
+            $this,
+            [
+                'aclRule' => $aclRule,
+                'result' => $result,
+            ]
+        );
+
+        return $result;
     }
 
     /**

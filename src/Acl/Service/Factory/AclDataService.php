@@ -34,13 +34,20 @@ class AclDataService implements FactoryInterface
         $aclRoleDataMapper = $serviceLocator->get(
             \RcmUser\Acl\Db\AclRoleDataMapper::class
         );
+
         $aclRuleDataMapper = $serviceLocator->get(
             \RcmUser\Acl\Db\AclRuleDataMapper::class
         );
 
-        $service = new \RcmUser\Acl\Service\AclDataService();
-        $service->setAclRoleDataMapper($aclRoleDataMapper);
-        $service->setAclRuleDataMapper($aclRuleDataMapper);
+        $userEventManager = $serviceLocator->get(
+            \RcmUser\Event\UserEventManager::class
+        );
+
+        $service = new \RcmUser\Acl\Service\AclDataService(
+            $aclRoleDataMapper,
+            $aclRuleDataMapper,
+            $userEventManager
+        );
 
         return $service;
     }

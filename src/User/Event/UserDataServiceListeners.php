@@ -3,6 +3,7 @@
 namespace RcmUser\User\Event;
 
 use RcmUser\User\Db\UserDataMapperInterface;
+use RcmUser\User\Service\UserDataService;
 use Zend\EventManager\Event;
 use Zend\EventManager\ListenerAggregateInterface;
 
@@ -32,11 +33,11 @@ class UserDataServiceListeners extends AbstractUserDataServiceListeners implemen
      */
     protected $listenerMethods
         = [
-            'onGetAllUsers' => 'getAllUsers',
-            'onCreateUser' => 'createUser',
-            'onReadUser' => 'readUser',
-            'onUpdateUser' => 'updateUser',
-            'onDeleteUser' => 'deleteUser',
+            'onGetAllUsers' => UserDataService::EVENT_GET_ALL_USERS, //'getAllUsers',
+            'onCreateUser' => UserDataService::EVENT_CREATE_USER, //'createUser',
+            'onReadUser' => UserDataService::EVENT_READ_USER, //'readUser',
+            'onUpdateUser' => UserDataService::EVENT_UPDATE_USER, //'updateUser',
+            'onDeleteUser' => UserDataService::EVENT_DELETE_USER, //'deleteUser',
         ];
 
     /**

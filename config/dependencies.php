@@ -49,6 +49,8 @@ return [
          * Required for:
          *  RcmUser\User\Service\UserDataService
          *
+         * Old Service Name: 'RcmUser\User\UserDataMapper'
+         *
          * This is a DataMapper adapter that is used
          * to abstract the data storage method.
          * This may be configured to use a custom data mapper
@@ -56,16 +58,13 @@ return [
          */
         RcmUser\User\Db\UserDataMapper::class =>
             RcmUser\User\Service\Factory\DoctrineUserDataMapper::class,
-        /**
-         * @deprecated USE: RcmUser\User\Db\UserDataMapper::class
-         */
-        'RcmUser\User\UserDataMapper' =>
-            RcmUser\User\Service\Factory\DoctrineUserDataMapper::class,
         /* ---------------------------- */
         /*
          * UserRolesDataMapper
          * Required for (ACL user property]:
          *  RcmUser\User\Event\UserRoleDataServiceListeners
+         *
+         * Old Service Name: 'RcmUser\User\UserRolesDataMapper'
          *
          * This is a DataMapper adapter that is used
          * to abstract the data storage method.
@@ -73,11 +72,6 @@ return [
          * for unique storage requirements.
          */
         RcmUser\User\Db\UserRolesDataMapper::class =>
-            RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper::class,
-        /**
-         * @deprecated USE: RcmUser\User\Db\UserRolesDataMapper::class
-         */
-        'RcmUser\User\UserRolesDataMapper' =>
             RcmUser\User\Service\Factory\DoctrineUserRoleDataMapper::class,
         /* - Validations - */
         /*
@@ -97,16 +91,13 @@ return [
          *  RcmUser\User\Data\DbUserDataPreparer
          *  RcmUser\Authentication\Adapter\UserAdapter
          *
+         * Old Service Name: 'RcmUser\User\Encryptor'
+         *
          * Used for encrypting/hashing passwords by default.
          * May not be required depending
          * on the DbUserDataPreparer and UserAdapter that is being used.
          */
         RcmUser\User\Password\Password::class =>
-            RcmUser\User\Service\Factory\Encryptor::class,
-        /**
-         * @deprecated USE: RcmUser\User\Password\Password::class
-         */
-        'RcmUser\User\Encryptor' =>
             RcmUser\User\Service\Factory\Encryptor::class,
         /*
          * UserDataPreparer
@@ -126,26 +117,19 @@ return [
          *
          * Requires: RcmUser\User\UserDataMapper
          *
+         * Old Service Name: 'RcmUser\User\UserDataServiceListeners'
+         *
          * Creates event listeners that use the UserValidator
          * to do validation checks on User create and update.
          */
         RcmUser\User\Event\UserDataServiceListeners::class =>
             RcmUser\User\Service\Factory\UserDataServiceListeners::class,
-        /**
-         * @deprecated USE: RcmUser\User\Event\UserDataServiceListeners::class
-         */
-        'RcmUser\User\UserDataServiceListeners' =>
-            RcmUser\User\Service\Factory\UserDataServiceListeners::class,
         /*
          * UserRoleDataServiceListeners
          * Required for (User Acl Property populating]:
+         * Old Service Name: 'RcmUser\User\UserRoleDataServiceListeners'
          */
         RcmUser\User\Event\UserRoleDataServiceListeners::class =>
-            RcmUser\User\Service\Factory\UserRoleDataServiceListeners::class,
-        /**
-         * @deprecated USE: RcmUser\User\Event\UserRoleDataServiceListeners::class
-         */
-        'RcmUser\User\UserRoleDataServiceListeners' =>
             RcmUser\User\Service\Factory\UserRoleDataServiceListeners::class,
         /* ************************************** */
         /* AUTH ********************************* */
@@ -165,36 +149,32 @@ return [
          * Required for (Auth]:
          *  RcmUser\Authentication\Service\AuthenticationService
          *
+         * Old Service Name: 'RcmUser\Authentication\Adapter'
+         *
          * By default this auth Adapter uses the Encryptor
          * to validate a users credentials
          * This may be configured to use a custom auth Adapter as required
          */
         RcmUser\Authentication\Adapter\Adapter::class =>
             RcmUser\Authentication\Service\Factory\Adapter::class,
-        /**
-         * @deprecated USE: RcmUser\Authentication\Adapter\Adapter::class
-         */
-        'RcmUser\Authentication\Adapter' =>
-            RcmUser\Authentication\Service\Factory\Adapter::class,
         /*
          * UserSession
          * Required for (Auth]:
          *  RcmUser\Authentication\Service\AuthenticationService
+         *
+         * Old Service Name: 'RcmUser\Authentication\Storage'
          *
          * By default this module uses the default session container for storage
          * This may be configured to use a custom Storage object as required
          */
         RcmUser\Authentication\Storage\Session::class =>
             RcmUser\Authentication\Service\Factory\Storage::class,
-        /**
-         * @deprecated USE: RcmUser\Authentication\Storage\Session::class
-         */
-        'RcmUser\Authentication\Storage' =>
-            RcmUser\Authentication\Service\Factory\Storage::class,
         /*
          * AuthenticationService
          * Required for:
          *  RcmUser\Authentication\EventListeners
+         *
+         * Old Service Name: 'RcmUser\Authentication\AuthenticationService'
          *
          * By default this module uses the default Adapter and Storage
          * to do authentication
@@ -202,14 +182,11 @@ return [
          */
         RcmUser\Authentication\Service\AuthenticationService::class =>
             RcmUser\Authentication\Service\Factory\AuthenticationService::class,
-        /**
-         * @deprecated USE: RcmUser\Authentication\Service\AuthenticationService::class
-         */
-        'RcmUser\Authentication\AuthenticationService' =>
-            RcmUser\Authentication\Service\Factory\AuthenticationService::class,
         /*
          * EventListeners
          * Used for listening for auth related events:
+         *
+         * Old Service Name: 'RcmUser\Authentication\UserAuthenticationServiceListeners'
          *
          * By default this module listens for the events
          * from UserAuthenticationService to do authentication
@@ -217,11 +194,6 @@ return [
          * or disabled if not required
          */
         RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class =>
-            RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners::class,
-        /**
-         * @deprecated USE: RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class
-         */
-        'RcmUser\Authentication\UserAuthenticationServiceListeners' =>
             RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners::class,
         /* ************************************** */
         /* ACL ********************************** */
@@ -257,17 +229,16 @@ return [
         /*
          * RootResourceProvider
          *
+         * Old Service Name: 'RcmUser\Acl\RootResourceProvider'
+         *
          * Provides the root resource
          */
         RcmUser\Acl\Provider\RootResourceProvider::class =>
             RcmUser\Acl\Service\Factory\RootResourceProvider::class,
-        /**
-         * @deprecated USE: RcmUser\Acl\Provider\RootResourceProvider::class
-         */
-        'RcmUser\Acl\RootResourceProvider' =>
-            RcmUser\Acl\Service\Factory\RootResourceProvider::class,
         /*
          * RcmUser\Acl\ResourceProvider
+         *
+         * Old Service Name: 'RcmUser\Acl\ResourceProvider'
          *
          * Main Resource provider
          * By default it wraps all other resource providers
@@ -276,35 +247,24 @@ return [
          */
         RcmUser\Acl\Provider\ResourceProvider::class =>
             RcmUser\Acl\Service\Factory\CompositeResourceProvider::class,
-        /**
-         * @deprecated USE: RcmUser\Acl\Provider\ResourceProvider::class
-         */
-        'RcmUser\Acl\ResourceProvider' =>
-            RcmUser\Acl\Service\Factory\CompositeResourceProvider::class,
         /*
          * RcmUser\Acl\ResourceCache
+         *
+         * Old Service Name: 'RcmUser\Acl\ResourceCache'
          *
          * Resource Caching
          * By default caches to an array
          */
         RcmUser\Acl\Cache\ResourceCache::class =>
             RcmUser\Acl\Service\Factory\ResourceCacheArray::class,
-        /**
-         * @deprecated USE: RcmUser\Acl\Cache\ResourceCache::class
-         */
-        'RcmUser\Acl\ResourceCache' =>
-            RcmUser\Acl\Service\Factory\ResourceCacheArray::class,
         /*
          * RcmUser\Acl\RootAclResource
+         *
+         * Old Service Name: 'RcmUser\Acl\RootAclResource'
          *
          * Root resource used for wrapping all other resources
          */
         RcmUser\Acl\Entity\RootAclResource::class =>
-            RcmUser\Acl\Service\Factory\RootAclResource::class,
-        /**
-         * @deprecated USE: RcmUser\Acl\Entity\RootAclResource::class
-         */
-        'RcmUser\Acl\RootAclResource' =>
             RcmUser\Acl\Service\Factory\RootAclResource::class,
         /*
          * AclResourceBuilder
@@ -323,6 +283,9 @@ return [
             RcmUser\Acl\Service\Factory\ResourceProviderBuilder::class,
         /*
          * AclRoleDataMapper
+         *
+         * Old Service Name: 'RcmUser\Acl\AclRoleDataMapper'
+         *
          * Required
          * This data mapper adapter allows this module
          * to read roles from a data source
@@ -330,13 +293,11 @@ return [
          */
         RcmUser\Acl\Db\AclRoleDataMapper::class =>
             RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper::class,
-        /**
-         * @deprecated USE: RcmUser\Acl\Db\AclRoleDataMapper::class
-         */
-        'RcmUser\Acl\AclRoleDataMapper' =>
-            RcmUser\Acl\Service\Factory\DoctrineAclRoleDataMapper::class,
         /*
          * AclRuleDataMapper
+         *
+         * Old Service Name: 'RcmUser\Acl\AclRuleDataMapper'
+         *
          * Required for:
          * This data mapper adapter allows this module
          * to read rules from a data source
@@ -344,24 +305,17 @@ return [
          */
         RcmUser\Acl\Db\AclRuleDataMapper::class =>
             RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper::class,
-        /**
-         * @deprecated USE: RcmUser\Acl\Db\AclRuleDataMapper::class
-         */
-        'RcmUser\Acl\AclRuleDataMapper' =>
-            RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper::class,
         /*
          * AclDataService
+         *
+         * Old Service Name: 'RcmUser\Acl\AclDataService'
+         *
          * Required for accessing mappers
          * This is designed to expose a simple facade
          * for use in displaying and updating ACL data
          * in views
          */
         RcmUser\Acl\Service\AclDataService::class =>
-            RcmUser\Acl\Service\Factory\AclDataService::class,
-        /**
-         * @deprecated USE: RcmUser\Acl\Service\AclDataService::class
-         */
-        'RcmUser\Acl\AclDataService' =>
             RcmUser\Acl\Service\Factory\AclDataService::class,
         /* ************************************** */
         /* CORE ********************************* */
@@ -391,16 +345,17 @@ return [
             RcmUser\Service\Factory\RcmUserAclResourceProvider::class,
         /*
          * Event Aggregation
+         *
+         * Old Service Name: 'RcmUser\Event\Listeners'
+         *
          * Required *
          */
         RcmUser\Event\ListenerCollection::class =>
             RcmUser\Service\Factory\EventListeners::class,
-        /**
-         * @deprecated USE: RcmUser\Event\ListenerCollection::class
-         */
-        'RcmUser\Event\Listeners' =>
-            RcmUser\Service\Factory\EventListeners::class,
 
+        /**
+         * UserEventManager
+         */
         RcmUser\Event\UserEventManager::class =>
             RcmUser\Event\UserEventManagerFactory::class,
         /*
