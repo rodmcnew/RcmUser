@@ -2,6 +2,7 @@
 
 namespace RcmUser\User\Event;
 
+use RcmUser\Event\UserEventManager;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
 use Zend\EventManager\Event;
@@ -11,27 +12,30 @@ use Zend\EventManager\ListenerAggregateInterface;
 /**
  * Class AbstractUserDataServiceListeners
  *
- * AbstractUserDataServiceListeners
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\User\Event
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author    James Jervis
+ * @license   License.txt
+ * @link      https://github.com/jerv13
  */
 class AbstractUserDataServiceListeners implements ListenerAggregateInterface
 {
-
     /**
      * @var \Zend\Stdlib\CallbackHandler[]
      */
     protected $listeners = [];
+
+    /**
+     * @var string
+     */
     protected $id = UserDataService::class;
+
+    /**
+     * @var int
+     */
     protected $priority = -1;
+
+    /**
+     * @var array
+     */
     protected $listenerMethods
         = [
             'onBeforeGetAllUsers' => UserDataService::EVENT_BEFORE_GET_ALL_USERS, //'beforeGetAllUsers',
@@ -60,13 +64,14 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * attach
      *
-     * @param EventManagerInterface $events events
+     * @param UserEventManager|EventManagerInterface $userEventManager events
      *
      * @return void
      */
-    public function attach(EventManagerInterface $events)
+    public function attach(EventManagerInterface $userEventManager)
     {
-        $sharedEvents = $events->getSharedManager();
+        // @todo Do we need shared events here?
+        $sharedEvents = $userEventManager->getSharedManager();
 
         foreach ($this->listenerMethods as $method => $event) {
             $this->listeners[] = $sharedEvents->attach(
@@ -84,14 +89,14 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * detach
      *
-     * @param EventManagerInterface $events events
+     * @param EventManagerInterface $userEventManager events
      *
      * @return void
      */
-    public function detach(EventManagerInterface $events)
+    public function detach(EventManagerInterface $userEventManager)
     {
         foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
+            if ($userEventManager->detach($listener)) {
                 unset($this->listeners[$index]);
             }
         }

@@ -235,5 +235,9 @@ return [
         // UserRoleDataServiceListeners
         RcmUser\User\Event\UserRoleDataServiceListeners::class
         => RcmUser\User\Event\UserRoleDataServiceListeners::class,
+    ],
+
+    RcmUser\Log\Event\LoggerListeners::class => [
+
     ]
 ];
