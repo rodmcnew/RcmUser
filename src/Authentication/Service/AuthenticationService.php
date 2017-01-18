@@ -5,34 +5,25 @@ namespace RcmUser\Authentication\Service;
 use RcmUser\User\Entity\User;
 
 /**
- * AuthenticationService
+ * Class AuthenticationService
  *
- * AuthenticationService
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Authentication\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author    James Jervis
+ * @license   License.txt
+ * @link      https://github.com/jerv13
  */
 class AuthenticationService extends \Zend\Authentication\AuthenticationService
 {
-
     /**
      * setIdentity - User to refresh existing session
      *
      * @param User $identity identity
      *
-     * @return mixed|null
+     * @return void
      */
     public function setIdentity(User $identity)
     {
         $storage = $this->getStorage();
 
-        return $storage->write($identity);
+        $storage->write($identity);
     }
 }

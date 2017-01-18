@@ -2,6 +2,7 @@
 
 namespace RcmUser\Authentication\Adapter;
 
+use RcmUser\User\Entity\User;
 use Zend\Authentication\Adapter\ValidatableAdapterInterface;
 
 /**
@@ -13,5 +14,12 @@ use Zend\Authentication\Adapter\ValidatableAdapterInterface;
  */
 interface Adapter extends ValidatableAdapterInterface
 {
-
+    /**
+     * withUser - Immutable setting of the user
+     *
+     * @param User $user
+     *
+     * @return Adapter
+     */
+    public function withUser(User $user);
 }

@@ -10,19 +10,11 @@ use RcmUser\User\Service\UserRoleService;
 use Zend\EventManager\Event;
 
 /**
- * UserRoleDataServiceListeners
+ * Class UserRoleDataServiceListeners
  *
- * UserRoleDataServiceListeners
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Event
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author    James Jervis
+ * @license   License.txt
+ * @link      https://github.com/jerv13
  */
 class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 {

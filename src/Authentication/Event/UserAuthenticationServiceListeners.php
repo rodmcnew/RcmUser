@@ -2,6 +2,10 @@
 
 namespace RcmUser\Authentication\Event;
 
+use RcmUser\Authentication\Adapter\Adapter;
+use RcmUser\Authentication\Adapter\UserAdapter;
+use RcmUser\Authentication\Exception\AuthenticationException;
+use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
 use Zend\Authentication\Result;
 use Zend\EventManager\Event;
@@ -38,19 +42,52 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
      */
     protected $listenerMethods
         = [
-            'onValidateCredentials' => 'validateCredentials',
-            //'onValidateCredentialsSuccess' => 'validateCredentialsSuccess',
-            //'onValidateCredentialsFail' => 'validateCredentialsFail',
-
-            'onAuthenticate' => 'authenticate',
-            //'onAuthenticateSuccess' => 'authenticateSuccess',
-            //'onAuthenticateFail' => 'authenticateFail',
-
-            'onClearIdentity' => 'clearIdentity',
-            'onHasIdentity' => 'hasIdentity',
-            'onSetIdentity' => 'setIdentity',
-            'onGetIdentity' => 'getIdentity',
+            //'validateCredentials',
+            'onValidateCredentials' => UserAuthenticationService::EVENT_VALIDATE_CREDENTIALS,
+            //'validateCredentialsSuccess',
+            //'onValidateCredentialsSuccess' => UserAuthenticationService::EVENT_VALIDATE_CREDENTIALS_SUCCESS,
+            //'validateCredentialsFail',
+            //'onValidateCredentialsFail' => UserAuthenticationService::EVENT_VALIDATE_CREDENTIALS_SUCCESS,
+            //'authenticate',
+            'onAuthenticate' => UserAuthenticationService::EVENT_AUTHENTICATE,
+            // 'authenticateSuccess',
+            //'onAuthenticateSuccess' => UserAuthenticationService::EVENT_AUTHENTICATE_SUCCESS,
+            //'authenticateFail',
+            //'onAuthenticateFail' => UserAuthenticationService::EVENT_AUTHENTICATE_FAIL,
+            //'clearIdentity',
+            'onClearIdentity' => UserAuthenticationService::EVENT_CLEAR_IDENTITY,
+            //'hasIdentity',
+            'onHasIdentity' => UserAuthenticationService::EVENT_HAS_IDENTITY,
+            //'setIdentity',
+            'onSetIdentity' => UserAuthenticationService::EVENT_SET_IDENTITY,
+            //'getIdentity',
+            'onGetIdentity' => UserAuthenticationService::EVENT_GET_IDENTITY,
         ];
+
+    /**
+     * assertValidAdapter
+     *
+     * @param $adapter
+     *
+     * @return void
+     * @throws AuthenticationException
+     */
+    protected function assertValidAdapter($adapter)
+    {
+        if (empty($adapter)) {
+            throw new AuthenticationException('No adapter set');
+        }
+
+        if (!is_object($adapter)) {
+            throw new AuthenticationException('Adapter must object of type: ' . Adapter::class);
+        }
+
+        if (!$adapter instanceof Adapter) {
+            throw new AuthenticationException(
+                'Adapter must object of type: ' . Adapter::class . ' got ' . get_class($adapter)
+            );
+        }
+    }
 
     /**
      * onValidateCredentials
@@ -63,9 +100,10 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
     {
         $user = $e->getParam('user');
 
-        // RcmUser Auth
+        /** @var Adapter|UserAdapter $adapter */
         $adapter = $this->getAuthService()->getAdapter();
-        $adapter->setUser($user);
+        $this->assertValidAdapter($adapter);
+        $adapter = $adapter->withUser($user);
         $result = $adapter->authenticate();
 
         return $result;
@@ -82,9 +120,10 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
     {
         $user = $e->getParam('user');
 
-        // RcmUser Auth
+        /** @var Adapter $adapter */
         $adapter = $this->getAuthService()->getAdapter();
-        $adapter->setUser($user);
+        $this->assertValidAdapter($adapter);
+        $adapter = $adapter->withUser($user);
         $result = $this->getAuthService()->authenticate($adapter);
 
         return $result;
@@ -95,7 +134,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
      *
      * @param Event $e e
      *
-     * @return bool
+     * @return void
      */
     public function onClearIdentity($e)
     {
@@ -125,7 +164,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
      *
      * @param Event $e e
      *
-     * @return void|Result
+     * @return void
      */
     public function onSetIdentity($e)
     {

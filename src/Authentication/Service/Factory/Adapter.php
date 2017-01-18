@@ -23,7 +23,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  */
 class Adapter implements FactoryInterface
 {
-
     /**
      * createService
      *
@@ -39,9 +38,10 @@ class Adapter implements FactoryInterface
         $encrypt = $serviceLocator->get(
             \RcmUser\User\Password\Password::class
         );
-        $adapter = new UserAdapter();
-        $adapter->setUserDataService($userDataService);
-        $adapter->setEncryptor($encrypt);
+        $adapter = new UserAdapter(
+            $userDataService,
+            $encrypt
+        );
 
         return $adapter;
     }
