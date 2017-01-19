@@ -20,6 +20,7 @@ use RcmUser\Result;
  */
 class AclDataService extends EventProvider
 {
+    const EVENT_IDENTIFIER = AclDataService::class;
     const EVENT_CREATE_ACL_ROLE = 'createAclRole';
     const EVENT_CREATE_ACL_ROLE_FAIL = 'createAclRoleFail';
     const EVENT_CREATE_ACL_ROLE_SUCCESS = 'createAclRoleSuccess';

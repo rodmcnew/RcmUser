@@ -23,6 +23,8 @@ use RcmUser\User\Entity\User;
  */
 class UserPropertyService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserPropertyService::class;
+
     const EVENT_GET_USER_PROPERTY = 'getUserProperty';
     const EVENT_POPULATE_USER_PROPERTY = 'populateUserProperty';
     const EVENT_GET_USER_PROPERTY_IS_ALLOWED = 'getUserPropertyIsAllowed';

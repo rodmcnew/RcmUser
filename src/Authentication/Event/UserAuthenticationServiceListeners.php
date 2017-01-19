@@ -30,7 +30,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
     /**
      * @var string
      */
-    protected $id = \RcmUser\Authentication\Service\UserAuthenticationService::class;
+    protected $id = UserAuthenticationService::EVENT_IDENTIFIER;
 
     /**
      * @var int

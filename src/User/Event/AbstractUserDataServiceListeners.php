@@ -26,7 +26,7 @@ class AbstractUserDataServiceListeners implements ListenerAggregateInterface
     /**
      * @var string
      */
-    protected $id = UserDataService::class;
+    protected $id = UserDataService::EVENT_IDENTIFIER;
 
     /**
      * @var int

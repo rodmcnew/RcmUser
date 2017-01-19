@@ -248,5 +248,6 @@ return [
      */
     RcmUser\Log\Event\LoggerListeners::class => [
         RcmUser\Log\Event\OnAuthenticateFailListener::class => 0,
+        RcmUser\Log\Event\OnCreateUserListener::class => 0,
     ]
 ];

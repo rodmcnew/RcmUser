@@ -24,7 +24,7 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
     /**
      * @var string
      */
-    protected $id = UserPropertyService::class;
+    protected $id = UserPropertyService::EVENT_IDENTIFIER;
 
     /**
      * @var array $listenerMethods

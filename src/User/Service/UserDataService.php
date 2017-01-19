@@ -25,23 +25,29 @@ use RcmUser\User\Result;
  */
 class UserDataService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserDataService::class;
+
     const EVENT_BEFORE_GET_ALL_USERS = 'beforeGetAllUsers';
     const EVENT_GET_ALL_USERS = 'getAllUsers';
     const EVENT_GET_ALL_USERS_FAIL = 'getAllUsersFail';
     const EVENT_GET_ALL_USERS_SUCCESS = 'getAllUsersSuccess';
+
     const EVENT_BUILD_USER = 'buildUser';
     const EVENT_BEFORE_CREATE_USER = 'beforeCreateUser';
     const EVENT_CREATE_USER = 'createUser';
     const EVENT_CREATE_USER_FAIL = 'createUserFail';
     const EVENT_CREATE_USER_SUCCESS = 'createUserSuccess';
+
     const EVENT_BEFORE_READ_USER = 'beforeReadUser';
     const EVENT_READ_USER = 'readUser';
     const EVENT_READ_USER_FAIL = 'readUserFail';
     const EVENT_READ_USER_SUCCESS = 'readUserSuccess';
+
     const EVENT_BEFORE_UPDATE_USER = 'beforeUpdateUser';
     const EVENT_UPDATE_USER = 'updateUser';
     const EVENT_UPDATE_USER_FAIL = 'updateUserFail';
     const EVENT_UPDATE_USER_SUCCESS = 'updateUserSuccess';
+
     const EVENT_BEFORE_DELETE_USER = 'beforeDeleteUser';
     const EVENT_DELETE_USER = 'deleteUser';
     const EVENT_DELETE_USER_FAIL = 'deleteUserFail';
@@ -178,7 +184,10 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_GET_ALL_USERS_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'options' => $options
+                ]
             );
 
             return $result;
@@ -191,7 +200,10 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             self::EVENT_GET_ALL_USERS_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'options' => $options
+            ]
         );
 
         return $result;
@@ -237,17 +249,6 @@ class UserDataService extends EventProvider
      */
     public function createUser(User $requestUser)
     {
-        /* <LOW_LEVEL_PREP> */
-        /* REMOVE SOME LOW LEVEL - LET THE MAPPER DECIDE
-        $result = $this->readUser($requestUser);
-
-        if ($result->isSuccess()) {
-
-            // ERROR - user exists
-            return new Result(null, Result::CODE_FAIL, 'User already exists.');
-        }
-        */
-
         $responseUser = new User();
         $responseUser->populate($requestUser);
 
@@ -295,7 +296,11 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_CREATE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -307,7 +312,11 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_CREATE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -317,7 +326,11 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             self::EVENT_CREATE_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
+            ]
         );
 
         return $result;
@@ -372,7 +385,11 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_READ_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -391,7 +408,11 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             self::EVENT_READ_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
+            ]
         );
 
         return $result;
@@ -476,7 +497,12 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_UPDATE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser,
+                    'existingUser' => $existingUser
+                ]
             );
 
             return $result;
@@ -488,7 +514,12 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             self::EVENT_UPDATE_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser,
+                'existingUser' => $existingUser
+            ]
         );
 
         return $result;
@@ -560,7 +591,11 @@ class UserDataService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_DELETE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -572,7 +607,11 @@ class UserDataService extends EventProvider
         $this->getEventManager()->trigger(
             self::EVENT_DELETE_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
+            ]
         );
 
         return $result;

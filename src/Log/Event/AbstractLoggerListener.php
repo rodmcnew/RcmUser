@@ -44,6 +44,8 @@ abstract class AbstractLoggerListener extends AbstractListener implements Logger
         $this->logger->notice(
             $this->getMessage($event)
         );
+
+        return false;
     }
 
     /**

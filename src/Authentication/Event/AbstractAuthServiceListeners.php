@@ -27,7 +27,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     /**
      * @var string $id
      */
-    protected $id = \RcmUser\Authentication\Service\UserAuthenticationService::class;
+    protected $id = UserAuthenticationService::EVENT_IDENTIFIER;
 
     /**
      * @var int $priority

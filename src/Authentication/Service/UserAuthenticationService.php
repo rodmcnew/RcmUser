@@ -23,6 +23,8 @@ use Zend\Authentication\Result;
  */
 class UserAuthenticationService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserAuthenticationService::class;
+
     const EVENT_VALIDATE_CREDENTIALS = 'validateCredentials';
     const EVENT_VALIDATE_CREDENTIALS_SUCCESS = 'validateCredentialsSuccess';
     const EVENT_VALIDATE_CREDENTIALS_FAIL = 'validateCredentialsFail';
@@ -147,11 +149,25 @@ class UserAuthenticationService extends EventProvider
      */
     public function authenticate(User $user)
     {
-        /* + LOW_LEVEL_PREP */
+        /* @todo This check might go somewhere else */
         if (!$user->isEnabled()) {
-            return new Result(Result::FAILURE_UNCATEGORIZED, $user, ['User is disabled.']);
+            $result = new Result(
+                Result::FAILURE_UNCATEGORIZED,
+                $user,
+                ['User is disabled.']
+            );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_AUTHENTICATE_FAIL,
+                $this,
+                [
+                    'result' => $result,
+                    'user' => $user
+                ]
+            );
+
+            return $result;
         }
-        /* - LOW_LEVEL_PREP */
 
         /* @event authenticate
          * - expects listener to return

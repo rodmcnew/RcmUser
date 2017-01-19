@@ -26,6 +26,8 @@ use Zend\EventManager\EventManagerInterface;
  */
 class UserRoleService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserRoleService::class;
+
     const EVENT_ADD_USER_ROLE = 'addUserRole';
     const EVENT_ADD_USER_ROLE_FAIL = 'addUserRoleFail';
     const EVENT_ADD_USER_ROLE_SUCCESS = 'addUserRoleSuccess';

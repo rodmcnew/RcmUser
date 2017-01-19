@@ -221,7 +221,7 @@ class Result implements \JsonSerializable
     /**
      * jsonSerialize
      *
-     * @return \stdClass
+     * @return array
      */
     public function jsonSerialize()
     {
