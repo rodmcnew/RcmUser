@@ -195,6 +195,7 @@ return [
          */
         RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class =>
             RcmUser\Authentication\Service\Factory\UserAuthenticationServiceListeners::class,
+
         /* ************************************** */
         /* ACL ********************************** */
         /* ************************************** */
@@ -362,6 +363,19 @@ return [
          * Logging
          * Required *
          */
-        RcmUser\Log\Logger::class => RcmUser\Service\Factory\DoctrineLogger::class,
+        RcmUser\Log\Logger::class =>
+            RcmUser\Service\Factory\DoctrineLogger::class,
+
+        /*
+         * LoggerListeners
+         */
+        RcmUser\Log\Event\LoggerListeners::class =>
+            RcmUser\Log\Event\LoggerListenersFactory::class,
+
+        /**
+         * OnAuthenticateFailListener
+         */
+        RcmUser\Log\Event\OnAuthenticateFailListener::class =>
+            RcmUser\Log\Event\OnAuthenticateFailListenerFactory::class,
     ],
 ];

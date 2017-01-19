@@ -108,12 +108,18 @@ class UserAuthenticationService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_VALIDATE_CREDENTIALS_SUCCESS,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'user' => $user
+                ]
             );
 
-            return new Result(Result::SUCCESS, $this->prepareUser(
-                $result->getIdentity()
-            ));
+            return new Result(
+                Result::SUCCESS,
+                $this->prepareUser(
+                    $result->getIdentity()
+                )
+            );
         }
 
         /*
@@ -122,7 +128,10 @@ class UserAuthenticationService extends EventProvider
         $this->getEventManager()->trigger(
             self::EVENT_VALIDATE_CREDENTIALS_FAIL,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'user' => $user,
+            ]
         );
 
         return $result;
@@ -171,12 +180,18 @@ class UserAuthenticationService extends EventProvider
             $this->getEventManager()->trigger(
                 self::EVENT_AUTHENTICATE_SUCCESS,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'user' => $user
+                ]
             );
 
-            return new Result(Result::SUCCESS, $this->prepareUser(
-                $result->getIdentity()
-            ));
+            return new Result(
+                Result::SUCCESS,
+                $this->prepareUser(
+                    $result->getIdentity()
+                )
+            );
         }
 
         /*
@@ -185,7 +200,10 @@ class UserAuthenticationService extends EventProvider
         $this->getEventManager()->trigger(
             self::EVENT_AUTHENTICATE_FAIL,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'user' => $user
+            ]
         );
 
         return $result;

@@ -21,4 +21,34 @@ interface Listener
      * @return bool true to stop event propagation
      */
     public function __invoke(Event $event);
+
+    /**
+     * getIdentifier
+     *
+     * @return string|array $id Identifier(s) for event emitting component(s)
+     */
+    public function getIdentifier();
+
+    /**
+     * getEvent
+     *
+     * @return string Event name
+     */
+    public function getEvent();
+
+    /**
+     * getPriority
+     *
+     * @return int
+     */
+    public function getPriority();
+
+    /**
+     * withPriority - Immutable priority setter
+     *
+     * @param int $priority
+     *
+     * @return Listener
+     */
+    public function withPriority($priority);
 }

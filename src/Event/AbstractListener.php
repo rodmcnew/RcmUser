@@ -2,81 +2,73 @@
 
 namespace RcmUser\Event;
 
-use Zend\EventManager\Event;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\ListenerAggregateInterface;
-
 /**
- * AbstractListener
+ * Class AbstractListener
  *
- * AbstractListener
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Event
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author    James Jervis
+ * @license   License.txt
+ * @link      https://github.com/jerv13
  */
-class AbstractListener implements ListenerAggregateInterface
+abstract class AbstractListener implements Listener
 {
     /**
-     * @var \Zend\Stdlib\CallbackHandler[]
+     * @var string|array
      */
-    protected $listeners = [];
-    protected $id = \RcmUser\Service\RcmUserService::class;
-    protected $event = 'someEvent';
-    protected $priority = 100;
+    protected $identifier = null;
 
     /**
-     * attach
-     *
-     * @param EventManagerInterface $events events
-     *
-     * @return void
+     * @var string
      */
-    public function attach(EventManagerInterface $events)
+    protected $event = null;
+
+    /**
+     * @var int
+     */
+    protected $priority = 0;
+
+    /**
+     * getIdentifier
+     *
+     * @return string|array $id Identifier(s) for event emitting component(s)
+     */
+    public function getIdentifier()
     {
-        $sharedEvents = $events->getSharedManager();
-        $this->listeners[] = $sharedEvents->attach(
-            $this->id,
-            $this->event,
-            [
-                $this,
-                'onEvent'
-            ],
-            $this->priority
-        );
+        return $this->identifier;
     }
 
     /**
-     * detach
+     * getEvent
      *
-     * @param EventManagerInterface $events events
-     *
-     * @return void
+     * @return string Event name
      */
-    public function detach(EventManagerInterface $events)
+    public function getEvent()
     {
-        foreach ($this->listeners as $index => $listener) {
-            if ($events->detach($listener)) {
-                unset($this->listeners[$index]);
-            }
-        }
+        return $this->event;
     }
 
     /**
-     * onEvent
+     * getPriority
      *
-     * @param Event $e e
-     *
-     * @return void
+     * @return int
      */
-    public function onEvent($e)
+    public function getPriority()
     {
-        var_dump($e);
+        return $this->priority;
+    }
+
+    /**
+     * withPriority - Immutable priority setter
+     *
+     * @param int $priority
+     *
+     * @return mixed
+     */
+    public function withPriority($priority)
+    {
+        $priority = (int)$priority;
+        $new = clone($this);
+        $new->priority = $priority;
+
+        return $new;
     }
 }

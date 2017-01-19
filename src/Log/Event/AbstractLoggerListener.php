@@ -2,7 +2,9 @@
 
 namespace RcmUser\Log\Event;
 
+use RcmUser\Event\AbstractListener;
 use RcmUser\Log\Logger;
+use Zend\EventManager\Event;
 
 /**
  * Class AbstractLoggerListener
@@ -11,7 +13,7 @@ use RcmUser\Log\Logger;
  * @license   License.txt
  * @link      https://github.com/jerv13
  */
-abstract class AbstractLoggerListener implements LoggerListener
+abstract class AbstractLoggerListener extends AbstractListener implements LoggerListener
 {
     /**
      * @var Logger
@@ -28,4 +30,28 @@ abstract class AbstractLoggerListener implements LoggerListener
     ) {
         $this->logger = $logger;
     }
+
+
+    /**
+     * __invoke
+     *
+     * @param Event $event
+     *
+     * @return bool
+     */
+    public function __invoke(Event $event)
+    {
+        $this->logger->notice(
+            $this->getMessage($event)
+        );
+    }
+
+    /**
+     * getMessage
+     *
+     * @param Event $event
+     *
+     * @return string
+     */
+    abstract protected function getMessage(Event $event);
 }

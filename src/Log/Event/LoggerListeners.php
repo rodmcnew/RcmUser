@@ -2,6 +2,7 @@
 
 namespace RcmUser\Log\Event;
 
+use Interop\Container\ContainerInterface;
 use RcmUser\Event\AbstractConfigurableListeners;
 
 /**
@@ -16,12 +17,15 @@ class LoggerListeners extends AbstractConfigurableListeners
     /**
      * Constructor.
      *
-     * @param array $config
+     * @param ContainerInterface $container
+     * @param array              $config
      */
     public function __construct(
+        $container,
         $config
     ) {
         parent::__construct(
+            $container,
             $config['RcmUser'][static::class]
         );
     }

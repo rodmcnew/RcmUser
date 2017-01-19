@@ -226,18 +226,27 @@ return [
      * Register \Zend\EventManager\ListenerAggregateInterface Services
      */
     'EventListener\Config' => [
-        // UserDataServiceListeners
-        RcmUser\User\Event\UserDataServiceListeners::class
-        => RcmUser\User\Event\UserDataServiceListeners::class,
         // UserAuthenticationServiceListeners
-        RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class
-        => RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class,
+        RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class =>
+            RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class,
+
+        // LoggerListeners
+        RcmUser\Log\Event\LoggerListeners::class =>
+            RcmUser\Log\Event\LoggerListeners::class,
+
+        // UserDataServiceListeners
+        RcmUser\User\Event\UserDataServiceListeners::class =>
+            RcmUser\User\Event\UserDataServiceListeners::class,
+
         // UserRoleDataServiceListeners
-        RcmUser\User\Event\UserRoleDataServiceListeners::class
-        => RcmUser\User\Event\UserRoleDataServiceListeners::class,
+        RcmUser\User\Event\UserRoleDataServiceListeners::class =>
+            RcmUser\User\Event\UserRoleDataServiceListeners::class,
     ],
 
+    /**
+     * LoggerListeners Config
+     */
     RcmUser\Log\Event\LoggerListeners::class => [
-
+        RcmUser\Log\Event\OnAuthenticateFailListener::class => 0,
     ]
 ];
