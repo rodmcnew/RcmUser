@@ -431,7 +431,11 @@ class UserDataService extends EventProvider
         // require id
         $id = $requestUser->getId();
         if (empty($id)) {
-            return new Result(null, Result::CODE_FAIL, 'User Id required for update.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User Id required for update.'
+            );
         }
 
         // check if exists
