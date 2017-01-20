@@ -30,7 +30,10 @@ class AuthorizeService extends EventProvider
 {
     const EVENT_IDENTIFIER = AuthorizeService::class;
 
-    const EVENT_IS_ALLOWED = 'aclIsAllowed';
+    const EVENT_IS_ALLOWED_SUPER_ADMIN = 'aclIsAllowedSuperAdmin';
+    const EVENT_IS_ALLOWED_TRUE = 'aclIsAllowedTrue';
+    const EVENT_IS_ALLOWED_FALSE = 'aclIsAllowedFalse';
+    const EVENT_IS_ALLOWED_ERROR = 'aclIsAllowedError';
 
     /**
      *
@@ -110,7 +113,7 @@ class AuthorizeService extends EventProvider
     {
         $id = $this->getAclDataService()->getGuestRoleId()->getData();
 
-        return [$this->getAclDataService()->getRoleByRoleId($id)->getData()];
+        return $this->getAclDataService()->getRoleByRoleId($id)->getData();
     }
 
     /**
@@ -345,13 +348,12 @@ class AuthorizeService extends EventProvider
             $result = true;
 
             $this->getEventManager()->trigger(
-                self::EVENT_IS_ALLOWED,
+                self::EVENT_IS_ALLOWED_SUPER_ADMIN,
                 $this,
                 [
                     'resourceId' => $resourceId,
                     'privilege' => $privilege,
                     'providerId' => $providerId,
-                    'rule' => 'SUPER_ADMIN',
                     'result' => $result,
                     'user' => $user,
                     'userRoles' => $userRoles,
@@ -368,7 +370,8 @@ class AuthorizeService extends EventProvider
             );
 
             foreach ($userRoles as $userRole) {
-                // @todo this will fail on deny
+                // @todo This will fail on deny in some cases
+                // @todo The logic for dealing with multiple roles with deny and allow needs to be addressed
                 $result = $acl->isAllowed(
                     $userRole,
                     $resourceId,
@@ -377,16 +380,16 @@ class AuthorizeService extends EventProvider
 
                 if ($result) {
                     $this->getEventManager()->trigger(
-                        self::EVENT_IS_ALLOWED,
+                        self::EVENT_IS_ALLOWED_TRUE,
                         $this,
                         [
-                            'resourceId' => $resourceId,
                             'privilege' => $privilege,
                             'providerId' => $providerId,
+                            'resourceId' => $resourceId,
                             'result' => $result,
                             'user' => $user,
+                            'userRoleAllowed' => $userRole,
                             'userRoles' => $userRoles,
-                            'userRoleUsed' =>  $userRole
                         ]
                     );
 
@@ -400,36 +403,40 @@ class AuthorizeService extends EventProvider
             $error = 'AuthorizeService->isAllowed failed to check: ' .
                 get_class($e) . '::message: ' . $e->getMessage();
 
-            $params =             [
+            $params = [
+                'aclRoles' => $this->getAcl($resourceId, $providerId)->getRoles(),
+                'definedRoles' => $this->getRoles(),
                 'error' => $error,
-                'resourceId' => $resourceId,
                 'privilege' => $privilege,
                 'providerId' => $providerId,
+                'resourceId' => $resourceId,
+                'result' => $result,
                 'user' => $user,
                 'userRoles' => $userRoles,
-                'aclRoles' =>$this->getAcl($resourceId, $providerId)->getRoles(),
-                'definedRoles' =>$this->getRoles(),
+
             ];
 
             $this->getEventManager()->trigger(
-                self::EVENT_IS_ALLOWED,
+                self::EVENT_IS_ALLOWED_ERROR,
                 $this,
                 $params
             );
 
+            // @todo Make this exception an event listener
             throw new RcmUserException(json_encode($params, JSON_PRETTY_PRINT), 401);
-            // @todo return $result;
+
+            return $result;
         }
 
         $result = false;
 
         $this->getEventManager()->trigger(
-            self::EVENT_IS_ALLOWED,
+            self::EVENT_IS_ALLOWED_FALSE,
             $this,
             [
-                'resourceId' => $resourceId,
                 'privilege' => $privilege,
                 'providerId' => $providerId,
+                'resourceId' => $resourceId,
                 'result' => $result,
                 'user' => $user,
                 'userRoles' => $userRoles,

@@ -39,12 +39,15 @@ abstract class AbstractUserDataServiceListener extends AbstractLoggerListener im
      *
      * @param Logger         $logger
      * @param RcmUserService $rcmUserService
+     * @param int            $jsonOptions
      */
     public function __construct(
         Logger $logger,
-        RcmUserService $rcmUserService
+        RcmUserService $rcmUserService,
+        $jsonOptions = JSON_PRETTY_PRINT
     ) {
         $this->rcmUserService = $rcmUserService;
+        $this->jsonOptions = $jsonOptions;
         parent::__construct($logger);
     }
 

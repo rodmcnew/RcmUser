@@ -2,7 +2,7 @@
 
 namespace RcmUser\Event;
 
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 /**
@@ -13,16 +13,16 @@ use Zend\ServiceManager\ServiceLocatorInterface;
  * @license   License.txt
  * @link      https://github.com/reliv
  */
-class UserEventManagerFactory implements FactoryInterface
+class UserEventManagerFactory
 {
     /**
-     * createService
+     * __invoke
      *
-     * @param ServiceLocatorInterface $serviceLocator serviceLocator
+     * @param ContainerInterface|ServiceLocatorInterface $serviceLocator
      *
-     * @return UserEventManager
+     * @return object
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke($serviceLocator)
     {
         /** @var ListenerCollection $listeners */
         $listeners = $serviceLocator->get(

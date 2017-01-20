@@ -5,6 +5,7 @@ namespace RcmUser\Authentication\Event;
 use RcmUser\Authentication\Adapter\Adapter;
 use RcmUser\Authentication\Adapter\UserAdapter;
 use RcmUser\Authentication\Exception\AuthenticationException;
+use RcmUser\Authentication\Service\AuthenticationService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\User\Entity\User;
 use Zend\Authentication\Result;
@@ -63,6 +64,17 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
             //'getIdentity',
             'onGetIdentity' => UserAuthenticationService::EVENT_GET_IDENTITY,
         ];
+
+    /**
+     * Constructor.
+     *
+     * @param AuthenticationService $authenticationService
+     */
+    public function __construct(
+        AuthenticationService $authenticationService
+    ) {
+        $this->setAuthService($authenticationService);
+    }
 
     /**
      * assertValidAdapter

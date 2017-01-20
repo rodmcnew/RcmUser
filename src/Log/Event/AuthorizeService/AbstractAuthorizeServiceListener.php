@@ -1,28 +1,28 @@
 <?php
 
-namespace RcmUser\Log\Event\UserRoleService;
+namespace RcmUser\Log\Event\AuthorizeService;
 
+use RcmUser\Acl\Service\AuthorizeService;
 use RcmUser\Log\Event\AbstractLoggerListener;
 use RcmUser\Log\Event\LoggerListener;
 use RcmUser\Log\Logger;
 use RcmUser\Service\RcmUserService;
 use RcmUser\Service\Server;
-use RcmUser\User\Service\UserRoleService;
 use Zend\EventManager\Event;
 
 /**
- * Class AbstractUserRoleServiceListener
+ * Class AbstractAuthorizeServiceListener
  *
  * @author    James Jervis
  * @license   License.txt
  * @link      https://github.com/jerv13
  */
-abstract class AbstractUserRoleServiceListener extends AbstractLoggerListener implements LoggerListener
+abstract class AbstractAuthorizeServiceListener extends AbstractLoggerListener implements LoggerListener
 {
     /**
      * @var string|array
      */
-    protected $identifier = UserRoleService::EVENT_IDENTIFIER;
+    protected $identifier = AuthorizeService::EVENT_IDENTIFIER;
 
     /**
      * @var int
@@ -64,12 +64,18 @@ abstract class AbstractUserRoleServiceListener extends AbstractLoggerListener im
 
         $data['event'] = $this->event;
         $data['eventIdentifier'] = $this->identifier;
+
+        $data['aclRoles'] = $event->getParam('identity');
+        $data['definedRoles'] = $event->getParam('definedRoles');
+        $data['error'] = $event->getParam('error');
+        $data['privilege'] = $event->getParam('privilege');
+        $data['providerId'] = $event->getParam('providerId');
         $data['requestIp'] = Server::getRemoteIpAddress();
+        $data['resourceId'] = $event->getParam('resourceId');
         $data['result'] = $event->getParam('result');
-        $data['roleId'] = $event->getParam('roleId');
-        $data['roles'] = $event->getParam('roles');
         $data['sessionId'] = Server::getSessionId();
         $data['user'] = $event->getParam('user');
+        $data['userRoles'] = $event->getParam('userRoles');
         $data['currentUser'] = $this->rcmUserService->getCurrentUser();
 
         $message = json_encode($data, $this->jsonOptions);
