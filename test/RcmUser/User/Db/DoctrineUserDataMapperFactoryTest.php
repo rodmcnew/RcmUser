@@ -1,26 +1,11 @@
 <?php
-/**
- * DoctrineUserDataMapperTest.php
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User\Service\Factory
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
-namespace RcmUser\Test\User\Service\Factory;
+namespace RcmUser\Test\User\Db;
 
 use RcmUser\Test\Zf2TestCase;
-use RcmUser\User\Service\Factory\DoctrineUserDataMapper;
+use RcmUser\User\Db\DoctrineUserDataMapperFactory;
 
-require_once __DIR__ . '/../../../../Zf2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 /**
  * Class DoctrineUserDataMapperTest
@@ -36,9 +21,9 @@ require_once __DIR__ . '/../../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * @covers    \RcmUser\User\Service\Factory\DoctrineUserDataMapper
+ * @covers    DoctrineUserDataMapperFactory
  */
-class DoctrineUserDataMapperTest extends Zf2TestCase
+class DoctrineUserDataMapperFactoryTest extends Zf2TestCase
 {
     /**
      * test
@@ -47,9 +32,9 @@ class DoctrineUserDataMapperTest extends Zf2TestCase
      */
     public function test()
     {
-        $factory = new DoctrineUserDataMapper();
+        $factory = new DoctrineUserDataMapperFactory();
 
-        $service = $factory->createService($this->getMockServiceLocator());
+        $service = $factory->__invoke($this->getMockServiceLocator());
         $this->assertInstanceOf(
             \RcmUser\User\Db\DoctrineUserDataMapper::class,
             $service

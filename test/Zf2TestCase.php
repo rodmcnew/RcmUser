@@ -423,4 +423,14 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
 
         return $this->mockHelperPluginManager;
     }
+
+    /**
+     * test - this is just here to avoid php unit error
+     *
+     * @return void
+     */
+    public function test()
+    {
+        $this->assertTrue(true);
+    }
 }

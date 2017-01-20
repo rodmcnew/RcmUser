@@ -54,7 +54,6 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
      */
     public function setUp()
     {
-
         $this->event = $this->getMockBuilder(
             '\Zend\EventManager\EventInterface'
         )
@@ -87,6 +86,12 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
             ->will(
                 $this->returnValue(new Result(Result::SUCCESS, new User('123')))
             );
+
+        $this->adapter->expects($this->any())
+            ->method('withUser')
+            ->will(
+                $this->returnValue(clone $this->adapter)
+            );
         //
         $this->authenticationService = $this->getMockBuilder(
             \RcmUser\Authentication\Service\AuthenticationService::class
@@ -106,9 +111,7 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
             ->will($this->returnValue(true));
 
 
-        $this->userAuthenticationServiceListeners
-            = new UserAuthenticationServiceListeners();
-        $this->userAuthenticationServiceListeners->setAuthService(
+        $this->userAuthenticationServiceListeners = new UserAuthenticationServiceListeners(
             $this->authenticationService
         );
     }
@@ -133,8 +136,9 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
 
     public function testMethods()
     {
-        $result
-            = $this->userAuthenticationServiceListeners->onValidateCredentials(
+        $this->setUp();
+
+        $result = $this->userAuthenticationServiceListeners->onValidateCredentials(
             $this->event
         );
 
@@ -164,9 +168,7 @@ class UserAuthenticationServiceListenersTest extends Zf2TestCase
 
         $this->buildFailAuthServ();
 
-        $this->userAuthenticationServiceListeners
-            = new UserAuthenticationServiceListeners();
-        $this->userAuthenticationServiceListeners->setAuthService(
+        $this->userAuthenticationServiceListeners = new UserAuthenticationServiceListeners(
             $this->authenticationService
         );
 

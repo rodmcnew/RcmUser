@@ -1,25 +1,10 @@
 <?php
-/**
- * AclDataServiceTest.php
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\Acl\Service\Factory
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
-namespace RcmUser\Test\Acl\Service\Factory;
+namespace RcmUser\Test\Acl\Service;
 
-require_once __DIR__ . '/../../../../Zf2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
-use RcmUser\Acl\Service\Factory\AclDataService;
+use RcmUser\Acl\Service\AclDataServiceFactory;
 use RcmUser\Test\Zf2TestCase;
 
 /**
@@ -36,9 +21,9 @@ use RcmUser\Test\Zf2TestCase;
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * @covers    \RcmUser\Acl\Service\Factory\AclDataService
+ * @covers    AclDataServiceFactory
  */
-class AclDataServiceTest extends Zf2TestCase
+class AclDataServiceFactoryTest extends Zf2TestCase
 {
 
     /**
@@ -49,9 +34,9 @@ class AclDataServiceTest extends Zf2TestCase
     public function test()
     {
 
-        $factory = new AclDataService();
+        $factory = new AclDataServiceFactory();
 
-        $service = $factory->createService($this->getMockServiceLocator());
+        $service = $factory->__invoke($this->getMockServiceLocator());
         $this->assertInstanceOf(
             \RcmUser\Acl\Service\AclDataService::class,
             $service

@@ -1,19 +1,4 @@
 <?php
-/**
- * AclRuleDataMapperTest.php
- *
- * AclRuleDataMapperTest
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\Acl\Db
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\Acl\Db;
 
@@ -174,4 +159,3 @@ class AclRuleDataMapperTest extends \PHPUnit_Framework_TestCase
         $result = $this->aclRuleDataMapper->delete($aclRule);
     }
 }
- 

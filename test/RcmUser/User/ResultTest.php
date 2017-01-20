@@ -1,22 +1,6 @@
 <?php
-/**
- * ResultTest.php
- *
- * TEST
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\User;
-
 
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;

@@ -116,6 +116,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
         $adapter = $this->getAuthService()->getAdapter();
         $this->assertValidAdapter($adapter);
         $adapter = $adapter->withUser($user);
+
         $result = $adapter->authenticate();
 
         return $result;

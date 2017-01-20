@@ -1,26 +1,11 @@
 <?php
-/**
- * UserRoleDataServiceListenersTest.php
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User\Service\Factory
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
-namespace RcmUser\Test\User\Service\Factory;
+namespace RcmUser\Test\User\Event;
 
 use RcmUser\Test\Zf2TestCase;
-use RcmUser\User\Service\Factory\UserRoleDataServiceListeners;
+use RcmUser\User\Event\UserRoleDataServiceListenersFactory;
 
-require_once __DIR__ . '/../../../../Zf2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 /**
  * Class UserRoleDataServiceListenersTest
@@ -36,9 +21,9 @@ require_once __DIR__ . '/../../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * @covers    \RcmUser\User\Service\Factory\UserRoleDataServiceListeners
+ * @covers    UserRoleDataServiceListenersFactory
  */
-class UserRoleDataServiceListenersTest extends Zf2TestCase
+class UserRoleDataServiceListenersFactoryTest extends Zf2TestCase
 {
     /**
      * test
@@ -47,9 +32,9 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
      */
     public function test()
     {
-        $factory = new UserRoleDataServiceListeners();
+        $factory = new UserRoleDataServiceListenersFactory();
 
-        $service = $factory->createService($this->getMockServiceLocator());
+        $service = $factory->__invoke($this->getMockServiceLocator());
         $this->assertInstanceOf(
             \RcmUser\User\Event\UserRoleDataServiceListeners::class,
             $service

@@ -1,14 +1,14 @@
 <?php
 
-namespace RcmUser\Test\User\Service\Factory;
+namespace RcmUser\Test\User\Service;
 
 use RcmUser\Test\Zf2TestCase;
-use RcmUser\User\Service\Factory\UserRoleService;
+use RcmUser\User\Data\UserValidatorFactory;
 
-require_once __DIR__ . '/../../../../Zf2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 /**
- * Class UserRoleServiceTest
+ * Class UserValidatorTest
  *
  * LongDescHere
  *
@@ -21,9 +21,9 @@ require_once __DIR__ . '/../../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * @covers    \RcmUser\User\Service\Factory\UserRoleService
+ * @covers    UserValidatorFactory
  */
-class UserRoleServiceTest extends Zf2TestCase
+class UserValidatorFactoryTest extends Zf2TestCase
 {
     /**
      * test
@@ -32,11 +32,11 @@ class UserRoleServiceTest extends Zf2TestCase
      */
     public function test()
     {
-        $factory = new UserRoleService();
+        $factory = new UserValidatorFactory();
 
-        $service = $factory->createService($this->getMockServiceLocator());
+        $service = $factory->__invoke($this->getMockServiceLocator());
         $this->assertInstanceOf(
-            \RcmUser\User\Service\UserRoleService::class,
+            \RcmUser\User\Data\UserValidatorInterface::class,
             $service
         );
         //

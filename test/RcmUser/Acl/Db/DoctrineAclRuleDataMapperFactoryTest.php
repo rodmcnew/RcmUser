@@ -1,26 +1,11 @@
 <?php
-/**
- * DoctrineAclRuleDataMapperTest.php
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\Acl\Service\Factory
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
-namespace RcmUser\Test\Acl\Service\Factory;
+namespace RcmUser\Test\Acl\Db;
 
-use RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper;
+use RcmUser\Acl\Db\DoctrineAclRuleDataMapperFactory;
 use RcmUser\Test\Zf2TestCase;
 
-require_once __DIR__ . '/../../../../Zf2TestCase.php';
+require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 /**
  * Class DoctrineAclRuleDataMapperTest
@@ -36,9 +21,9 @@ require_once __DIR__ . '/../../../../Zf2TestCase.php';
  * @license   License.txt New BSD License
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
- * @covers    \RcmUser\Acl\Service\Factory\DoctrineAclRuleDataMapper
+ * @covers    DoctrineAclRuleDataMapperFactory
  */
-class DoctrineAclRuleDataMapperTest extends Zf2TestCase
+class DoctrineAclRuleDataMapperFactoryTest extends Zf2TestCase
 {
     /**
      * test
@@ -47,9 +32,9 @@ class DoctrineAclRuleDataMapperTest extends Zf2TestCase
      */
     public function test()
     {
-        $factory = new DoctrineAclRuleDataMapper();
+        $factory = new DoctrineAclRuleDataMapperFactory();
 
-        $service = $factory->createService($this->getMockServiceLocator());
+        $service = $factory->__invoke($this->getMockServiceLocator());
         $this->assertInstanceOf(
             \RcmUser\Acl\Db\DoctrineAclRuleDataMapper::class,
             $service
