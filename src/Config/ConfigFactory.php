@@ -25,7 +25,8 @@ class ConfigFactory
     {
         $config = $serviceLocator->get('Config');
 
-        // @todo return Config Object
-        return isset($config['RcmUser']) ? $config['RcmUser'] : [];
+        return new Config(
+            isset($config['RcmUser']) ? $config['RcmUser'] : []
+        );
     }
 }
