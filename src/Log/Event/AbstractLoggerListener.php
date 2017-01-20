@@ -21,14 +21,22 @@ abstract class AbstractLoggerListener extends AbstractListener implements Logger
     protected $logger;
 
     /**
+     * @var string
+     */
+    protected $loggerMethod = 'info';
+
+    /**
      * Constructor.
      *
      * @param Logger $logger
+     * @param string $loggerMethod
      */
     public function __construct(
-        Logger $logger
+        Logger $logger,
+        $loggerMethod = 'info'
     ) {
         $this->logger = $logger;
+        $this->loggerMethod = $loggerMethod;
     }
 
 
@@ -41,7 +49,8 @@ abstract class AbstractLoggerListener extends AbstractListener implements Logger
      */
     public function __invoke(Event $event)
     {
-        $this->logger->notice(
+        $method = $this->loggerMethod;
+        $this->logger->$method(
             $this->getMessage($event)
         );
 
