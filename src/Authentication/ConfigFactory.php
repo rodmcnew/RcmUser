@@ -23,10 +23,11 @@ class ConfigFactory
      */
     public function __invoke($serviceLocator)
     {
-        $config = $serviceLocator->get('RcmUser\Config');
+        /** @var \RcmUser\Config\Config $config */
+        $config = $serviceLocator->get(\RcmUser\Config\Config::class);
 
         return new Config(
-            isset($config['Auth\Config']) ? $config['Auth\Config'] : []
+            $config->get('Auth\Config', [])
         );
     }
 }

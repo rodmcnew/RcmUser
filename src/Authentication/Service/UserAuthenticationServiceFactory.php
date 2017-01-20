@@ -24,7 +24,9 @@ class UserAuthenticationServiceFactory
      */
     public function __invoke($serviceLocator)
     {
-        $config = $serviceLocator->get('RcmUser\Auth\Config');
+        $config = $serviceLocator->get(
+            \RcmUser\Authentication\Config::class
+        );
         /** @var EventManagerInterface $eventManager */
         $eventManager = $serviceLocator->get(
             \RcmUser\Event\UserEventManager::class

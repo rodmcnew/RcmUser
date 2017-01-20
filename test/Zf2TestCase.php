@@ -162,13 +162,14 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
 
         $this->mockServices = [
 
-            'RcmUser\Config' => $this->mockRcmUserConfig,
-            'RcmUser\User\Config' =>
-                new Config($this->mockRcmUserConfig['User\Config']),
-            'RcmUser\Auth\Config' =>
-                new Config($this->mockRcmUserConfig['Auth\Config']),
-            'RcmUser\Acl\Config' =>
-                new Config($this->mockRcmUserConfig['Acl\Config']),
+            \RcmUser\Config\Config::class =>
+                new \RcmUser\Config\Config($this->mockRcmUserConfig),
+            \RcmUser\User\Config::class =>
+                new \RcmUser\User\Config($this->mockRcmUserConfig['User\Config']),
+            \RcmUser\Authentication\Config::class =>
+                new \RcmUser\Authentication\Config($this->mockRcmUserConfig['Auth\Config']),
+            \RcmUser\Acl\Config::class =>
+                new \RcmUser\Acl\Config($this->mockRcmUserConfig['Acl\Config']),
             \RcmUser\User\Service\UserDataService::class =>
                 $this->getMockBuilder(
                     \RcmUser\User\Service\UserDataService::class

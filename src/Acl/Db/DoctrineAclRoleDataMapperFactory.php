@@ -26,7 +26,9 @@ class DoctrineAclRoleDataMapperFactory
         $em = $serviceLocator->get(
             \Doctrine\ORM\EntityManager::class
         );
-        $config = $serviceLocator->get('RcmUser\Acl\Config');
+        $config = $serviceLocator->get(
+            \RcmUser\Acl\Config::class
+        );
 
         $service = new DoctrineAclRoleDataMapper($config);
         $service->setEntityManager($em);

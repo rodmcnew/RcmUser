@@ -25,7 +25,9 @@ class UserValidatorFactory
      */
     public function __invoke($serviceLocator)
     {
-        $config = $serviceLocator->get('RcmUser\User\Config')->get(
+        $config = $serviceLocator->get(
+            \RcmUser\User\Config::class
+        )->get(
             'InputFilter',
             []
         );

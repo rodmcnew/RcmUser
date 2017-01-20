@@ -23,7 +23,9 @@ class EncryptorFactory
      */
     public function __invoke($serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\User\Config');
+        $cfg = $serviceLocator->get(
+            \RcmUser\User\Config::class
+        );
         $encryptor = new Bcrypt();
         $encryptor->setCost(
             $cfg->get(

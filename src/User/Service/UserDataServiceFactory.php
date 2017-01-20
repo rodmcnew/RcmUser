@@ -24,7 +24,9 @@ class UserDataServiceFactory
      */
     public function __invoke($serviceLocator)
     {
-        $cfg = $serviceLocator->get('RcmUser\User\Config');
+        $cfg = $serviceLocator->get(
+            \RcmUser\User\Config::class
+        );
         /** @var \RcmUser\User\Db\UserDataMapper $userDataMapper */
         $userDataMapper = $serviceLocator->get(
             \RcmUser\User\Db\UserDataMapper::class

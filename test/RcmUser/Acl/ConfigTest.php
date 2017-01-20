@@ -34,7 +34,9 @@ class ConfigFactoryTest extends Zf2TestCase
     {
         $factory = new ConfigFactory();
 
-        $service = $factory->__invoke($this->getMockServiceLocator());
+        $service = $factory->__invoke(
+            $this->getMockServiceLocator()
+        );
         $this->assertInstanceOf(
             \RcmUser\Acl\Config::class,
             $service
