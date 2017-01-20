@@ -26,6 +26,11 @@ abstract class AbstractUserAuthenticationServiceListener extends AbstractLoggerL
     protected $identifier = UserAuthenticationService::EVENT_IDENTIFIER;
 
     /**
+     * @var int
+     */
+    protected $jsonOptions = JSON_PRETTY_PRINT;
+
+    /**
      * @var RcmUserService
      */
     protected $rcmUserService;
@@ -54,17 +59,19 @@ abstract class AbstractUserAuthenticationServiceListener extends AbstractLoggerL
     protected function getMessage(Event $event)
     {
         $data = [];
-        $data['currentUser'] = $this->rcmUserService->getCurrentUser();
-        $data['event'] = $this->identifier . '::' . $this->event;
+
+        $data['event'] = $this->event;
+        $data['eventIdentifier'] = $this->identifier;
         $data['identity'] = $event->getParam('identity');
         $data['requestIp'] = Server::getRemoteIpAddress();
         $data['result'] = $this->prepareResult(
             $event->getParam('result')
         );
         $data['sessionId'] = Server::getSessionId();
-        $data['user'] = $event->getParam('user');;
+        $data['user'] = $event->getParam('user');
+        $data['currentUser'] = $this->rcmUserService->getCurrentUser();
 
-        $message = json_encode($data, JSON_PRETTY_PRINT);
+        $message = json_encode($data, $this->jsonOptions);
 
         return $message;
     }

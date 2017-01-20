@@ -1,23 +1,9 @@
 <?php
-/**
- * AuthorizeServiceTest.php
- *
- * TEST
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\Acl\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\Acl\Service;
 
 use RcmUser\Acl\Service\AuthorizeService;
+use RcmUser\Event\UserEventManager;
 use RcmUser\Result;
 use RcmUser\Test\Zf2TestCase;
 
@@ -63,6 +49,12 @@ class AuthorizeServiceTest extends Zf2TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
+        $userEventManager = $this->getMockBuilder(
+            UserEventManager::class
+        )
+            ->disableOriginalConstructor()
+            ->getMock();
+
         $aclDataService->expects($this->any())
             ->method('getNamespacedRoles')
             ->will(
@@ -89,13 +81,13 @@ class AuthorizeServiceTest extends Zf2TestCase
 
         $this->authorizeService = new AuthorizeService(
             $aclResourceService,
-            $aclDataService
+            $aclDataService,
+            $userEventManager
         );
     }
 
     public function testGetSet()
     {
-
         $this->buildAuthorizeService();
 
         /** @var AuthorizeService $authServ */

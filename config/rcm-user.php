@@ -247,7 +247,7 @@ return [
      * LoggerListeners Config
      */
     RcmUser\Log\Event\LoggerListeners::class => [
-        RcmUser\Log\Event\OnAuthenticateFailListener::class => 0,
-        RcmUser\Log\Event\OnCreateUserListener::class => 0,
+        \RcmUser\Log\Event\UserAuthenticationService\AuthenticateFailListener::class => 0,
+        \RcmUser\Log\Event\UserDataService\CreateUserListener::class => 0,
     ]
 ];

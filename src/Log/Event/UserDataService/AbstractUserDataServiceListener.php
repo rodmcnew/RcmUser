@@ -25,6 +25,11 @@ abstract class AbstractUserDataServiceListener extends AbstractLoggerListener im
     protected $identifier = UserDataService::EVENT_IDENTIFIER;
 
     /**
+     * @var int
+     */
+    protected $jsonOptions = JSON_PRETTY_PRINT;
+
+    /**
      * @var RcmUserService
      */
     protected $rcmUserService;
@@ -54,8 +59,8 @@ abstract class AbstractUserDataServiceListener extends AbstractLoggerListener im
     {
         $data = [];
 
-        $data['currentUser'] = $this->rcmUserService->getCurrentUser();;
-        $data['event'] = $this->identifier . '::' . $this->event;
+        $data['event'] = $this->event;
+        $data['eventIdentifier'] = $this->identifier;
         $data['existingUser'] = $event->getParam('existingUser');
         $data['options'] = $event->getParam('options');
         $data['requestUser'] = $event->getParam('requestUser');
@@ -63,8 +68,9 @@ abstract class AbstractUserDataServiceListener extends AbstractLoggerListener im
         $data['responseUser'] = $event->getParam('responseUser');
         $data['result'] = $event->getParam('result');
         $data['sessionId'] = Server::getSessionId();
+        $data['currentUser'] = $this->rcmUserService->getCurrentUser();;
 
-        $message = json_encode($data, JSON_PRETTY_PRINT);
+        $message = json_encode($data, $this->jsonOptions);
 
         return $message;
     }
