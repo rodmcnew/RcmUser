@@ -6,10 +6,10 @@ use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Event\EventProvider;
 use RcmUser\Event\UserEventManager;
-use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Exception\ExceptionInterface;
 
 /**
  * Class AuthorizeService
@@ -396,7 +396,7 @@ class AuthorizeService extends EventProvider
                     return $result;
                 }
             }
-        } catch (\Exception $e) {
+        } catch (ExceptionInterface $e) {
 
             $result = false;
 
@@ -412,7 +412,6 @@ class AuthorizeService extends EventProvider
                 'result' => $result,
                 'user' => $user,
                 'userRoles' => $userRoles,
-
             ];
 
             $this->getEventManager()->trigger(
