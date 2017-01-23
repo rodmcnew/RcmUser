@@ -139,7 +139,9 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     public function onValidateCredentials($e)
     {
         return new Result(
-            null, Result::FAILURE_UNCATEGORIZED, [
+            null,
+            Result::FAILURE_UNCATEGORIZED,
+            [
                 'Listener (' . __METHOD__ . ') not defined.'
             ]
         );
@@ -155,7 +157,9 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     public function onValidateCredentialsSuccess($e)
     {
         return new Result(
-            null, Result::FAILURE_UNCATEGORIZED, [
+            null,
+            Result::FAILURE_UNCATEGORIZED,
+            [
                 'Listener (' . __METHOD__ . ') not defined.'
             ]
         );
@@ -171,7 +175,9 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     public function onValidateCredentialsFail($e)
     {
         return new Result(
-            null, Result::FAILURE_UNCATEGORIZED, [
+            null,
+            Result::FAILURE_UNCATEGORIZED,
+            [
                 'Listener (' . __METHOD__ . ') not defined.'
             ]
         );
@@ -187,7 +193,9 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     public function onAuthenticate($e)
     {
         return new Result(
-            null, Result::FAILURE_UNCATEGORIZED, [
+            null,
+            Result::FAILURE_UNCATEGORIZED,
+            [
                 'Listener (' . __METHOD__ . ') not defined.'
             ]
         );
@@ -203,7 +211,9 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     public function onAuthenticateSuccess($e)
     {
         return new Result(
-            null, Result::FAILURE_UNCATEGORIZED, [
+            null,
+            Result::FAILURE_UNCATEGORIZED,
+            [
                 'Listener (' . __METHOD__ . ') not defined.'
             ]
         );
@@ -219,7 +229,9 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
     public function onAuthenticateFail($e)
     {
         return new Result(
-            null, Result::FAILURE_UNCATEGORIZED, [
+            null,
+            Result::FAILURE_UNCATEGORIZED,
+            [
                 'Listener (' . __METHOD__ . ') not defined.'
             ]
         );

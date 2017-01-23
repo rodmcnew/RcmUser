@@ -383,7 +383,6 @@ class UserRoleService extends EventProvider
             $roleId
         )
         ) {
-
             $result = new Result(
                 null,
                 Result::CODE_FAIL,

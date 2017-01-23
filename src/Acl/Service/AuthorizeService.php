@@ -397,7 +397,6 @@ class AuthorizeService extends EventProvider
                 }
             }
         } catch (ExceptionInterface $e) {
-
             $result = false;
 
             $error = 'AuthorizeService->isAllowed failed to check: ' .

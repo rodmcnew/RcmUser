@@ -2,6 +2,7 @@
 
 namespace RcmUser\Test\Config;
 
+use RcmUser\Config\Config;
 use RcmUser\Config\ConfigFactory;
 use RcmUser\Test\Zf2TestCase;
 
@@ -36,8 +37,9 @@ class ConfigFactoryTest extends Zf2TestCase
         $factory = new ConfigFactory();
 
         $service = $factory->__invoke($this->getMockServiceLocator());
-        $this->assertTrue(
-            is_array($service)
+        $this->assertInstanceOf(
+            Config::class,
+            $service
         );
     }
 }
