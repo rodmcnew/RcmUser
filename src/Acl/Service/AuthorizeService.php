@@ -404,7 +404,6 @@ class AuthorizeService extends EventProvider
                 get_class($e) . '::message: ' . $e->getMessage();
 
             $params = [
-                'aclRoles' => $this->getAcl($resourceId, $providerId)->getRoles(),
                 'definedRoles' => $this->getRoles(),
                 'error' => $error,
                 'privilege' => $privilege,
@@ -421,9 +420,6 @@ class AuthorizeService extends EventProvider
                 $this,
                 $params
             );
-
-            // @todo Make this exception an event listener
-            throw new RcmUserException(json_encode($params, JSON_PRETTY_PRINT), 401);
 
             return $result;
         }

@@ -65,7 +65,6 @@ abstract class AbstractAuthorizeServiceListener extends AbstractLoggerListener i
         $data['event'] = $this->event;
         $data['eventIdentifier'] = $this->identifier;
 
-        $data['aclRoles'] = $event->getParam('identity');
         $data['definedRoles'] = $event->getParam('definedRoles');
         $data['error'] = $event->getParam('error');
         $data['privilege'] = $event->getParam('privilege');

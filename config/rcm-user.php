@@ -148,6 +148,20 @@ return [
          */
         'GuestRoleId' => 'guest',
 
+        /**
+         * AclListeners Config
+         * [{ServiceName} => {Priority}]
+         */
+        RcmUser\Acl\Event\AclListeners::class => [
+            /**
+             * IsAllowedErrorExceptionListener
+             *
+             * This will throw an error when a missing resource is used for isAllowed
+             * Without this, isAllow will return false for missing resources
+             */
+            // RcmUser\Acl\Event\IsAllowedErrorExceptionListener::class => 0,
+        ],
+
         /*
          * ResourceProviders
          * Used in:
@@ -226,6 +240,10 @@ return [
      * Register Zend\EventManager\ListenerAggregateInterface Services
      */
     'EventListener\Config' => [
+        // AclListeners
+        \RcmUser\Acl\Event\AclListeners::class =>
+            \RcmUser\Acl\Event\AclListeners::class,
+
         // UserAuthenticationServiceListeners
         RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class =>
             RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class,
@@ -243,72 +261,74 @@ return [
             RcmUser\User\Event\UserRoleDataServiceListeners::class,
     ],
 
-    /**
-     * LoggerListeners Config
-     * [{ServiceName} => {Priority}]
-     */
-    RcmUser\Log\Event\LoggerListeners::class => [
-        /* EXAMPLE - Some available logger listeners
-        // AclDataService Log Listeners
-        RcmUser\Log\Event\AclDataService\CreateAclRoleFailListener::class => 0,
-        RcmUser\Log\Event\AclDataService\CreateAclRoleListener::class => 0,
-        RcmUser\Log\Event\AclDataService\CreateAclRoleSuccessListener::class => 0,
+    'Log\Config' => [
+        /**
+         * LoggerListeners Config
+         * [{ServiceName} => {Priority}]
+         */
+        RcmUser\Log\Event\LoggerListeners::class => [
+            /* EXAMPLE - Some available logger listeners
+            // AclDataService Log Listeners
+            RcmUser\Log\Event\AclDataService\CreateAclRoleFailListener::class => 0,
+            RcmUser\Log\Event\AclDataService\CreateAclRoleListener::class => 0,
+            RcmUser\Log\Event\AclDataService\CreateAclRoleSuccessListener::class => 0,
 
-        RcmUser\Log\Event\AclDataService\CreateAclRuleFailListener::class => 0,
-        RcmUser\Log\Event\AclDataService\CreateAclRuleListener::class => 0,
-        RcmUser\Log\Event\AclDataService\CreateAclRuleSuccessListener::class => 0,
+            RcmUser\Log\Event\AclDataService\CreateAclRuleFailListener::class => 0,
+            RcmUser\Log\Event\AclDataService\CreateAclRuleListener::class => 0,
+            RcmUser\Log\Event\AclDataService\CreateAclRuleSuccessListener::class => 0,
 
-        RcmUser\Log\Event\AclDataService\DeleteAclRoleFailListener::class => 0,
-        RcmUser\Log\Event\AclDataService\DeleteAclRoleListener::class => 0,
-        RcmUser\Log\Event\AclDataService\DeleteAclRoleSuccessListener::class => 0,
+            RcmUser\Log\Event\AclDataService\DeleteAclRoleFailListener::class => 0,
+            RcmUser\Log\Event\AclDataService\DeleteAclRoleListener::class => 0,
+            RcmUser\Log\Event\AclDataService\DeleteAclRoleSuccessListener::class => 0,
 
-        RcmUser\Log\Event\AclDataService\DeleteAclRuleFailListener::class => 0,
-        RcmUser\Log\Event\AclDataService\DeleteAclRuleListener::class => 0,
-        RcmUser\Log\Event\AclDataService\DeleteAclRuleSuccessListener::class => 0,
+            RcmUser\Log\Event\AclDataService\DeleteAclRuleFailListener::class => 0,
+            RcmUser\Log\Event\AclDataService\DeleteAclRuleListener::class => 0,
+            RcmUser\Log\Event\AclDataService\DeleteAclRuleSuccessListener::class => 0,
 
-        // AuthorizeService Log Listeners
-        RcmUser\Log\Event\AuthorizeService\IsAllowedErrorListener::class => 0,
-        RcmUser\Log\Event\AuthorizeService\IsAllowedFalseListener::class => 0,
-        RcmUser\Log\Event\AuthorizeService\IsAllowedSuperAdminListener::class => 0,
-        RcmUser\Log\Event\AuthorizeService\IsAllowedTrueListener::class => 0,
+            // AuthorizeService Log Listeners
+            RcmUser\Log\Event\AuthorizeService\IsAllowedErrorListener::class => 0,
+            RcmUser\Log\Event\AuthorizeService\IsAllowedFalseListener::class => 0,
+            RcmUser\Log\Event\AuthorizeService\IsAllowedSuperAdminListener::class => 0,
+            RcmUser\Log\Event\AuthorizeService\IsAllowedTrueListener::class => 0,
 
-        // UserAuthenticationService Log Listeners
-        RcmUser\Log\Event\UserAuthenticationService\AuthenticateFailListener::class => 0,
-        RcmUser\Log\Event\UserAuthenticationService\ValidateCredentialsFailListener::class => 0,
+            // UserAuthenticationService Log Listeners
+            RcmUser\Log\Event\UserAuthenticationService\AuthenticateFailListener::class => 0,
+            RcmUser\Log\Event\UserAuthenticationService\ValidateCredentialsFailListener::class => 0,
 
-        // UserDataService Log Listeners
-        RcmUser\Log\Event\UserDataService\CreateUserFailListener::class => 0,
-        RcmUser\Log\Event\UserDataService\CreateUserListener::class => 0,
-        RcmUser\Log\Event\UserDataService\CreateUserSuccessListener::class => 0,
+            // UserDataService Log Listeners
+            RcmUser\Log\Event\UserDataService\CreateUserFailListener::class => 0,
+            RcmUser\Log\Event\UserDataService\CreateUserListener::class => 0,
+            RcmUser\Log\Event\UserDataService\CreateUserSuccessListener::class => 0,
 
-        RcmUser\Log\Event\UserDataService\DeleteUserFailListener::class => 0,
-        RcmUser\Log\Event\UserDataService\DeleteUserListener::class => 0,
-        RcmUser\Log\Event\UserDataService\DeleteUserSuccessListener::class => 0,
+            RcmUser\Log\Event\UserDataService\DeleteUserFailListener::class => 0,
+            RcmUser\Log\Event\UserDataService\DeleteUserListener::class => 0,
+            RcmUser\Log\Event\UserDataService\DeleteUserSuccessListener::class => 0,
 
-        RcmUser\Log\Event\UserDataService\UpdateUserFailListener::class => 0,
-        RcmUser\Log\Event\UserDataService\UpdateUserListener::class => 0,
-        RcmUser\Log\Event\UserDataService\UpdateUserSuccessListener::class => 0,
+            RcmUser\Log\Event\UserDataService\UpdateUserFailListener::class => 0,
+            RcmUser\Log\Event\UserDataService\UpdateUserListener::class => 0,
+            RcmUser\Log\Event\UserDataService\UpdateUserSuccessListener::class => 0,
 
-        // UserRoleService Log Listeners
-        RcmUser\Log\Event\UserRoleService\AddUserRoleFailListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\AddUserRoleListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\AddUserRoleSuccessListener::class => 0,
+            // UserRoleService Log Listeners
+            RcmUser\Log\Event\UserRoleService\AddUserRoleFailListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\AddUserRoleListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\AddUserRoleSuccessListener::class => 0,
 
-        RcmUser\Log\Event\UserRoleService\CreateUserRolesFailListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\CreateUserRolesListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\CreateUserRolesSuccessListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\CreateUserRolesFailListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\CreateUserRolesListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\CreateUserRolesSuccessListener::class => 0,
 
-        RcmUser\Log\Event\UserRoleService\DeleteUserRolesFailListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\DeleteUserRolesListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\DeleteUserRolesSuccessListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\DeleteUserRolesFailListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\DeleteUserRolesListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\DeleteUserRolesSuccessListener::class => 0,
 
-        RcmUser\Log\Event\UserRoleService\RemoveUserRoleFailListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\RemoveUserRoleListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\RemoveUserRoleSuccessListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\RemoveUserRoleFailListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\RemoveUserRoleListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\RemoveUserRoleSuccessListener::class => 0,
 
-        RcmUser\Log\Event\UserRoleService\UpdateUserRolesFailListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\UpdateUserRolesListener::class => 0,
-        RcmUser\Log\Event\UserRoleService\UpdateUserRolesSuccessListener::class => 0,
-        */
-    ]
+            RcmUser\Log\Event\UserRoleService\UpdateUserRolesFailListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\UpdateUserRolesListener::class => 0,
+            RcmUser\Log\Event\UserRoleService\UpdateUserRolesSuccessListener::class => 0,
+            */
+        ]
+    ],
 ];

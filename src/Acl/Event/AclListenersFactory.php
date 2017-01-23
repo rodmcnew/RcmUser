@@ -1,33 +1,33 @@
 <?php
 
-namespace RcmUser\Log\Event;
+namespace RcmUser\Acl\Event;
 
 use Interop\Container\ContainerInterface;
-use RcmUser\Log\Config;
+use RcmUser\Acl\Config;
 
 /**
- * Class LoggerListenersFactory
+ * Class AclListenersFactory
  *
  * @author    James Jervis
  * @license   License.txt
  * @link      https://github.com/jerv13
  */
-class LoggerListenersFactory
+class AclListenersFactory
 {
     /**
      * __invoke
      *
      * @param ContainerInterface $container
      *
-     * @return LoggerListeners
+     * @return AclListeners
      */
     public function __invoke($container)
     {
-        $logConfig = $container->get(Config::class);
+        $aclConfig = $container->get(Config::class);
 
-        return new LoggerListeners(
+        return new AclListeners(
             $container,
-            $logConfig->get(LoggerListeners::class, [])
+            $aclConfig->get(AclListeners::class, [])
         );
     }
 }

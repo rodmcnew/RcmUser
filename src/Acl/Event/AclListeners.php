@@ -1,16 +1,16 @@
 <?php
 
-namespace RcmUser\Log\Event;
+namespace RcmUser\Acl\Event;
 
 use RcmUser\Event\AbstractConfigurableListeners;
 
 /**
- * Class LoggerListeners
+ * Class AclListeners
  *
  * @author    James Jervis
  * @license   License.txt
  * @link      https://github.com/jerv13
  */
-class LoggerListeners extends AbstractConfigurableListeners
+class AclListeners extends AbstractConfigurableListeners
 {
 }

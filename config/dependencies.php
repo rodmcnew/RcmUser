@@ -12,6 +12,7 @@ return [
         RcmUser\User\Config::class => RcmUser\User\ConfigFactory::class,
         RcmUser\Authentication\Config::class => RcmUser\Authentication\ConfigFactory::class,
         RcmUser\Acl\Config::class => RcmUser\Acl\ConfigFactory::class,
+        RcmUser\Log\Config::class => RcmUser\Log\ConfigFactory::class,
         /* ************************************** */
         /* USER ********************************* */
         /* ************************************** */
@@ -318,6 +319,18 @@ return [
          */
         RcmUser\Acl\Service\AclDataService::class =>
             RcmUser\Acl\Service\AclDataServiceFactory::class,
+
+        /**
+         * AclListeners
+         */
+        RcmUser\Acl\Event\AclListeners::class =>
+            RcmUser\Acl\Event\AclListenersFactory::class,
+
+        /**
+         * IsAllowedErrorExceptionListener
+         */
+        RcmUser\Acl\Event\IsAllowedErrorExceptionListener::class =>
+            RcmUser\Acl\Event\IsAllowedErrorExceptionListenerFactory::class,
         /* ************************************** */
         /* CORE ********************************* */
         /* ************************************** */
