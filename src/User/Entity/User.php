@@ -486,8 +486,8 @@ class User implements UserInterface, \JsonSerializable
         $obj = new \stdClass();
         $obj->id = $this->getId();
         $obj->username = $this->getUsername();
-        $obj->password
-            = self::PASSWORD_OBFUSCATE; // Might be better way to obfuscate
+        // Might be better way to obfuscate
+        $obj->password = self::PASSWORD_OBFUSCATE;
         $obj->state = $this->getState();
         $obj->email = $this->getEmail();
         $obj->name = $this->getName();

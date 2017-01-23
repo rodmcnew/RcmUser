@@ -29,7 +29,6 @@ class Config
      */
     public function __construct($data = [])
     {
-
         $this->data = $data;
     }
 
@@ -45,8 +44,7 @@ class Config
         $key,
         $def = null
     ) {
-
-        if (isset($this->data[$key])) {
+        if (array_key_exists($key, $this->data)) {
             return $this->data[$key];
         }
 

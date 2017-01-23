@@ -92,11 +92,10 @@ class UserRolePropertyTest extends \PHPUnit_Framework_TestCase
 
         } catch (RcmUserException $e) {
 
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
 
         $this->fail("Expected exception not thrown");
     }
 }
- 

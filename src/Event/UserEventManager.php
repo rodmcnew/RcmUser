@@ -3,7 +3,6 @@
 namespace RcmUser\Event;
 
 use Zend\EventManager\EventInterface;
-use Zend\EventManager\EventManager;
 use Zend\EventManager\ListenerAggregateInterface;
 
 /**
@@ -14,7 +13,7 @@ use Zend\EventManager\ListenerAggregateInterface;
  * @license   License.txt
  * @link      https://github.com/reliv
  */
-class UserEventManager extends EventManager
+class UserEventManager extends \Zend\EventManager\EventManager implements EventManager
 {
     /**
      * @var ListenerCollection

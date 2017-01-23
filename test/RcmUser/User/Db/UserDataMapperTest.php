@@ -1,19 +1,4 @@
 <?php
-/**
- * UserDataMapperTest.php
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User\Db
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\User\Db;
 
@@ -53,13 +38,13 @@ class UserDataMapperTest extends \PHPUnit_Framework_TestCase
     public function setup()
     {
         $this->userDataPreparer = $this->getMockBuilder(
-            '\RcmUser\User\Data\UserDataPreparerInterface'
+            \RcmUser\User\Data\UserDataPreparerInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
 
         $this->userValidator = $this->getMockBuilder(
-            '\RcmUser\User\Data\UserValidatorInterface'
+            \RcmUser\User\Data\UserValidatorInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -214,4 +199,3 @@ class UserDataMapperTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

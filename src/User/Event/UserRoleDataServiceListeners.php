@@ -5,22 +5,16 @@ namespace RcmUser\User\Event;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
+use RcmUser\User\Service\UserDataService;
 use RcmUser\User\Service\UserRoleService;
+use Zend\EventManager\Event;
 
 /**
- * UserRoleDataServiceListeners
+ * Class UserRoleDataServiceListeners
  *
- * UserRoleDataServiceListeners
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Event
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author    James Jervis
+ * @license   License.txt
+ * @link      https://github.com/jerv13
  */
 class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 {
@@ -33,14 +27,14 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     protected $listenerMethods
         = [
-            'onGetAllUsersSuccess' => 'getAllUsersSuccess',
-            'onBuildUser' => 'buildUser',
-            //'onBeforeCreateUser' => 'beforeCreateUser',
-            'onCreateUserSuccess' => 'createUserSuccess',
-            'onReadUserSuccess' => 'readUserSuccess',
-            //'onBeforeUpdateUser' => 'beforeUpdateUser',
-            'onUpdateUserSuccess' => 'updateUserSuccess',
-            'onDeleteUserSuccess' => 'deleteUserSuccess',
+            'onGetAllUsersSuccess' => UserDataService::EVENT_GET_ALL_USERS_SUCCESS, //'getAllUsersSuccess',
+            'onBuildUser' => UserDataService::EVENT_BUILD_USER, //'buildUser',
+            //'onBeforeCreateUser' => UserDataService::EVENT_BEFORE_CREATE_USER, //'beforeCreateUser',
+            'onCreateUserSuccess' => UserDataService::EVENT_CREATE_USER_SUCCESS, //'createUserSuccess',
+            'onReadUserSuccess' => UserDataService::EVENT_READ_USER_SUCCESS, //'readUserSuccess',
+            //'onBeforeUpdateUser' => UserDataService::EVENT_BEFORE_UPDATE_USER, //'beforeUpdateUser',
+            'onUpdateUserSuccess' => UserDataService::EVENT_UPDATE_USER_SUCCESS, //'updateUserSuccess',
+            'onDeleteUserSuccess' => UserDataService::EVENT_DELETE_USER_SUCCESS, //'deleteUserSuccess',
         ];
 
     /**
@@ -195,6 +189,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onCreateUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
@@ -229,8 +224,9 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$createResult->isSuccess()) {
-            return new Result($responseUser, Result::CODE_FAIL, $createResult->getMessages(
-            ));
+            return new Result(
+                $responseUser, Result::CODE_FAIL, $createResult->getMessages()
+            );
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -246,6 +242,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onReadUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
@@ -257,8 +254,9 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         $readResult = $this->getUserRoleService()->readRoles($responseUser);
 
         if (!$readResult->isSuccess()) {
-            return new Result($responseUser, Result::CODE_FAIL, $readResult->getMessages(
-            ));
+            return new Result(
+                $responseUser, Result::CODE_FAIL, $readResult->getMessages()
+            );
         }
 
         $roles = $readResult->getData();
@@ -316,7 +314,10 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onUpdateUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
+        /** @var User $requestUser */
+        $requestUser = $e->getParam('requestUser');
 
         if (!$result->isSuccess()) {
             return $result;
@@ -324,8 +325,17 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         $responseUser = $result->getUser();
 
+        $requestRoles = $requestUser->getProperty(
+            $this->getUserPropertyKey()
+        );
+
+        // No roles requested
+        if ($requestRoles === null) {
+            return $result;
+        }
+
         /** @var $userRoleProperty \RcmUser\User\Entity\UserRoleProperty */
-        $userRoleProperty = $responseUser->getProperty(
+        $userRoleProperty = $requestUser->getProperty(
             $this->getUserPropertyKey(),
             new UserRoleProperty([])
         );
@@ -351,8 +361,11 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$updateResult->isSuccess()) {
-            return new Result($responseUser, Result::CODE_FAIL, $updateResult->getMessages(
-            ));
+            return new Result(
+                $responseUser,
+                Result::CODE_FAIL,
+                $updateResult->getMessages()
+            );
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
@@ -367,6 +380,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
      */
     public function onDeleteUserSuccess($e)
     {
+        /** @var Result $result */
         $result = $e->getParam('result');
 
         if (!$result->isSuccess()) {
@@ -387,8 +401,9 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
         );
 
         if (!$deleteResult->isSuccess()) {
-            return new Result($responseUser, Result::CODE_FAIL, $deleteResult->getMessages(
-            ));
+            return new Result(
+                $responseUser, Result::CODE_FAIL, $deleteResult->getMessages()
+            );
         }
 
         $userRoleProperty->setRoles([]);

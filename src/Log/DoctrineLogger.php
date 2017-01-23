@@ -21,9 +21,8 @@ use Zend\Log\LoggerInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class DoctrineLogger extends Logger
+class DoctrineLogger extends AbstractLogger implements Logger
 {
-
     /**
      * @var EntityManager $entityManager
      */
@@ -40,7 +39,7 @@ class DoctrineLogger extends Logger
         $logLevel = \Zend\Log\Logger::ERR
     ) {
         $this->entityManager = $entityManager;
-        $this->setLogLevel($logLevel);
+        parent::__construct($logLevel);
     }
 
     /**

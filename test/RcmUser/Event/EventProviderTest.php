@@ -49,12 +49,12 @@ class EventProviderTest extends Zf2TestCase
     public function buildEventProvider()
     {
         $this->eventManager = $this->getMockBuilder(
-            '\Zend\EventManager\EventManagerInterface'
+            \Zend\EventManager\EventManagerInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
         $stub = $this->getMockForAbstractClass(
-            '\RcmUser\Event\EventProvider',
+            \RcmUser\Event\EventProvider::class,
             [$this->eventManager]
         );
         $this->eventProvider = $stub;

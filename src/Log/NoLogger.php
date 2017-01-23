@@ -17,7 +17,23 @@ namespace RcmUser\Log;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class NoLogger extends Logger
+class NoLogger extends AbstractLogger implements Logger
 {
-
+    /**
+     * log
+     *
+     * @param string $type
+     * @param string $message
+     * @param array  $extra
+     *
+     * @return Logger
+     */
+    protected function log(
+        $type,
+        $message,
+        $extra = []
+    ) {
+        // NO LOGGING
+        return $this;
+    }
 }

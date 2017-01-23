@@ -20,7 +20,7 @@ use Zend\Session\ManagerInterface as SessionManager;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserSession extends Session
+class UserSession extends Session implements \RcmUser\Authentication\Storage\Session
 {
     /**
      * __construct

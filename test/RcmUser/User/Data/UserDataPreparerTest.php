@@ -71,7 +71,7 @@ class UserDataPreparerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -87,7 +87,7 @@ class UserDataPreparerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -97,4 +97,3 @@ class UserDataPreparerTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

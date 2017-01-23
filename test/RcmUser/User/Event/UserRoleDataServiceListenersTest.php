@@ -1,19 +1,4 @@
 <?php
-/**
- * UserRoleDataServiceListenersTest.php
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User\Event
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\User\Event;
 
@@ -100,7 +85,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
 
         //
         $this->userRoleService = $this->getMockBuilder(
-            '\RcmUser\User\Service\UserRoleService'
+            \RcmUser\User\Service\UserRoleService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -196,11 +181,18 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             case 'successAll':
             case 'failAll_service':
                 $this->mockEventReturn = [
-                    ['result', null, new Result([new User('123')])]
+                    [
+                        'result',
+                        null,
+                        new Result([new User('123')]),
+                    ]
                 ];
                 break;
 
             default :
+
+                $requestUser = new User('123');
+                $requestUser->setProperty(UserRoleProperty::PROPERTY_KEY, new UserRoleProperty(['ROLES']));
 
                 $this->mockEventReturn = [
                     [
@@ -211,9 +203,9 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
                     [
                         'data',
                         null,
-                        new UserRoleProperty(['SOME', 'ROLES'])
+                        new UserRoleProperty(['ROLES'])
                     ],
-                    ['requestUser', null, new User('123')],
+                    ['requestUser', null, $requestUser],
                     ['responseUser', null, new User('123')],
                     ['existingUser', null, new User('123')]
                 ];
@@ -254,7 +246,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Service\UserRoleService',
+            \RcmUser\User\Service\UserRoleService::class,
             $this->userRoleDataServiceListeners->getUserRoleService()
         );
 
@@ -273,7 +265,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
         $this->assertTrue(
@@ -286,7 +278,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -297,7 +289,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -308,7 +300,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -319,7 +311,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -330,7 +322,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -352,7 +344,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
         $this->assertFalse(
@@ -363,7 +355,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -374,7 +366,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
@@ -385,7 +377,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
@@ -396,7 +388,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
@@ -407,7 +399,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
@@ -424,7 +416,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -434,7 +426,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertTrue(
@@ -445,7 +437,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
@@ -456,7 +448,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
@@ -466,10 +458,12 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         $result = $this->userRoleDataServiceListeners->onUpdateUserSuccess(
             $this->mockEvent
         );
+
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
+
         $this->assertFalse(
             $result->isSuccess()
         );
@@ -478,7 +472,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
             $this->mockEvent
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result
         );
         $this->assertFalse(
@@ -504,7 +498,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            'RcmUser\User\Entity\UserRoleProperty',
+            \RcmUser\User\Entity\UserRoleProperty::class,
             $result
         );
 
@@ -518,4 +512,3 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
         );
     }
 }
- 

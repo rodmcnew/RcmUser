@@ -1,12 +1,10 @@
 <?php
 
-
 namespace RcmUser\Test;
 
 require_once __DIR__ . '/../Zf2TestCase.php';
 
 use RcmUser\Module;
-use RcmUser\Test;
 
 /**
  * Class ModuleTest
@@ -26,7 +24,9 @@ use RcmUser\Test;
  */
 class ModuleTest extends Zf2TestCase
 {
-    /** @var  \RcmInstanceConfig\Module */
+    /**
+     * @var
+     */
     protected $module;
 
     public function setUp()

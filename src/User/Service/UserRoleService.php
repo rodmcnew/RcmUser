@@ -2,10 +2,12 @@
 
 namespace RcmUser\User\Service;
 
+use RcmUser\Event\EventProvider;
 use RcmUser\Result;
 use RcmUser\User\Db\UserRolesDataMapperInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
+use Zend\EventManager\EventManagerInterface;
 
 /**
  * Class UserRoleService
@@ -22,23 +24,47 @@ use RcmUser\User\Entity\UserRoleProperty;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserRoleService
+class UserRoleService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserRoleService::class;
+
+    const EVENT_ADD_USER_ROLE = 'addUserRole';
+    const EVENT_ADD_USER_ROLE_FAIL = 'addUserRoleFail';
+    const EVENT_ADD_USER_ROLE_SUCCESS = 'addUserRoleSuccess';
+
+    const EVENT_REMOVE_USER_ROLE = 'removeUserRole';
+    const EVENT_REMOVE_USER_ROLE_FAIL = 'removeUserRoleFail';
+    const EVENT_REMOVE_USER_ROLE_SUCCESS = 'removeUserRoleSuccess';
+
+    const EVENT_CREATE_USER_ROLES = 'createUserRoles';
+    const EVENT_CREATE_USER_ROLES_FAIL = 'createUserRolesFail';
+    const EVENT_CREATE_USER_ROLES_SUCCESS = 'createUserRolesSuccess';
+
+    const EVENT_UPDATE_USER_ROLES = 'updateUserRoles';
+    const EVENT_UPDATE_USER_ROLES_FAIL = 'updateUserRolesFail';
+    const EVENT_UPDATE_USER_ROLES_SUCCESS = 'updateUserRolesSuccess';
+
+    const EVENT_DELETE_USER_ROLES = 'deleteUserRoles';
+    const EVENT_DELETE_USER_ROLES_FAIL = 'deleteUserRolesFail';
+    const EVENT_DELETE_USER_ROLES_SUCCESS = 'deleteUserRolesSuccess';
+
     /**
      * @var UserRolesDataMapperInterface
      */
     protected $userRolesDataMapper;
 
     /**
-     * __construct
+     * Constructor.
      *
-     * @param UserRolesDataMapperInterface $userRolesDataMapper Valid data mapper
+     * @param UserRolesDataMapperInterface $userRolesDataMapper
+     * @param EventManagerInterface        $eventManager
      */
     public function __construct(
-        UserRolesDataMapperInterface $userRolesDataMapper
+        UserRolesDataMapperInterface $userRolesDataMapper,
+        EventManagerInterface $eventManager
     ) {
-
         $this->userRolesDataMapper = $userRolesDataMapper;
+        parent::__construct($eventManager);
     }
 
     /**
@@ -266,18 +292,69 @@ class UserRoleService
         User $user,
         $roleId
     ) {
+        $this->getEventManager()->trigger(
+            self::EVENT_ADD_USER_ROLE,
+            $this,
+            [
+                'user' => $user,
+                'roleId' => $roleId
+            ]
+        );
+
         if (!$this->canAddRole(
             $user,
             $roleId
         )
         ) {
-            return new Result(null, Result::CODE_FAIL, "Role ({$roleId}) is set via logic and cannot be added.");
+            $result = new Result(
+                null,
+                Result::CODE_FAIL,
+                "Role ({$roleId}) is set via logic and cannot be added."
+            );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_ADD_USER_ROLE_FAIL,
+                $this,
+                [
+                    'user' => $user,
+                    'roleId' => $roleId,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
-        return $this->getUserRolesDataMapper()->add(
+        $result = $this->getUserRolesDataMapper()->add(
             $user,
             $roleId
         );
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_ADD_USER_ROLE_FAIL,
+                $this,
+                [
+                    'user' => $user,
+                    'roleId' => $roleId,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_ADD_USER_ROLE_SUCCESS,
+            $this,
+            [
+                'user' => $user,
+                'roleId' => $roleId,
+                'result' => $result,
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -292,18 +369,69 @@ class UserRoleService
         User $user,
         $roleId
     ) {
+        $this->getEventManager()->trigger(
+            self::EVENT_REMOVE_USER_ROLE,
+            $this,
+            [
+                'user' => $user,
+                'roleId' => $roleId
+            ]
+        );
+
         if (!$this->canRemoveRole(
             $user,
             $roleId
         )
         ) {
-            return new Result(null, Result::CODE_FAIL, "Role ({$roleId}) is set via logic and cannot be removed.");
+            $result = new Result(
+                null,
+                Result::CODE_FAIL,
+                "Role ({$roleId}) is set via logic and cannot be removed."
+            );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_REMOVE_USER_ROLE_FAIL,
+                $this,
+                [
+                    'user' => $user,
+                    'roleId' => $roleId,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
         }
 
-        return $this->getUserRolesDataMapper()->remove(
+        $result = $this->getUserRolesDataMapper()->remove(
             $user,
             $roleId
         );
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_REMOVE_USER_ROLE_FAIL,
+                $this,
+                [
+                    'user' => $user,
+                    'roleId' => $roleId,
+                    'result' => $result,
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_REMOVE_USER_ROLE_SUCCESS,
+            $this,
+            [
+                'user' => $user,
+                'roleId' => $roleId,
+                'result' => $result,
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -318,12 +446,47 @@ class UserRoleService
         User $user,
         $roles = []
     ) {
+        $this->getEventManager()->trigger(
+            self::EVENT_CREATE_USER_ROLES,
+            $this,
+            [
+                'user' => $user,
+                'roles' => $roles
+            ]
+        );
+
         $roles = $this->parseSavableRoles($roles);
 
-        return $this->getUserRolesDataMapper()->create(
+        $result = $this->getUserRolesDataMapper()->create(
             $user,
             $roles
         );
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_CREATE_USER_ROLES_FAIL,
+                $this,
+                [
+                    'user' => $user,
+                    'roles' => $roles,
+                    'result' => $result
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_CREATE_USER_ROLES_SUCCESS,
+            $this,
+            [
+                'user' => $user,
+                'roles' => $roles,
+                'result' => $result
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -351,12 +514,47 @@ class UserRoleService
         User $user,
         $roles = []
     ) {
+        $this->getEventManager()->trigger(
+            self::EVENT_UPDATE_USER_ROLES,
+            $this,
+            [
+                'user' => $user,
+                'roles' => $roles
+            ]
+        );
+
         $roles = $this->parseSavableRoles($roles);
 
-        return $this->getUserRolesDataMapper()->update(
+        $result = $this->getUserRolesDataMapper()->update(
             $user,
             $roles
         );
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_UPDATE_USER_ROLES_FAIL,
+                $this,
+                [
+                    'user' => $user,
+                    'roles' => $roles,
+                    'result' => $result
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_UPDATE_USER_ROLES_SUCCESS,
+            $this,
+            [
+                'user' => $user,
+                'roles' => $roles,
+                'result' => $result
+            ]
+        );
+
+        return $result;
     }
 
     /**
@@ -372,12 +570,46 @@ class UserRoleService
         User $user,
         $roles = []
     ) {
+        $this->getEventManager()->trigger(
+            self::EVENT_DELETE_USER_ROLES,
+            $this,
+            [
+                'user' => $user,
+                'roles' => $roles
+            ]
+        );
         $roles = $this->parseSavableRoles($roles);
 
-        return $this->getUserRolesDataMapper()->delete(
+        $result = $this->getUserRolesDataMapper()->delete(
             $user,
             $roles
         );
+
+        if (!$result->isSuccess()) {
+            $this->getEventManager()->trigger(
+                self::EVENT_DELETE_USER_ROLES_FAIL,
+                $this,
+                [
+                    'user' => $user,
+                    'roles' => $roles,
+                    'result' => $result
+                ]
+            );
+
+            return $result;
+        }
+
+        $this->getEventManager()->trigger(
+            self::EVENT_DELETE_USER_ROLES_SUCCESS,
+            $this,
+            [
+                'user' => $user,
+                'roles' => $roles,
+                'result' => $result
+            ]
+        );
+
+        return $result;
     }
 
     /**

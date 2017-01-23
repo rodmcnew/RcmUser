@@ -23,6 +23,21 @@ use Zend\Authentication\Result;
  */
 class UserAuthenticationService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserAuthenticationService::class;
+
+    const EVENT_VALIDATE_CREDENTIALS = 'validateCredentials';
+    const EVENT_VALIDATE_CREDENTIALS_SUCCESS = 'validateCredentialsSuccess';
+    const EVENT_VALIDATE_CREDENTIALS_FAIL = 'validateCredentialsFail';
+
+    const EVENT_AUTHENTICATE = 'authenticate';
+    const EVENT_AUTHENTICATE_SUCCESS = 'authenticateSuccess';
+    const EVENT_AUTHENTICATE_FAIL = 'authenticateFail';
+
+    const EVENT_CLEAR_IDENTITY = 'clearIdentity';
+    const EVENT_HAS_IDENTITY = 'hasIdentity';
+    const EVENT_SET_IDENTITY = 'setIdentity';
+    const EVENT_GET_IDENTITY = 'getIdentity';
+
     /**
      * @var bool
      * Force returned user to hide password,
@@ -74,7 +89,7 @@ class UserAuthenticationService extends EventProvider
          * Result->identity == to user object ($user)
          */
         $results = $this->getEventManager()->trigger(
-            'validateCredentials',
+            self::EVENT_VALIDATE_CREDENTIALS,
             $this,
             ['user' => $user],
             function ($result) {
@@ -93,23 +108,32 @@ class UserAuthenticationService extends EventProvider
              * @event validateCredentialsSuccess
              */
             $this->getEventManager()->trigger(
-                'validateCredentialsSuccess',
+                self::EVENT_VALIDATE_CREDENTIALS_SUCCESS,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'user' => $user
+                ]
             );
 
-            return new Result(Result::SUCCESS, $this->prepareUser(
-                $result->getIdentity()
-            ));
+            return new Result(
+                Result::SUCCESS,
+                $this->prepareUser(
+                    $result->getIdentity()
+                )
+            );
         }
 
         /*
          * @event validateCredentialsFail
          */
         $this->getEventManager()->trigger(
-            'validateCredentialsFail',
+            self::EVENT_VALIDATE_CREDENTIALS_FAIL,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'user' => $user,
+            ]
         );
 
         return $result;
@@ -125,11 +149,25 @@ class UserAuthenticationService extends EventProvider
      */
     public function authenticate(User $user)
     {
-        /* + LOW_LEVEL_PREP */
+        /* @todo This check might go somewhere else */
         if (!$user->isEnabled()) {
-            return new Result(Result::FAILURE_UNCATEGORIZED, $user, ['User is disabled.']);
+            $result = new Result(
+                Result::FAILURE_UNCATEGORIZED,
+                $user,
+                ['User is disabled.']
+            );
+
+            $this->getEventManager()->trigger(
+                self::EVENT_AUTHENTICATE_FAIL,
+                $this,
+                [
+                    'result' => $result,
+                    'user' => $user
+                ]
+            );
+
+            return $result;
         }
-        /* - LOW_LEVEL_PREP */
 
         /* @event authenticate
          * - expects listener to return
@@ -137,7 +175,7 @@ class UserAuthenticationService extends EventProvider
          * Result->identity == to user object ($user)
          */
         $results = $this->getEventManager()->trigger(
-            'authenticate',
+            self::EVENT_AUTHENTICATE,
             $this,
             ['user' => $user],
             function ($result) {
@@ -156,23 +194,32 @@ class UserAuthenticationService extends EventProvider
              * @event authenticateSuccess
              */
             $this->getEventManager()->trigger(
-                'authenticateSuccess',
+                self::EVENT_AUTHENTICATE_SUCCESS,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'user' => $user
+                ]
             );
 
-            return new Result(Result::SUCCESS, $this->prepareUser(
-                $result->getIdentity()
-            ));
+            return new Result(
+                Result::SUCCESS,
+                $this->prepareUser(
+                    $result->getIdentity()
+                )
+            );
         }
 
         /*
          * @event authenticateFail
          */
         $this->getEventManager()->trigger(
-            'authenticateFail',
+            self::EVENT_AUTHENTICATE_FAIL,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'user' => $user
+            ]
         );
 
         return $result;
@@ -189,7 +236,7 @@ class UserAuthenticationService extends EventProvider
          * @event clearIdentity
          */
         $this->getEventManager()->trigger(
-            'clearIdentity',
+            self::EVENT_CLEAR_IDENTITY,
             $this,
             []
         );
@@ -203,7 +250,7 @@ class UserAuthenticationService extends EventProvider
     public function hasIdentity()
     {
         $results = $this->getEventManager()->trigger(
-            'hasIdentity',
+            self::EVENT_HAS_IDENTITY,
             $this,
             [],
             function ($hasIdentity) {
@@ -229,7 +276,7 @@ class UserAuthenticationService extends EventProvider
          * @event setIdentity
          */
         $this->getEventManager()->trigger(
-            'setIdentity',
+            self::EVENT_SET_IDENTITY,
             $this,
             ['identity' => $identity]
         );
@@ -248,7 +295,7 @@ class UserAuthenticationService extends EventProvider
          * @event getIdentity
          */
         $results = $this->getEventManager()->trigger(
-            'getIdentity',
+            self::EVENT_GET_IDENTITY,
             $this,
             []
         );

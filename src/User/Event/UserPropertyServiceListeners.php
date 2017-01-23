@@ -4,21 +4,15 @@ namespace RcmUser\User\Event;
 
 use RcmUser\Result;
 use RcmUser\User\Entity\UserRoleProperty;
+use RcmUser\User\Service\UserPropertyService;
+use Zend\EventManager\Event;
 
 /**
- * UserPropertyServiceListeners
+ * Class UserPropertyServiceListeners
  *
- * UserPropertyServiceListeners
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Event
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author    James Jervis
+ * @license   License.txt
+ * @link      https://github.com/jerv13
  */
 class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
 {
@@ -26,13 +20,20 @@ class UserPropertyServiceListeners extends AbstractUserDataServiceListeners
      * @var int $priority
      */
     protected $priority = 1;
+
+    /**
+     * @var string
+     */
+    protected $id = UserPropertyService::EVENT_IDENTIFIER;
+
     /**
      * @var array $listenerMethods
      */
     protected $listenerMethods
         = [
             //'onGetUserPropertyLinks' => 'getUserPropertyLinks',
-            'onPopulateUserProperty' => 'populateUserProperty',
+            'onPopulateUserProperty' => UserPropertyService::EVENT_POPULATE_USER_PROPERTY, //'populateUserProperty',
+            //'onGetUserPropertyIsAllowed' => UserPropertyService::EVENT_GET_USER_PROPERTY_IS_ALLOWED,
         ];
 
     /**

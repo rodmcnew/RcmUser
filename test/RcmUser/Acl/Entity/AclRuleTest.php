@@ -114,7 +114,7 @@ class AclRuleTest extends Zf2TestCase
         } catch (RcmUserException $e) {
 
             $this->assertInstanceOf(
-                '\RcmUser\Exception\RcmUserException',
+                \RcmUser\Exception\RcmUserException::class,
                 $e
             );
 
@@ -157,7 +157,7 @@ class AclRuleTest extends Zf2TestCase
         } catch (RcmUserException $e) {
 
             $this->assertInstanceOf(
-                '\RcmUser\Exception\RcmUserException',
+                \RcmUser\Exception\RcmUserException::class,
                 $e
             );
 

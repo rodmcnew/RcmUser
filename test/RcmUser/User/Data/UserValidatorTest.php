@@ -126,7 +126,7 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -147,7 +147,7 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -164,7 +164,7 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -187,7 +187,7 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\Result',
+            \RcmUser\Result::class,
             $result
         );
 
@@ -198,4 +198,3 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
     }
 
 }
- 

@@ -3,6 +3,7 @@
 namespace RcmUser\Acl\Db;
 
 use RcmUser\Acl\Entity\AclRole;
+use RcmUser\Result;
 
 /**
  * Interface AclRoleDataMapperInterface

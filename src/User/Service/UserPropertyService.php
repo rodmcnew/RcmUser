@@ -23,6 +23,12 @@ use RcmUser\User\Entity\User;
  */
 class UserPropertyService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserPropertyService::class;
+
+    const EVENT_GET_USER_PROPERTY = 'getUserProperty';
+    const EVENT_POPULATE_USER_PROPERTY = 'populateUserProperty';
+    const EVENT_GET_USER_PROPERTY_IS_ALLOWED = 'getUserPropertyIsAllowed';
+
     /**
      * getUserProperty
      *
@@ -48,7 +54,7 @@ class UserPropertyService extends EventProvider
         if ($property === null || $refresh) {
             // @event getUserProperty.pre -
             $this->getEventManager()->trigger(
-                'getUserProperty',
+                self::EVENT_GET_USER_PROPERTY,
                 $this,
                 [
                     'user' => $user,
@@ -79,7 +85,7 @@ class UserPropertyService extends EventProvider
         $data = []
     ) {
         $results = $this->getEventManager()->trigger(
-            'populateUserProperty',
+            self::EVENT_POPULATE_USER_PROPERTY,
             $this,
             [
                 'propertyNameSpace' => $propertyNameSpace,
@@ -103,6 +109,7 @@ class UserPropertyService extends EventProvider
     }
 
     /**
+     * @deprecated
      * getUserPropertyLinks
      * Get a link to an edit page for this user todo - write this
      *
@@ -154,7 +161,7 @@ class UserPropertyService extends EventProvider
         $propertyNameSpace
     ) {
         $results = $this->getEventManager()->trigger(
-            'getUserPropertyIsAllowed',
+            self::EVENT_GET_USER_PROPERTY_IS_ALLOWED,
             $this,
             [
                 'user' => $user,

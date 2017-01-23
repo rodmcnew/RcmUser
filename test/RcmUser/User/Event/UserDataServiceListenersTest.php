@@ -124,7 +124,7 @@ class UserDataServiceListenersTest extends Zf2TestCase
     {
         //
         $this->userDataMapper = $this->getMockBuilder(
-            '\RcmUser\User\Db\UserDataMapperInterface'
+            \RcmUser\User\Db\UserDataMapperInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -170,7 +170,7 @@ class UserDataServiceListenersTest extends Zf2TestCase
         );
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Db\UserDataMapperInterface',
+            \RcmUser\User\Db\UserDataMapperInterface::class,
             $this->userDataServiceListeners->getUserDataMapper()
         );
 
@@ -224,4 +224,3 @@ class UserDataServiceListenersTest extends Zf2TestCase
         );
     }
 }
- 

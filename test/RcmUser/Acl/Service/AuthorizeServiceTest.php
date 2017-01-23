@@ -1,23 +1,9 @@
 <?php
-/**
- * AuthorizeServiceTest.php
- *
- * TEST
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\Acl\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\Acl\Service;
 
 use RcmUser\Acl\Service\AuthorizeService;
+use RcmUser\Event\UserEventManager;
 use RcmUser\Result;
 use RcmUser\Test\Zf2TestCase;
 
@@ -51,14 +37,20 @@ class AuthorizeServiceTest extends Zf2TestCase
     {
 
         $aclResourceService = $this->getMockBuilder(
-            'RcmUser\Acl\Service\AclResourceService'
+            \RcmUser\Acl\Service\AclResourceService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
 
 
         $aclDataService = $this->getMockBuilder(
-            'RcmUser\Acl\Service\AclDataService'
+            \RcmUser\Acl\Service\AclDataService::class
+        )
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $userEventManager = $this->getMockBuilder(
+            UserEventManager::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -89,24 +81,24 @@ class AuthorizeServiceTest extends Zf2TestCase
 
         $this->authorizeService = new AuthorizeService(
             $aclResourceService,
-            $aclDataService
+            $aclDataService,
+            $userEventManager
         );
     }
 
     public function testGetSet()
     {
-
         $this->buildAuthorizeService();
 
         /** @var AuthorizeService $authServ */
         $authServ = $this->getAuthorizeService();
 
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\AclResourceService',
+            \RcmUser\Acl\Service\AclResourceService::class,
             $authServ->getAclResourceService()
         );
         $this->assertInstanceOf(
-            '\RcmUser\Acl\Service\AclDataService',
+            \RcmUser\Acl\Service\AclDataService::class,
             $authServ->getAclDataService()
         );
 

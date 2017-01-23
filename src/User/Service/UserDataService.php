@@ -25,6 +25,34 @@ use RcmUser\User\Result;
  */
 class UserDataService extends EventProvider
 {
+    const EVENT_IDENTIFIER = UserDataService::class;
+
+    const EVENT_BEFORE_GET_ALL_USERS = 'beforeGetAllUsers';
+    const EVENT_GET_ALL_USERS = 'getAllUsers';
+    const EVENT_GET_ALL_USERS_FAIL = 'getAllUsersFail';
+    const EVENT_GET_ALL_USERS_SUCCESS = 'getAllUsersSuccess';
+
+    const EVENT_BUILD_USER = 'buildUser';
+    const EVENT_BEFORE_CREATE_USER = 'beforeCreateUser';
+    const EVENT_CREATE_USER = 'createUser';
+    const EVENT_CREATE_USER_FAIL = 'createUserFail';
+    const EVENT_CREATE_USER_SUCCESS = 'createUserSuccess';
+
+    const EVENT_BEFORE_READ_USER = 'beforeReadUser';
+    const EVENT_READ_USER = 'readUser';
+    const EVENT_READ_USER_FAIL = 'readUserFail';
+    const EVENT_READ_USER_SUCCESS = 'readUserSuccess';
+
+    const EVENT_BEFORE_UPDATE_USER = 'beforeUpdateUser';
+    const EVENT_UPDATE_USER = 'updateUser';
+    const EVENT_UPDATE_USER_FAIL = 'updateUserFail';
+    const EVENT_UPDATE_USER_SUCCESS = 'updateUserSuccess';
+
+    const EVENT_BEFORE_DELETE_USER = 'beforeDeleteUser';
+    const EVENT_DELETE_USER = 'deleteUser';
+    const EVENT_DELETE_USER_FAIL = 'deleteUserFail';
+    const EVENT_DELETE_USER_SUCCESS = 'deleteUserSuccess';
+
     /**
      * @var UserDataMapperInterface $userDataMapper
      */
@@ -96,7 +124,7 @@ class UserDataService extends EventProvider
      *
      * @param string|null $defaultUserState defaultUserState
      *
-     * @return string|null
+     * @return void
      */
     public function setDefaultUserState($defaultUserState)
     {
@@ -125,7 +153,7 @@ class UserDataService extends EventProvider
     ) {
         /* @event beforeGetAllUsers */
         $results = $this->getEventManager()->trigger(
-            'beforeGetAllUsers',
+            self::EVENT_BEFORE_GET_ALL_USERS,
             $this,
             [
                 'options' => $options,
@@ -141,7 +169,7 @@ class UserDataService extends EventProvider
 
         /* @event readUser */
         $results = $this->getEventManager()->trigger(
-            'getAllUsers',
+            self::EVENT_GET_ALL_USERS,
             $this,
             [
                 'options' => $options,
@@ -154,9 +182,12 @@ class UserDataService extends EventProvider
         if ($results->stopped()) {
             $result = $results->last();
             $this->getEventManager()->trigger(
-                'getAllUsersFail',
+                self::EVENT_GET_ALL_USERS_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'options' => $options
+                ]
             );
 
             return $result;
@@ -167,9 +198,12 @@ class UserDataService extends EventProvider
 
         /* @event readUserSuccess */
         $this->getEventManager()->trigger(
-            'getAllUsersSuccess',
+            self::EVENT_GET_ALL_USERS_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'options' => $options
+            ]
         );
 
         return $result;
@@ -195,7 +229,7 @@ class UserDataService extends EventProvider
 
         /* @event buildUser */
         $results = $this->getEventManager()->trigger(
-            'buildUser',
+            self::EVENT_BUILD_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -215,17 +249,6 @@ class UserDataService extends EventProvider
      */
     public function createUser(User $requestUser)
     {
-        /* <LOW_LEVEL_PREP> */
-        /* REMOVE SOME LOW LEVEL - LET THE MAPPER DECIDE
-        $result = $this->readUser($requestUser);
-
-        if ($result->isSuccess()) {
-
-            // ERROR - user exists
-            return new Result(null, Result::CODE_FAIL, 'User already exists.');
-        }
-        */
-
         $responseUser = new User();
         $responseUser->populate($requestUser);
 
@@ -239,7 +262,7 @@ class UserDataService extends EventProvider
 
         /* @event beforeCreateUser */
         $results = $this->getEventManager()->trigger(
-            'beforeCreateUser',
+            self::EVENT_BEFORE_CREATE_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -256,7 +279,7 @@ class UserDataService extends EventProvider
 
         /* @event createUser */
         $results = $this->getEventManager()->trigger(
-            'createUser',
+            self::EVENT_CREATE_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -271,9 +294,13 @@ class UserDataService extends EventProvider
             $result = $results->last();
 
             $this->getEventManager()->trigger(
-                'createUserFail',
+                self::EVENT_CREATE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -283,9 +310,13 @@ class UserDataService extends EventProvider
 
         if (!$result->isSuccess()) {
             $this->getEventManager()->trigger(
-                'createUserFail',
+                self::EVENT_CREATE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -293,9 +324,13 @@ class UserDataService extends EventProvider
 
         /* @event createUserSuccess */
         $this->getEventManager()->trigger(
-            'createUserSuccess',
+            self::EVENT_CREATE_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
+            ]
         );
 
         return $result;
@@ -317,7 +352,7 @@ class UserDataService extends EventProvider
 
         /* @event beforeReadUser */
         $results = $this->getEventManager()->trigger(
-            'beforeReadUser',
+            self::EVENT_BEFORE_READ_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -334,7 +369,7 @@ class UserDataService extends EventProvider
 
         /* @event readUser */
         $results = $this->getEventManager()->trigger(
-            'readUser',
+            self::EVENT_READ_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -348,9 +383,13 @@ class UserDataService extends EventProvider
         if ($results->stopped()) {
             $result = $results->last();
             $this->getEventManager()->trigger(
-                'readUserFail',
+                self::EVENT_READ_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -367,9 +406,13 @@ class UserDataService extends EventProvider
 
         /* @event readUserSuccess */
         $this->getEventManager()->trigger(
-            'readUserSuccess',
+            self::EVENT_READ_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
+            ]
         );
 
         return $result;
@@ -388,7 +431,11 @@ class UserDataService extends EventProvider
         // require id
         $id = $requestUser->getId();
         if (empty($id)) {
-            return new Result(null, Result::CODE_FAIL, 'User Id required for update.');
+            return new Result(
+                null,
+                Result::CODE_FAIL,
+                'User Id required for update.'
+            );
         }
 
         // check if exists
@@ -419,7 +466,7 @@ class UserDataService extends EventProvider
 
         /* @event beforeUpdateUser */
         $results = $this->getEventManager()->trigger(
-            'beforeUpdateUser',
+            self::EVENT_BEFORE_UPDATE_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -437,7 +484,7 @@ class UserDataService extends EventProvider
 
         /* @event updateUser */
         $results = $this->getEventManager()->trigger(
-            'updateUser',
+            self::EVENT_UPDATE_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -452,9 +499,14 @@ class UserDataService extends EventProvider
         if ($results->stopped()) {
             $result = $results->last();
             $this->getEventManager()->trigger(
-                'updateUserFail',
+                self::EVENT_UPDATE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser,
+                    'existingUser' => $existingUser
+                ]
             );
 
             return $result;
@@ -464,9 +516,14 @@ class UserDataService extends EventProvider
 
         /* @event updateUser */
         $this->getEventManager()->trigger(
-            'updateUserSuccess',
+            self::EVENT_UPDATE_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser,
+                'existingUser' => $existingUser
+            ]
         );
 
         return $result;
@@ -505,7 +562,7 @@ class UserDataService extends EventProvider
 
         /* @event beforeDeleteUser */
         $results = $this->getEventManager()->trigger(
-            'beforeDeleteUser',
+            self::EVENT_BEFORE_DELETE_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -522,7 +579,7 @@ class UserDataService extends EventProvider
 
         /* @event deleteUser */
         $results = $this->getEventManager()->trigger(
-            'deleteUser',
+            self::EVENT_DELETE_USER,
             $this,
             [
                 'requestUser' => $requestUser,
@@ -536,9 +593,13 @@ class UserDataService extends EventProvider
         if ($results->stopped()) {
             $result = $results->last();
             $this->getEventManager()->trigger(
-                'deleteUserFail',
+                self::EVENT_DELETE_USER_FAIL,
                 $this,
-                ['result' => $result]
+                [
+                    'result' => $result,
+                    'requestUser' => $requestUser,
+                    'responseUser' => $responseUser
+                ]
             );
 
             return $result;
@@ -548,9 +609,13 @@ class UserDataService extends EventProvider
 
         /* @event deleteUserSuccess */
         $this->getEventManager()->trigger(
-            'deleteUserSuccess',
+            self::EVENT_DELETE_USER_SUCCESS,
             $this,
-            ['result' => $result]
+            [
+                'result' => $result,
+                'requestUser' => $requestUser,
+                'responseUser' => $responseUser
+            ]
         );
 
         return $result;

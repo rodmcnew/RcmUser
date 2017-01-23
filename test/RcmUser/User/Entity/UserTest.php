@@ -201,7 +201,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
         } catch (RcmUserException $e) {
 
             $hasException = true;
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
         }
 
         if(!$hasException) {
@@ -303,7 +303,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         } catch (\RcmUser\Exception\RcmUserException $e) {
             //$this->assertEquals("Exception Code",$e->getMessage());
-            $this->assertInstanceOf('\RcmUser\Exception\RcmUserException', $e);
+            $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
 
@@ -372,4 +372,3 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
         $this->assertJson($userAjson, 'User not converted to JSON.');
     }
 }
- 

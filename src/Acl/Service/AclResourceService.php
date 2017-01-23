@@ -86,7 +86,7 @@ class AclResourceService
     }
 
     /**
-     * @deprecated Use Registered 'RcmUser\Acl\ResourceProvider' service
+     * @deprecated Use RcmUser\Acl\Provider\ResourceProvider::class service
      * getAllResources - All resources
      * returns a list of all resources
      * This is used for displays or utilities only

@@ -142,7 +142,7 @@ class UserAuthenticationServiceTest extends Zf2TestCase
             'Incorrect Result returned.'
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result->getIdentity(),
             'Result did not contain User.'
         );
@@ -155,12 +155,12 @@ class UserAuthenticationServiceTest extends Zf2TestCase
         $result = $this->getUserAuthenticationService()->authenticate($user);
 
         $this->assertInstanceOf(
-            '\Zend\Authentication\Result',
+            \Zend\Authentication\Result::class,
             $result,
             'Incorrect Result returned.'
         );
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $result->getIdentity(),
             'Result did not contain User.'
         );
@@ -190,7 +190,7 @@ class UserAuthenticationServiceTest extends Zf2TestCase
         $user = $this->getUserAuthenticationServiceUserResult()->getIdentity();
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Entity\User',
+            \RcmUser\User\Entity\User::class,
             $user,
             'Result is not User.'
         );

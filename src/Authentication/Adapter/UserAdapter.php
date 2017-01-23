@@ -4,7 +4,6 @@ namespace RcmUser\Authentication\Adapter;
 
 use RcmUser\User\Entity\User;
 use RcmUser\User\Service\UserDataService;
-use Zend\Authentication\Adapter\AbstractAdapter;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\PasswordInterface;
 
@@ -23,7 +22,7 @@ use Zend\Crypt\Password\PasswordInterface;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class UserAdapter extends AbstractAdapter
+class UserAdapter extends AbstractAdapter implements Adapter
 {
     /**
      * @var
@@ -36,11 +35,21 @@ class UserAdapter extends AbstractAdapter
     protected $encryptor;
 
     /**
-     * @var
+     * Constructor.
+     *
+     * @param UserDataService   $userDataService
+     * @param PasswordInterface $encryptor
      */
-    protected $user;
+    public function __construct(
+        UserDataService $userDataService,
+        PasswordInterface $encryptor
+    ) {
+        $this->setUserDataService($userDataService);
+        $this->setEncryptor($encryptor);
+    }
 
     /**
+     * @deprecated use withUser
      * setUser
      *
      * @param User $user user
@@ -63,6 +72,7 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
+     * @todo This should be protected
      * setUserDataService
      *
      * @param UserDataService $userDataService userDataService
@@ -85,6 +95,7 @@ class UserAdapter extends AbstractAdapter
     }
 
     /**
+     * @todo This should be protected
      * setEncryptor
      *
      * @param PasswordInterface $encryptor encryptor
@@ -132,8 +143,11 @@ class UserAdapter extends AbstractAdapter
 
         if (!$existingUserResult->isSuccess()) {
             // ERROR
-            return new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null, $existingUserResult->getMessages(
-            ));
+            return new Result(
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                null,
+                $existingUserResult->getMessages()
+            );
         }
 
         $existingUser = $existingUserResult->getUser();
@@ -146,10 +160,17 @@ class UserAdapter extends AbstractAdapter
             $existingHash
         );
         if ($isValid) {
-            $result = new Result(Result::SUCCESS, $existingUser, []);
+            $result = new Result(
+                Result::SUCCESS,
+                $existingUser,
+                []
+            );
         } else {
-            $result
-                = new Result(Result::FAILURE_CREDENTIAL_INVALID, null, ['User credential invalid.']);
+            $result = new Result(
+                Result::FAILURE_CREDENTIAL_INVALID,
+                null,
+                ['User credential invalid.']
+            );
         }
 
         return $result;

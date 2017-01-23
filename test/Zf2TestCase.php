@@ -1,19 +1,5 @@
 <?php
-/**
- * Zf2TestCase.php
- *
- * Zf2TestCase
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
+
 namespace RcmUser\Test;
 
 use RcmUser\Config\Config;
@@ -129,7 +115,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
                 'GuestRoleId' => 'guest',
                 'ResourceProviders' => [
 
-                    'RcmUser' => 'RcmUser\Provider\RcmUserAclResourceProvider',
+                    'RcmUser' => \RcmUser\Provider\RcmUserAclResourceProvider::class,
                     'RcmUser.TEST' => [
                         'TESTONE' => [
                             'resourceId' => 'TESTONE',
@@ -176,157 +162,164 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
 
         $this->mockServices = [
 
-            'RcmUser\Config' => $this->mockRcmUserConfig,
-            'RcmUser\User\Config' =>
-                new Config($this->mockRcmUserConfig['User\Config']),
-            'RcmUser\Auth\Config' =>
-                new Config($this->mockRcmUserConfig['Auth\Config']),
-            'RcmUser\Acl\Config' =>
-                new Config($this->mockRcmUserConfig['Acl\Config']),
-            'RcmUser\User\Service\UserDataService' =>
+            \RcmUser\Config\Config::class =>
+                new \RcmUser\Config\Config($this->mockRcmUserConfig),
+            \RcmUser\User\Config::class =>
+                new \RcmUser\User\Config($this->mockRcmUserConfig['User\Config']),
+            \RcmUser\Authentication\Config::class =>
+                new \RcmUser\Authentication\Config($this->mockRcmUserConfig['Auth\Config']),
+            \RcmUser\Acl\Config::class =>
+                new \RcmUser\Acl\Config($this->mockRcmUserConfig['Acl\Config']),
+            \RcmUser\User\Service\UserDataService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Service\UserDataService'
+                    \RcmUser\User\Service\UserDataService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\Service\UserPropertyService' =>
+            \RcmUser\User\Service\UserPropertyService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Service\UserPropertyService'
+                    \RcmUser\User\Service\UserPropertyService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\Service\UserRoleService' =>
+            \RcmUser\User\Service\UserRoleService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Service\UserRoleService'
+                    \RcmUser\User\Service\UserRoleService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\UserDataMapper' =>
+            \RcmUser\User\Db\UserDataMapper::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Db\UserDataMapperInterface'
+                    \RcmUser\User\Db\UserDataMapperInterface::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\UserRolesDataMapper' =>
+            \RcmUser\User\Db\UserRolesDataMapper::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Db\UserRolesDataMapperInterface'
+                    \RcmUser\User\Db\UserRolesDataMapperInterface::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\Data\UserValidator' =>
+            \RcmUser\User\Data\UserValidator::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Data\UserValidatorInterface'
+                    \RcmUser\User\Data\UserValidatorInterface::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\Encryptor' =>
+            \RcmUser\User\Password\Password::class =>
                 $this->getMockBuilder(
-                    '\Zend\Crypt\Password\PasswordInterface'
+                    \RcmUser\User\Password\Password::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\Data\UserDataPreparer' =>
+            \RcmUser\User\Data\UserDataPreparer::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Data\UserDataPreparerInterface'
+                    \RcmUser\User\Data\UserDataPreparerInterface::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\UserDataServiceListeners' =>
+            \RcmUser\User\Event\UserDataServiceListeners::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Event\AbstractUserDataServiceListeners'
+                    \RcmUser\User\Event\AbstractUserDataServiceListeners::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\User\UserRoleDataServiceListeners' =>
+            \RcmUser\User\Event\UserRoleDataServiceListeners::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\User\Event\AbstractUserDataServiceListeners'
+                    \RcmUser\User\Event\AbstractUserDataServiceListeners::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Authentication\Service\UserAuthenticationService' =>
+            \RcmUser\Authentication\Service\UserAuthenticationService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Authentication\Service\UserAuthenticationService'
+                    \RcmUser\Authentication\Service\UserAuthenticationService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Authentication\Adapter' =>
+            \RcmUser\Authentication\Adapter\Adapter::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Authentication\Adapter\UserAdapter'
+                    \RcmUser\Authentication\Adapter\UserAdapter::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Authentication\Storage' =>
+            \RcmUser\Authentication\Storage\Session::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Authentication\Storage\UserSession'
+                    \RcmUser\Authentication\Storage\UserSession::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Authentication\AuthenticationService' =>
+            \RcmUser\Authentication\Service\AuthenticationService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Authentication\Service\AuthenticationService'
+                    \RcmUser\Authentication\Service\AuthenticationService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Authentication\UserAuthenticationServiceListeners' =>
+            \RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Authentication\Event\UserAuthenticationServiceListeners'
+                    \RcmUser\Authentication\Event\UserAuthenticationServiceListeners::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Acl\Service\AclResourceService' =>
+            \RcmUser\Acl\Service\AclResourceService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Acl\Service\AclResourceService'
+                    \RcmUser\Acl\Service\AclResourceService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Acl\Service\AuthorizeService' =>
+            \RcmUser\Acl\Service\AuthorizeService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Acl\Service\AuthorizeService'
+                    \RcmUser\Acl\Service\AuthorizeService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Acl\AclRoleDataMapper' =>
+            \RcmUser\Acl\Db\AclRoleDataMapper::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Acl\Db\AclRoleDataMapperInterface'
+                    \RcmUser\Acl\Db\AclRoleDataMapperInterface::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Acl\AclRuleDataMapper' =>
+            \RcmUser\Acl\Db\AclRuleDataMapper::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Acl\Db\AclRuleDataMapperInterface'
+                    \RcmUser\Acl\Db\AclRuleDataMapperInterface::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Acl\AclDataService' =>
+            \RcmUser\Acl\Service\AclDataService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Acl\Service\AclDataService'
+                    \RcmUser\Acl\Service\AclDataService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Service\RcmUserService' =>
+            \RcmUser\Service\RcmUserService::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Service\RcmUserService'
+                    \RcmUser\Service\RcmUserService::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Provider\RcmUserAclResourceProvider' =>
+            \RcmUser\Provider\RcmUserAclResourceProvider::class =>
                 $this->getMockBuilder(
-                    '\RcmUser\Provider\RcmUserAclResourceProvider'
+                    \RcmUser\Provider\RcmUserAclResourceProvider::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
-            'RcmUser\Event\Listeners' =>
+            \RcmUser\Event\ListenerCollection::class =>
                 [],
-            'RcmUser\Log\Logger' =>
+            \RcmUser\Event\UserEventManager::class =>
                 $this->getMockBuilder(
-                    '\Zend\Log\LoggerInterface'
+                    \RcmUser\Event\UserEventManager::class
+                )
+                    ->disableOriginalConstructor()
+                    ->getMock(),
+            \RcmUser\Log\Logger::class =>
+                $this->getMockBuilder(
+                    \Zend\Log\LoggerInterface::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
             /////////////////////////////////////////////////////////
-            'Doctrine\ORM\EntityManager' =>
+            \Doctrine\ORM\EntityManager::class =>
                 $this->getMockBuilder(
-                    '\Doctrine\ORM\EntityManager'
+                    \Doctrine\ORM\EntityManager::class
                 )
                     ->disableOriginalConstructor()
                     ->getMock(),
@@ -370,7 +363,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->mockServiceLocator = $this->getMockBuilder(
-            '\Zend\ServiceManager\ServiceLocatorInterface'
+            \Zend\ServiceManager\ServiceLocatorInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -395,7 +388,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->mockControllerManager = $this->getMockBuilder(
-            '\Zend\Mvc\Controller\ControllerManager'
+            \Zend\Mvc\Controller\ControllerManager::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -420,7 +413,7 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
         }
 
         $this->mockHelperPluginManager = $this->getMockBuilder(
-            '\Zend\View\HelperPluginManager'
+            \Zend\View\HelperPluginManager::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -430,5 +423,15 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($this->getMockServiceLocator()));
 
         return $this->mockHelperPluginManager;
+    }
+
+    /**
+     * test - this is just here to avoid php unit error
+     *
+     * @return void
+     */
+    public function test()
+    {
+        $this->assertTrue(true);
     }
 }

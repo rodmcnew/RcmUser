@@ -1,19 +1,4 @@
 <?php
-/**
- * TestUserDataService.php
- *
- * TEST
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\User\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\User\Service;
 
@@ -88,7 +73,7 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->buildUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Valid result not returned'
         );
@@ -101,7 +86,7 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->createUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Valid result not returned'
         );
@@ -114,7 +99,7 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->readUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Valid result not returned'
         );
@@ -127,7 +112,7 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->updateUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Valid result not returned'
         );
@@ -140,7 +125,7 @@ class UserDataServiceTest extends Zf2TestCase
         $result = $this->getUserDataService()->deleteUser($user);
 
         $this->assertInstanceOf(
-            '\RcmUser\User\Result',
+            \RcmUser\User\Result::class,
             $result,
             'Valid result not returned'
         );

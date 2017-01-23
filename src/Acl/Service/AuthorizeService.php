@@ -4,10 +4,12 @@ namespace RcmUser\Acl\Service;
 
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
-use RcmUser\Exception\RcmUserException;
+use RcmUser\Event\EventProvider;
+use RcmUser\Event\UserEventManager;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
+use Zend\Permissions\Acl\Exception\ExceptionInterface;
 
 /**
  * Class AuthorizeService
@@ -24,8 +26,15 @@ use Zend\Permissions\Acl\Acl;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class AuthorizeService
+class AuthorizeService extends EventProvider
 {
+    const EVENT_IDENTIFIER = AuthorizeService::class;
+
+    const EVENT_IS_ALLOWED_SUPER_ADMIN = 'aclIsAllowedSuperAdmin';
+    const EVENT_IS_ALLOWED_TRUE = 'aclIsAllowedTrue';
+    const EVENT_IS_ALLOWED_FALSE = 'aclIsAllowedFalse';
+    const EVENT_IS_ALLOWED_ERROR = 'aclIsAllowedError';
+
     /**
      *
      * @var string RESOURCE_DELIMITER
@@ -48,17 +57,21 @@ class AuthorizeService
     protected $aclDataService;
 
     /**
-     * __construct
+     * Constructor.
      *
-     * @param AclResourceService $aclResourceService aclResourceService
-     * @param AclDataService     $aclDataService     aclDataService
+     * @param AclResourceService $aclResourceService
+     * @param AclDataService     $aclDataService
+     * @param UserEventManager   $userEventManager
      */
     public function __construct(
         AclResourceService $aclResourceService,
-        AclDataService $aclDataService
+        AclDataService $aclDataService,
+        UserEventManager $userEventManager
     ) {
         $this->aclResourceService = $aclResourceService;
         $this->aclDataService = $aclDataService;
+
+        parent::__construct($userEventManager);
     }
 
     /**
@@ -100,7 +113,7 @@ class AuthorizeService
     {
         $id = $this->getAclDataService()->getGuestRoleId()->getData();
 
-        return [$this->getAclDataService()->getRoleByRoleId($id)->getData()];
+        return $this->getAclDataService()->getRoleByRoleId($id)->getData();
     }
 
     /**
@@ -125,12 +138,12 @@ class AuthorizeService
      *
      * @param User|null $user user
      *
-     * @return null
+     * @return array
      */
     public function getUserRoles($user)
     {
         if (!($user instanceof User)) {
-            return $this->getGuestRole();
+            return [$this->getGuestRole()];
         }
 
         /** @var $userRoleProperty UserRoleProperty */
@@ -172,7 +185,7 @@ class AuthorizeService
      * getResources
      *
      * @param string $resourceId resourceId
-     * @param string $providerId  @deprecated No Longer Required - providerId
+     * @param string $providerId @deprecated No Longer Required - providerId
      *
      * @return array
      */
@@ -190,7 +203,7 @@ class AuthorizeService
      * getAcl - This cannot be called before resources are parsed
      *
      * @param string $resourceId resourceId
-     * @param string $providerId  @deprecated No Longer Required - providerId
+     * @param string $providerId @deprecated No Longer Required - providerId
      *
      * @return Acl
      */
@@ -311,7 +324,7 @@ class AuthorizeService
      *
      * @param string $resourceId resourceId
      * @param string $privilege  privilege
-     * @param string $providerId  @deprecated No Longer Required  - providerId
+     * @param string $providerId @deprecated No Longer Required  - providerId
      * @param User   $user       user
      *
      * @return bool
@@ -329,10 +342,25 @@ class AuthorizeService
         $userRoles = $this->getUserRoles($user);
 
         /* Check super admin
-            we over-ride everything if user has super admin
-        */
+         * we over-ride everything if user has super admin
+         */
         if ($this->hasSuperAdmin($userRoles)) {
-            return true;
+            $result = true;
+
+            $this->getEventManager()->trigger(
+                self::EVENT_IS_ALLOWED_SUPER_ADMIN,
+                $this,
+                [
+                    'resourceId' => $resourceId,
+                    'privilege' => $privilege,
+                    'providerId' => $providerId,
+                    'result' => $result,
+                    'user' => $user,
+                    'userRoles' => $userRoles,
+                ]
+            );
+
+            return $result;
         }
 
         try {
@@ -342,7 +370,8 @@ class AuthorizeService
             );
 
             foreach ($userRoles as $userRole) {
-                // @todo this will fail on deny
+                // @todo This will fail on deny in some cases
+                // @todo The logic for dealing with multiple roles with deny and allow needs to be addressed
                 $result = $acl->isAllowed(
                     $userRole,
                     $resourceId,
@@ -350,32 +379,65 @@ class AuthorizeService
                 );
 
                 if ($result) {
+                    $this->getEventManager()->trigger(
+                        self::EVENT_IS_ALLOWED_TRUE,
+                        $this,
+                        [
+                            'privilege' => $privilege,
+                            'providerId' => $providerId,
+                            'resourceId' => $resourceId,
+                            'result' => $result,
+                            'user' => $user,
+                            'userRoleAllowed' => $userRole,
+                            'userRoles' => $userRoles,
+                        ]
+                    );
+
                     return $result;
                 }
             }
-        } catch (\Exception $e) {
-            // @todo - report this error or log
-            $message = '<pre>';
-            $message .= "AuthorizeService->isAllowed failed to check: \n" .
-                "providerId: {$providerId} \n" .
-                "resourceId: {$resourceId} \n" .
-                'privilege: ' . var_export($privilege, true) . " \n";
-            if ($user) {
-                $message .= 'user id: ' . $user->getId() . " \n";
-            }
-            $message .= 'user roles: ' . var_export($userRoles, true) . " \n";
-            $message .= 'acl roles: ' . var_export(
-                $this->getAcl($resourceId, $providerId)->getRoles(),
-                true
-            ) . " \n";
-            $message .='defined roles: ' . var_export($this->getRoles(), true) . " \n";
-            $message .= 'Acl failed with error: ' . $e->getMessage();
-            $message .= '</pre>';
-            //echo($message);
-            throw new RcmUserException($message, 401);
+        } catch (ExceptionInterface $e) {
+            $result = false;
+
+            $error = 'AuthorizeService->isAllowed failed to check: ' .
+                get_class($e) . '::message: ' . $e->getMessage();
+
+            $params = [
+                'definedRoles' => $this->getRoles(),
+                'error' => $error,
+                'privilege' => $privilege,
+                'providerId' => $providerId,
+                'resourceId' => $resourceId,
+                'result' => $result,
+                'user' => $user,
+                'userRoles' => $userRoles,
+            ];
+
+            $this->getEventManager()->trigger(
+                self::EVENT_IS_ALLOWED_ERROR,
+                $this,
+                $params
+            );
+
+            return $result;
         }
 
-        return false;
+        $result = false;
+
+        $this->getEventManager()->trigger(
+            self::EVENT_IS_ALLOWED_FALSE,
+            $this,
+            [
+                'privilege' => $privilege,
+                'providerId' => $providerId,
+                'resourceId' => $resourceId,
+                'result' => $result,
+                'user' => $user,
+                'userRoles' => $userRoles,
+            ]
+        );
+
+        return $result;
     }
 
     /**

@@ -17,7 +17,6 @@
 
 namespace RcmUser\Test\Authentication\Adapter;
 
-
 use RcmUser\Authentication\Adapter\UserAdapter;
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\User;
@@ -78,7 +77,7 @@ class UserAdapterTest extends Zf2TestCase
     public function testBuildUserAdapter()
     {
         $this->userDataService = $this->getMockBuilder(
-            '\RcmUser\User\Service\UserDataService'
+            \RcmUser\User\Service\UserDataService::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -92,7 +91,7 @@ class UserAdapterTest extends Zf2TestCase
         ];
 
         $this->encryptor = $this->getMockBuilder(
-            '\Zend\Crypt\Password\PasswordInterface'
+            \Zend\Crypt\Password\PasswordInterface::class
         )
             ->disableOriginalConstructor()
             ->getMock();
@@ -105,16 +104,15 @@ class UserAdapterTest extends Zf2TestCase
             ->method('verify')
             ->will($this->returnValueMap($encValueMap));
 
-        $userAdapter = new UserAdapter();
-
-        $userAdapter->setEncryptor($this->encryptor);
+        $userAdapter = new UserAdapter(
+            $this->userDataService,
+            $this->encryptor
+        );
 
         $this->assertEquals(
             $this->encryptor,
             $userAdapter->getEncryptor()
         );
-
-        $userAdapter->setUserDataService($this->userDataService);
 
         $this->assertEquals(
             $this->userDataService,
@@ -181,4 +179,3 @@ class UserAdapterTest extends Zf2TestCase
     }
 
 }
- 

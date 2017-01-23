@@ -70,7 +70,7 @@ class CompositeResourceProvider implements ResourceProviderInterface
      */
     public function getProviderId()
     {
-        return 'RcmUser\Acl\Provider\CompositeResourceProvider';
+        return \RcmUser\Acl\Provider\CompositeResourceProvider::class;
     }
 
     /**
