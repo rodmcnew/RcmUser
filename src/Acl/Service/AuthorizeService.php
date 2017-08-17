@@ -478,43 +478,4 @@ class AuthorizeService extends EventProvider
 
         return false;
     }
-
-    /**
-     * parseResource @deprecated
-     *
-     * This allows use to parse our dot notation for nested resources
-     * which is used when a missing resource can inherit.
-     *
-     * To do this we need to provide the resource and its parent.
-     * We accomplish this by passing 'PAGES.PAGE_X'.
-     * Our isAllowed override allows the checking of 'PAGE_X' first and
-     * if it is not found, we check 'PAGES'.
-     *
-     * Example:
-     *  If a resource called 'PAGES'
-     *  And we want to check if the user has access
-     * to a child of 'PAGES' named 'PAGE_X'.
-     *  And we know at the time of the ACL check
-     * that 'PAGE_X' might not be defined.
-     *  If 'PAGE_X' is not defined, then we inherit from from 'PAGES'
-     *
-     * @param string $resource resource
-     *
-     * @return array
-     */
-    public function parseResource($resource)
-    {
-        if (is_string($resource)) {
-            $resources = explode(
-                self::RESOURCE_DELIMITER,
-                $resource
-            );
-
-            $resources = array_reverse($resources);
-
-            return $resources;
-        }
-
-        return [$resource];
-    }
 }
