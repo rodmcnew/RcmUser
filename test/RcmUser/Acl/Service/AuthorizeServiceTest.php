@@ -23,6 +23,9 @@ class AuthorizeServiceTest extends Zf2TestCase
 
     public $authorizeService;
 
+    /**
+     * @return AuthorizeService
+     */
     public function getAuthorizeService()
     {
         if (!isset($this->authorizeService)) {
@@ -117,18 +120,5 @@ class AuthorizeServiceTest extends Zf2TestCase
          *
          * $this->assertTrue($result, 'True not returned.');
          * */
-    }
-
-    public function testParseResource()
-    {
-        $resource = "some.resource";
-
-        $result = $this->getAuthorizeService()->parseResource($resource);
-
-        $this->assertContains(
-            'some',
-            $result,
-            'Resource string not parsed correctly'
-        );
     }
 }
