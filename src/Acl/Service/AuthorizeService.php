@@ -399,8 +399,8 @@ class AuthorizeService extends EventProvider
         } catch (ExceptionInterface $e) {
             $result = false;
 
-            $error = 'AuthorizeService->isAllowed failed to check: ' .
-                get_class($e) . '::message: ' . $e->getMessage();
+            $error = 'AuthorizeService->isAllowed failed check for resourceId: (' . $resourceId . ')'
+                .' with exception: ' . get_class($e) . '::message: ' . $e->getMessage();
 
             $params = [
                 'definedRoles' => $this->getRoles(),
