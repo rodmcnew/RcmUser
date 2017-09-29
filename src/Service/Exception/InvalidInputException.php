@@ -2,6 +2,8 @@
 
 namespace RcmUser\Service\Exception;
 
+use RcmUser\Exception\RcmUserException;
+
 /**
  * InvalidInputException
  *
@@ -17,7 +19,7 @@ namespace RcmUser\Service\Exception;
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class InvalidInputException extends \RcmUserException
+class InvalidInputException extends RcmUserException
 {
 
 }
