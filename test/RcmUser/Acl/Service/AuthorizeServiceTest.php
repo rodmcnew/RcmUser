@@ -29,7 +29,6 @@ class AuthorizeServiceTest extends Zf2TestCase
     public function getAuthorizeService()
     {
         if (!isset($this->authorizeService)) {
-
             $this->buildAuthorizeService();
         }
 
@@ -104,7 +103,6 @@ class AuthorizeServiceTest extends Zf2TestCase
             \RcmUser\Acl\Service\AclDataService::class,
             $authServ->getAclDataService()
         );
-
     }
 
     public function testGetRoles()

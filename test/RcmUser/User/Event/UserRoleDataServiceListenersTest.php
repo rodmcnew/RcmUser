@@ -65,17 +65,14 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
     public function buildUserRoleService($case = 'success')
     {
         switch ($case) {
-
-            case 'fail_service' :
-            case 'failAll_service' :
-
+            case 'fail_service':
+            case 'failAll_service':
                 $this->mockRoles = ['SOME', 'ROLES'];
                 $this->mockDefaultRoles = ['DEFAULT', 'ROLES'];
                 $this->mockResult = new Result([], Result::CODE_FAIL);
                 $this->mockDefaultResult = new Result($this->mockDefaultRoles);
                 break;
-            default :
-
+            default:
                 $this->mockRoles = ['SOME', 'ROLES'];
                 $this->mockDefaultRoles = ['DEFAULT', 'ROLES'];
                 $this->mockResult = new Result($this->mockRoles);
@@ -158,9 +155,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
     public function buildEvent($case = 'success')
     {
         switch ($case) {
-
             case 'fail_event':
-
                 $this->mockEventReturn = [
                     [
                         'result',
@@ -189,8 +184,7 @@ class UserRoleDataServiceListenersTest extends Zf2TestCase
                 ];
                 break;
 
-            default :
-
+            default:
                 $requestUser = new User('123');
                 $requestUser->setProperty(UserRoleProperty::PROPERTY_KEY, new UserRoleProperty(['ROLES']));
 

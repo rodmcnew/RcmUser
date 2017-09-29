@@ -234,4 +234,3 @@ class ReadOnlyUserTest extends Zf2TestCase
         $roUser->merge($user);
     }
 }
- 

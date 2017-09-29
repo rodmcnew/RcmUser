@@ -50,7 +50,6 @@ class UserAuthenticationServiceTest extends Zf2TestCase
     public function getUserAuthenticationService()
     {
         if (!isset($this->userAuthenticationService)) {
-
             $this->buildUserAuthenticationService();
         }
 
@@ -60,7 +59,6 @@ class UserAuthenticationServiceTest extends Zf2TestCase
     public function getUserAuthenticationServiceUserResult()
     {
         if (!isset($this->userAuthenticationServiceUserResult)) {
-
             $this->buildUserAuthenticationServiceUserResult();
         }
 

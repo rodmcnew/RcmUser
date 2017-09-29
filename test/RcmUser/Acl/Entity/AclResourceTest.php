@@ -175,9 +175,7 @@ class AclResourceTest extends Zf2TestCase
 
         try {
             $aclResource->setResourceId($badResourceId);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
@@ -209,9 +207,7 @@ class AclResourceTest extends Zf2TestCase
 
         try {
             $aclResource->setParentResourceId($badResourceId);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
@@ -311,9 +307,7 @@ class AclResourceTest extends Zf2TestCase
         // exception
         try {
             $aclResource3->populate('NOPE');
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
@@ -342,5 +336,4 @@ class AclResourceTest extends Zf2TestCase
 
         $this->assertJson($json, 'Could not encode as JSON.');
     }
-
 }

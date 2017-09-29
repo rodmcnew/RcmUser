@@ -67,4 +67,3 @@ class DoctrineAclRoleTest extends Zf2TestCase
         );
     }
 }
- 

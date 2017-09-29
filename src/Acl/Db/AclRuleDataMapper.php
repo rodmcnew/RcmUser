@@ -68,7 +68,7 @@ class AclRuleDataMapper implements AclRuleDataMapperInterface
      * @return mixed
      * @throws RcmUserException
      */
-    public function fetchByResources(Array $resources)
+    public function fetchByResources(array $resources)
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }

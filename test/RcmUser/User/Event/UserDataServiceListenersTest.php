@@ -173,7 +173,6 @@ class UserDataServiceListenersTest extends Zf2TestCase
             \RcmUser\User\Db\UserDataMapperInterface::class,
             $this->userDataServiceListeners->getUserDataMapper()
         );
-
     }
 
     /**

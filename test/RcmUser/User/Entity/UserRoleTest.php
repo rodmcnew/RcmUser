@@ -119,9 +119,7 @@ class UserRoleTest extends Zf2TestCase
 
         try {
             $userRoleA->populate($userRoleC);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }

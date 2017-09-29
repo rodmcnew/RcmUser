@@ -113,7 +113,6 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
                 $this->getUserPropertyKey(),
                 $userRoleProperty
             );
-
         }
 
         $result->setData($users);
@@ -225,12 +224,13 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         if (!$createResult->isSuccess()) {
             return new Result(
-                $responseUser, Result::CODE_FAIL, $createResult->getMessages()
+                $responseUser,
+                Result::CODE_FAIL,
+                $createResult->getMessages()
             );
         }
 
         return new Result($responseUser, Result::CODE_SUCCESS);
-
     }
 
     /**
@@ -255,7 +255,9 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         if (!$readResult->isSuccess()) {
             return new Result(
-                $responseUser, Result::CODE_FAIL, $readResult->getMessages()
+                $responseUser,
+                Result::CODE_FAIL,
+                $readResult->getMessages()
             );
         }
 
@@ -402,7 +404,9 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
 
         if (!$deleteResult->isSuccess()) {
             return new Result(
-                $responseUser, Result::CODE_FAIL, $deleteResult->getMessages()
+                $responseUser,
+                Result::CODE_FAIL,
+                $deleteResult->getMessages()
             );
         }
 

@@ -95,7 +95,7 @@ interface AclRuleDataMapperInterface
      *
      * @return Result
      */
-    public function fetchByResources(Array $resources);
+    public function fetchByResources(array $resources);
 
     /**
      * fetchByResource

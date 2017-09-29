@@ -69,4 +69,3 @@ class DoctrineMapperTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

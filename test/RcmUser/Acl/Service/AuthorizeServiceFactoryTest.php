@@ -51,6 +51,5 @@ class AuthorizeServiceFactoryTest extends Zf2TestCase
             \RcmUser\Acl\Service\AclDataService::class,
             $service->getAclDataService()
         );
-
     }
 }

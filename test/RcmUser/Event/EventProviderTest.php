@@ -39,7 +39,6 @@ class EventProviderTest extends Zf2TestCase
     public function getEventProvider()
     {
         if (!isset($this->eventProvider)) {
-
             $this->buildEventProvider();
         }
 

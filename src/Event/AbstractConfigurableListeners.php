@@ -63,10 +63,9 @@ abstract class AbstractConfigurableListeners implements ListenerAggregateInterfa
         $sharedEvents = $userEventManager->getSharedManager();
 
         foreach ($this->listenerConfig as $serviceName => $priority) {
-
             $listener = $this->container->get($serviceName);
 
-            if(!$listener instanceof Listener) {
+            if (!$listener instanceof Listener) {
                 throw new RcmUserException("Service {$serviceName} must be an instance of " . Listener::class);
             }
 

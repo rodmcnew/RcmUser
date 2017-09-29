@@ -84,4 +84,3 @@ class LogEntryTest extends \PHPUnit_Framework_TestCase
         );
     }
 }
- 

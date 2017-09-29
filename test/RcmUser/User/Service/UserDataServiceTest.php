@@ -28,7 +28,6 @@ class UserDataServiceTest extends Zf2TestCase
     public function getUserDataService()
     {
         if (!isset($this->userDataService)) {
-
             $this->buildUserDataService();
         }
 
@@ -130,5 +129,4 @@ class UserDataServiceTest extends Zf2TestCase
             'Valid result not returned'
         );
     }
-
 }

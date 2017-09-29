@@ -96,9 +96,7 @@ class LinkTest extends \PHPUnit_Framework_TestCase
 
         try {
             $link2->populate('nope');
-
         } catch (\RcmUser\Exception\RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }

@@ -71,7 +71,8 @@ abstract class AbstractUserDataServiceListener extends AbstractLoggerListener im
         $data['responseUser'] = $event->getParam('responseUser');
         $data['result'] = $event->getParam('result');
         $data['sessionId'] = Server::getSessionId();
-        $data['currentUser'] = $this->rcmUserService->getCurrentUser();;
+        $data['currentUser'] = $this->rcmUserService->getCurrentUser();
+        ;
 
         $message = json_encode($data, $this->jsonOptions);
 

@@ -107,14 +107,11 @@ class AclPrivilegeTest extends Zf2TestCase
 
         try {
             $privilege->setPrivilege('N*P#_^^^^');
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
 
         $this->fail("Expected exception not thrown");
-
     }
 }

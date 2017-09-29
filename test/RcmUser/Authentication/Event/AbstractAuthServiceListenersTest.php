@@ -120,15 +120,15 @@ class AbstractAuthServiceListenersTest extends Zf2TestCase
 
         $result
             = $this->abstractAuthServiceListeners->onValidateCredentialsSuccess(
-            $this->event
-        );
+                $this->event
+            );
 
         $this->assertFalse($result->isValid());
 
         $result
             = $this->abstractAuthServiceListeners->onValidateCredentialsFail(
-            $this->event
-        );
+                $this->event
+            );
 
         $this->assertFalse($result->isValid());
 

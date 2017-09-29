@@ -136,7 +136,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
      *
      * @return Result
      */
-    public function fetchByResources(Array $resources)
+    public function fetchByResources(array $resources)
     {
         $ids = [];
 

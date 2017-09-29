@@ -41,4 +41,4 @@ class ModuleTest extends Zf2TestCase
     {
         $this->assertTrue(is_array($this->module->getConfig()));
     }
-} 
+}

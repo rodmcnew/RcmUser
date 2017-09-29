@@ -190,6 +190,5 @@ class UserPropertyServiceListenersTest extends Zf2TestCase
         $this->assertFalse(
             $result->isSuccess()
         );
-
     }
 }

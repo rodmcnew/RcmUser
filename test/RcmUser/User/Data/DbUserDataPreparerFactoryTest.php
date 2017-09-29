@@ -43,7 +43,7 @@ class DbUserDataPreparerFactoryTest extends Zf2TestCase
         //
 
         $this->assertInstanceOf(
-           Password::class,
+            Password::class,
             $service->getEncryptor()
         );
     }

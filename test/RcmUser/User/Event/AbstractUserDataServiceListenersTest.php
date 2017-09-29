@@ -59,7 +59,6 @@ class AbstractUserDataServiceListenersTest extends Zf2TestCase
 
         $this->abstractUserDataServiceListeners
             = new AbstractUserDataServiceListeners();
-
     }
 
     public function testAttachDetach()

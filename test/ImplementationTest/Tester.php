@@ -23,7 +23,6 @@ use RcmUser\User\Entity\UserRoleProperty;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-
 /**
  * Class Tester
  *
@@ -255,7 +254,6 @@ class Tester implements ServiceLocatorAwareInterface
         // should not be a session user
         $goneUser = $tester->rcmUserService->getIdentity();
         if (!empty($goneUser)) {
-
             if (!empty($goneUser->getId())) {
                 $tester->addMessage("TEST FAILED");
 
@@ -278,7 +276,6 @@ class Tester implements ServiceLocatorAwareInterface
         // should not be a session user
         $goneUser = $tester->rcmUserService->getIdentity();
         if (!empty($goneUser)) {
-
             if (!empty($goneUser->getId())) {
                 $tester->addMessage("TEST FAILED");
 
@@ -314,7 +311,6 @@ class Tester implements ServiceLocatorAwareInterface
 
             return $tester->getMessage();
         } else {
-
             $tester->addMessage(
                 "Updated state: " . json_encode(
                     $tester->rcmUserService->getIdentity(),
@@ -329,7 +325,6 @@ class Tester implements ServiceLocatorAwareInterface
         // should not be a session user
         $goneUser = $tester->rcmUserService->getIdentity();
         if (!empty($goneUser)) {
-
             if (!empty($goneUser->getId())) {
                 $tester->addMessage("TEST FAILED");
 
@@ -598,7 +593,6 @@ class Tester implements ServiceLocatorAwareInterface
     public static function parseParam($params, $key, $default = null)
     {
         if (isset($params[$key])) {
-
             return $params[$key];
         }
 
@@ -632,7 +626,6 @@ class Tester implements ServiceLocatorAwareInterface
         $this->addMessage("** CREATE **");
 
         if (!$result->isSuccess()) {
-
             $this->addMessage(
                 " ERROR: " . json_encode($result->getMessages(), true)
             );
@@ -689,7 +682,6 @@ class Tester implements ServiceLocatorAwareInterface
         $this->addMessage("** READ **");
 
         if (!$result->isSuccess()) {
-
             $this->addMessage(
                 " ERROR: " . json_encode($result->getMessages(), true)
             );
@@ -718,7 +710,6 @@ class Tester implements ServiceLocatorAwareInterface
         $this->addMessage("** UPDATE **");
 
         if (!$result->isSuccess()) {
-
             $this->addMessage(
                 " ERROR: " . json_encode($result->getMessages(), true)
             );
@@ -747,7 +738,6 @@ class Tester implements ServiceLocatorAwareInterface
         $this->addMessage("DELETE");
 
         if (!$result->isSuccess()) {
-
             $this->addMessage(
                 " ERROR: " . json_encode($result->getMessages(), true)
             );
@@ -779,7 +769,6 @@ class Tester implements ServiceLocatorAwareInterface
         $authResult = $this->rcmUserService->validateCredentials($user);
 
         if (!$authResult->isValid()) {
-
             $this->addMessage(
                 " ERROR: " . json_encode($authResult->getMessages(), true)
             );
@@ -809,7 +798,6 @@ class Tester implements ServiceLocatorAwareInterface
         $authResult = $this->rcmUserService->authenticate($user);
 
         if (!$authResult->isValid()) {
-
             $this->addMessage(
                 " ERROR: " . json_encode($authResult->getMessages(), true)
             );
@@ -824,4 +812,4 @@ class Tester implements ServiceLocatorAwareInterface
         return $authResult->getIdentity();
         /* */
     }
-} 
+}

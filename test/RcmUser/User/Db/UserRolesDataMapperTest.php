@@ -77,8 +77,6 @@ class UserRolesDataMapperTest extends \PHPUnit_Framework_TestCase
             $this->roles,
             $this->userRolesDataMapper->getAvailableRoles()
         );
-
-
     }
 
     /**
