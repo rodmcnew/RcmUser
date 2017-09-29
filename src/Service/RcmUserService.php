@@ -373,7 +373,7 @@ class RcmUserService
      *
      * @param User $user request user object
      *
-     * @return Result
+     * @return \Zend\Authentication\Result
      */
     public function validateCredentials(User $user)
     {
