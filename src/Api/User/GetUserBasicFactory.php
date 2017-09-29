@@ -18,7 +18,7 @@ class GetUserBasicFactory
     public function __invoke($serviceContainer)
     {
         return new GetUserBasic(
-            $serviceContainer->get(ReadUser::class)
+            $serviceContainer->get(ReadUserResult::class)
         );
     }
 }
