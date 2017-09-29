@@ -11,6 +11,7 @@ use RcmUser\User\Entity\User;
 interface BuildUser
 {
     /**
+     * @param User  $user
      * @param array $options
      *
      * @return User

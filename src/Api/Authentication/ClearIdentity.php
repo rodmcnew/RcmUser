@@ -10,6 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 interface ClearIdentity
 {
     /**
+     * Clears auth session (logs out user)
+     *
      * @param ServerRequestInterface $request
      *
      * @return void

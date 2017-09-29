@@ -10,6 +10,9 @@ use RcmUser\User\Entity\User;
 interface GetUser
 {
     /**
+     * returns a user from the data source
+     * based on the data in the provided User object (User::id and User::username)
+     *
      * @param User $requestUser
      *
      * @return User|null

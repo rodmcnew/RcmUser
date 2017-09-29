@@ -10,6 +10,11 @@ use RcmUser\User\Entity\User;
 interface GetUserProperty
 {
     /**
+     * OnDemand loading of a user property.
+     * Is a way of populating User::property using events.
+     * Some user properties are not loaded with the user to increase speed.
+     * Use this method to load these properties.
+     *
      * @param User   $user
      * @param string $propertyNameSpace
      * @param null   $default

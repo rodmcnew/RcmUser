@@ -7,7 +7,7 @@ use RcmUser\User\Entity\User;
 /**
  * @author James Jervis - https://github.com/jerv13
  */
-interface HasRoleBasedAccess
+interface HasRoleBasedAccessUser
 {
     /**
      * @param User|null $user

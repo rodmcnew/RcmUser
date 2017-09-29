@@ -11,6 +11,10 @@ use Zend\Authentication\Result;
 interface ValidateCredentials
 {
     /**
+     * Allows the validation of user credentials (username and password)
+     * without creating an auth session.
+     * Helpful for doing non-login authentication checks.
+     *
      * @param User $requestUser
      *
      * @return Result

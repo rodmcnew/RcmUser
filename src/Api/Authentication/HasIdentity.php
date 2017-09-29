@@ -10,6 +10,8 @@ use Psr\Http\Message\ServerRequestInterface;
 interface HasIdentity
 {
     /**
+     * Check if any User is auth'ed (logged in)
+     *
      * @param ServerRequestInterface $request
      *
      * @return bool

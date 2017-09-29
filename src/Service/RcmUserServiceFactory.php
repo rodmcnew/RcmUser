@@ -19,7 +19,7 @@ class RcmUserServiceFactory
      *
      * @param ContainerInterface|ServiceLocatorInterface $serviceLocator
      *
-     * @return object
+     * @return RcmUserService
      */
     public function __invoke($serviceLocator)
     {
@@ -36,7 +36,7 @@ class RcmUserServiceFactory
             \RcmUser\Acl\Service\AuthorizeService::class
         );
 
-        $service = new \RcmUser\Service\RcmUserService();
+        $service = new RcmUserService();
         $service->setUserDataService($userDataService);
         $service->setUserPropertyService($userPropertyService);
         $service->setUserAuthService($userAuthenticationService);

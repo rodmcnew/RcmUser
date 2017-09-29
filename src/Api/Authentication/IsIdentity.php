@@ -11,7 +11,10 @@ use RcmUser\User\Entity\User;
 interface IsIdentity
 {
     /**
+     * Check if the requested user in the user that is currently in the auth session
+     *
      * @param ServerRequestInterface $request
+     * @param User                   $user
      *
      * @return bool
      */

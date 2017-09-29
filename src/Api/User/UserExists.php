@@ -10,6 +10,8 @@ use RcmUser\User\Entity\User;
 interface UserExists
 {
     /**
+     * returns true if the user exists in the data source
+     *
      * @param User $requestUser
      *
      * @return bool

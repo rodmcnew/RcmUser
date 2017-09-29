@@ -2,46 +2,166 @@
 
 namespace RcmUser\Service;
 
+use Psr\Http\Message\ServerRequestInterface;
 use RcmUser\Acl\Service\AuthorizeService;
-use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\Event\EventProvider;
+use RcmUser\Api\Acl\HasRoleBasedAccess;
+use RcmUser\Api\Acl\HasRoleBasedAccessUser;
+use RcmUser\Api\Acl\IsAllowed;
+use RcmUser\Api\Acl\IsUserAllowed;
+use RcmUser\Api\Authentication\Authenticate;
+use RcmUser\Api\Authentication\ClearIdentity;
+use RcmUser\Api\Authentication\GetIdentity;
+use RcmUser\Api\Authentication\HasIdentity;
+use RcmUser\Api\Authentication\IsIdentity;
+use RcmUser\Api\Authentication\RefreshIdentity;
+use RcmUser\Api\Authentication\SetIdentity;
+use RcmUser\Api\Authentication\ValidateCredentials;
+use RcmUser\Api\User\BuildNewUser;
+use RcmUser\Api\User\BuildUser;
+use RcmUser\Api\User\CreateUser;
+use RcmUser\Api\User\CreateUserResult;
+use RcmUser\Api\User\DeleteUser;
+use RcmUser\Api\User\DeleteUserResult;
+use RcmUser\Api\User\GetUser;
+use RcmUser\Api\User\GetUserById;
+use RcmUser\Api\User\GetUserByUsername;
+use RcmUser\Api\User\GetUserProperty;
+use RcmUser\Api\User\GetUserPropertyCurrent;
+use RcmUser\Api\User\ReadUser;
+use RcmUser\Api\User\ReadUserResult;
+use RcmUser\Api\User\UpdateUser;
+use RcmUser\Api\User\UpdateUserResult;
+use RcmUser\Api\User\UserExists;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
-use RcmUser\User\Service\UserDataService;
-use RcmUser\User\Service\UserPropertyService;
+use Zend\Diactoros\ServerRequestFactory;
 
 /**
- * Class RcmUserService
+ * @deprecated Use \RcmUser\Api\*
  *
- * RcmUserService facade
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author     James Jervis - https://github.com/jerv13
  */
 class RcmUserService
 {
-    /**
-     * @var UserDataService
-     */
-    protected $userDataService;
+    protected $getUser;
+    protected $getUserById;
+    protected $getUserByUsername;
+    protected $userExists;
+    protected $readUserResult;
+    protected $readUser;
+    protected $createUserResult;
+    protected $createUser;
+    protected $updateUserResult;
+    protected $updateUser;
+    protected $deleteUserResult;
+    protected $deleteUser;
+    protected $getUserProperty;
+    protected $getUserPropertyCurrent;
+    protected $validateCredentials;
+    protected $authenticate;
+    protected $clearIdentity;
+    protected $hasIdentity;
+    protected $isIdentity;
+    protected $setIdentity;
+    protected $refreshIdentity;
+    protected $getIdentity;
+    protected $isAllowed;
+    protected $isUserAllowed;
+    protected $hasRoleBasedAccess;
+    protected $hasRoleBasedAccessUser;
+    protected $buildNewUser;
+    protected $buildUser;
 
     /**
-     * @var UserPropertyService
+     * @param GetUser                $getUser
+     * @param GetUserById            $getUserById
+     * @param GetUserByUsername      $getUserByUsername
+     * @param UserExists             $userExists
+     * @param ReadUserResult         $readUserResult
+     * @param ReadUser               $readUser
+     * @param CreateUserResult       $createUserResult
+     * @param CreateUser             $createUser
+     * @param UpdateUserResult       $updateUserResult
+     * @param UpdateUser             $updateUser
+     * @param DeleteUserResult       $deleteUserResult
+     * @param DeleteUser             $deleteUser
+     * @param GetUserProperty        $getUserProperty
+     * @param GetUserPropertyCurrent $getUserPropertyCurrent
+     * @param ValidateCredentials    $validateCredentials
+     * @param Authenticate           $authenticate
+     * @param ClearIdentity          $clearIdentity
+     * @param HasIdentity            $hasIdentity
+     * @param IsIdentity             $isIdentity
+     * @param SetIdentity            $setIdentity
+     * @param RefreshIdentity        $refreshIdentity
+     * @param GetIdentity            $getIdentity
+     * @param IsAllowed              $isAllowed
+     * @param IsUserAllowed          $isUserAllowed
+     * @param HasRoleBasedAccess     $hasRoleBasedAccess
+     * @param HasRoleBasedAccessUser $hasRoleBasedAccessUser
+     * @param BuildNewUser           $buildNewUser
+     * @param BuildUser              $buildUser
      */
-    protected $userPropertyService;
-
-    /**
-     * @var UserAuthenticationService
-     */
-    protected $userAuthService;
+    public function __construct(
+        GetUser $getUser,
+        GetUserById $getUserById,
+        GetUserByUsername $getUserByUsername,
+        UserExists $userExists,
+        ReadUserResult $readUserResult,
+        ReadUser $readUser,
+        CreateUserResult $createUserResult,
+        CreateUser $createUser,
+        UpdateUserResult $updateUserResult,
+        UpdateUser $updateUser,
+        DeleteUserResult $deleteUserResult,
+        DeleteUser $deleteUser,
+        GetUserProperty $getUserProperty,
+        GetUserPropertyCurrent $getUserPropertyCurrent,
+        ValidateCredentials $validateCredentials,
+        Authenticate $authenticate,
+        ClearIdentity $clearIdentity,
+        HasIdentity $hasIdentity,
+        IsIdentity $isIdentity,
+        SetIdentity $setIdentity,
+        RefreshIdentity $refreshIdentity,
+        GetIdentity $getIdentity,
+        IsAllowed $isAllowed,
+        IsUserAllowed $isUserAllowed,
+        HasRoleBasedAccess $hasRoleBasedAccess,
+        HasRoleBasedAccessUser $hasRoleBasedAccessUser,
+        BuildNewUser $buildNewUser,
+        BuildUser $buildUser
+    ) {
+        $this->getUser = $getUser;
+        $this->getUserById = $getUserById;
+        $this->getUserByUsername = $getUserByUsername;
+        $this->userExists = $userExists;
+        $this->readUserResult = $readUserResult;
+        $this->readUser = $readUser;
+        $this->createUserResult = $createUserResult;
+        $this->createUser = $createUser;
+        $this->updateUserResult = $updateUserResult;
+        $this->updateUser = $updateUser;
+        $this->deleteUserResult = $deleteUserResult;
+        $this->deleteUser = $deleteUser;
+        $this->getUserProperty = $getUserProperty;
+        $this->getUserPropertyCurrent = $getUserPropertyCurrent;
+        $this->validateCredentials = $validateCredentials;
+        $this->authenticate = $authenticate;
+        $this->clearIdentity = $clearIdentity;
+        $this->hasIdentity = $hasIdentity;
+        $this->isIdentity = $isIdentity;
+        $this->setIdentity = $setIdentity;
+        $this->refreshIdentity = $refreshIdentity;
+        $this->getIdentity = $getIdentity;
+        $this->isAllowed = $isAllowed;
+        $this->isUserAllowed = $isUserAllowed;
+        $this->hasRoleBasedAccess = $hasRoleBasedAccess;
+        $this->hasRoleBasedAccessUser = $hasRoleBasedAccessUser;
+        $this->buildNewUser = $buildNewUser;
+        $this->buildUser = $buildUser;
+    }
 
     /*
      * ACL
@@ -50,87 +170,7 @@ class RcmUserService
     protected $authorizeService;
 
     /**
-     * setUserDataService
-     *
-     * @param UserDataService $userDataService userDataService
-     *
-     * @return void
-     */
-    public function setUserDataService(UserDataService $userDataService)
-    {
-        $this->userDataService = $userDataService;
-    }
-
-    /**
-     * getUserDataService
-     *
-     * @return UserDataService
-     */
-    public function getUserDataService()
-    {
-        return $this->userDataService;
-    }
-
-    /**
-     * setUserPropertyService
-     *
-     * @param UserPropertyService $userPropertyService userPropertyService
-     *
-     * @return void
-     */
-    public function setUserPropertyService(
-        UserPropertyService $userPropertyService
-    ) {
-        $this->userPropertyService = $userPropertyService;
-    }
-
-    /**
-     * getUserPropertyService
-     *
-     * @return UserPropertyService
-     */
-    public function getUserPropertyService()
-    {
-        return $this->userPropertyService;
-    }
-
-    /**
-     * setUserAuthService
-     *
-     * @param UserAuthenticationService $userAuthService userAuthService
-     *
-     * @return void
-     */
-    public function setUserAuthService(
-        UserAuthenticationService $userAuthService
-    ) {
-        $this->userAuthService = $userAuthService;
-    }
-
-    /**
-     * getUserAuthService
-     *
-     * @return UserAuthenticationService
-     */
-    public function getUserAuthService()
-    {
-        return $this->userAuthService;
-    }
-
-    /**
-     * setAuthorizeService: ACL Service
-     *
-     * @param AuthorizeService $authorizeService authorizeService
-     *
-     * @return void
-     */
-    public function setAuthorizeService(
-        AuthorizeService $authorizeService
-    ) {
-        $this->authorizeService = $authorizeService;
-    }
-
-    /**
+     * @deprecated
      * getAuthorizeService: ACL service
      *
      * @return AuthorizeService
@@ -143,27 +183,22 @@ class RcmUserService
     /** HELPERS ***************************************/
 
     /**
+     * @deprecated Use \RcmUser\Api\User\GetUser
      * getUser
      * returns a user from the data source
      * based on the data in the provided User object (User::id and User::username)
      *
-     * @param User $user request user object
+     * @param User $requestUser request user object
      *
      * @return null|User
      */
-    public function getUser(User $user)
+    public function getUser(User $requestUser)
     {
-        // @todo - check all sources (db and session)?
-        $result = $this->readUser($user);
-
-        if ($result->isSuccess()) {
-            return $result->getUser();
-        }
-
-        return null;
+        return $this->getUser->__invoke($requestUser);
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\User\GetUserById
      * getUserById
      *
      * @param $userId
@@ -172,131 +207,122 @@ class RcmUserService
      */
     public function getUserById($userId)
     {
-
-        $requestUser = $this->buildNewUser();
-        $requestUser->setId($userId);
-
-        return $this->getUser($requestUser);
+        return $this->getUserById->__invoke($userId);
     }
 
     /**
+     * @deprecated RcmUser\Api\User\GetUserByUsername
      * getUserByUsername
      *
-     * @param $userName
+     * @param string $username
      *
      * @return null|User
      */
-    public function getUserByUsername($userName)
+    public function getUserByUsername($username)
     {
-
-        $requestUser = $this->buildNewUser();
-        $requestUser->setUsername($userName);
-
-        return $this->getUser($requestUser);
+        return $this->getUserByUsername->__invoke($username);
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\User\UserExists
      * userExists
      * returns true if the user exists in the data source
      *
-     * @param User $user request user object
+     * @param User $requestUser request user object
      *
      * @return bool
      */
-    public function userExists(User $user)
+    public function userExists(User $requestUser)
     {
-        $result = $this->readUser($user);
-
-        return $result->isSuccess();
+        return $this->userExists->__invoke($requestUser);
     }
 
     /* CRUD HELPERS ***********************************/
 
     /**
+     * @deprecated Use \RcmUser\Api\User\ReadUser | \RcmUser\Api\User\ReadUserResult
      * readUser
      *
-     * @param User $user          request user object
+     * @param User $requestUser   request user object
      * @param bool $includeResult If true, will return data in result object
      *
      * @return Result|User|null
      */
     public function readUser(
-        User $user,
+        User $requestUser,
         $includeResult = true
     ) {
-        $result = $this->getUserDataService()->readUser($user);
-
         if ($includeResult) {
-            return $result;
+            return $this->readUserResult->__invoke($requestUser);
         } else {
-            return $result->getData();
+            return $this->readUser->__invoke($requestUser);
         }
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\User\CreateUser | \RcmUser\Api\User\CreateUserResult
      * createUser
      *
-     * @param User $user          request user object
+     * @param User $requestUser   request user object
      * @param bool $includeResult If true, will return data in result object
      *
      * @return Result|User|null
      */
     public function createUser(
-        User $user,
+        User $requestUser,
         $includeResult = true
     ) {
-        $result = $this->getUserDataService()->createUser($user);
-
         if ($includeResult) {
-            return $result;
+            return $this->createUserResult->__invoke($requestUser);
         } else {
-            return $result->getData();
+            return $this->createUser->__invoke($requestUser);
         }
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\User\UpdateUser | \RcmUser\Api\User\UpdateUserResult
      * updateUser
      *
-     * @param User $user          request user object
+     * @param User $requestUser   request user object
      * @param bool $includeResult If true, will return data in result object
      *
      * @return Result|User|null
      */
     public function updateUser(
-        User $user,
+        User $requestUser,
         $includeResult = true
     ) {
-        $result = $this->getUserDataService()->updateUser($user);
         if ($includeResult) {
-            return $result;
+            return $this->updateUserResult->__invoke($requestUser);
         } else {
-            return $result->getData();
+            return $this->updateUser->__invoke($requestUser);
         }
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\User\DeleteUser | \RcmUser\Api\User\DeleteUserResult
      * deleteUser
      *
-     * @param User $user          request user object
+     * @param User $requestUser   request user object
      * @param bool $includeResult If true, will return data in result object
      *
      * @return Result|User|null
      */
     public function deleteUser(
-        User $user,
+        User $requestUser,
         $includeResult = true
     ) {
-        $result = $this->getUserDataService()->deleteUser($user);
         if ($includeResult) {
-            return $result;
+            return $this->deleteUserResult->__invoke($requestUser);
         } else {
-            return $result->getData();
+            return $this->deleteUser->__invoke($requestUser);
         }
     }
 
     /* PROPERTY HELPERS *******************************/
 
     /**
+     * @deprecated Use \RcmUser\Api\User\GetUserProperty
      * getUserProperty
      * OnDemand loading of a user property.
      * Is a way of populating User::property using events.
@@ -316,7 +342,7 @@ class RcmUserService
         $default = null,
         $refresh = false
     ) {
-        return $this->getUserPropertyService()->getUserProperty(
+        return $this->getUserProperty->__invoke(
             $user,
             $propertyNameSpace,
             $default,
@@ -325,6 +351,7 @@ class RcmUserService
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\User\GetUserPropertyCurrent
      * getCurrentUserProperty
      *
      * @param string $propertyNameSpace propertyNameSpace
@@ -338,14 +365,8 @@ class RcmUserService
         $default = null,
         $refresh = false
     ) {
-        $user = $this->getIdentity();
-
-        if (empty($user)) {
-            return $default;
-        }
-
-        return $this->getUserProperty(
-            $user,
+        return $this->getUserPropertyCurrent->__invoke(
+            $this->getPsrRequest(),
             $propertyNameSpace,
             $default,
             $refresh
@@ -353,6 +374,7 @@ class RcmUserService
     }
 
     /**
+     * @deprecated NOT IMPLEMENTED
      * disableUser @todo WRITE THIS
      *
      * @param User $user user
@@ -366,35 +388,41 @@ class RcmUserService
     /* AUTHENTICATION HELPERS ********************************/
 
     /**
+     * @deprecated Use RcmUser\Api\Authentication\ValidateCredentials
      * validateCredentials
      * Allows the validation of user credentials (username and password)
      * without creating an auth session.
      * Helpful for doing non-login authentication checks.
      *
-     * @param User $user request user object
+     * @param User $requestUser request user object
      *
      * @return \Zend\Authentication\Result
      */
-    public function validateCredentials(User $user)
+    public function validateCredentials(User $requestUser)
     {
-        return $this->getUserAuthService()->validateCredentials($user);
+        return $this->validateCredentials->__invoke($requestUser);
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\Authenticate
      * authenticate
      * Creates auth session (logs in user)
      * if credentials provided in the User object are valid.
      *
-     * @param User $user request user object
+     * @param User $requestUser request user object
      *
      * @return \Zend\Authentication\Result
      */
-    public function authenticate(User $user)
+    public function authenticate(User $requestUser)
     {
-        return $this->getUserAuthService()->authenticate($user);
+        return $this->authenticate->__invoke(
+            $this->getPsrRequest(),
+            $requestUser
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\ClearIdentity
      * clearIdentity
      * Clears auth session (logs out user)
      *
@@ -402,10 +430,13 @@ class RcmUserService
      */
     public function clearIdentity()
     {
-        $this->getUserAuthService()->clearIdentity();
+        $this->clearIdentity->__invoke(
+            $this->getPsrRequest()
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\HasIdentity
      * hasIdentity
      * Check if any User is auth'ed (logged in)
      *
@@ -413,10 +444,13 @@ class RcmUserService
      */
     public function hasIdentity()
     {
-        return $this->getUserAuthService()->hasIdentity();
+        return $this->hasIdentity->__invoke(
+            $this->getPsrRequest()
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\IsIdentity
      * isIdentity
      * Check if the requested user in the user that is currently in the auth session
      *
@@ -426,31 +460,14 @@ class RcmUserService
      */
     public function isIdentity(User $user)
     {
-        $sessUser = $this->getIdentity();
-
-        if (empty($sessUser)) {
-            return false;
-        }
-
-        // @todo make sure this is a valid check for all cases
-        $id = $user->getId();
-        if (!empty($id)
-            && $user->getId() === $sessUser->getId()
-        ) {
-            return true;
-        }
-
-        $username = $user->getUsername();
-        if (!empty($username)
-            && $user->getUsername() === $sessUser->getUsername()
-        ) {
-            return true;
-        }
-
-        return false;
+        return $this->isIdentity->__invoke(
+            $this->getPsrRequest(),
+            $user
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\SetIdentity
      * setIdentity
      * Force a User into the auth'd session.
      * - WARNING: this by-passes the authentication process
@@ -463,19 +480,14 @@ class RcmUserService
      */
     public function setIdentity(User $user)
     {
-        $currentUser = $this->getIdentity();
-
-        if (empty($currentUser) || $user->getId() !== $currentUser->getId()) {
-            throw new RcmUserException(
-                'SetIdentity expects user to be get same identity as current, '
-                . 'user authenticate to change users.'
-            );
-        }
-
-        $this->getUserAuthService()->setIdentity($user);
+        $this->setIdentity->__invoke(
+            $this->getPsrRequest(),
+            $user
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\RefreshIdentity
      * refreshIdentity
      * Will reload the current User that is Auth'd into the auth'd session.
      * Is a way of refreshing the session user without log-out, then log-in
@@ -485,41 +497,13 @@ class RcmUserService
      */
     public function refreshIdentity()
     {
-        $currentUser = $this->getIdentity();
-
-        if (empty($currentUser)) {
-            return null;
-        }
-
-        $result = $this->readUser($currentUser);
-
-        if (!$result->isSuccess()) {
-            return null;
-        }
-
-        $user = $result->getUser();
-
-        $userId = $user->getId();
-
-        if ($userId != $currentUser->getId()) {
-            throw new RcmUserException(
-                'RefreshIdentity expects user to be get same identity as current.'
-            );
-        }
-
-        // Sync properties
-        $currentProperties = $currentUser->getProperties();
-        $updatedProperties = $user->getProperties();
-        foreach ($currentProperties as $currentPropertyId => $currentProperty) {
-            if (!array_key_exists($currentPropertyId, $updatedProperties)) {
-                $user->setProperty($currentPropertyId, $currentProperty);
-            }
-        }
-
-        $this->getUserAuthService()->setIdentity($user);
+        $this->refreshIdentity->__invoke(
+            $this->getPsrRequest()
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\GetIdentity
      * getIdentity
      * Get the current User (logged in User) from Auth'd session
      * or returns $default is there is no User Auth'd
@@ -530,10 +514,14 @@ class RcmUserService
      */
     public function getIdentity($default = null)
     {
-        return $this->getUserAuthService()->getIdentity($default);
+        return $this->getIdentity->__invoke(
+            $this->getPsrRequest(),
+            $default
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Authentication\GetIdentity
      * getCurrentUser
      *  - @alias getIdentity
      *
@@ -543,9 +531,7 @@ class RcmUserService
      */
     public function getCurrentUser($default = null)
     {
-        $user = $this->getIdentity($default);
-
-        return $user;
+        return $this->getIdentity($default);
     }
 
     //@todo implement guestIdentity
@@ -555,6 +541,7 @@ class RcmUserService
     /* ACL HELPERS ********************************/
 
     /**
+     * @deprecated Use \RcmUser\Api\Acl\IsAllowed
      * isAllowed
      * Check if the current Auth'd User has
      * access to a resource with a privilege provided by provider id.
@@ -563,7 +550,7 @@ class RcmUserService
      *
      * @param string $resourceId a string resource id as defined by a provider
      * @param string $privilege  privilege of the resource to check
-     * @param string $providerId  @deprecated No Longer Required - resource unique identifier of the resource provider
+     * @param string $providerId @deprecated No Longer Required - resource unique identifier of the resource provider
      *
      * @return bool
      */
@@ -572,17 +559,15 @@ class RcmUserService
         $privilege = null,
         $providerId = null
     ) {
-        $user = $this->getIdentity();
-
-        return $this->isUserAllowed(
+        return $this->isAllowed->__invoke(
+            $this->getPsrRequest(),
             $resourceId,
-            $privilege,
-            $providerId,
-            $user
+            $privilege
         );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Acl\IsUserAllowed
      * isUserAllowed
      * Check if the current Auth'd User has
      * access to a resource with a privilege provided by provider id.
@@ -603,15 +588,15 @@ class RcmUserService
         $providerId = null,
         $user = null
     ) {
-        return $this->getAuthorizeService()->isAllowed(
+        return $this->isUserAllowed->__invoke(
+            $user,
             $resourceId,
-            $privilege,
-            $providerId,
-            $user
+            $privilege
         );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Acl\HasRoleBasedAccess
      * hasRoleBasedAccess
      * Check if current user has access based on role inheritance
      *
@@ -621,16 +606,14 @@ class RcmUserService
      */
     public function hasRoleBasedAccess($roleId)
     {
-        $user = $this->getIdentity();
-
-        if (!($user instanceof User)) {
-            return false;
-        }
-
-        return $this->hasUserRoleBasedAccess($user, $roleId);
+        return $this->hasRoleBasedAccess->__invoke(
+            $this->getPsrRequest(),
+            $roleId
+        );
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\Acl\HasRoleBasedAccessUser
      * hasUserRoleBasedAccess -
      * Check if a user has access based on role inheritance
      *
@@ -641,53 +624,52 @@ class RcmUserService
      */
     public function hasUserRoleBasedAccess($user, $roleId)
     {
-        if (!($user instanceof User)) {
-            return false;
-        }
-
-        return $this->getAuthorizeService()->hasRoleBasedAccess($user, $roleId);
+        return $this->hasRoleBasedAccessUser->__invoke(
+            $user,
+            $roleId
+        );
     }
 
     /* UTILITIES **************************************/
     /**
+     * @deprecated Use \RcmUser\Api\User\BuildNewUser;
      * buildNewUser
      * Factory method to build new User object
      * populated with defaults from event listeners
      *
+     * @param array $options
+     *
      * @return User
      */
-    public function buildNewUser()
+    public function buildNewUser(array $options = [])
     {
-        $user = new User();
-
-        return $this->buildUser($user);
+        return $this->buildNewUser->__invoke($options);
     }
 
     /**
+     * @deprecated Use \RcmUser\Api\User\BuildUser
      * buildUser
      * Populate a User with defaults from event listeners
      *
-     * @param User $user request user object
+     * @param User  $user request user object
+     * @param array $options
      *
      * @return User
-     * @throws \RcmUser\Exception\RcmUserException
+     * @throws RcmUserException
      */
-    public function buildUser(User $user)
+    public function buildUser(User $user, array $options = [])
     {
-        $result = $this->getUserDataService()->buildUser($user);
+        return $this->buildUser->__invoke(
+            $user,
+            $options
+        );
+    }
 
-        // since build user is an event, we might not get anything
-        if (empty($result)) {
-            return $user;
-        }
-
-        if ($result->isSuccess() || $result->getUser() == null) {
-            return $result->getUser();
-        } else {
-            // this should not fail, if it does, something is really wrong
-            throw new RcmUserException(
-                'User could not be built or was not returned'
-            );
-        }
+    /**
+     * @return ServerRequestInterface
+     */
+    protected function getPsrRequest()
+    {
+        return ServerRequestFactory::fromGlobals();
     }
 }

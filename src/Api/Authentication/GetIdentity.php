@@ -11,6 +11,9 @@ use RcmUser\User\Entity\User;
 interface GetIdentity
 {
     /**
+     * Get the current User (logged in User) from Auth'd session
+     * or returns $default is there is no User Auth'd
+     *
      * @param ServerRequestInterface $request
      * @param null                   $default
      *
