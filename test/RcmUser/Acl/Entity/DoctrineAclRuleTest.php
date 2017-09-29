@@ -66,6 +66,4 @@ class DoctrineAclRuleTest extends Zf2TestCase
             'Setter or getter failed.'
         );
     }
-
 }
- 

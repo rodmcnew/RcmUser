@@ -52,6 +52,5 @@ class AclDataServiceFactoryTest extends Zf2TestCase
             \RcmUser\Acl\Db\AclRuleDataMapperInterface::class,
             $service->getAclRuleDataMapper()
         );
-
     }
 }

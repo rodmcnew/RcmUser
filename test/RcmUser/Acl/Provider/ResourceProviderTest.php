@@ -80,4 +80,3 @@ class ResourceProviderTest extends Zf2TestCase
         );
     }
 }
- 

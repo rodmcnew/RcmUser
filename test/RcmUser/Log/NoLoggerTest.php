@@ -82,6 +82,5 @@ class NoLoggerTest extends \PHPUnit_Framework_TestCase
         $logResult = $logger->debug('message');
 
         $this->assertInstanceOf('\Zend\Log\LoggerInterface', $logResult);
-
     }
 }

@@ -27,7 +27,6 @@ class UserPropertyServiceTest extends Zf2TestCase
     public function getUserPropertyService()
     {
         if (!isset($this->userPropertyService)) {
-
             $this->buildUserPropertyService();
         }
 
@@ -68,5 +67,4 @@ class UserPropertyServiceTest extends Zf2TestCase
             'Property value did not come back.'
         );
     }
-
 }

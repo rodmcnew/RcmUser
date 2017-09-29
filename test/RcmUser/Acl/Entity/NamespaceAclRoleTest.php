@@ -22,14 +22,16 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  * @version   Release: <package_version>
  * @link      https://github.com/reliv
  */
-class NamespaceAclRoleTest extends Zf2TestCase {
+class NamespaceAclRoleTest extends Zf2TestCase
+{
 
     /**
      * testSetGet
      *
      * @return void
      */
-    public function testSetGet(){
+    public function testSetGet()
+    {
 
         $nameSpaceAclRole = new NamespaceAclRole(
             'admin',

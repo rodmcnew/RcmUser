@@ -108,11 +108,8 @@ class AclRuleTest extends Zf2TestCase
         $rule = 'NOPE';
 
         try {
-
             $aclRule->setRule($rule);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(
                 \RcmUser\Exception\RcmUserException::class,
                 $e
@@ -151,11 +148,8 @@ class AclRuleTest extends Zf2TestCase
         $this->assertEquals($arrayA, $arrayB, 'Populate failed.');
 
         try {
-
             $aclRuleB->populate('NOPE');
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(
                 \RcmUser\Exception\RcmUserException::class,
                 $e

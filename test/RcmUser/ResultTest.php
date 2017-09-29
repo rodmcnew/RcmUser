@@ -97,9 +97,7 @@ class ResultTest extends Zf2TestCase
         try {
             // this should NOT throw
             $result->throwFailure();
-
         } catch (RcmUserResultException $e) {
-
             $this->fail("Exception thrown incorrectly");
             return;
         }
@@ -108,9 +106,7 @@ class ResultTest extends Zf2TestCase
 
         try {
             $result->throwFailure();
-
         } catch (RcmUserResultException $e) {
-
             $this->assertInstanceOf(
                 \RcmUser\Exception\RcmUserResultException::class,
                 $e

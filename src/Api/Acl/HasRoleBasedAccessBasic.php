@@ -37,8 +37,7 @@ class HasRoleBasedAccessBasic implements HasRoleBasedAccess
     public function __invoke(
         ServerRequestInterface $request,
         $roleId
-    ):bool
-    {
+    ):bool {
         $user = $this->getIdentity->__invoke($request);
 
         if (!($user instanceof User)) {

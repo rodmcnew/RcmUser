@@ -156,7 +156,6 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
     public function getMockServices()
     {
         if (isset($this->mockServices)) {
-
             return $this->mockServices;
         }
 
@@ -336,18 +335,15 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
     public function getValueMap()
     {
         if (isset($this->valueMap)) {
-
             return $this->valueMap;
         }
         $mockServices = $this->getMockServices();
         $this->valueMap = [];
         foreach ($mockServices as $key => $value) {
-
             $this->valueMap[] = [$key, $value];
         }
 
         return $this->valueMap;
-
     }
 
     /**
@@ -358,7 +354,6 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
     public function getMockServiceLocator()
     {
         if (isset($this->mockServiceLocator)) {
-
             return $this->mockServiceLocator;
         }
 
@@ -383,7 +378,6 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
     public function getMockControllerManager()
     {
         if (isset($this->mockControllerManager)) {
-
             return $this->mockControllerManager;
         }
 
@@ -408,7 +402,6 @@ class Zf2TestCase extends \PHPUnit_Framework_TestCase
     public function getMockHelperPluginManager()
     {
         if (isset($this->mockHelperPluginManager)) {
-
             return $this->mockHelperPluginManager;
         }
 

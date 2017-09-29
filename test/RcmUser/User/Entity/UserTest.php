@@ -197,17 +197,14 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         try {
             $user->setProperty($badPropertyName, 'something');
-
         } catch (RcmUserException $e) {
-
             $hasException = true;
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
         }
 
-        if(!$hasException) {
+        if (!$hasException) {
             $this->fail("Expected exception not thrown");
         }
-
     }
 
     /**
@@ -300,7 +297,6 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 
         try {
             $userA->populate($userD);
-
         } catch (\RcmUser\Exception\RcmUserException $e) {
             //$this->assertEquals("Exception Code",$e->getMessage());
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
@@ -308,7 +304,6 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
         }
 
         $this->fail("Expected exception not thrown");
-
     }
 
     /**

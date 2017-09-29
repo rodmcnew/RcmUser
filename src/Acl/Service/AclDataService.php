@@ -490,7 +490,7 @@ class AclDataService extends EventProvider
      *
      * @return Result
      */
-    public function getRulesByResources(Array $resources)
+    public function getRulesByResources(array $resources)
     {
         return $this->aclRuleDataMapper->fetchByResources($resources);
     }
@@ -622,7 +622,6 @@ class AclDataService extends EventProvider
         $result = $this->aclRuleDataMapper->create($aclRule);
 
         if (!$result->isSuccess()) {
-
             $this->getEventManager()->trigger(
                 self::EVENT_CREATE_ACL_RULE_FAIL,
                 $this,

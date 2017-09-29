@@ -56,7 +56,6 @@ class UserAdapterTest extends Zf2TestCase
         $existingUser = new User('123');
 
         if ($user->getUsername() == 'badusername') {
-
             return new Result(
                 null,
                 Result::CODE_FAIL,
@@ -175,7 +174,5 @@ class UserAdapterTest extends Zf2TestCase
             $result->isValid(),
             'Good password should return true'
         );
-
     }
-
 }

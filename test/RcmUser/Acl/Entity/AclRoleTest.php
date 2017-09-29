@@ -102,9 +102,7 @@ class AclRoleTest extends Zf2TestCase
 
         try {
             $aclRole->setRoleId($roleId);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
@@ -124,9 +122,7 @@ class AclRoleTest extends Zf2TestCase
 
         try {
             $aclRole->setRoleId($roleId);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
@@ -146,9 +142,7 @@ class AclRoleTest extends Zf2TestCase
 
         try {
             $aclRole->setParentRoleId($roleId);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }
@@ -233,9 +227,7 @@ class AclRoleTest extends Zf2TestCase
 
         try {
             $aclRole->populate($aclRoleC);
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }

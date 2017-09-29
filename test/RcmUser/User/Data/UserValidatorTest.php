@@ -196,5 +196,4 @@ class UserValidatorTest extends \PHPUnit_Framework_TestCase
             $result->getData()
         );
     }
-
 }

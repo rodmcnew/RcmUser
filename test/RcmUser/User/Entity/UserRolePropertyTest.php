@@ -89,9 +89,7 @@ class UserRolePropertyTest extends \PHPUnit_Framework_TestCase
 
         try {
             $userRoleProperty3->populate('NOPE');
-
         } catch (RcmUserException $e) {
-
             $this->assertInstanceOf(\RcmUser\Exception\RcmUserException::class, $e);
             return;
         }

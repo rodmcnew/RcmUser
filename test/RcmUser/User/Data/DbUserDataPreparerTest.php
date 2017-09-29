@@ -115,6 +115,5 @@ class DbUserDataPreparerTest extends \PHPUnit_Framework_TestCase
             'NEWSTATE',
             $user->getState()
         );
-
     }
 }

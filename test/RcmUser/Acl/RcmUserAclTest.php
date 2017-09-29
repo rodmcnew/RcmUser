@@ -48,5 +48,4 @@ class RcmUserAclTest extends Zf2TestCase
         //echo "\n*** RESULT: " .
         //var_export($acl->getAccess('someUser', 'someresource'), true);
     }
-
 }
