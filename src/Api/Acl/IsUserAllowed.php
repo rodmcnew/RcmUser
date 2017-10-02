@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\Acl;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -15,9 +15,9 @@ interface IsUserAllowed
      * This is use to validate a users access
      * based on their role and the rules set by ACL
      *
-     * @param User|null   $user
-     * @param string      $resourceId
-     * @param string|null $privilege
+     * @param UserInterface|null $user
+     * @param string             $resourceId
+     * @param string|null        $privilege
      *
      * @return bool
      */

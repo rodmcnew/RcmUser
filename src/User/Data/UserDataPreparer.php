@@ -2,7 +2,7 @@
 
 namespace RcmUser\User\Data;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Result;
 
 /**
@@ -26,14 +26,14 @@ class UserDataPreparer implements UserDataPreparerInterface
     /**
      * prepareUserCreate
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
      *
      * @return Result
      */
     public function prepareUserCreate(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     ) {
         return new Result($responseUser);
     }
@@ -41,16 +41,16 @@ class UserDataPreparer implements UserDataPreparerInterface
     /**
      * prepareUserUpdate
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
-     * @param User $existingUser existingUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
+     * @param UserInterface $existingUser existingUser
      *
      * @return Result
      */
     public function prepareUserUpdate(
-        User $requestUser,
-        User $responseUser,
-        User $existingUser
+        UserInterface $requestUser,
+        UserInterface $responseUser,
+        UserInterface $existingUser
     ) {
         $responseUser->populate($requestUser);
 

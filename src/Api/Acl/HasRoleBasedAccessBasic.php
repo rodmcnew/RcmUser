@@ -4,7 +4,7 @@ namespace RcmUser\Api\Acl;
 
 use Psr\Http\Message\ServerRequestInterface;
 use RcmUser\Api\Authentication\GetIdentity;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * WARNING: This is not tested and my not work correctly
@@ -40,7 +40,7 @@ class HasRoleBasedAccessBasic implements HasRoleBasedAccess
     ):bool {
         $user = $this->getIdentity->__invoke($request);
 
-        if (!($user instanceof User)) {
+        if (!($user instanceof UserInterface)) {
             return false;
         }
 

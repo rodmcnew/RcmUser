@@ -3,6 +3,7 @@
 namespace RcmUser\Test\User\Service;
 
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;

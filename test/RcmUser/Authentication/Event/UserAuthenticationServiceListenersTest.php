@@ -19,6 +19,7 @@ namespace RcmUser\Test\Authentication\Event;
 
 use RcmUser\Authentication\Event\UserAuthenticationServiceListeners;
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use Zend\Authentication\Result;
 

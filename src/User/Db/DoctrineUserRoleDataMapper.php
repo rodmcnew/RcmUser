@@ -7,7 +7,7 @@ use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\Result;
 use RcmUser\User\Entity\DoctrineUserRole;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Class DoctrineUserRoleDataMapper
@@ -98,13 +98,13 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
     /**
      * add
      *
-     * @param User   $user      user
-     * @param string $aclRoleId aclRoleId
+     * @param UserInterface $user      user
+     * @param string        $aclRoleId aclRoleId
      *
      * @return Result
      */
     public function add(
-        User $user,
+        UserInterface $user,
         $aclRoleId
     ) {
         if (!$this->canAdd(
@@ -148,13 +148,13 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
     /**
      * remove
      *
-     * @param User   $user      user
-     * @param string $aclRoleId aclRoleId
+     * @param UserInterface $user      user
+     * @param string        $aclRoleId aclRoleId
      *
      * @return Result
      */
     public function remove(
-        User $user,
+        UserInterface $user,
         $aclRoleId
     ) {
         if (!$this->canRemove(
@@ -190,14 +190,14 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
     /**
      * create
      *
-     * @param User  $user      user
-     * @param array $userRoles userRoles
+     * @param UserInterface $user      user
+     * @param array         $userRoles userRoles
      *
      * @return Result|Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function create(
-        User $user,
+        UserInterface $user,
         $userRoles = []
     ) {
         $userId = $user->getId();
@@ -260,11 +260,11 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
     /**
      * read
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return Result
      */
-    public function read(User $user)
+    public function read(UserInterface $user)
     {
         $userId = $user->getId();
 
@@ -301,14 +301,14 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
     /**
      * update
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result|Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function update(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
 
@@ -456,13 +456,13 @@ class DoctrineUserRoleDataMapper extends UserRolesDataMapper implements Doctrine
     /**
      * delete
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      */
     public function delete(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         $failed = [];

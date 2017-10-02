@@ -3,7 +3,7 @@
 namespace RcmUser\Authentication\Service;
 
 use RcmUser\Event\EventProvider;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use Zend\Authentication\Result;
 
 /**
@@ -70,12 +70,12 @@ class UserAuthenticationService extends EventProvider
     /**
      * validateCredentials
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return mixed
      * @throws \Exception
      */
-    public function validateCredentials(User $user)
+    public function validateCredentials(UserInterface $user)
     {
         /* + LOW_LEVEL_PREP */
         if (!$user->isEnabled()) {
@@ -142,12 +142,12 @@ class UserAuthenticationService extends EventProvider
     /**
      * authenticate
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return mixed
      * @throws \Exception
      */
-    public function authenticate(User $user)
+    public function authenticate(UserInterface $user)
     {
         /* @todo This check might go somewhere else */
         if (!$user->isEnabled()) {
@@ -266,11 +266,11 @@ class UserAuthenticationService extends EventProvider
     /**
      * setIdentity - used to refresh session user
      *
-     * @param User $identity identity
+     * @param UserInterface $identity identity
      *
      * @return void
      */
-    public function setIdentity(User $identity)
+    public function setIdentity(UserInterface $identity)
     {
         /*
          * @event setIdentity
@@ -287,7 +287,7 @@ class UserAuthenticationService extends EventProvider
      *
      * @param null $default default is no identity
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function getIdentity($default = null)
     {
@@ -312,14 +312,14 @@ class UserAuthenticationService extends EventProvider
     /**
      * prepareUser
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
-     * @return User
+     * @return UserInterface
      */
-    public function prepareUser(User $user)
+    public function prepareUser(UserInterface $user)
     {
         if ($this->getObfuscatePassword()) {
-            $user->setPassword(User::PASSWORD_OBFUSCATE);
+            $user->setPassword(UserInterface::PASSWORD_OBFUSCATE);
         }
 
         return $user;

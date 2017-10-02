@@ -3,7 +3,7 @@
 namespace RcmUser\Api\User;
 
 use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -11,14 +11,14 @@ use RcmUser\User\Entity\User;
 interface BuildUser
 {
     /**
-     * @param User  $user
-     * @param array $options
+     * @param UserInterface $user
+     * @param array         $options
      *
-     * @return User
+     * @return UserInterface
      * @throws RcmUserException
      */
     public function __invoke(
-        User $user,
+        UserInterface $user,
         array $options = []
-    ): User;
+    ): UserInterface;
 }

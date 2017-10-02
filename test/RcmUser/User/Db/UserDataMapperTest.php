@@ -5,6 +5,7 @@ namespace RcmUser\Test\User\Db;
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\User\Db\UserDataMapper;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 
 /**

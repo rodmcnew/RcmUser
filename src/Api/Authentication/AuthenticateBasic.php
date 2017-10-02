@@ -4,7 +4,7 @@ namespace RcmUser\Api\Authentication;
 
 use Psr\Http\Message\ServerRequestInterface;
 use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use Zend\Authentication\Result;
 
 /**
@@ -25,13 +25,13 @@ class AuthenticateBasic implements Authenticate
 
     /**
      * @param ServerRequestInterface $request
-     * @param User                   $requestUser
+     * @param UserInterface          $requestUser
      *
      * @return Result
      */
     public function __invoke(
         ServerRequestInterface $request,
-        User $requestUser
+        UserInterface $requestUser
     ): Result {
         // NOTE: $request is not used, but it should
         return $this->userAuthenticationService->authenticate($requestUser);

@@ -18,6 +18,7 @@
 namespace RcmUser\Test\User\Event;
 
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Event\UserDataServiceListeners;
 use RcmUser\User\Result;

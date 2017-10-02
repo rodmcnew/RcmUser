@@ -5,7 +5,7 @@ namespace RcmUser\User\Db;
 use RcmUser\Acl\Db\AclRoleDataMapperInterface;
 use RcmUser\Exception\RcmUserException;
 use RcmUser\Result;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Class UserRolesDataMapper
@@ -90,14 +90,14 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * add
      *
-     * @param User   $user      user
-     * @param string $aclRoleId aclRoleId
+     * @param UserInterface $user      user
+     * @param string        $aclRoleId aclRoleId
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function add(
-        User $user,
+        UserInterface $user,
         $aclRoleId
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
@@ -106,14 +106,14 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * remove
      *
-     * @param User   $user      user
-     * @param string $aclRoleId aclRoleId
+     * @param UserInterface $user      user
+     * @param string        $aclRoleId aclRoleId
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function remove(
-        User $user,
+        UserInterface $user,
         $aclRoleId
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
@@ -122,14 +122,14 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * create
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function create(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
@@ -138,12 +138,12 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * read
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function read(User $user)
+    public function read(UserInterface $user)
     {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
     }
@@ -151,14 +151,14 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * update
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function update(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
@@ -167,14 +167,14 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * delete
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function delete(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         throw new RcmUserException("Method " . __METHOD__ . " not implemented.");
@@ -183,13 +183,13 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * canAdd
      *
-     * @param User   $user user
-     * @param string $role role id
+     * @param UserInterface $user user
+     * @param string        $role role id
      *
      * @return bool
      */
     public function canAdd(
-        User $user,
+        UserInterface $user,
         $role
     ) {
         $id = $user->getId();
@@ -214,13 +214,13 @@ class UserRolesDataMapper implements UserRolesDataMapperInterface
     /**
      * canRemove
      *
-     * @param User   $user user
-     * @param string $role role id
+     * @param UserInterface $user user
+     * @param string        $role role id
      *
      * @return bool
      */
     public function canRemove(
-        User $user,
+        UserInterface $user,
         $role
     ) {
         $id = $user->getId();

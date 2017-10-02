@@ -2,7 +2,7 @@
 
 namespace RcmUser\Authentication\Service;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Class AuthenticationService
@@ -16,11 +16,11 @@ class AuthenticationService extends \Zend\Authentication\AuthenticationService
     /**
      * setIdentity - User to refresh existing session
      *
-     * @param User $identity identity
+     * @param UserInterface $identity identity
      *
      * @return void
      */
-    public function setIdentity(User $identity)
+    public function setIdentity(UserInterface $identity)
     {
         $storage = $this->getStorage();
 

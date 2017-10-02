@@ -3,7 +3,7 @@
 namespace RcmUser\Api\Authentication;
 
 use Psr\Http\Message\ServerRequestInterface;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use Zend\Authentication\Result;
 
 /**
@@ -16,12 +16,12 @@ interface Authenticate
      * if credentials provided in the User object are valid.
      *
      * @param ServerRequestInterface $request
-     * @param User                   $requestUser
+     * @param UserInterface          $requestUser
      *
      * @return Result
      */
     public function __invoke(
         ServerRequestInterface $request,
-        User $requestUser
+        UserInterface $requestUser
     ): Result;
 }

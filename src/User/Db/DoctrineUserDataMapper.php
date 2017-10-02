@@ -4,8 +4,8 @@ namespace RcmUser\User\Db;
 
 use Doctrine\ORM\EntityManager;
 use RcmUser\Db\DoctrineMapperInterface;
-use RcmUser\User\Entity\DoctrineUser;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\DoctrineUserInterface;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Result;
 
 /**
@@ -183,14 +183,14 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     /**
      * create
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
      *
      * @return \RcmUser\User\Result
      */
     public function create(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     ) {
         /* VALIDATE */
         $result = $this->getUserValidator()->validateCreateUser(
@@ -243,14 +243,14 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     /**
      * read
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
      *
      * @return mixed|Result
      */
     public function read(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     ) {
         $id = $requestUser->getId();
 
@@ -292,16 +292,16 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     /**
      * update
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
-     * @param User $existingUser existingUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
+     * @param UserInterface $existingUser existingUser
      *
      * @return \RcmUser\User|Result
      */
     public function update(
-        User $requestUser,
-        User $responseUser,
-        User $existingUser
+        UserInterface $requestUser,
+        UserInterface $responseUser,
+        UserInterface $existingUser
     ) {
         /* VALIDATE */
         if (!$this->canUpdate($requestUser)) {
@@ -360,14 +360,14 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     /**
      * delete
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
      *
      * @return mixed|Result
      */
     public function delete(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     ) {
         /* VALIDATE */
         if (!$this->canDelete($requestUser)) {
@@ -395,14 +395,14 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     /**
      * getValidInstance
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
-     * @return User
+     * @return UserInterface
      */
-    public function getValidInstance(User $user)
+    public function getValidInstance(UserInterface $user)
     {
-        if (!($user instanceof DoctrineUser)) {
-            $doctrineUser = new DoctrineUser();
+        if (!($user instanceof DoctrineUserInterface)) {
+            $doctrineUser = new DoctrineUserInterface();
             $doctrineUser->populate($user);
 
             $user = $doctrineUser;
@@ -414,11 +414,11 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     /**
      * buildDeletedUsername
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return string|JSON
      */
-    public function buildDeletedUsername(User $user)
+    public function buildDeletedUsername(UserInterface $user)
     {
         $usernameArr = [
             self::USER_DELETED_STATE,
@@ -432,11 +432,11 @@ class DoctrineUserDataMapper extends UserDataMapper implements DoctrineMapperInt
     /**
      * parseDeletedUsername
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return null|string
      */
-    public function parseDeletedUsername(User $user)
+    public function parseDeletedUsername(UserInterface $user)
     {
         try {
             $usernameArr = json_decode(

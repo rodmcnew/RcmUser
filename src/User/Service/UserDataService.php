@@ -5,6 +5,7 @@ namespace RcmUser\User\Service;
 use RcmUser\Event\EventProvider;
 use RcmUser\User\Db\UserDataMapperInterface;
 use RcmUser\User\Entity\ReadOnlyUser;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 
@@ -100,11 +101,11 @@ class UserDataService extends EventProvider
     public function setValidUserStates($validUserStates)
     {
         if (!in_array(
-            User::STATE_DISABLED,
+            UserInterface::STATE_DISABLED,
             $validUserStates
         )
         ) {
-            $validUserStates[] = User::STATE_DISABLED;
+            $validUserStates[] = UserInterface::STATE_DISABLED;
         }
         $this->validUserStates = $validUserStates;
     }
@@ -213,11 +214,11 @@ class UserDataService extends EventProvider
      * buildUser - Allows events listeners to set default values for a new
      * user as needed.  Very helpful for creating guest or ambiguous users
      *
-     * @param User $requestUser requestUser
+     * @param UserInterface $requestUser requestUser
      *
      * @return Result
      */
-    public function buildUser(User $requestUser)
+    public function buildUser(UserInterface $requestUser)
     {
 
         /* <LOW_LEVEL_PREP> */
@@ -243,11 +244,11 @@ class UserDataService extends EventProvider
     /**
      * createUser
      *
-     * @param User $requestUser requestUser
+     * @param UserInterface $requestUser requestUser
      *
      * @return Result
      */
-    public function createUser(User $requestUser)
+    public function createUser(UserInterface $requestUser)
     {
         $responseUser = new User();
         $responseUser->populate($requestUser);
@@ -339,11 +340,11 @@ class UserDataService extends EventProvider
     /**
      * readUser
      *
-     * @param User $requestUser requestUser
+     * @param UserInterface $requestUser requestUser
      *
      * @return Result
      */
-    public function readUser(User $requestUser)
+    public function readUser(UserInterface $requestUser)
     {
         $responseUser = new User();
         $responseUser->populate($requestUser);
@@ -421,11 +422,11 @@ class UserDataService extends EventProvider
     /**
      * updateUser
      *
-     * @param User $requestUser requestUser
+     * @param UserInterface $requestUser requestUser
      *
      * @return Result
      */
-    public function updateUser(User $requestUser)
+    public function updateUser(UserInterface $requestUser)
     {
         /* <LOW_LEVEL_PREP> */
         // require id
@@ -532,11 +533,11 @@ class UserDataService extends EventProvider
     /**
      * deleteUser
      *
-     * @param User $requestUser requestUser
+     * @param UserInterface $requestUser requestUser
      *
      * @return mixed|Result
      */
-    public function deleteUser(User $requestUser)
+    public function deleteUser(UserInterface $requestUser)
     {
         /* <LOW_LEVEL_PREP> */
         // require id

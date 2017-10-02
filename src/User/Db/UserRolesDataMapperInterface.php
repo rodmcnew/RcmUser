@@ -3,7 +3,7 @@
 namespace RcmUser\User\Db;
 
 use RcmUser\Result;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Interface UserRolesDataMapperInterface
@@ -70,13 +70,13 @@ interface UserRolesDataMapperInterface
      *    -- fail
      *    null
      *
-     * @param User   $user      user
-     * @param string $aclRoleId aclRoleId
+     * @param UserInterface $user      user
+     * @param string        $aclRoleId aclRoleId
      *
      * @return Result
      */
     public function add(
-        User $user,
+        UserInterface $user,
         $aclRoleId
     );
 
@@ -91,13 +91,13 @@ interface UserRolesDataMapperInterface
      *    -- fail
      *    null
      *
-     * @param User   $user      user
-     * @param string $aclRoleId aclRoleId
+     * @param UserInterface $user      user
+     * @param string        $aclRoleId aclRoleId
      *
      * @return Result
      */
     public function remove(
-        User $user,
+        UserInterface $user,
         $aclRoleId
     );
 
@@ -114,13 +114,13 @@ interface UserRolesDataMapperInterface
      *    -- fail
      *    array()
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      */
     public function create(
-        User $user,
+        UserInterface $user,
         $roles = []
     );
 
@@ -137,11 +137,11 @@ interface UserRolesDataMapperInterface
      *    -- fail
      *    array()
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return Result
      */
-    public function read(User $user);
+    public function read(UserInterface $user);
 
     /**
      * update
@@ -158,13 +158,13 @@ interface UserRolesDataMapperInterface
      *        0 => RoleId,
      *    );
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      */
     public function update(
-        User $user,
+        UserInterface $user,
         $roles = []
     );
 
@@ -183,13 +183,13 @@ interface UserRolesDataMapperInterface
      *        0 => RoleId,
      *    );
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      */
     public function delete(
-        User $user,
+        UserInterface $user,
         $roles = []
     );
 }

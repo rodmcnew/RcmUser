@@ -7,7 +7,7 @@ use RcmUser\Authentication\Adapter\UserAdapter;
 use RcmUser\Authentication\Exception\AuthenticationException;
 use RcmUser\Authentication\Service\AuthenticationService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use Zend\Authentication\Result;
 use Zend\EventManager\Event;
 
@@ -193,7 +193,7 @@ class UserAuthenticationServiceListeners extends AbstractAuthServiceListeners
      *
      * @param Event $e e
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function onGetIdentity($e)
     {

@@ -2,6 +2,7 @@
 
 namespace RcmUser\User\Data;
 
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Result;
 use Zend\InputFilter\Factory;
@@ -138,16 +139,16 @@ class UserValidator implements UserValidatorInterface
     /**
      * validateUpdateUser
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
-     * @param User $existingUser existingUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
+     * @param UserInterface $existingUser existingUser
      *
      * @return Result
      */
     public function validateUpdateUser(
-        User $requestUser,
-        User $responseUser,
-        User $existingUser
+        UserInterface $requestUser,
+        UserInterface $responseUser,
+        UserInterface $existingUser
     ) {
         $inputFilter = $this->getUserInputFilter();
         $factory = $this->getUserInputFilterFactory();
@@ -182,14 +183,14 @@ class UserValidator implements UserValidatorInterface
     /**
      * validateCreateUser
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
      *
      * @return Result
      */
     public function validateCreateUser(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     ) {
         $inputFilter = $this->getUserInputFilter();
         $factory = $this->getUserInputFilterFactory();
@@ -221,13 +222,13 @@ class UserValidator implements UserValidatorInterface
     /**
      * validateUser
      *
-     * @param User                 $requestUser requestUser
+     * @param UserInterface        $requestUser requestUser
      * @param InputFilterInterface $inputFilter inputFilter
      *
      * @return Result
      */
     public function validateUser(
-        User $requestUser,
+        UserInterface $requestUser,
         InputFilterInterface $inputFilter
     ) {
         $validUser = new User();

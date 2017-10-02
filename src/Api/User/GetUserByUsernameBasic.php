@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -27,7 +27,7 @@ class GetUserByUsernameBasic implements GetUserByUsername
     /**
      * @param string $username
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function __invoke(
         $username

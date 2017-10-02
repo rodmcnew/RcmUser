@@ -3,7 +3,7 @@
 namespace RcmUser\Service;
 
 use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @deprecated Use RcmUser\Api\Authentication\GetIdentity
@@ -43,7 +43,7 @@ class CurrentUser
      *
      * @param null $default
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function get($default = null)
     {

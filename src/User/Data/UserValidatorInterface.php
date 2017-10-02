@@ -2,7 +2,7 @@
 
 namespace RcmUser\User\Data;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Interface UserValidatorInterface
@@ -24,28 +24,28 @@ interface UserValidatorInterface
     /**
      * validateCreateUser
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
      *
      * @return Result
      */
     public function validateCreateUser(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     );
 
     /**
      * validateUpdateUser
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
-     * @param User $existingUser existingUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
+     * @param UserInterface $existingUser existingUser
      *
      * @return Result
      */
     public function validateUpdateUser(
-        User $requestUser,
-        User $responseUser,
-        User $existingUser
+        UserInterface $requestUser,
+        UserInterface $responseUser,
+        UserInterface $existingUser
     );
 }

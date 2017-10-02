@@ -5,6 +5,7 @@ namespace RcmUser\Test\User\Data;
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\User\Data\DbUserDataPreparer;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 
 /**
@@ -86,7 +87,7 @@ class DbUserDataPreparerTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertEquals(
-            User::STATE_DISABLED,
+            UserInterface::STATE_DISABLED,
             $user->getState()
         );
 

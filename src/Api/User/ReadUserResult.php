@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Result;
 
 /**
@@ -11,11 +11,11 @@ use RcmUser\User\Result;
 interface ReadUserResult
 {
     /**
-     * @param User $requestUser
+     * @param UserInterface $requestUser
      *
      * @return Result
      */
     public function __invoke(
-        User $requestUser
+        UserInterface $requestUser
     ): Result;
 }

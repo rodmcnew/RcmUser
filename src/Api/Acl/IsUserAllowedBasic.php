@@ -3,7 +3,7 @@
 namespace RcmUser\Api\Acl;
 
 use RcmUser\Acl\Service\AuthorizeService;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -22,9 +22,9 @@ class IsUserAllowedBasic implements IsUserAllowed
     }
 
     /**
-     * @param User|null   $user
-     * @param string      $resourceId
-     * @param string|null $privilege
+     * @param UserInterface|null $user
+     * @param string             $resourceId
+     * @param string|null        $privilege
      *
      * @return bool
      */

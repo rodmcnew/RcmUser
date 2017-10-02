@@ -5,7 +5,7 @@ namespace RcmUser\User\Service;
 use RcmUser\Event\EventProvider;
 use RcmUser\Result;
 use RcmUser\User\Db\UserRolesDataMapperInterface;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\EventManager\EventManagerInterface;
 
@@ -249,13 +249,13 @@ class UserRoleService extends EventProvider
     /**
      * canAdd role
      *
-     * @param User   $user      User to add role to
-     * @param string $aclRoleId Role Id
+     * @param UserInterface $user      User to add role to
+     * @param string        $aclRoleId Role Id
      *
      * @return bool
      */
     public function canAddRole(
-        User $user,
+        UserInterface $user,
         $aclRoleId
     ) {
         if ($this->isDefaultUserRole($aclRoleId)) {
@@ -268,13 +268,13 @@ class UserRoleService extends EventProvider
     /**
      * canRemove role
      *
-     * @param User   $user   user
-     * @param string $roleId roleId
+     * @param UserInterface $user   user
+     * @param string        $roleId roleId
      *
      * @return bool
      */
     public function canRemoveRole(
-        User $user,
+        UserInterface $user,
         $roleId
     ) {
         return true;
@@ -283,13 +283,13 @@ class UserRoleService extends EventProvider
     /**
      * addRole
      *
-     * @param User   $user   user
-     * @param string $roleId aclRoleId
+     * @param UserInterface $user   user
+     * @param string        $roleId aclRoleId
      *
      * @return Result
      */
     public function addRole(
-        User $user,
+        UserInterface $user,
         $roleId
     ) {
         $this->getEventManager()->trigger(
@@ -360,13 +360,13 @@ class UserRoleService extends EventProvider
     /**
      * removeRole
      *
-     * @param User   $user   user
-     * @param string $roleId aclRoleId
+     * @param UserInterface $user   user
+     * @param string        $roleId aclRoleId
      *
      * @return Result
      */
     public function removeRole(
-        User $user,
+        UserInterface $user,
         $roleId
     ) {
         $this->getEventManager()->trigger(
@@ -437,13 +437,13 @@ class UserRoleService extends EventProvider
     /**
      * createRoles
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      */
     public function createRoles(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         $this->getEventManager()->trigger(
@@ -492,11 +492,11 @@ class UserRoleService extends EventProvider
     /**
      * readRoles
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return Result
      */
-    public function readRoles(User $user)
+    public function readRoles(UserInterface $user)
     {
         return $this->getUserRolesDataMapper()->read($user);
     }
@@ -504,14 +504,14 @@ class UserRoleService extends EventProvider
     /**
      * updateRoles
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function updateRoles(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         $this->getEventManager()->trigger(
@@ -560,14 +560,14 @@ class UserRoleService extends EventProvider
     /**
      * deleteRoles
      *
-     * @param User  $user  user
-     * @param array $roles array of Role Ids
+     * @param UserInterface $user  user
+     * @param array         $roles array of Role Ids
      *
      * @return Result
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function deleteRoles(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         $this->getEventManager()->trigger(
@@ -628,13 +628,13 @@ class UserRoleService extends EventProvider
     /**
      * buildValidUserRoleProperty
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return UserRoleProperty
      */
     public function buildValidUserRoleProperty(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
 
@@ -651,13 +651,13 @@ class UserRoleService extends EventProvider
     /**
      * buildValidRoles
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return array
      */
     public function buildValidRoles(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         if (!empty($roles)) {

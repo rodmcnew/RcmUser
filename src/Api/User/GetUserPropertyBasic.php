@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Service\UserPropertyService;
 
 /**
@@ -22,15 +22,15 @@ class GetUserPropertyBasic implements GetUserProperty
     }
 
     /**
-     * @param User   $user
-     * @param string $propertyNameSpace
-     * @param null   $default
-     * @param bool   $refresh
+     * @param UserInterface $user
+     * @param string        $propertyNameSpace
+     * @param null          $default
+     * @param bool          $refresh
      *
      * @return mixed
      */
     public function __invoke(
-        User $user,
+        UserInterface $user,
         $propertyNameSpace,
         $default = null,
         $refresh = false

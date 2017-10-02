@@ -2,7 +2,7 @@
 
 namespace RcmUser\Authentication\Adapter;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Service\UserDataService;
 use Zend\Authentication\Result;
 use Zend\Crypt\Password\PasswordInterface;
@@ -52,11 +52,11 @@ class UserAdapter extends AbstractAdapter implements Adapter
      * @deprecated use withUser
      * setUser
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return void
      */
-    public function setUser(User $user)
+    public function setUser(UserInterface $user)
     {
         $this->user = $user;
     }
@@ -64,7 +64,7 @@ class UserAdapter extends AbstractAdapter implements Adapter
     /**
      * getUser
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser()
     {

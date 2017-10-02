@@ -20,6 +20,7 @@ namespace RcmUser\Test\User\Data;
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\User\Data\UserValidator;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\InputFilter\UserInputFilter;
 use Zend\InputFilter\Factory;

@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -21,12 +21,12 @@ class UserExistsBasic implements UserExists
     }
 
     /**
-     * @param User $requestUser
+     * @param UserInterface $requestUser
      *
      * @return bool
      */
     public function __invoke(
-        User $requestUser
+        UserInterface $requestUser
     ): bool {
         $result = $this->readUserResult->__invoke($requestUser);
 

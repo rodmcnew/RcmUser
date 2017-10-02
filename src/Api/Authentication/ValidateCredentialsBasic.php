@@ -3,7 +3,7 @@
 namespace RcmUser\Api\Authentication;
 
 use RcmUser\Authentication\Service\UserAuthenticationService;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use Zend\Authentication\Result;
 
 /**
@@ -23,12 +23,12 @@ class ValidateCredentialsBasic implements ValidateCredentials
     }
 
     /**
-     * @param User $requestUser
+     * @param UserInterface $requestUser
      *
      * @return Result
      */
     public function __invoke(
-        User $requestUser
+        UserInterface $requestUser
     ): Result {
         return $this->userAuthenticationService->validateCredentials($requestUser);
     }
