@@ -102,6 +102,33 @@ interface UserInterface extends \IteratorAggregate, \JsonSerializable
     public function getProperties();
 
     /**
+     * setProperty
+     *
+     * @param string $propertyId propertyId
+     * @param mixed  $value      value
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function setProperty(
+        $propertyId,
+        $value
+    );
+
+    /**
+     * getProperty
+     *
+     * @param string $propertyId propertyId
+     * @param null   $default    default if not found
+     *
+     * @return null
+     */
+    public function getProperty(
+        $propertyId,
+        $default = null
+    );
+
+    /**
      * setState
      *
      * @param string $state state
