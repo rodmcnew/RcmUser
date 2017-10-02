@@ -4,6 +4,7 @@ namespace RcmUser\Test\User\Event;
 
 use RcmUser\Result;
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Event\UserRoleDataServiceListeners;

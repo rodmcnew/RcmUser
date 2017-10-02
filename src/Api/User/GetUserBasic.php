@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -24,12 +24,12 @@ class GetUserBasic implements GetUser
     }
 
     /**
-     * @param User $requestUser
+     * @param UserInterface $requestUser
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function __invoke(
-        User $requestUser
+        UserInterface $requestUser
     ) {
         $result = $this->readUserResult->__invoke($requestUser);
 

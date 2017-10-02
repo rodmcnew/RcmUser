@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -15,15 +15,15 @@ interface GetUserProperty
      * Some user properties are not loaded with the user to increase speed.
      * Use this method to load these properties.
      *
-     * @param User   $user
-     * @param string $propertyNameSpace
-     * @param null   $default
-     * @param bool   $refresh
+     * @param UserInterface $user
+     * @param string        $propertyNameSpace
+     * @param null          $default
+     * @param bool          $refresh
      *
      * @return mixed
      */
     public function __invoke(
-        User $user,
+        UserInterface $user,
         $propertyNameSpace,
         $default = null,
         $refresh = false

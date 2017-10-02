@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\Acl;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -10,8 +10,8 @@ use RcmUser\User\Entity\User;
 interface HasRoleBasedAccessUser
 {
     /**
-     * @param User|null $user
-     * @param string    $roleId
+     * @param UserInterface|null $user
+     * @param string             $roleId
      *
      * @return bool
      */

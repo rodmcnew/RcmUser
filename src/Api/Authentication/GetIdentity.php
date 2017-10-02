@@ -3,7 +3,7 @@
 namespace RcmUser\Api\Authentication;
 
 use Psr\Http\Message\ServerRequestInterface;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -17,7 +17,7 @@ interface GetIdentity
      * @param ServerRequestInterface $request
      * @param null                   $default
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function __invoke(
         ServerRequestInterface $request,

@@ -1,43 +1,16 @@
 <?php
-/**
- * ReadOnlyUserTest.php
- *
- * TEST
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User\Entity
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   GIT: <git_id>
- * @link      https://github.com/reliv
- */
 
 namespace RcmUser\Test\User\Entity;
 
 use RcmUser\Test\Zf2TestCase;
 use RcmUser\User\Entity\ReadOnlyUser;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 /**
- * Class ReadOnlyUserTest
- *
- * LongDescHere
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Test\User\Entity
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright ${YEAR} Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
- * @covers    \RcmUser\User\Entity\ReadOnlyUser
+ * @author James Jervis - https://github.com/jerv13
  */
 class ReadOnlyUserTest extends Zf2TestCase
 {

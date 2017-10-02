@@ -18,6 +18,7 @@
 namespace RcmUser\Test\User\Entity;
 
 use RcmUser\Exception\RcmUserException;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 
 require_once __DIR__ . '/../../../Zf2TestCase.php';
@@ -29,7 +30,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
  *
  * PHP version 5
  *
- * @covers    \RcmUser\User\Entity\User
+ * @covers    \RcmUser\User\Entity\UserInterface
  */
 class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
 {
@@ -43,7 +44,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
      *
      * @param string $prefix
      *
-     * @return User
+     * @return UserInterface
      */
     protected function getNewUser($prefix = 'A')
     {
@@ -63,7 +64,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     /**
      * testSetGet
      *
-     * @covers \RcmUser\User\Entity\User
+     * @covers \RcmUser\User\Entity\UserInterface
      *
      * @return void
      */
@@ -223,7 +224,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     /**
      * testIsEnabled
      *
-     * @covers \RcmUser\User\Entity\User::isEnabled
+     * @covers \RcmUser\User\Entity\UserInterface::isEnabled
      *
      * @return void
      */
@@ -231,7 +232,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     {
 
         $user = new User();
-        $user->setState(User::STATE_DISABLED);
+        $user->setState(UserInterface::STATE_DISABLED);
 
         $this->assertFalse($user->isEnabled(), 'State check failed.');
     }
@@ -239,7 +240,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     /**
      * testArrayIterator
      *
-     * @covers \RcmUser\User\Entity\User::getIterator
+     * @covers \RcmUser\User\Entity\UserInterface::getIterator
      *
      * @return void
      */
@@ -264,7 +265,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     /**
      * testPopulate
      *
-     * @covers \RcmUser\User\Entity\User::populate
+     * @covers \RcmUser\User\Entity\UserInterface::populate
      * @covers \RcmUser\Exception\RcmUserException
      *
      * @return void
@@ -309,7 +310,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     /**
      * testMerge
      *
-     * @covers \RcmUser\User\Entity\User::merge
+     * @covers \RcmUser\User\Entity\UserInterface::merge
      *
      * @return void
      */
@@ -354,7 +355,7 @@ class UserTest extends \RcmUser\Test\Zf2TestCase //\PHPUnit_Framework_TestCase
     /**
      * testJsonSerialize
      *
-     * @covers \RcmUser\User\Entity\User::jsonSerialize
+     * @covers \RcmUser\User\Entity\UserInterface::jsonSerialize
      *
      * @return void
      */

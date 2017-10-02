@@ -3,7 +3,7 @@
 namespace RcmUser\Api\Acl;
 
 use RcmUser\Acl\Service\AuthorizeService;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -22,8 +22,8 @@ class HasRoleBasedAccessUserBasic implements HasRoleBasedAccessUser
     }
 
     /**
-     * @param User|null $user
-     * @param string    $roleId
+     * @param UserInterface|null $user
+     * @param string             $roleId
      *
      * @return bool
      */
@@ -31,7 +31,7 @@ class HasRoleBasedAccessUserBasic implements HasRoleBasedAccessUser
         $user,
         $roleId
     ):bool {
-        if (!($user instanceof User)) {
+        if (!($user instanceof UserInterface)) {
             return false;
         }
 

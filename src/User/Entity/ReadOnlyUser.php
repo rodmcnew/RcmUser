@@ -5,21 +5,9 @@ namespace RcmUser\User\Entity;
 use RcmUser\Exception\RcmUserReadOnlyException;
 
 /**
- * Class ReadOnlyUser
- *
- * Read only user class - only writable on construct
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\User\Entity
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author James Jervis - https://github.com/jerv13
  */
-class ReadOnlyUser extends User
+class ReadOnlyUser extends UserAbstract implements UserInterface
 {
     /**
      * @var bool
@@ -29,14 +17,13 @@ class ReadOnlyUser extends User
     /**
      * __construct
      *
-     * @param User $user User used to initially populate the object
+     * @param UserInterface $user User used to initially populate the object
      */
-    public function __construct(User $user)
+    public function __construct(UserInterface $user)
     {
         $this->populate($user);
         $this->locked = true;
     }
-
 
     public function set($property, $value)
     {
@@ -58,7 +45,9 @@ class ReadOnlyUser extends User
     public function setId($id)
     {
         if (!$this->locked) {
-            return parent::setId($id);
+            parent::setId($id);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -75,7 +64,9 @@ class ReadOnlyUser extends User
     public function setUsername($username)
     {
         if (!$this->locked) {
-            return parent::setUsername($username);
+            parent::setUsername($username);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -92,7 +83,9 @@ class ReadOnlyUser extends User
     public function setPassword($password)
     {
         if (!$this->locked) {
-            return parent::setPassword($password);
+            parent::setPassword($password);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -109,7 +102,9 @@ class ReadOnlyUser extends User
     public function setState($state)
     {
         if (!$this->locked) {
-            return parent::setState($state);
+            parent::setState($state);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -126,7 +121,9 @@ class ReadOnlyUser extends User
     public function setEmail($email)
     {
         if (!$this->locked) {
-            return parent::setEmail($email);
+            parent::setEmail($email);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -143,7 +140,9 @@ class ReadOnlyUser extends User
     public function setName($name)
     {
         if (!$this->locked) {
-            return parent::setName($name);
+            parent::setName($name);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -160,7 +159,9 @@ class ReadOnlyUser extends User
     public function setProperties($properties)
     {
         if (!$this->locked) {
-            return parent::setProperties($properties);
+            parent::setProperties($properties);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -185,8 +186,8 @@ class ReadOnlyUser extends User
     /**
      * populate
      *
-     * @param User|array $data    data as User or array
-     * @param array      $exclude list of object properties to ignore (not populate)
+     * @param UserInterface|array $data    data as User or array
+     * @param array               $exclude list of object properties to ignore (not populate)
      *
      * @return void
      * @throws \RcmUser\Exception\RcmUserException|RcmUserReadOnlyException
@@ -196,7 +197,9 @@ class ReadOnlyUser extends User
         $exclude = []
     ) {
         if (!$this->locked) {
-            return parent::populate($data);
+            parent::populate($data);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -213,7 +216,9 @@ class ReadOnlyUser extends User
     public function populateFromObject(UserInterface $object)
     {
         if (!$this->locked) {
-            return parent::populateFromObject($object);
+            parent::populateFromObject($object);
+
+            return;
         }
 
         throw new RcmUserReadOnlyException('Object is READ ONLY');
@@ -222,12 +227,12 @@ class ReadOnlyUser extends User
     /**
      * merge
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return void
      * @throws \RcmUser\Exception\RcmUserReadOnlyException
      */
-    public function merge(User $user)
+    public function merge(UserInterface $user)
     {
         throw new RcmUserReadOnlyException('Object is READ ONLY');
     }

@@ -2,14 +2,18 @@
 
 namespace RcmUser\Api\Authentication;
 
+use Psr\Http\Message\ServerRequestInterface;
 use RcmUser\Authentication\Service\UserAuthenticationService;
+use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\UserInterface;
-use Zend\Authentication\Result;
 
 /**
+ * WARNING: This will authenticate WITH validating credentials
+ *          Use with CAUTION
+ *
  * @author James Jervis - https://github.com/jerv13
  */
-class ValidateCredentialsBasic implements ValidateCredentials
+class SetIdentityInsecure implements SetIdentity
 {
     protected $userAuthenticationService;
 
@@ -23,13 +27,16 @@ class ValidateCredentialsBasic implements ValidateCredentials
     }
 
     /**
-     * @param UserInterface $requestUser
+     * @param ServerRequestInterface $request
+     * @param UserInterface          $identity
      *
-     * @return Result
+     * @return void
+     * @throws RcmUserException
      */
     public function __invoke(
-        UserInterface $requestUser
-    ): Result {
-        return $this->userAuthenticationService->validateCredentials($requestUser);
+        ServerRequestInterface $request,
+        UserInterface $identity
+    ) {
+        $this->userAuthenticationService->setIdentity($identity);
     }
 }

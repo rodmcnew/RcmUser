@@ -6,7 +6,7 @@ use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
 use RcmUser\Event\EventProvider;
 use RcmUser\Event\UserEventManager;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Exception\ExceptionInterface;
@@ -136,13 +136,13 @@ class AuthorizeService extends EventProvider
     /**
      * getUserRoles
      *
-     * @param User|null $user user
+     * @param UserInterface|null $user user
      *
      * @return array
      */
     public function getUserRoles($user)
     {
-        if (!($user instanceof User)) {
+        if (!($user instanceof UserInterface)) {
             return [$this->getGuestRole()];
         }
 
@@ -322,10 +322,10 @@ class AuthorizeService extends EventProvider
     /**
      * isAllowed
      *
-     * @param string $resourceId resourceId
-     * @param string $privilege  privilege
-     * @param string $providerId @deprecated No Longer Required  - providerId
-     * @param User   $user       user
+     * @param string        $resourceId resourceId
+     * @param string        $privilege  privilege
+     * @param string        $providerId @deprecated No Longer Required  - providerId
+     * @param UserInterface $user       user
      *
      * @return bool
      * @throws \RcmUser\Exception\RcmUserException
@@ -443,12 +443,12 @@ class AuthorizeService extends EventProvider
     /**
      * hasRoleBasedAccess
      *
-     * @param User $user
+     * @param UserInterface $user
      * @param      $roleId
      *
      * @return bool
      */
-    public function hasRoleBasedAccess(User $user, $roleId)
+    public function hasRoleBasedAccess(UserInterface $user, $roleId)
     {
         /* Get roles or guest roles if no user */
         $userRoles = $this->getUserRoles($user);

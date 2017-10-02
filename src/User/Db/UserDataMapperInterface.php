@@ -2,7 +2,7 @@
 
 namespace RcmUser\User\Db;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Interface UserDataMapperInterface
@@ -85,14 +85,14 @@ interface UserDataMapperInterface
      *    -- fail
      *    null
      *
-     * @param User $requestUser  User new data (AKA request)
-     * @param User $responseUser User new data prepared (VIA Event Listeners)
+     * @param UserInterface $requestUser  User new data (AKA request)
+     * @param UserInterface $responseUser User new data prepared (VIA Event Listeners)
      *
      * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
     public function create(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     );
 
     /**
@@ -106,14 +106,14 @@ interface UserDataMapperInterface
      *    -- fail
      *    null
      *
-     * @param User $requestUser  User read data (AKA request)
-     * @param User $responseUser User read data prepared (VIA Event Listeners)
+     * @param UserInterface $requestUser  User read data (AKA request)
+     * @param UserInterface $responseUser User read data prepared (VIA Event Listeners)
      *
      * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
     public function read(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     );
 
     /**
@@ -127,16 +127,16 @@ interface UserDataMapperInterface
      *    -- fail (request user)
      *    RcmUser\User\Entity\User,
      *
-     * @param User $requestUser  User update data (AKA request)
-     * @param User $responseUser User update data prepared (VIA Event Listeners)
-     * @param User $existingUser User that currently exists
+     * @param UserInterface $requestUser  User update data (AKA request)
+     * @param UserInterface $responseUser User update data prepared (VIA Event Listeners)
+     * @param UserInterface $existingUser User that currently exists
      *
      * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
     public function update(
-        User $requestUser,
-        User $responseUser,
-        User $existingUser
+        UserInterface $requestUser,
+        UserInterface $responseUser,
+        UserInterface $existingUser
     );
 
     /**
@@ -150,13 +150,13 @@ interface UserDataMapperInterface
      *    -- fail (request user)
      *    RcmUser\User\Entity\User,
      *
-     * @param User $requestUser  User delete data (AKA request)
-     * @param User $responseUser User delete data prepared (VIA Event Listeners)
+     * @param UserInterface $requestUser  User delete data (AKA request)
+     * @param UserInterface $responseUser User delete data prepared (VIA Event Listeners)
      *
      * @return \RcmUser\User\Result Result::user = $responseUser or null
      */
     public function delete(
-        User $requestUser,
-        User $responseUser
+        UserInterface $requestUser,
+        UserInterface $responseUser
     );
 }

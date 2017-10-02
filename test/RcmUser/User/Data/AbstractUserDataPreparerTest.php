@@ -5,6 +5,7 @@ namespace RcmUser\Test\User\Data;
 require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\User\Data\AbstractUserDataPreparer;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 
 /**

@@ -2,7 +2,7 @@
 
 namespace RcmUser\User\Event;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\UserRoleProperty;
 use RcmUser\User\Result;
 use RcmUser\User\Service\UserDataService;
@@ -130,7 +130,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     public function onBuildUser($e)
     {
         // $requestUser = $e->getParam('requestUser');
-        /** @var User $responseUser */
+        /** @var UserInterface $responseUser */
         $responseUser = $e->getParam('responseUser');
 
         $userRoleProperty = $responseUser->getProperty(
@@ -318,7 +318,7 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     {
         /** @var Result $result */
         $result = $e->getParam('result');
-        /** @var User $requestUser */
+        /** @var UserInterface $requestUser */
         $requestUser = $e->getParam('requestUser');
 
         if (!$result->isSuccess()) {
@@ -454,13 +454,13 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     /**
      * buildValidUserRoleProperty
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return UserRoleProperty
      */
     public function buildValidUserRoleProperty(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         return $this->getUserRoleService()->buildValidUserRoleProperty(
@@ -472,13 +472,13 @@ class UserRoleDataServiceListeners extends AbstractUserDataServiceListeners
     /**
      * buildValidRoles
      *
-     * @param User  $user  user
-     * @param array $roles roles
+     * @param UserInterface $user  user
+     * @param array         $roles roles
      *
      * @return array
      */
     public function buildValidRoles(
-        User $user,
+        UserInterface $user,
         $roles = []
     ) {
         return $this->getUserRoleService()->buildValidRoles(

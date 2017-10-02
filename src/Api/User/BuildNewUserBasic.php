@@ -2,6 +2,7 @@
 
 namespace RcmUser\Api\User;
 
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 
 /**
@@ -23,11 +24,11 @@ class BuildNewUserBasic implements BuildNewUser
     /**
      * @param array $options
      *
-     * @return User
+     * @return UserInterface
      */
     public function __invoke(
         array $options = []
-    ): User {
+    ): UserInterface {
         $user = new User();
 
         return $this->buildUser->__invoke($user);

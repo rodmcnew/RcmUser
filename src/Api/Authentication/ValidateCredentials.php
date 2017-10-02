@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\Authentication;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use Zend\Authentication\Result;
 
 /**
@@ -15,11 +15,11 @@ interface ValidateCredentials
      * without creating an auth session.
      * Helpful for doing non-login authentication checks.
      *
-     * @param User $requestUser
+     * @param UserInterface $requestUser
      *
      * @return Result
      */
     public function __invoke(
-        User $requestUser
+        UserInterface $requestUser
     ): Result;
 }

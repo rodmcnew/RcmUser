@@ -2,7 +2,7 @@
 
 namespace RcmUser\User\Data;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Interface UserDataPreparerInterface
@@ -24,28 +24,28 @@ interface UserDataPreparerInterface
     /**
      * prepareUserCreate
      *
-     * @param User $requestUser  requestUser
-     * @param User $userToCreate userToCreate
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $userToCreate userToCreate
      *
      * @return Result
      */
     public function prepareUserCreate(
-        User $requestUser,
-        User $userToCreate
+        UserInterface $requestUser,
+        UserInterface $userToCreate
     );
 
     /**
      * prepareUserUpdate
      *
-     * @param User $requestUser  requestUser
-     * @param User $responseUser responseUser
-     * @param User $existingUser existingUser
+     * @param UserInterface $requestUser  requestUser
+     * @param UserInterface $responseUser responseUser
+     * @param UserInterface $existingUser existingUser
      *
      * @return Result
      */
     public function prepareUserUpdate(
-        User $requestUser,
-        User $responseUser,
-        User $existingUser
+        UserInterface $requestUser,
+        UserInterface $responseUser,
+        UserInterface $existingUser
     );
 }

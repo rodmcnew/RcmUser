@@ -3,7 +3,7 @@
 namespace RcmUser\Api\Authentication;
 
 use Psr\Http\Message\ServerRequestInterface;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -23,13 +23,13 @@ class IsIdentityBasic implements IsIdentity
 
     /**
      * @param ServerRequestInterface $request
-     * @param User                   $user
+     * @param UserInterface          $user
      *
      * @return bool
      */
     public function __invoke(
         ServerRequestInterface $request,
-        User $user
+        UserInterface $user
     ): bool {
         $sessionUser = $this->getIdentity->__invoke($request);
 

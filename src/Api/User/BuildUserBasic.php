@@ -3,7 +3,7 @@
 namespace RcmUser\Api\User;
 
 use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Service\UserDataService;
 
 /**
@@ -23,16 +23,16 @@ class BuildUserBasic implements BuildUser
     }
 
     /**
-     * @param User  $user
-     * @param array $options
+     * @param UserInterface $user
+     * @param array         $options
      *
-     * @return User
+     * @return UserInterface
      * @throws RcmUserException
      */
     public function __invoke(
-        User $user,
+        UserInterface $user,
         array $options = []
-    ): User {
+    ): UserInterface {
         $result = $this->userDataService->buildUser($user);
 
         // since build user is an event, we might not get anything

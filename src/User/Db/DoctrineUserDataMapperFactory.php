@@ -36,7 +36,7 @@ class DoctrineUserDataMapperFactory
         $service = new DoctrineUserDataMapper();
         $service->setEntityManager($em);
         $service->setEntityClass(
-            \RcmUser\User\Entity\DoctrineUser::class
+            \RcmUser\User\Entity\DoctrineUserInterface::class
         );
         $service->setUserDataPreparer($udp);
         $service->setUserValidator($udv);

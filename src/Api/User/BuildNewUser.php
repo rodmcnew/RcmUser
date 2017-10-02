@@ -2,7 +2,7 @@
 
 namespace RcmUser\Api\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -12,9 +12,9 @@ interface BuildNewUser
     /**
      * @param array $options
      *
-     * @return User
+     * @return UserInterface
      */
     public function __invoke(
         array $options = []
-    ): User;
+    ): UserInterface;
 }

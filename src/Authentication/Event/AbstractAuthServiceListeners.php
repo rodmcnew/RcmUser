@@ -5,7 +5,7 @@ namespace RcmUser\Authentication\Event;
 use RcmUser\Authentication\Service\AuthenticationService;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use Zend\Authentication\Result;
 use Zend\EventManager\Event;
 use Zend\EventManager\EventManagerInterface;
@@ -281,7 +281,7 @@ class AbstractAuthServiceListeners implements ListenerAggregateInterface
      *
      * @param Event $e e
      *
-     * @return User|null
+     * @return UserInterface|null
      * @throws \RcmUser\Exception\RcmUserException
      */
     public function onGetIdentity($e)

@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../../Zf2TestCase.php';
 
 use RcmUser\Result;
 use RcmUser\User\Db\UserRolesDataMapper;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 
 /**

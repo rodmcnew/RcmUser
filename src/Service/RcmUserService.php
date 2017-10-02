@@ -33,7 +33,7 @@ use RcmUser\Api\User\UpdateUser;
 use RcmUser\Api\User\UpdateUserResult;
 use RcmUser\Api\User\UserExists;
 use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Result;
 use Zend\Diactoros\ServerRequestFactory;
 
@@ -188,11 +188,11 @@ class RcmUserService
      * returns a user from the data source
      * based on the data in the provided User object (User::id and User::username)
      *
-     * @param User $requestUser request user object
+     * @param UserInterface $requestUser request user object
      *
-     * @return null|User
+     * @return null|UserInterface
      */
-    public function getUser(User $requestUser)
+    public function getUser(UserInterface $requestUser)
     {
         return $this->getUser->__invoke($requestUser);
     }
@@ -203,7 +203,7 @@ class RcmUserService
      *
      * @param $userId
      *
-     * @return null|User
+     * @return null|UserInterface
      */
     public function getUserById($userId)
     {
@@ -216,7 +216,7 @@ class RcmUserService
      *
      * @param string $username
      *
-     * @return null|User
+     * @return null|UserInterface
      */
     public function getUserByUsername($username)
     {
@@ -228,11 +228,11 @@ class RcmUserService
      * userExists
      * returns true if the user exists in the data source
      *
-     * @param User $requestUser request user object
+     * @param UserInterface $requestUser request user object
      *
      * @return bool
      */
-    public function userExists(User $requestUser)
+    public function userExists(UserInterface $requestUser)
     {
         return $this->userExists->__invoke($requestUser);
     }
@@ -243,13 +243,13 @@ class RcmUserService
      * @deprecated Use \RcmUser\Api\User\ReadUser | \RcmUser\Api\User\ReadUserResult
      * readUser
      *
-     * @param User $requestUser   request user object
-     * @param bool $includeResult If true, will return data in result object
+     * @param UserInterface $requestUser   request user object
+     * @param bool          $includeResult If true, will return data in result object
      *
-     * @return Result|User|null
+     * @return Result|UserInterface|null
      */
     public function readUser(
-        User $requestUser,
+        UserInterface $requestUser,
         $includeResult = true
     ) {
         if ($includeResult) {
@@ -263,13 +263,13 @@ class RcmUserService
      * @deprecated Use \RcmUser\Api\User\CreateUser | \RcmUser\Api\User\CreateUserResult
      * createUser
      *
-     * @param User $requestUser   request user object
-     * @param bool $includeResult If true, will return data in result object
+     * @param UserInterface $requestUser   request user object
+     * @param bool          $includeResult If true, will return data in result object
      *
-     * @return Result|User|null
+     * @return Result|UserInterface|null
      */
     public function createUser(
-        User $requestUser,
+        UserInterface $requestUser,
         $includeResult = true
     ) {
         if ($includeResult) {
@@ -283,13 +283,13 @@ class RcmUserService
      * @deprecated Use \RcmUser\Api\User\UpdateUser | \RcmUser\Api\User\UpdateUserResult
      * updateUser
      *
-     * @param User $requestUser   request user object
-     * @param bool $includeResult If true, will return data in result object
+     * @param UserInterface $requestUser   request user object
+     * @param bool          $includeResult If true, will return data in result object
      *
-     * @return Result|User|null
+     * @return Result|UserInterface|null
      */
     public function updateUser(
-        User $requestUser,
+        UserInterface $requestUser,
         $includeResult = true
     ) {
         if ($includeResult) {
@@ -303,13 +303,13 @@ class RcmUserService
      * @deprecated Use \RcmUser\Api\User\DeleteUser | \RcmUser\Api\User\DeleteUserResult
      * deleteUser
      *
-     * @param User $requestUser   request user object
-     * @param bool $includeResult If true, will return data in result object
+     * @param UserInterface $requestUser   request user object
+     * @param bool          $includeResult If true, will return data in result object
      *
-     * @return Result|User|null
+     * @return Result|UserInterface|null
      */
     public function deleteUser(
-        User $requestUser,
+        UserInterface $requestUser,
         $includeResult = true
     ) {
         if ($includeResult) {
@@ -329,15 +329,15 @@ class RcmUserService
      * Some user properties are not loaded with the user to increase speed.
      * Use this method to load these properties.
      *
-     * @param User   $user              request user object
-     * @param string $propertyNameSpace unique id of the requested property
-     * @param mixed  $default           return value if property not set
-     * @param bool   $refresh           will force retrieval of property
+     * @param UserInterface $user              request user object
+     * @param string        $propertyNameSpace unique id of the requested property
+     * @param mixed         $default           return value if property not set
+     * @param bool          $refresh           will force retrieval of property
      *
      * @return mixed
      */
     public function getUserProperty(
-        User $user,
+        UserInterface $user,
         $propertyNameSpace,
         $default = null,
         $refresh = false
@@ -377,11 +377,11 @@ class RcmUserService
      * @deprecated NOT IMPLEMENTED
      * disableUser @todo WRITE THIS
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return void
      */
-    public function disableUser(User $user)
+    public function disableUser(UserInterface $user)
     {
     }
 
@@ -394,11 +394,11 @@ class RcmUserService
      * without creating an auth session.
      * Helpful for doing non-login authentication checks.
      *
-     * @param User $requestUser request user object
+     * @param UserInterface $requestUser request user object
      *
      * @return \Zend\Authentication\Result
      */
-    public function validateCredentials(User $requestUser)
+    public function validateCredentials(UserInterface $requestUser)
     {
         return $this->validateCredentials->__invoke($requestUser);
     }
@@ -409,11 +409,11 @@ class RcmUserService
      * Creates auth session (logs in user)
      * if credentials provided in the User object are valid.
      *
-     * @param User $requestUser request user object
+     * @param UserInterface $requestUser request user object
      *
      * @return \Zend\Authentication\Result
      */
-    public function authenticate(User $requestUser)
+    public function authenticate(UserInterface $requestUser)
     {
         return $this->authenticate->__invoke(
             $this->getPsrRequest(),
@@ -454,11 +454,11 @@ class RcmUserService
      * isIdentity
      * Check if the requested user in the user that is currently in the auth session
      *
-     * @param User $user request user object
+     * @param UserInterface $user request user object
      *
      * @return bool
      */
-    public function isIdentity(User $user)
+    public function isIdentity(UserInterface $user)
     {
         return $this->isIdentity->__invoke(
             $this->getPsrRequest(),
@@ -473,12 +473,12 @@ class RcmUserService
      * - WARNING: this by-passes the authentication process
      *            and should only be used with extreme caution
      *
-     * @param User $user request user object
+     * @param UserInterface $user request user object
      *
      * @return void
      * @throws \RcmUser\Exception\RcmUserException
      */
-    public function setIdentity(User $user)
+    public function setIdentity(UserInterface $user)
     {
         $this->setIdentity->__invoke(
             $this->getPsrRequest(),
@@ -510,7 +510,7 @@ class RcmUserService
      *
      * @param mixed $default return this value if no User is auth'd
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function getIdentity($default = null)
     {
@@ -527,7 +527,7 @@ class RcmUserService
      *
      * @param mixed $default default
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function getCurrentUser($default = null)
     {
@@ -574,10 +574,10 @@ class RcmUserService
      * This is use to validate a users access
      * based on their role and the rules set by ACL
      *
-     * @param string $resourceId a string resource id as defined by a provider
-     * @param string $privilege  privilege of the resource to check
-     * @param string $providerId @deprecated No Longer Required - resource unique identifier of the resource provider
-     * @param User   $user       request user object
+     * @param string        $resourceId a string resource id as defined by a provider
+     * @param string        $privilege  privilege of the resource to check
+     * @param string        $providerId @deprecated No Longer Required - resource unique identifier of the resource provider
+     * @param UserInterface $user       request user object
      *
      * @return bool
      * @throws \RcmUser\Exception\RcmUserException
@@ -617,8 +617,8 @@ class RcmUserService
      * hasUserRoleBasedAccess -
      * Check if a user has access based on role inheritance
      *
-     * @param User   $user
-     * @param string $roleId
+     * @param UserInterface $user
+     * @param string        $roleId
      *
      * @return bool
      */
@@ -639,7 +639,7 @@ class RcmUserService
      *
      * @param array $options
      *
-     * @return User
+     * @return UserInterface
      */
     public function buildNewUser(array $options = [])
     {
@@ -651,13 +651,13 @@ class RcmUserService
      * buildUser
      * Populate a User with defaults from event listeners
      *
-     * @param User  $user request user object
-     * @param array $options
+     * @param UserInterface $user request user object
+     * @param array         $options
      *
-     * @return User
+     * @return UserInterface
      * @throws RcmUserException
      */
-    public function buildUser(User $user, array $options = [])
+    public function buildUser(UserInterface $user, array $options = [])
     {
         return $this->buildUser->__invoke(
             $user,

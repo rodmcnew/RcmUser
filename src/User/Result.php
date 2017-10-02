@@ -2,7 +2,7 @@
 
 namespace RcmUser\User;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Class Result
@@ -43,9 +43,9 @@ class Result extends \RcmUser\Result
     /**
      * __construct
      *
-     * @param User  $user     user
-     * @param int   $code     code
-     * @param array $messages messages
+     * @param UserInterface $user     user
+     * @param int           $code     code
+     * @param array         $messages messages
      */
     public function __construct(
         $user = null,
@@ -66,7 +66,7 @@ class Result extends \RcmUser\Result
     /**
      * setUser
      *
-     * @param User|null $user user
+     * @param UserInterface|null $user user
      *
      * @return void
      */
@@ -78,7 +78,7 @@ class Result extends \RcmUser\Result
     /**
      * getUser
      *
-     * @return User|null
+     * @return UserInterface|null
      */
     public function getUser()
     {
@@ -93,7 +93,7 @@ class Result extends \RcmUser\Result
     public function isSuccess()
     {
         if ($this->getCode() >= self::CODE_SUCCESS
-            && ($this->data instanceof User)
+            && ($this->data instanceof UserInterface)
         ) {
             return true;
         }

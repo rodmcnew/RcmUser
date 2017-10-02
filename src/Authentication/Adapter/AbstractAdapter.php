@@ -2,7 +2,7 @@
 
 namespace RcmUser\Authentication\Adapter;
 
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Class AbstractAdapter
@@ -21,11 +21,11 @@ abstract class AbstractAdapter extends \Zend\Authentication\Adapter\AbstractAdap
     /**
      * withUser - Immutable setting of the user
      *
-     * @param User $user
+     * @param UserInterface $user
      *
      * @return UserAdapter|Adapter
      */
-    public function withUser(User $user)
+    public function withUser(UserInterface $user)
     {
         $new = clone($this);
         $new->user = $user;

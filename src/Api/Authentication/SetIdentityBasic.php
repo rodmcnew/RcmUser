@@ -5,7 +5,7 @@ namespace RcmUser\Api\Authentication;
 use Psr\Http\Message\ServerRequestInterface;
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Exception\RcmUserException;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * @author James Jervis - https://github.com/jerv13
@@ -29,14 +29,14 @@ class SetIdentityBasic implements SetIdentity
 
     /**
      * @param ServerRequestInterface $request
-     * @param User                   $identity
+     * @param UserInterface          $identity
      *
      * @return void
      * @throws RcmUserException
      */
     public function __invoke(
         ServerRequestInterface $request,
-        User $identity
+        UserInterface $identity
     ) {
         $currentUser = $this->getIdentity->__invoke($request);
 

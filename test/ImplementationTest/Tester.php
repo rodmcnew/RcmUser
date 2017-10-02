@@ -18,6 +18,7 @@
 namespace RcmUser\ImplementationTest;
 
 use RcmUser\Provider\RcmUserAclResourceProvider;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
@@ -614,11 +615,11 @@ class Tester implements ServiceLocatorAwareInterface
     /**
      * testCreateUser
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return bool
      */
-    public function testCreateUser(User $user)
+    public function testCreateUser(UserInterface $user)
     {
         /* CREATE */
         $result = $this->rcmUserService->createUser($user);
@@ -670,11 +671,11 @@ class Tester implements ServiceLocatorAwareInterface
     /**
      * testReadUser
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return bool
      */
-    public function testReadUser(User $user)
+    public function testReadUser(UserInterface $user)
     {
         /* READ */
         $result = $this->rcmUserService->readUser($user);
@@ -698,11 +699,11 @@ class Tester implements ServiceLocatorAwareInterface
     /**
      * testUpdateUser
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return bool
      */
-    public function testUpdateUser(User $user)
+    public function testUpdateUser(UserInterface $user)
     {
         /* CREATE */
         $result = $this->rcmUserService->updateUser($user);
@@ -726,11 +727,11 @@ class Tester implements ServiceLocatorAwareInterface
     /**
      * testDeleteUser
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return bool
      */
-    public function testDeleteUser(User $user)
+    public function testDeleteUser(UserInterface $user)
     {
         /* CREATE */
         $result = $this->rcmUserService->deleteUser($user);
@@ -758,11 +759,11 @@ class Tester implements ServiceLocatorAwareInterface
     /**
      * testValidateCredentials
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return null
      */
-    public function testValidateCredentials(User $user)
+    public function testValidateCredentials(UserInterface $user)
     {
 
         /* AUTH CHECK */
@@ -787,11 +788,11 @@ class Tester implements ServiceLocatorAwareInterface
     /**
      * testAuthenticate
      *
-     * @param User $user user
+     * @param UserInterface $user user
      *
      * @return null
      */
-    public function testAuthenticate(User $user)
+    public function testAuthenticate(UserInterface $user)
     {
 
         /* AUTH CHECK */

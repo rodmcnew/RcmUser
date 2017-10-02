@@ -3,22 +3,19 @@
 namespace RcmUser\User\Entity;
 
 /**
- * Interface UserInterface
- *
- * UserInterface
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\User\Entity
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author James Jervis - https://github.com/jerv13
  */
-interface UserInterface extends \IteratorAggregate
+interface UserInterface extends \IteratorAggregate, \JsonSerializable
 {
+    /**
+     * PASSWORD_OBFUSCATE
+     */
+    const PASSWORD_OBFUSCATE = null;
+    /**
+     * At the core, we only care if the user is disabled,
+     * any other value means enabled and the value is up to the implementation
+     */
+    const STATE_DISABLED = 'disabled';
 
     /**
      * set a property
@@ -105,6 +102,33 @@ interface UserInterface extends \IteratorAggregate
     public function getProperties();
 
     /**
+     * setProperty
+     *
+     * @param string $propertyId propertyId
+     * @param mixed  $value      value
+     *
+     * @return void
+     * @throws \RcmUser\Exception\RcmUserException
+     */
+    public function setProperty(
+        $propertyId,
+        $value
+    );
+
+    /**
+     * getProperty
+     *
+     * @param string $propertyId propertyId
+     * @param null   $default    default if not found
+     *
+     * @return null
+     */
+    public function getProperty(
+        $propertyId,
+        $default = null
+    );
+
+    /**
      * setState
      *
      * @param string $state state
@@ -155,8 +179,8 @@ interface UserInterface extends \IteratorAggregate
     /**
      * populate
      *
-     * @param User|array $data    data as User or array
-     * @param array      $exclude list of object properties to ignore (not populate)
+     * @param UserInterface|array $data    data as User or array
+     * @param array               $exclude list of object properties to ignore (not populate)
      *
      * @return mixed|void
      * @throws \RcmUser\Exception\RcmUserException

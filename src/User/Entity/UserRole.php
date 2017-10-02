@@ -5,19 +5,7 @@ namespace RcmUser\User\Entity;
 use RcmUser\Exception\RcmUserException;
 
 /**
- * Class UserRole
- *
- * UserRole
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\User\Entity
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author James Jervis - https://github.com/jerv13
  */
 class UserRole implements UserRoleInterface
 {

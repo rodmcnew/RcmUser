@@ -4,7 +4,7 @@ namespace RcmUser\User\Service;
 
 use RcmUser\Event\EventProvider;
 use RcmUser\Result;
-use RcmUser\User\Entity\User;
+use RcmUser\User\Entity\UserInterface;
 
 /**
  * Class UserPropertyService
@@ -32,15 +32,15 @@ class UserPropertyService extends EventProvider
     /**
      * getUserProperty
      *
-     * @param User   $user              user
-     * @param string $propertyNameSpace propertyNameSpace
-     * @param null   $dflt              dflt
-     * @param bool   $refresh           refresh
+     * @param UserInterface $user              user
+     * @param string        $propertyNameSpace propertyNameSpace
+     * @param null          $dflt              dflt
+     * @param bool          $refresh           refresh
      *
      * @return mixed
      */
     public function getUserProperty(
-        User $user,
+        UserInterface $user,
         $propertyNameSpace,
         $dflt = null,
         $refresh = false
@@ -113,13 +113,13 @@ class UserPropertyService extends EventProvider
      * getUserPropertyLinks
      * Get a link to an edit page for this user todo - write this
      *
-     * @param User   $user              user
-     * @param string $propertyNameSpace propertyNameSpace
+     * @param UserInterface $user              user
+     * @param string        $propertyNameSpace propertyNameSpace
      *
      * @return mixed
      */
     public function getUserPropertyLinks(
-        User $user,
+        UserInterface $user,
         $propertyNameSpace
     ) {
         $results = $this->getEventManager()->trigger(
@@ -151,13 +151,13 @@ class UserPropertyService extends EventProvider
      * Check access for a user to a property
      * If no results returned todo - write this
      *
-     * @param User   $user              user
-     * @param string $propertyNameSpace propertyNameSpace
+     * @param UserInterface $user              user
+     * @param string        $propertyNameSpace propertyNameSpace
      *
      * @return mixed
      */
     public function getUserPropertyIsAllowed(
-        User $user,
+        UserInterface $user,
         $propertyNameSpace
     ) {
         $results = $this->getEventManager()->trigger(

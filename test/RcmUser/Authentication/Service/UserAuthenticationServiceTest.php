@@ -19,6 +19,7 @@ namespace RcmUser\Test\Authentication\Service;
 
 use RcmUser\Authentication\Service\UserAuthenticationService;
 use RcmUser\Test\Zf2TestCase;
+use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\User;
 use Zend\Authentication\Result;
 use Zend\EventManager\EventManager;
@@ -140,7 +141,7 @@ class UserAuthenticationServiceTest extends Zf2TestCase
             'Incorrect Result returned.'
         );
         $this->assertInstanceOf(
-            \RcmUser\User\Entity\User::class,
+            \RcmUser\User\Entity\UserInterface::class,
             $result->getIdentity(),
             'Result did not contain User.'
         );
@@ -158,7 +159,7 @@ class UserAuthenticationServiceTest extends Zf2TestCase
             'Incorrect Result returned.'
         );
         $this->assertInstanceOf(
-            \RcmUser\User\Entity\User::class,
+            \RcmUser\User\Entity\UserInterface::class,
             $result->getIdentity(),
             'Result did not contain User.'
         );
@@ -188,7 +189,7 @@ class UserAuthenticationServiceTest extends Zf2TestCase
         $user = $this->getUserAuthenticationServiceUserResult()->getIdentity();
 
         $this->assertInstanceOf(
-            \RcmUser\User\Entity\User::class,
+            \RcmUser\User\Entity\UserInterface::class,
             $user,
             'Result is not User.'
         );
