@@ -24,6 +24,8 @@ use RcmUser\Api\Authentication\RefreshIdentity;
 use RcmUser\Api\Authentication\RefreshIdentityBasicFactory;
 use RcmUser\Api\Authentication\SetIdentity;
 use RcmUser\Api\Authentication\SetIdentityBasicFactory;
+use RcmUser\Api\Authentication\SetIdentityInsecure;
+use RcmUser\Api\Authentication\SetIdentityInsecureFactory;
 use RcmUser\Api\Authentication\ValidateCredentials;
 use RcmUser\Api\Authentication\ValidateCredentialsBasicFactory;
 use RcmUser\Api\User\BuildNewUser;
@@ -108,6 +110,9 @@ class ModuleConfig
 
                     SetIdentity::class
                     => SetIdentityBasicFactory::class,
+
+                    SetIdentityInsecure::class
+                    => SetIdentityInsecureFactory::class,
 
                     ValidateCredentials::class
                     => ValidateCredentialsBasicFactory::class,
