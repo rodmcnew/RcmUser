@@ -10,19 +10,7 @@ use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Result;
 
 /**
- * DoctrineAclRuleDataMapper
- *
- * DoctrineAclRuleDataMapper
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Db
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author James Jervis - https://github.com/jerv13
  */
 class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleDataMapperInterface, DoctrineMapperInterface
 {
@@ -35,6 +23,11 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
      * @var string $entityClass
      */
     protected $entityClass;
+
+    /**
+     * @var array
+     */
+    protected $cache = [];
 
     /**
      * setEntityManager
@@ -91,6 +84,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
             'SELECT rule FROM ' . $this->getEntityClass() . ' rule '
             . 'INDEX BY rule.id'
         );
+        $query->useResultCache(true);
 
         $rules = $query->getResult();
 
@@ -157,6 +151,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
             1,
             $ids
         );
+        $query->useResultCache(true);
 
         $rules = $query->getResult();
 
@@ -217,6 +212,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
         if ($privilege !== null) {
             $query->setParameter('privilege', '%\"' . $privilege . '\"%');
         }
+        $query->useResultCache(true);
 
         $rules = $query->getResult();
 
@@ -303,6 +299,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
             4,
             json_encode($privileges)
         );
+        $query->useResultCache(true);
 
         $rules = $query->getResult();
 

@@ -9,19 +9,7 @@ use RcmUser\Db\DoctrineMapperInterface;
 use RcmUser\Result;
 
 /**
- * DoctrineAclRoleDataMapper
- *
- * DoctrineAclRoleDataMapper
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Db
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
+ * @author James Jervis - https://github.com/jerv13
  */
 class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
     AclRoleDataMapperInterface,
@@ -36,6 +24,8 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
      * @var string $entityClass
      */
     protected $entityClass;
+
+    protected $cache = [];
 
     /**
      * setEntityManager
@@ -92,6 +82,7 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
             'SELECT role FROM ' . $this->getEntityClass() . ' role '
             . 'INDEX BY role.roleId '
         );
+        $query->useResultCache(true);
 
         $roles = $query->getResult();
 
@@ -113,15 +104,24 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
      */
     public function fetchByRoleId($roleId)
     {
-        $roles = $this->getEntityManager()->getRepository(
+        if ($this->hasCache($roleId)) {
+            $role = $this->getCache($roleId);
+
+            return new Result($role);
+        }
+
+        /** @var AclRole|null $role */
+        $role = $this->getEntityManager()->getRepository(
             $this->getEntityClass()
         )->findOneBy(['roleId' => $roleId]);
 
-        $result = new Result($roles);
+        $result = new Result($role);
 
-        if (empty($roles)) {
+        if (empty($role)) {
             $result->setMessage('No roles found,');
         }
+
+        $this->setCache($role);
 
         return $result;
     }
@@ -439,14 +439,47 @@ class DoctrineAclRoleDataMapper extends AclRoleDataMapper implements
         if (!empty($parentRoleId)) {
             $parent = $aclRoles[$parentRoleId];
 
-            $newns = $this->createNamespaceId(
+            $newNs = $this->createNamespaceId(
                 $parent,
-                $aclRoles,
-                $ns
+                $aclRoles
             );
-            $ns = $newns . '.' . $ns;
+            $ns = $newNs . '.' . $ns;
         }
 
         return $ns;
+    }
+
+    /**
+     * @param AclRole $role
+     *
+     * @return void
+     */
+    protected function setCache(AclRole $role)
+    {
+        $this->cache[$role->getRoleId()] = $role;
+    }
+
+    /**
+     * @param $roleId
+     *
+     * @return bool
+     */
+    protected function hasCache($roleId)
+    {
+        return array_key_exists($roleId, $this->cache);
+    }
+
+    /**
+     * @param $roleId
+     *
+     * @return AclRole|null
+     */
+    protected function getCache($roleId)
+    {
+        if ($this->hasCache($roleId)) {
+            return $this->cache[$roleId];
+        }
+
+        return null;
     }
 }
