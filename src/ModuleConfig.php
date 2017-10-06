@@ -735,6 +735,7 @@ class ModuleConfig
                 'driver' => [
                     'RcmUser' => [
                         'class' => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                        // NOTE: this must be array or the TTL expiration MUST be used
                         'cache' => 'array',
                         'paths' => [
                             __DIR__ . '/../src/Acl/Entity',
