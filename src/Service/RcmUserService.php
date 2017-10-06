@@ -550,7 +550,7 @@ class RcmUserService
      *
      * @param string $resourceId a string resource id as defined by a provider
      * @param string $privilege  privilege of the resource to check
-     * @param string $providerId @deprecated No Longer Required - resource unique identifier of the resource provider
+     * @param string $providerId @deprecated No Longer Required
      *
      * @return bool
      */
@@ -576,7 +576,7 @@ class RcmUserService
      *
      * @param string        $resourceId a string resource id as defined by a provider
      * @param string        $privilege  privilege of the resource to check
-     * @param string        $providerId @deprecated No Longer Required - resource unique identifier of the resource provider
+     * @param string        $providerId @deprecated No Longer Required
      * @param UserInterface $user       request user object
      *
      * @return bool
