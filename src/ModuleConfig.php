@@ -14,6 +14,8 @@ use RcmUser\Api\Authentication\Authenticate;
 use RcmUser\Api\Authentication\AuthenticateBasicFactory;
 use RcmUser\Api\Authentication\ClearIdentity;
 use RcmUser\Api\Authentication\ClearIdentityBasicFactory;
+use RcmUser\Api\Authentication\GetCurrentUser;
+use RcmUser\Api\Authentication\GetCurrentUserBasicFactory;
 use RcmUser\Api\Authentication\GetIdentity;
 use RcmUser\Api\Authentication\GetIdentityBasicFactory;
 use RcmUser\Api\Authentication\HasIdentity;
@@ -95,6 +97,9 @@ class ModuleConfig
 
                     ClearIdentity::class
                     => ClearIdentityBasicFactory::class,
+
+                    GetCurrentUser::class
+                    => GetCurrentUserBasicFactory::class,
 
                     GetIdentity::class
                     => GetIdentityBasicFactory::class,
