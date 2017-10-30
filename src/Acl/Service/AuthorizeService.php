@@ -4,8 +4,10 @@ namespace RcmUser\Acl\Service;
 
 use RcmUser\Acl\Entity\AclRole;
 use RcmUser\Acl\Entity\AclRule;
+use RcmUser\Acl\Exception\RcmUserAclException;
 use RcmUser\Event\EventProvider;
 use RcmUser\Event\UserEventManager;
+use RcmUser\Exception\RcmUserException;
 use RcmUser\User\Entity\UserInterface;
 use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
@@ -328,7 +330,7 @@ class AuthorizeService extends EventProvider
      * @param UserInterface $user       user
      *
      * @return bool
-     * @throws \RcmUser\Exception\RcmUserException
+     * @throws RcmUserException|RcmUserAclException
      */
     public function isAllowed(
         $resourceId,
@@ -340,6 +342,17 @@ class AuthorizeService extends EventProvider
 
         /* Get roles or guest roles if no user */
         $userRoles = $this->getUserRoles($user);
+
+        if (count($userRoles) > 1) {
+            $userId = 'UNKNOWN';
+            if (!empty($user)) {
+                $userId = $user->getId();
+            }
+
+            throw new RcmUserAclException(
+                'Multiple roles are not currently supported: User: ' . $userId
+            );
+        }
 
         /* Check super admin
          * we over-ride everything if user has super admin
@@ -400,7 +413,7 @@ class AuthorizeService extends EventProvider
             $result = false;
 
             $error = 'AuthorizeService->isAllowed failed check for resourceId: (' . $resourceId . ')'
-                .' with exception: ' . get_class($e) . '::message: ' . $e->getMessage();
+                . ' with exception: ' . get_class($e) . '::message: ' . $e->getMessage();
 
             $params = [
                 'definedRoles' => $this->getRoles(),
@@ -444,7 +457,7 @@ class AuthorizeService extends EventProvider
      * hasRoleBasedAccess
      *
      * @param UserInterface $user
-     * @param      $roleId
+     * @param               $roleId
      *
      * @return bool
      */
