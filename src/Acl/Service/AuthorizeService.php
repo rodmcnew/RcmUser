@@ -343,6 +343,7 @@ class AuthorizeService extends EventProvider
         /* Get roles or guest roles if no user */
         $userRoles = $this->getUserRoles($user);
 
+        /** @todo This is an issue
         if (count($userRoles) > 1) {
             $userId = 'UNKNOWN';
             if (!empty($user)) {
@@ -351,8 +352,9 @@ class AuthorizeService extends EventProvider
 
             throw new RcmUserAclException(
                 'Multiple roles are not currently supported: User: ' . $userId
+                . ' with roles: ' . json_encode($userRoles)
             );
-        }
+        }*/
 
         /* Check super admin
          * we over-ride everything if user has super admin
