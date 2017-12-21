@@ -126,7 +126,7 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
     /**
      * fetchByResource
      *
-     * @param string $resources Array of Resources
+     * @param array $resources Array of Resources or resourceIds
      *
      * @return Result
      */
