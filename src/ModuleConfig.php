@@ -2,6 +2,8 @@
 
 namespace RcmUser;
 
+use RcmUser\Api\Acl\GetRulesByResources;
+use RcmUser\Api\Acl\GetRulesByResourcesBasicFactory;
 use RcmUser\Api\Acl\HasRoleBasedAccess;
 use RcmUser\Api\Acl\HasRoleBasedAccessBasicFactory;
 use RcmUser\Api\Acl\HasRoleBasedAccessUser;
@@ -80,6 +82,9 @@ class ModuleConfig
                     /**
                      * API =============================================
                      */
+                    GetRulesByResources::class
+                    => GetRulesByResourcesBasicFactory::class,
+
                     HasRoleBasedAccess::class
                     => HasRoleBasedAccessBasicFactory::class,
 

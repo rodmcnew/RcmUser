@@ -22,11 +22,13 @@ class IsUserAllowedBasic implements IsUserAllowed
     }
 
     /**
-     * @param UserInterface|null $user
+     * @param null|UserInterface $user
      * @param string             $resourceId
-     * @param string|null        $privilege
+     * @param null               $privilege
      *
      * @return bool
+     * @throws \RcmUser\Acl\Exception\RcmUserAclException
+     * @throws \RcmUser\Exception\RcmUserException
      */
     public function __invoke(
         $user,
