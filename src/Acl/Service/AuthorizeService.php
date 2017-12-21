@@ -456,7 +456,7 @@ class AuthorizeService extends EventProvider
     }
 
     /**
-     * hasRoleBasedAccess
+     * NOTE: This does NOT use rules, just determines if the user has a role in the linage
      *
      * @param UserInterface $user
      * @param               $roleId

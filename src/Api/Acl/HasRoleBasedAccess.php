@@ -12,6 +12,7 @@ interface HasRoleBasedAccess
 {
     /**
      * Check if current user has access based on role inheritance
+     * NOTE: This does NOT use rules, just determines if the user has a role in the linage
      *
      * @param ServerRequestInterface $request
      * @param string                 $roleId
