@@ -91,7 +91,7 @@ interface AclRuleDataMapperInterface
      *    -- fail
      *    array()
      *
-     * @param array $resources Array of Resources
+     * @param array $resources Array of Resources or resourceIds
      *
      * @return Result
      */

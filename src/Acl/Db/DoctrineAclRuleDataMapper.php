@@ -135,6 +135,10 @@ class DoctrineAclRuleDataMapper extends AclRuleDataMapper implements AclRuleData
         $ids = [];
 
         foreach ($resources as $resource) {
+            if (is_string($resource)) {
+                $ids[] = $resource;
+                continue;
+            }
             if (!$resource instanceof AclResource) {
                 continue;
             }
