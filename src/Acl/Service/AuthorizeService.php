@@ -453,7 +453,7 @@ class AuthorizeService extends EventProvider
         /* Get roles or guest roles if no user */
         $userRoles = $this->getUserRoles($user);
 
-        /* Check for super admin we over-ride everything if user has super admin */
+        /* Check for super admin. We over-ride everything if the user has super admin. */
         if ($this->hasSuperAdmin($userRoles)) {
             return true;
         }
