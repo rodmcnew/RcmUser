@@ -444,11 +444,11 @@ class AuthorizeService extends EventProvider
      * NOTE: This does NOT use rules, just determines if the user has a role in the linage
      *
      * @param UserInterface $user
-     * @param $allowedRoleId
+     * @param string $allowedRoleId The role ID that would be allowed if the user has it
      * @param bool $useRoleInheritance True means check the user's parent roles too
      * @return bool
      */
-    public function hasRoleBasedAccess(UserInterface $user, $allowedRoleId, $useRoleInheritance = true)
+    public function hasRoleBasedAccess(UserInterface $user, $allowedRoleId, $useRoleInheritance)
     {
         /* Get roles or guest roles if no user */
         $userRoles = $this->getUserRoles($user);
