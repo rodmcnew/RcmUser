@@ -13,21 +13,6 @@ use RcmUser\User\Entity\UserRoleProperty;
 use Zend\Permissions\Acl\Acl;
 use Zend\Permissions\Acl\Exception\ExceptionInterface;
 
-/**
- * Class AuthorizeService
- *
- * AuthorizeService
- *
- * PHP version 5
- *
- * @category  Reliv
- * @package   RcmUser\Acl\Service
- * @author    James Jervis <jjervis@relivinc.com>
- * @copyright 2014 Reliv International
- * @license   License.txt New BSD License
- * @version   Release: <package_version>
- * @link      https://github.com/reliv
- */
 class AuthorizeService extends EventProvider
 {
     const EVENT_IDENTIFIER = AuthorizeService::class;
@@ -62,8 +47,8 @@ class AuthorizeService extends EventProvider
      * Constructor.
      *
      * @param AclResourceService $aclResourceService
-     * @param AclDataService     $aclDataService
-     * @param UserEventManager   $userEventManager
+     * @param AclDataService $aclDataService
+     * @param UserEventManager $userEventManager
      */
     public function __construct(
         AclResourceService $aclResourceService,
@@ -324,10 +309,10 @@ class AuthorizeService extends EventProvider
     /**
      * isAllowed
      *
-     * @param string        $resourceId resourceId
-     * @param string        $privilege  privilege
-     * @param string        $providerId @deprecated No Longer Required  - providerId
-     * @param UserInterface $user       user
+     * @param string $resourceId resourceId
+     * @param string $privilege privilege
+     * @param string $providerId @deprecated No Longer Required  - providerId
+     * @param UserInterface $user user
      *
      * @return bool
      * @throws RcmUserException|RcmUserAclException
@@ -344,17 +329,17 @@ class AuthorizeService extends EventProvider
         $userRoles = $this->getUserRoles($user);
 
         /** @todo This is an issue
-        if (count($userRoles) > 1) {
-            $userId = 'UNKNOWN';
-            if (!empty($user)) {
-                $userId = $user->getId();
-            }
-
-            throw new RcmUserAclException(
-                'Multiple roles are not currently supported: User: ' . $userId
-                . ' with roles: ' . json_encode($userRoles)
-            );
-        }*/
+         * if (count($userRoles) > 1) {
+         * $userId = 'UNKNOWN';
+         * if (!empty($user)) {
+         * $userId = $user->getId();
+         * }
+         *
+         * throw new RcmUserAclException(
+         * 'Multiple roles are not currently supported: User: ' . $userId
+         * . ' with roles: ' . json_encode($userRoles)
+         * );
+         * }*/
 
         /* Check super admin
          * we over-ride everything if user has super admin
@@ -459,11 +444,11 @@ class AuthorizeService extends EventProvider
      * NOTE: This does NOT use rules, just determines if the user has a role in the linage
      *
      * @param UserInterface $user
-     * @param               $roleId
-     *
+     * @param $roleId
+     * @param bool $useRoleInheritance True means check the user's parent roles too
      * @return bool
      */
-    public function hasRoleBasedAccess(UserInterface $user, $roleId)
+    public function hasRoleBasedAccess(UserInterface $user, $roleId, $useRoleInheritance = true)
     {
         /* Get roles or guest roles if no user */
         $userRoles = $this->getUserRoles($user);
@@ -482,11 +467,13 @@ class AuthorizeService extends EventProvider
                 $userRoleId = $userRole;
             }
 
-            $result = $this->aclDataService->getRoleLineage($userRoleId);
+            if ($useRoleInheritance) {
+                $userRoles = array_keys($this->aclDataService->getRoleLineage($userRoleId)->getData());
+            } else {
+                $userRoles = [$userRoleId];
+            }
 
-            $checkRoles = $result->getData();
-
-            if (array_key_exists($roleId, $checkRoles)) {
+            if (in_array($roleId, $userRoles)) {
                 return true;
             }
         }
