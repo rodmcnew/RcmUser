@@ -475,7 +475,6 @@ class AuthorizeService extends EventProvider
                     return true;
                 }
             }
-
         }
 
         return false;
