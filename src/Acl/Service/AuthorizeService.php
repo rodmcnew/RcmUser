@@ -444,18 +444,16 @@ class AuthorizeService extends EventProvider
      * NOTE: This does NOT use rules, just determines if the user has a role in the linage
      *
      * @param UserInterface $user
-     * @param $roleId
+     * @param $allowedRoleId
      * @param bool $useRoleInheritance True means check the user's parent roles too
      * @return bool
      */
-    public function hasRoleBasedAccess(UserInterface $user, $roleId, $useRoleInheritance = true)
+    public function hasRoleBasedAccess(UserInterface $user, $allowedRoleId, $useRoleInheritance = true)
     {
         /* Get roles or guest roles if no user */
         $userRoles = $this->getUserRoles($user);
 
-        /* Check super admin
-            we over-ride everything if user has super admin
-        */
+        /* Check for super admin we over-ride everything if user has super admin */
         if ($this->hasSuperAdmin($userRoles)) {
             return true;
         }
@@ -468,14 +466,16 @@ class AuthorizeService extends EventProvider
             }
 
             if ($useRoleInheritance) {
-                $userRoles = array_keys($this->aclDataService->getRoleLineage($userRoleId)->getData());
+                $userRoleLineageRoleIds = array_keys($this->aclDataService->getRoleLineage($userRoleId)->getData());
+                if (in_array($allowedRoleId, $userRoleLineageRoleIds)) {
+                    return true;
+                }
             } else {
-                $userRoles = [$userRoleId];
+                if ($userRoleId === $allowedRoleId) {
+                    return true;
+                }
             }
 
-            if (in_array($roleId, $userRoles)) {
-                return true;
-            }
         }
 
         return false;
