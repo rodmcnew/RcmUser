@@ -470,10 +470,8 @@ class AuthorizeService extends EventProvider
                 if (in_array($allowedRoleId, $userRoleLineageRoleIds)) {
                     return true;
                 }
-            } else {
-                if ($userRoleId === $allowedRoleId) {
-                    return true;
-                }
+            } elseif ($userRoleId === $allowedRoleId) {
+                return true;
             }
 
         }
