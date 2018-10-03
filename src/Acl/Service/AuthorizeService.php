@@ -465,13 +465,15 @@ class AuthorizeService extends EventProvider
                 $userRoleId = $userRole;
             }
 
+            if ($userRoleId === $allowedRoleId) {
+                return true;
+            }
+
             if ($useRoleInheritance) {
                 $userRoleLineageRoleIds = array_keys($this->aclDataService->getRoleLineage($userRoleId)->getData());
                 if (in_array($allowedRoleId, $userRoleLineageRoleIds)) {
                     return true;
                 }
-            } elseif ($userRoleId === $allowedRoleId) {
-                return true;
             }
 
         }
