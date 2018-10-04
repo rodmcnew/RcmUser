@@ -9,8 +9,6 @@ use RcmUser\User\Entity\UserInterface;
 /**
  * WARNING: This is not tested and my not work correctly
  * NOTE: This does NOT use rules, just determines if the user has a role in the linage
- *
- * @author James Jervis - https://github.com/jerv13
  */
 class HasRoleBasedAccessBasic implements HasRoleBasedAccess
 {
@@ -18,7 +16,7 @@ class HasRoleBasedAccessBasic implements HasRoleBasedAccess
     protected $hasRoleBasedAccessUser;
 
     /**
-     * @param GetIdentity            $getIdentity
+     * @param GetIdentity $getIdentity
      * @param HasRoleBasedAccessUser $hasRoleBasedAccessUser
      */
     public function __construct(
@@ -31,20 +29,21 @@ class HasRoleBasedAccessBasic implements HasRoleBasedAccess
 
     /**
      * @param ServerRequestInterface $request
-     * @param string                 $roleId
-     *
+     * @param string $roleId
+     * @param $useRoleInheritance True means check the user's parent roles too
      * @return bool
      */
     public function __invoke(
         ServerRequestInterface $request,
-        $roleId
-    ):bool {
+        $roleId,
+        $useRoleInheritance = true
+    ): bool {
         $user = $this->getIdentity->__invoke($request);
 
         if (!($user instanceof UserInterface)) {
             return false;
         }
 
-        return $this->hasRoleBasedAccessUser->__invoke($user, $roleId);
+        return $this->hasRoleBasedAccessUser->__invoke($user, $roleId, $useRoleInheritance);
     }
 }
